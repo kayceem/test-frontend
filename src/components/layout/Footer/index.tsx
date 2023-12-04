@@ -73,22 +73,22 @@ const Footer = () => {
             <div className='footer__col'>
               <h3 className='footer__title'>Connect with us</h3>
               <div className='social-list'>
-                <button title='facebook' className='social-btn'>
-                  <i className='social-icon fa-brands fa-facebook'></i>
+                <a href='https://www.facebook.com/fplelearning.official' title='facebook' className='social-btn'>
                   <FacebookFilled className='social-icon' />
-                </button>
-                <button title='twitter' className='social-btn'>
-                  <i className='social-icon fa-brands fa-twitter'></i>
+                </a>
+                <a href='https://twitter.com/fplelearning' title='twitter' className='social-btn'>
                   <TwitterOutlined className='social-icon' />
-                </button>
-                <button title='social' className='social-btn'>
-                  <i className='social-icon fa-brands fa-twitter'></i>
+                </a>
+                <a href='https://www.linkedin.com/in/e-learning-8462772a3/' title='linkedin' className='social-btn'>
                   <LinkedinFilled className='social-icon' />
-                </button>
-                <button title='facebook' className='social-btn'>
+                </a>
+                <a
+                  href='https://www.youtube.com/channel/UCNnShd591nbMQifsvpv_NZQ'
+                  title='youtube'
+                  className='social-btn'
+                >
                   <YoutubeFilled className='social-icon' />
-                  <i className='social-icon fa-brands fa-twitter'></i>
-                </button>
+                </a>
               </div>
             </div>
           </Col>
