@@ -21,12 +21,9 @@ export default function Blog() {
                     <CommentOutlined className='text-2xl ml-4 mr-2' /> 3
                   </div>
                 </div>
-                {/* Blog col 1 */}
-                {/* Blog col 2 */}
               </div>
             </Card>
           </Col>
-          {/* Col 2 */}
           <Col xs={24} sm={24} md={18} lg={18} xl={18} className='max-h-full'>
             <Card>
               <div className='flex mb-4 flex-col mr-4'>
@@ -62,6 +59,7 @@ export default function Blog() {
                       <BlogDetail title='1.Đặt vấn đề' content='Authentication & Authorization in ReactJS' />
                       <BlogDetail title='2.Ý tưởng' content='Authentication & Authorization in ReactJS' />
                       <BlogDetail title='3.Triển khai' content='Authentication & Authorization in ReactJS' />
+                      <BlogDetail title='4.Hoàn thành' content='Authentication & Authorization in ReactJS' />
                     </div>
                   </div>
                 </div>

@@ -52,6 +52,7 @@ import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
+import PagePost from './pages/site/PagePost/PagePost';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -129,8 +130,12 @@ function App() {
           ]
         },
         {
-          path: '/blog',
+          path: '/blog-detail',
           element: <Blog />
+        },
+        {
+          path: '/blog',
+          element: <PagePost />
         },
         {
           path: 'start',
