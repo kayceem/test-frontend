@@ -54,12 +54,12 @@ const Footer = () => {
                       </Link>
                     </li>
                     <li className='featured-list__item'>
-                      <Link className='featured-list__item-link' to='/'>
+                      <Link className='featured-list__item-link' to='/terms'>
                         Term & Conditions
                       </Link>
                     </li>
                     <li className='featured-list__item'>
-                      <Link className='featured-list__item-link' to='/'>
+                      <Link className='featured-list__item-link' to='/cookies'>
                         Cookie Policy
                       </Link>
                     </li>
