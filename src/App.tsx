@@ -51,6 +51,7 @@ import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
+import Blog from './pages/site/Blog/Blog';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -126,6 +127,10 @@ function App() {
               element: <CourseDetail />
             }
           ]
+        },
+        {
+          path: '/blog',
+          element: <Blog />
         },
         {
           path: 'start',
