@@ -1,5 +1,6 @@
 import { Avatar, Card, Col, Row } from 'antd';
 import { HeartOutlined, CommentOutlined, BookOutlined, EllipsisOutlined } from '@ant-design/icons';
+import BlogDetail from './components/BlogDetail';
 
 export default function Blog() {
   return (
@@ -58,23 +59,9 @@ export default function Blog() {
                         Authorization. A chị nào biết rồi giả bộ đọc hết bài viết rồi so sánh với cách đang dùng xem thế
                         nào ha :)) Nẹt bô rồi gẹt gô thôi ReactJS thủ 🤣
                       </p>
-                      <div className='main_content'>
-                        <h1 className='text-4xl my-2'>1. Đặt vấn đề:</h1>
-                        <ul className='my-4 opacity-90 pl-10'>
-                          <li className='text-2xl list-disc my-2'>
-                            Làm thế nào để redirect user về một page sau khi sign in success?
-                          </li>
-                          <li className='text-2xl list-disc my-2'>
-                            Làm thế nào để redirect user về một page sau khi sign in success?
-                          </li>
-                          <li className='text-2xl list-disc my-2'>
-                            Làm thế nào để redirect user về một page sau khi sign in success?
-                          </li>
-                          <li className='text-2xl list-disc my-2'>
-                            Làm thế nào để redirect user về một page sau khi sign in success?
-                          </li>
-                        </ul>
-                      </div>
+                      <BlogDetail title='1.Đặt vấn đề' content='Authentication & Authorization in ReactJS' />
+                      <BlogDetail title='2.Ý tưởng' content='Authentication & Authorization in ReactJS' />
+                      <BlogDetail title='3.Triển khai' content='Authentication & Authorization in ReactJS' />
                     </div>
                   </div>
                 </div>
