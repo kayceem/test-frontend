@@ -16,6 +16,7 @@ import Button from '../../Button';
 import './Header.scss';
 import CategoriesNav from './components/CategoriesNav';
 import Forgot from '../../../pages/site/Auth/Forgot';
+import ChangePassword from '../../../pages/site/Auth/ChangePassword';
 
 const { Search } = Input;
 
@@ -28,6 +29,7 @@ const Header = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const [authState, setAuthState] = useState('login');
   const cart = useSelector((state: RootState) => state.client.cart);
+  const authStateGlobal = useSelector((state: RootState) => state.auth.authState);
   const userId = useSelector((state: RootState) => state.auth.userId);
   const [userData, setUserData] = useState<IUser>();
   const { data } = useGetUserQuery(userId, {
@@ -374,10 +376,10 @@ const Header = () => {
       </div>
       {currentPath === '/' && showCategoriesNav && <CategoriesNav />}
       <Modal title='' open={isOpenAuthModal} onOk={handleOk} onCancel={handleCancel}>
-        {authState === 'login' && <Login onClick={changeAuthState} />}
+        {authState === 'login'  && <Login onClick={changeAuthState} />}
         {authState === 'signup' && <Signup onClick={changeAuthState} />}
         {authState === 'forgot' && <Forgot onClick={changeAuthState} />}
-        {authState === 'changePassword' && <Forgot onClick={changeAuthState} />}
+        { authStateGlobal === 'changePassword' && <ChangePassword onClick={changeAuthState}/>}
       </Modal>
 
       <Drawer

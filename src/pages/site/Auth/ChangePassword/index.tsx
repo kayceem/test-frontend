@@ -1,12 +1,12 @@
-import { FacebookFilled, GithubOutlined, GoogleOutlined, LinkedinFilled, LoadingOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, Input, Space, Spin, notification } from 'antd';
-import jwtDecode from 'jwt-decode';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Divider, Form, Input, Spin, notification } from 'antd';
 import React, { Fragment, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ButtonCmp from '../../../../components/Button';
-import { useGenerateNewPasswordMutation, useUpdateLastLoginMutation } from '../../../auth.service';
-import { closeAuthModal, setAuthenticated } from '../../../auth.slice';
-import '../ChangePassword.scss';
+import { useGenerateNewPasswordMutation } from '../../../auth.service';
+import { closeAuthModal, setAuthState } from '../../../auth.slice';
+import './ChangePassword.scss';
+import { RootState } from '../../../../store/store';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface ChangePasswordProps {
   onClick: (authState: string) => void;
@@ -15,46 +15,33 @@ interface ChangePasswordProps {
 const ChangePassword: React.FC<ChangePasswordProps> = (props) => {
   const [form] = Form.useForm();
   const [generateNewPass, generateNewPassResult] = useGenerateNewPasswordMutation();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
-
-  const [updateLastLogin] = useUpdateLastLoginMutation();
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
   const onFinish = (formValues: { token: string; newPassword: string }) => {
-    const userCredentials: { email: string; password: string } = {
-      
-    };
 
     setIsSubmitting(true);
     generateNewPass({
       password: formValues.newPassword,
       passwordToken: formValues.token,
-      userId: ""
+      userId: userId
     })
     .unwrap()
       .then((result) => {
-        // if(result.error) {
-        //   notification.error({ type: 'error', message: result.error.data.message, duration: 2 });
-        // }
         if ('error' in result) {
           notification.error({ type: 'error', message: 'login failed', description: 'Email or password incorrect' });
         }
 
-   
-
         if (!generateNewPassResult.isLoading) {
+          notification.success({ type: 'success', message: 'Change password successfully!', duration: 2 });
           setIsSubmitting(false);
+          dispatch(setAuthState(""))
+          dispatch(closeAuthModal())
+          props.onClick("")
         }
 
-        // Handling error failed login here
-        // if ('error' in result) {
-        //   if ('status' in result.error) {
-        //     console.log('show notification!');
-        //   }
-        // }
-        // if (result.error.status === 500) {
-        //   console.log('show notification!');
-        // }
       })
       .catch((error) => {
         console.log('error:', error);
@@ -64,17 +51,6 @@ const ChangePassword: React.FC<ChangePasswordProps> = (props) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-
-  const navigateLoginHandler = (e: React.MouseEvent) => {
-    e.preventDefault();
-    props.onClick('signup');
-  };
-
-  const navigateForgotPassHandler = (e: React.MouseEvent) => {
-    e.preventDefault();
-    props.onClick('forgot');
-  };
-
 
   return (
     <Fragment>
@@ -111,11 +87,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = (props) => {
 
         <Form.Item wrapperCol={{ span: 24 }}>
           <ButtonCmp disabled={isSubmitting} className='btn btn-primary btn-sm w-full'>
-            {isSubmitting ? <Spin indicator={antIcon} /> : 'Login '}
+            {isSubmitting ? <Spin indicator={antIcon} /> : 'Change Password '}
           </ButtonCmp>
-          {/* <Button loading={true}>
-            Submit Ant Design <Spin indicator={antIcon} />;
-          </Button> */}
         </Form.Item>
       </Form>
       <div className='auth__footer'>

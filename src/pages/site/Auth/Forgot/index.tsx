@@ -5,7 +5,7 @@ import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ButtonCmp from '../../../../components/Button';
 import { useLoginMutation, useResetPasswordMutation, useUpdateLastLoginMutation } from '../../../auth.service';
-import { closeAuthModal, setAuthenticated } from '../../../auth.slice';
+import { closeAuthModal, setAuthState, setAuthenticated, setCurrentUserId } from '../../../auth.slice';
 import '../Auth.scss';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface ForgotProps {
@@ -38,6 +38,9 @@ const Forgot: React.FC<ForgotProps> = (props) => {
           notification.error({ type: 'error', message: 'login failed', description: 'Email or password incorrect' });
         }else {
           notification.success({ type: 'success', message: result.message});
+          dispatch(setAuthState("changePassword"))
+          dispatch(setCurrentUserId(result.user._id))
+          props.onClick("");
         }
 
         if (!resetPassResult.isLoading) {
