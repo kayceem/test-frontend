@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { FloatButton } from 'antd';
 import './assets/sass/_base.scss';
 import './assets/sass/reset.css';
 import './assets/sass/tailwind.css';
@@ -320,7 +321,12 @@ function App() {
     }
   ]);
 
-  return <RouterProvider router={router} fallbackElement={<BigSpinner />} />;
+  return (
+    <>
+      <RouterProvider router={router} fallbackElement={<BigSpinner />} />
+      <FloatButton.BackTop duration={100} visibilityHeight={500} />
+    </>
+  );
 }
 
 export default App;
