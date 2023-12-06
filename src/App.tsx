@@ -56,6 +56,7 @@ import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
 import PagePost from './pages/site/PagePost/PagePost';
+import NewPage from './pages/site/NewPage/NewPage';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -188,7 +189,10 @@ function App() {
         {
           path: 'cookies',
           element: <Cookie />
-        }
+        },{
+          path: 'new-page',
+          element: <NewPage />
+        },
       ],
       errorElement: <ErrorPage page='/author' />
     },

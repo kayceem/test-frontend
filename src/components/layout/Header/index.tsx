@@ -15,6 +15,7 @@ import { IUser } from '../../../types/user.type';
 import Button from '../../Button';
 import './Header.scss';
 import CategoriesNav from './components/CategoriesNav';
+import Forgot from '../../../pages/site/Auth/Forgot';
 
 const { Search } = Input;
 
@@ -375,6 +376,8 @@ const Header = () => {
       <Modal title='' open={isOpenAuthModal} onOk={handleOk} onCancel={handleCancel}>
         {authState === 'login' && <Login onClick={changeAuthState} />}
         {authState === 'signup' && <Signup onClick={changeAuthState} />}
+        {authState === 'forgot' && <Forgot onClick={changeAuthState} />}
+        {authState === 'changePassword' && <Forgot onClick={changeAuthState} />}
       </Modal>
 
       <Drawer

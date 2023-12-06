@@ -100,6 +100,12 @@ const Login: React.FC<LoginProps> = (props) => {
     props.onClick('signup');
   };
 
+  const navigateForgotPassHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    props.onClick('forgot');
+  };
+
+
   return (
     <Fragment>
       <div className='auth__title'>
@@ -162,7 +168,7 @@ const Login: React.FC<LoginProps> = (props) => {
         <a onClick={navigateLoginHandler} href='#' className='auth__footer-link'>
           Create Account
         </a>
-        <a href='' className='auth__footer-link'>
+        <a onClick={navigateForgotPassHandler} href='#' className='auth__footer-link'>
           Forgot Password
         </a>
       </div>

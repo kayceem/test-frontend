@@ -1,9 +1,11 @@
 import { Col, Row } from 'antd';
 import Button from '../../../components/Button';
 import './NewPage.scss';
+import PostItem from './components/PostItem';
 const NewPage = () => {
   return (
     <div className='about spacing-h-sm'>
+      <PostItem/>
       <div className='container about__intro text-center bg-slate-300 py-4  '>
         <h2 className='about__title '>About Us Page</h2>
         <p className='mt-8'>Some text about who we are and what we do.</p>
