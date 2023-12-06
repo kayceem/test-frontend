@@ -49,6 +49,9 @@ import Profile from './pages/site/Profile';
 import StartLearning from './pages/site/StartLearning';
 import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
+import Privacy from './pages/site/Policy/Privacy';
+import Terms from './pages/site/Policy/Terms';
+import Cookie from './pages/site/Policy/Cookie';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
@@ -173,6 +176,18 @@ function App() {
               element: <AuthorProfile />
             }
           ]
+        },
+        {
+          path: 'privacy',
+          element: <Privacy />
+        },
+        {
+          path: 'terms',
+          element: <Terms />
+        },
+        {
+          path: 'cookies',
+          element: <Cookie />
         }
       ],
       errorElement: <ErrorPage page='/author' />
