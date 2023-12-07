@@ -58,6 +58,7 @@ import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
 import PagePost from './pages/site/PagePost/PagePost';
+import Inbox from './pages/site/Inbox/Inbox';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -135,12 +136,12 @@ function App() {
           ]
         },
         {
-          path: '/blog-detail',
-          element: <Blog />
-        },
-        {
           path: '/blog',
           element: <PagePost />
+        },
+        {
+          path: '/blog-detail',
+          element: <Blog />
         },
         {
           path: 'start',
@@ -165,6 +166,10 @@ function App() {
         {
           path: 'contact',
           element: <Contact />
+        },
+        {
+          path: 'inbox',
+          element: <Inbox />
         },
         {
           path: 'about-us',
