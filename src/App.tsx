@@ -6,6 +6,7 @@ import { FloatButton } from 'antd';
 import './assets/sass/_base.scss';
 import './assets/sass/reset.css';
 import './assets/sass/tailwind.css';
+import './assets/sass/App.css';
 import InstructorsRevenues from './components/AdminLayout/Header/components/InstructorsRevenues';
 import RootAdminLayout from './components/AdminLayout/RootLayout';
 import BigSpinner from './components/BigSpinner';
@@ -324,7 +325,9 @@ function App() {
   return (
     <>
       <RouterProvider router={router} fallbackElement={<BigSpinner />} />
-      <FloatButton.BackTop duration={100} visibilityHeight={500} />
+      <div className='back-top'>
+        <FloatButton.BackTop duration={100} visibilityHeight={500} />
+      </div>
     </>
   );
 }
