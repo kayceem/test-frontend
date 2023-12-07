@@ -16,6 +16,7 @@ import { IParams } from '../../../types/params.type';
 import { openAuthModal } from '../../auth.slice';
 import { useGetCoursesQuery, useGetPopularCoursesQuery } from '../client.service';
 import CourseList from '../components/CourseList';
+import SubscribeEmail from './components/SubscribeEmail';
 import './Home.scss';
 
 const HomePage = () => {
@@ -354,6 +355,9 @@ const HomePage = () => {
         )}
       </div>
 
+      {/* Subscribe Email */}
+      <SubscribeEmail/>
+      
       {/* Devops */}
 
       <div className='our-courses container spacing-h-sm'>
@@ -370,6 +374,8 @@ const HomePage = () => {
           />
         )}
       </div>
+
+
     </div>
   );
 };
