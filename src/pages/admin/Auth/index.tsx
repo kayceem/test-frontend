@@ -1,16 +1,32 @@
 import { Col, Row } from 'antd';
+import Button from '../../../components/Button';
 import './Auth.scss';
 import AdminLogin from './Login';
 const AdminAuth = () => {
   return (
-    <div className='admin-auth'>
-      <h2 className='admin-auth__title text-center text-2xl mb-4'>Admin Login from E Learning</h2>
-      <Row>
-        <Col md={8} offset={8}>
+    <Row className='admin-auth'>
+      <Col xs={0} sm={0} md={12} lg={12} xl={14} className='admin-auth__content'>
+        <div className='admin-auth__content-container'>
+          <h1 className='admin-auth__title '>E-Learning</h1>
+          <p className='admin-auth__description'>Learn, grow, and succeed with our interactive online courses.</p>
+          <Button className='admin-auth__read-more'>
+            <span>Read More</span>
+          </Button>
+        </div>
+        <div className='admin-auth__ellipse admin-auth__ellipse--first'></div>
+        <div className='admin-auth__ellipse admin-auth__ellipse--second'></div>
+      </Col>
+      <Col xs={24} sm={24} md={12} lg={12} xl={10} className='admin-auth__login'>
+        <div className='admin-auth__login-container'>
+          <h2 className='admin-auth__welcome'>Hello Again!</h2>
+          <p className='admin-auth__welcome-back'>Welcome Back</p>
           <AdminLogin />
-        </Col>
-      </Row>
-    </div>
+          <div className='admin-auth__forgot-password'>
+            <a href='#'>Forgot Password</a>
+          </div>
+        </div>
+      </Col>
+    </Row>
   );
 };
 
