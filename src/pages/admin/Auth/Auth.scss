@@ -76,11 +76,11 @@
 
     @media (max-width: 1200px) {
       &--first {
-        transform: translate(-47%, 58%);
+        transform: translate(-54%, 65%);
       }
 
       &--second {
-        transform: translate(-33%, 64%);
+        transform: translate(-40%, 71%);
       }
     }
 
@@ -101,6 +101,7 @@
     justify-content: center;
 
     &-container {
+      color: #333;
       width: 47%;
       margin-right: 15%;
 
@@ -125,7 +126,6 @@
   }
 
   &__welcome {
-    color: #333;
     font-size: 2.6rem;
     font-weight: 700;
     line-height: 1.5;
@@ -133,7 +133,6 @@
   }
 
   &__welcome-back {
-    color: #333;
     font-size: 1.8rem;
     font-weight: 400;
     line-height: 1.5;
@@ -168,12 +167,10 @@
       border-radius: 3rem;
       border: 0.1rem solid #eee;
       background: #fff;
-      color: #333;
       font-size: 1.4rem;
       font-weight: 400;
 
       &::placeholder {
-        color: #333;
         font-size: 1.4rem;
         font-weight: 400;
         opacity: 0.3;
