@@ -1,0 +1,45 @@
+.fb-item {
+    position: relative;
+    // background-color: #112236;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 0;
+    padding: 2.4rem;
+}
+.avatar{
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
+}
+.bg-194583{
+    background: #194583;
+}
+.bg-FFB029{
+    background: #FFB029;
+}
+.bg-112236{
+    background: #112236;
+}
+.txt-desc{
+    position: relative;
+    margin-bottom: 1.6rem;
+    font-family: "Noto Sans JP";
+    font-size: 1.50rem;
+    line-height: 1.55;
+    display: block;
+}
+.txt-name{
+    position: relative;
+    display: block;
+    font-family: "Noto Sans JP";
+    font-size: 1.50rem;
+    font-weight: bold;
+    letter-spacing: 0.01rem;
+    line-height: 1.55;
+    text-transform: uppercase;
+}
+.txt-black{
+    color: #112236;
+}
