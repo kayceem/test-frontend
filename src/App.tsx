@@ -2,9 +2,11 @@ import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { FloatButton } from 'antd';
 import './assets/sass/_base.scss';
 import './assets/sass/reset.css';
 import './assets/sass/tailwind.css';
+import './assets/sass/App.css';
 import InstructorsRevenues from './components/AdminLayout/Header/components/InstructorsRevenues';
 import RootAdminLayout from './components/AdminLayout/RootLayout';
 import BigSpinner from './components/BigSpinner';
@@ -56,7 +58,7 @@ import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
 import PagePost from './pages/site/PagePost/PagePost';
-import NewPage from './pages/site/NewPage/NewPage';
+import Inbox from './pages/site/Inbox/Inbox';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -134,12 +136,12 @@ function App() {
           ]
         },
         {
-          path: '/blog-detail',
-          element: <Blog />
-        },
-        {
           path: '/blog',
           element: <PagePost />
+        },
+        {
+          path: '/blog-detail',
+          element: <Blog />
         },
         {
           path: 'start',
@@ -166,6 +168,10 @@ function App() {
           element: <Contact />
         },
         {
+          path: 'inbox',
+          element: <Inbox />
+        },
+        {
           path: 'about-us',
           element: <About />
         },
@@ -189,10 +195,7 @@ function App() {
         {
           path: 'cookies',
           element: <Cookie />
-        },{
-          path: 'new-page',
-          element: <NewPage />
-        },
+        }
       ],
       errorElement: <ErrorPage page='/author' />
     },
@@ -324,7 +327,14 @@ function App() {
     }
   ]);
 
-  return <RouterProvider router={router} fallbackElement={<BigSpinner />} />;
+  return (
+    <>
+      <RouterProvider router={router} fallbackElement={<BigSpinner />} />
+      <div className='back-top'>
+        <FloatButton.BackTop duration={100} visibilityHeight={500} />
+      </div>
+    </>
+  );
 }
 
 export default App;

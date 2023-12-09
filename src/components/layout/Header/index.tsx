@@ -17,6 +17,7 @@ import './Header.scss';
 import CategoriesNav from './components/CategoriesNav';
 import Forgot from '../../../pages/site/Auth/Forgot';
 import ChangePassword from '../../../pages/site/Auth/ChangePassword';
+import DropDownMenu from './components/Dropdown/Dropdown';
 
 const { Search } = Input;
 
@@ -304,7 +305,9 @@ const Header = () => {
                 About us
               </Link>
             </li>
-
+            <li>
+              <DropDownMenu />
+            </li>
             {/* <li className='header__nav-item header__nav-item--cart'>
               <Link className='header__nav-link' to='/view-cart'>
                 <Badge count={cart?.items?.length || 0}>
