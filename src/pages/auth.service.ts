@@ -187,17 +187,30 @@ export const authApi = createApi({
       // Trong trường hợp này thì Authentication sẽ chạy lại
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-    resetPassword: build.mutation<IUser, { id: string; body: IUser }>({
+    resetPassword: build.mutation<{message: string, user: {_id: string; email: string}}, { email: string }>({
       query(data) {
         return {
-          url: `signup`,
-          method: 'PUT',
-          body: data.body
+          url: `reset`,
+          method: 'POST',
+          body: {
+            email: data.email
+          }
         };
       },
       // Trong trường hợp này thì Authentication sẽ chạy lại
-      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: data.id }])
-    })
+      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+    }),
+    generateNewPassword: build.mutation<any, { password: string, userId: string, passwordToken: string }>({
+      query(data) {
+        return {
+          url: `new-password`,
+          method: 'POST',
+          body: data
+        };
+      },
+      // Trong trường hợp này thì Authentication sẽ chạy lại
+      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST'}])
+    }),
   })
 });
 
@@ -206,6 +219,7 @@ export const {
   useAdminLoginMutation,
   useSignupMutation,
   useResetPasswordMutation,
+  useGenerateNewPasswordMutation,
   useUpdateLastLoginMutation,
   useLogoutMutation,
   useAdminLogoutMutation

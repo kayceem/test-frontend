@@ -11,6 +11,7 @@ interface AuthState {
   adminToken: string | null;
   isOpenAuthModal: boolean;
   adminRole: UserRole | null;
+  authState: string
 }
 
 const initialState: AuthState = {
@@ -21,7 +22,8 @@ const initialState: AuthState = {
   token: null,
   adminToken: null,
   isOpenAuthModal: false,
-  adminRole: null
+  adminRole: null,
+  authState: ''
 };
 
 const authSlice = createSlice({
@@ -37,6 +39,12 @@ const authSlice = createSlice({
       state.token = action.payload;
       const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(action.payload);
       state.userId = decodedToken.userId;
+    },
+    setAuthState(state, action: PayloadAction<string>) {
+      state.authState = action.payload;
+    },
+    setCurrentUserId(state, action: PayloadAction<string>) {
+      state.userId = action.payload;
     },
     setAdminAuthenticated(state, action: PayloadAction<string>) {
       state.isAdminAuth = true;
@@ -86,6 +94,8 @@ export const {
   openAuthModal,
   closeAuthModal,
   logout,
-  adminLogout
+  adminLogout,
+  setAuthState,
+  setCurrentUserId
 } = authSlice.actions;
 export default authReducer;
