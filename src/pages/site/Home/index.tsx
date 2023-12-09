@@ -17,6 +17,7 @@ import { openAuthModal } from '../../auth.slice';
 import { useGetCoursesQuery, useGetPopularCoursesQuery } from '../client.service';
 import CourseList from '../components/CourseList';
 import SubscribeEmail from './components/SubscribeEmail';
+import FeedbackStudent from './components/FeedbackStudent';
 import './Home.scss';
 
 const HomePage = () => {
@@ -357,6 +358,9 @@ const HomePage = () => {
 
       {/* Subscribe Email */}
       <SubscribeEmail/>
+
+      {/* FeedbackStudent */}
+      <FeedbackStudent/>
       
       {/* Devops */}
 
