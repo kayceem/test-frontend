@@ -6,11 +6,11 @@ const Contact = () => {
   return (
     <div className='contact'>
       {/* Container for demo purpose */}
-      <div className='container my-24 mx-auto md:px-6 spacing-h-sm'>
+      <div className='container px-4 md:px-0 my-24 mx-auto '>
         {/* Section: Design Block */}
         <section className='mb-32 text-center'>
-          <div className='mx-auto max-w-[700px] md:px-3'>
-            <h2 className='contact__title mb-12 text-3xl font-bold'>Contact us</h2>
+          <div className='mx-auto max-w-[500px] md:max-w-[700px] lg:max-w-[900px] flex flex-col	flex-wrap'>
+            <h2 className='contact__title mb-12 text-3xl font-bold pt-6'>Contact us</h2>
             <form>
               <div className='relative mb-6' data-te-input-wrapper-init>
                 <Input placeholder='Enter your name' />
