@@ -258,7 +258,7 @@ const Header = () => {
 
   return (
     <div className='header'>
-      <div className='header__wrapper'>
+      <div className='header__wrapper '>
         {/* <Spin size='large' /> */}
         <MenuOutlined onClick={showMobileMenuHandler} className='header__menu-mobile font-bold lg:hidden' />
         <Link to='/' className='header__logo'>
@@ -305,7 +305,7 @@ const Header = () => {
                 About us
               </Link>
             </li>
-            <li>
+            <li className='header__nav-item'>
               <DropDownMenu />
             </li>
             {/* <li className='header__nav-item header__nav-item--cart'>

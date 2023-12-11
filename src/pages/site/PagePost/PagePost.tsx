@@ -1,7 +1,7 @@
-import { Card, Col, Row } from 'antd';
+import { Col, Row } from 'antd';
 import CustomCard from './components/CustomCard';
+import Panigation from './components/Panigation';
 import PostTitle from './components/PostTitle';
-import Panigation from './components/panigation';
 
 const PagePost = () => {
   return (
@@ -41,7 +41,7 @@ const PagePost = () => {
               <Panigation page={1} pageSize={5} />
             </div>
           </Col>
-          <Col xs={24} sm={24} md={18} lg={6} xl={6} className='max-h-full'>
+          <Col xs={0} sm={0} md={8} lg={6} xl={6} className='max-h-full'>
             <div className='suggetested_Topic'>
               <div className='text-gray-500 text-1xl mb-4 mt-36 ml-10'>
                 <span className='bg-slate-200 p-3 rounded-3xl text-black hover:opacity-75 cursor-pointer inline-block '>

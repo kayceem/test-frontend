@@ -66,7 +66,6 @@ export default function Blog() {
               </div>
             </Card>
           </Col>
-          {/* Col 2 */}
         </Row>
       </div>
     </>
