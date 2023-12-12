@@ -54,6 +54,7 @@ import ViewCart from './pages/site/ViewCart';
 import Privacy from './pages/site/Policy/Privacy';
 import Terms from './pages/site/Policy/Terms';
 import Cookie from './pages/site/Policy/Cookie';
+import AccountSettings from './pages/site/AccountSettings/AccountSettings';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
@@ -196,6 +197,10 @@ function App() {
         {
           path: 'cookies',
           element: <Cookie />
+        },
+        {
+          path: 'account-settings',
+          element: isAuth ? <AccountSettings /> : <ErrorPage page='/' />
         },
         {
           path: 'wishlist',

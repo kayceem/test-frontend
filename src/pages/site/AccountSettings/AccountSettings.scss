@@ -1,0 +1,31 @@
+@import '../../../assets/sass/base';
+
+.account-settings {
+  margin-top: $header-height;
+  padding: 0 4.8rem;
+
+  &__title {
+    @include h-style('h2');
+  }
+
+  &__tabs {
+    font-family: $text-font;
+    .ant-tabs-nav .ant-tabs-tab {
+      font-size: 1.6rem;
+
+      &:hover {
+        color: #000;
+      }
+    }
+
+    .ant-tabs-nav .ant-tabs-tab-active {
+      .ant-tabs-tab-btn {
+        color: #000;
+      }
+    }
+
+    .ant-tabs-ink-bar {
+      background-color: #000;
+    }
+  }
+}
