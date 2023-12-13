@@ -81,7 +81,11 @@ const Header = () => {
       icon: <UserOutlined />
     },
     {
-      label: 'Account Settings',
+      label: (
+        <Link to='/account-settings'>
+          <div>Account Settings</div>
+        </Link>
+      ) ,
       key: 'account-settings',
       icon: <UserOutlined />
     },

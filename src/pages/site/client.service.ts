@@ -157,9 +157,14 @@ export interface getCertificateResponse {
   message: string;
 }
 
+export interface UpdateUserResponse {
+  message: string;
+  userId: string;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'User'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -637,11 +642,19 @@ export const clientApi = createApi({
     getUser: build.query<getUserResponse, string>({
       query: (id) => ({
         url: `users/${id}`
-        // headers: {
-        //   hello: 'Im Sang'
-        // }
-      })
-    })
+      }),
+      providesTags: (result, error, id) => [{ type: 'User', id }]
+    }),
+
+    updateUser: build.mutation<UpdateUserResponse, { userId: string; formData: FormData }>({
+      query: ({ userId, formData }) => ({
+        url: `users/${userId}`, 
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: (result, error, { userId }) => [{ type: 'User', id: userId }]
+    }),
+    
   })
 });
 
@@ -663,5 +676,6 @@ export const {
   useUpdateLessonDoneByUserMutation,
   useGetRetrieveCartQuery,
   useGetCertificateQuery,
-  useCreateCertificateMutation
+  useCreateCertificateMutation,
+  useUpdateUserMutation
 } = clientApi;

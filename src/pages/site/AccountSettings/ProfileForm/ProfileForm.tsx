@@ -1,33 +1,80 @@
-import React from 'react';
-import { Form, Input, Button, Row, Col, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Input, Button, Row, Col, Select, notification, Spin  } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import './ProfileForm.scss';
+import { getUserResponse, useUpdateUserMutation } from '../../client.service';
+import { IUser } from '../../../../types/user.type';
 
-const ProfileForm: React.FC = () => {
+const ProfileForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: boolean, userId: string }> = ({ userData, isSuccess, userId }) => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-  const initialValues = {
-    language: 'en-US'
-  };
+  useEffect(() => {
+    if (isSuccess && userData) {
+      form.setFieldsValue({
+        name: userData.user.name,
+        email: userData.user.email,
+        phone: userData.user.phone,
+        headline: userData.user.headline,
+        biography: userData.user.biography,
+        website: userData.user.website,
+        twitter: userData.user.twitter,
+        facebook: userData.user.facebook,
+        linkedin: userData.user.linkedin,
+        youtube: userData.user.youtube,
+        language: userData.user.language
+      });
+    }
+  }, [userData, isSuccess, form]);
+
+  const [updateUser] = useUpdateUserMutation(); 
 
   const { Option } = Select;
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const handleFinish = (values: IUser) => {
+    onFinish(values).catch((error) => {
+      console.error('Error during form submission:', error);
+    });
   };
 
+
+  const onFinish = async (values: IUser) => {
+    setLoading(true);
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      const value = values[key as keyof IUser];
+      if (value !== undefined && value !== null) {
+        formData.append(key, value.toString());
+      }
+    });
+  
+    try {
+      const result = await updateUser({ userId, formData }).unwrap();
+      notification.success({
+        message: 'Success',
+        description: result.message,
+        placement: 'topRight',
+      });
+    } catch (error) {
+      notification.error({
+        message: 'Error',
+        description: 'Error updating profile',
+        placement: 'topRight',
+      });
+    } finally {
+      setLoading(false); 
+    }
+  };
+  
+  
+
   return (
-    <Form
-      form={form}
-      layout='vertical'
-      onFinish={onFinish}
-      initialValues={initialValues}
-      requiredMark={false}
-      className='profile-form'
-    >
+    <Form form={form} layout='vertical' onFinish={handleFinish} requiredMark={false} className='profile-form'>
       <Row gutter={{ xs: 24, lg: 32 }}>
         <Col xs={24} md={18} lg={12}>
           <Form.Item
-            name='fullName'
+            name='name'
             label='Full Name'
             className='profile-form__item'
             rules={[{ required: true, message: 'Please input your full name!' }]}
@@ -108,12 +155,12 @@ const ProfileForm: React.FC = () => {
               placeholder='Select a language'
               optionFilterProp='children'
             >
-              <Option value='en-US'>English (US)</Option>
-              <Option value='id'>Bahasa Indonesia</Option>
-              <Option value='de'>Deutsch</Option>
-              <Option value='es-ES'>Español (España)</Option>
-              <Option value='fr-FR'>Français (France)</Option>
-              <Option value='vi'>Tiếng Việt</Option>
+              <Option value='en'>English</Option>
+              <Option value='es'>Spanish</Option>
+              <Option value='pt'>Portuguese</Option>
+              <Option value='it'>Italian</Option>
+              <Option value='de'>German</Option>
+              <Option value='fr'>French</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -158,7 +205,7 @@ const ProfileForm: React.FC = () => {
 
       <Form.Item className='profile-form__submit'>
         <Button type='primary' htmlType='submit' block>
-          Save
+          {loading ? <Spin indicator={antIcon} /> : 'Save '}
         </Button>
       </Form.Item>
     </Form>

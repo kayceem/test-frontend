@@ -4,6 +4,8 @@
   margin-top: $header-height;
   padding: 0 4.8rem;
 
+  min-height: 65vh;
+
   &__title {
     @include h-style('h2');
   }
