@@ -1,5 +1,4 @@
-import { EditOutlined } from '@ant-design/icons';
-import { Card, Col, DatePicker, Row, Select } from 'antd';
+import { Button, Card, Col, DatePicker, Row, Select } from 'antd';
 import PaymentHistoryMain from './components/PaymentHistoryMain';
 
 const PaymentHistory = () => {
@@ -17,7 +16,27 @@ const PaymentHistory = () => {
                     <input
                       type='text'
                       className='border border-gray-300 rounded-md w-3/4 py-2 px-4'
-                      placeholder='COURSE NAME'
+                      placeholder='Course name'
+                    />
+                  </div>
+                </div>
+                <div className='filter__payment-price'>
+                  <h1 className='mt-6'>FILTER PRICE</h1>
+                  <div className='flex justify-center mt-6 '>
+                    <input
+                      type='text'
+                      className='border border-gray-300 rounded-md w-3/4 py-2 px-4'
+                      placeholder='Price'
+                    />
+                  </div>
+                </div>
+                <div className='filter__payment-course mt-4'>
+                  <h1>FILTER NAME USER</h1>
+                  <div className='flex justify-center mt-6 '>
+                    <input
+                      type='text'
+                      className='border border-gray-300 rounded-md w-3/4 py-2 px-4'
+                      placeholder='Name user'
                     />
                   </div>
                 </div>
@@ -26,8 +45,8 @@ const PaymentHistory = () => {
                   <div className='flex justify-center mt-6 '>
                     <Select className='w-3/4' placeholder='Select a status'>
                       <Select.Option value='status1'>Success</Select.Option>
-                      <Select.Option value='status2'>Cancel</Select.Option>
-                      <Select.Option value='status3'>Waiting</Select.Option>
+                      <Select.Option value='status2'>UnSuccess</Select.Option>
+                      <Select.Option value='status3'>Pedding</Select.Option>
                     </Select>
                   </div>
                 </div>
@@ -37,6 +56,10 @@ const PaymentHistory = () => {
                     <DatePicker.RangePicker className='w-3/4' />
                   </div>
                 </div>
+                <Button className='mt-6 w-3/4' type='primary'>
+                  {' '}
+                  Search{' '}
+                </Button>
               </div>
               <div className='payment__history w-2/3'>
                 <PaymentHistoryMain />
