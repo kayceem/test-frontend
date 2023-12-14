@@ -61,6 +61,7 @@ import Blog from './pages/site/Blog/Blog';
 import PagePost from './pages/site/PagePost/PagePost';
 import Inbox from './pages/site/Inbox/Inbox';
 import WishlistPage from './pages/site/Wishlist/Wishlist';
+import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -205,6 +206,10 @@ function App() {
         {
           path: 'wishlist',
           element: <WishlistPage />
+        },
+        {
+          path: 'payment-history',
+          element: <PaymentHistory />
         }
       ],
       errorElement: <ErrorPage page='/author' />
