@@ -1,4 +1,6 @@
-.privacy-form {
+@import '../../../../assets/sass/base';
+
+.privacyForm {
   min-width: 18rem;
   max-width: 60rem;
 
@@ -15,13 +17,17 @@
 
   &__submit {
     width: 8rem;
-    margin-top: 3.2rem;
     button {
       height: 4.8rem;
       border-radius: 0;
       font-weight: 700;
       line-height: 1.2;
       font-size: 1.6rem;
+
+      &:disabled {
+        color: rgba($light-text-color, 0.8);
+        background-color: rgba($brand-primary-color, 0.9);
+      }
     }
   }
 }

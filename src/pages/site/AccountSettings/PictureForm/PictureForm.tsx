@@ -3,16 +3,17 @@ import { Button, Form, notification, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import imagePreviewIcon from '../../../../assets/images/icons/anonymous_3.png';
 import { getUserResponse, useUpdateUserMutation } from '../../client.service';
-import './PictureForm.scss';
+import styles from './PictureForm.module.scss';
 
 const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: boolean, userId: string }> = ({ userData, isSuccess, userId }) => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(imagePreviewIcon);
   const [selectedFileName, setSelectedFileName] = useState<string>('No file selected');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
+  const [isFileSelected, setIsFileSelected] = useState(false);
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
-  const [isNewImageSelected, setIsNewImageSelected] = useState<boolean>(false);
   const [fileInputValue, setFileInputValue] = useState('');
 
 
@@ -32,7 +33,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
     const file = event.target.files?.[0];
     if (file && file.type.match('image.*')) {
       setSelectedFileName(file.name);
-      setIsNewImageSelected(true);
+      setIsFileSelected(true);
       const reader = new FileReader();
 
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -49,14 +50,6 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
 
   const handleSubmit = () => {
 
-    if (!isNewImageSelected) {
-      notification.error({
-        message: 'Error',
-        description: 'Please select a new image before saving.',
-        placement: 'topRight',
-      });
-      return;
-    }
 
     setLoading(true);
 
@@ -73,9 +66,9 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
             description: result.message,
             placement: 'topRight',
           });
+          setIsFileSelected(false);
           setFileInputValue('');
           setSelectedFileName('No file selected');
-          setIsNewImageSelected(false);
         } catch (error) {
           notification.error({
             message: 'Error',
@@ -98,18 +91,18 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
 
 
   return (
-    <Form onFinish={handleSubmit} className='picture-form' layout='vertical'>
-      <div className='picture-form__image-preview-text'>Image preview</div>
-      <div className='picture-form__image-size-info'>Minimum 200x200 pixels, Maximum 6000x6000 pixels</div>
+    <Form onFinish={handleSubmit} className={styles.pictureForm} layout='vertical'>
+      <div className={styles.pictureForm__imagePreviewText}>Image preview</div>
+      <div className={styles.pictureForm__imageSizeInfo}>Minimum 200x200 pixels, Maximum 6000x6000 pixels</div>
       <Form.Item>
-        <div className='picture-form__preview-container'>
-          <div className='picture-form__preview-wrapper'>
-            <img src={imagePreviewUrl} alt='Image preview' className='picture-form__image' />
+        <div className={styles.pictureForm__previewContainer}>
+          <div className={styles.pictureForm__previewWrapper}>
+            <img src={imagePreviewUrl} alt='Image preview' />
           </div>
         </div>
-        <div className='picture-form__upload-container' onClick={handleButtonClick}>
-          <div className='picture-form__filename'>{selectedFileName}</div>
-          <Button type='primary' className='picture-form__upload-btn'>
+        <div className={styles.pictureForm__uploadContainer} onClick={handleButtonClick}>
+          <div className={styles.pictureForm__fileName}>{selectedFileName}</div>
+          <Button type='primary' className={styles.pictureForm__uploadBtn}>
             Upload Image
           </Button>
           <input
@@ -118,13 +111,12 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
             ref={fileInputRef}
             accept='image/*'
             onChange={handleImageChange}
-            className='picture-form__input'
             style={{ display: 'none' }}
           />
         </div>
       </Form.Item>
-      <Form.Item className='picture-form__submit'>
-        <Button type='primary' htmlType='submit' block>
+      <Form.Item className={styles.pictureForm__submit}>
+        <Button type='primary' htmlType='submit' block disabled={!isFileSelected}>
           {loading ? <Spin indicator={antIcon} /> : 'Save '}
         </Button>
       </Form.Item>
