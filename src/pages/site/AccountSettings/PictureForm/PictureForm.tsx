@@ -12,6 +12,9 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
   const [loading, setLoading] = useState(false);
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
+  const [isNewImageSelected, setIsNewImageSelected] = useState<boolean>(false);
+  const [fileInputValue, setFileInputValue] = useState('');
+
 
   useEffect(() => {
     if (isSuccess && userData && userData.user.avatar) {
@@ -19,7 +22,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
     }
   }, [userData, isSuccess]);
 
-  const [updateUser] = useUpdateUserMutation(); 
+  const [updateUser] = useUpdateUserMutation();
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -29,6 +32,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
     const file = event.target.files?.[0];
     if (file && file.type.match('image.*')) {
       setSelectedFileName(file.name);
+      setIsNewImageSelected(true);
       const reader = new FileReader();
 
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -39,10 +43,21 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
 
       reader.readAsDataURL(file);
     }
+    setFileInputValue(event.target.value);
   };
 
 
   const handleSubmit = () => {
+
+    if (!isNewImageSelected) {
+      notification.error({
+        message: 'Error',
+        description: 'Please select a new image before saving.',
+        placement: 'topRight',
+      });
+      return;
+    }
+
     setLoading(true);
 
     const submitAsync = async () => {
@@ -50,7 +65,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
         const file = fileInputRef.current.files[0];
         const formData = new FormData();
         formData.append('avatar', file);
-  
+
         try {
           const result = await updateUser({ userId, formData }).unwrap();
           notification.success({
@@ -58,6 +73,9 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
             description: result.message,
             placement: 'topRight',
           });
+          setFileInputValue('');
+          setSelectedFileName('No file selected');
+          setIsNewImageSelected(false);
         } catch (error) {
           notification.error({
             message: 'Error',
@@ -67,7 +85,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
         }
       }
     };
-  
+
     submitAsync()
       .catch(error => {
         console.error('Error during async operation:', error);
@@ -76,7 +94,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
         setLoading(false);
       });
   };
-  
+
 
 
   return (
@@ -89,14 +107,14 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
             <img src={imagePreviewUrl} alt='Image preview' className='picture-form__image' />
           </div>
         </div>
-
         <div className='picture-form__upload-container' onClick={handleButtonClick}>
-          <span className='picture-form__filename'>{selectedFileName}</span>
+          <div className='picture-form__filename'>{selectedFileName}</div>
           <Button type='primary' className='picture-form__upload-btn'>
             Upload Image
           </Button>
           <input
             type='file'
+            value={fileInputValue}
             ref={fileInputRef}
             accept='image/*'
             onChange={handleImageChange}
@@ -107,7 +125,7 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
       </Form.Item>
       <Form.Item className='picture-form__submit'>
         <Button type='primary' htmlType='submit' block>
-        {loading ? <Spin indicator={antIcon} /> : 'Save '}
+          {loading ? <Spin indicator={antIcon} /> : 'Save '}
         </Button>
       </Form.Item>
     </Form>

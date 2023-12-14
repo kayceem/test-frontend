@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Row, Col, Select, notification, Spin  } from 'antd';
+import { Form, Input, Button, Row, Col, Select, notification, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import './ProfileForm.scss';
 import { getUserResponse, useUpdateUserMutation } from '../../client.service';
@@ -28,7 +28,7 @@ const ProfileForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
     }
   }, [userData, isSuccess, form]);
 
-  const [updateUser] = useUpdateUserMutation(); 
+  const [updateUser] = useUpdateUserMutation();
 
   const { Option } = Select;
 
@@ -48,7 +48,7 @@ const ProfileForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
         formData.append(key, value.toString());
       }
     });
-  
+
     try {
       const result = await updateUser({ userId, formData }).unwrap();
       notification.success({
@@ -63,11 +63,11 @@ const ProfileForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
         placement: 'topRight',
       });
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-  
-  
+
+
 
   return (
     <Form form={form} layout='vertical' onFinish={handleFinish} requiredMark={false} className='profile-form'>
