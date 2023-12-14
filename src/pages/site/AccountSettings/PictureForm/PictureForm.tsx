@@ -1,12 +1,25 @@
-import React, { useState, useRef, ChangeEvent, FormEvent } from 'react';
-import { Button, Form, Row, Col } from 'antd';
+import React, { useState, useEffect, useRef, ChangeEvent } from 'react';
+import { Button, Form, notification, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import imagePreviewIcon from '../../../../assets/images/icons/anonymous_3.png';
+import { getUserResponse, useUpdateUserMutation } from '../../client.service';
 import './PictureForm.scss';
 
-const PictureForm: React.FC = () => {
+const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: boolean, userId: string }> = ({ userData, isSuccess, userId }) => {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>(imagePreviewIcon);
   const [selectedFileName, setSelectedFileName] = useState<string>('No file selected');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+
+  useEffect(() => {
+    if (isSuccess && userData && userData.user.avatar) {
+      setImagePreviewUrl(userData.user.avatar);
+    }
+  }, [userData, isSuccess]);
+
+  const [updateUser] = useUpdateUserMutation(); 
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -28,11 +41,43 @@ const PictureForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Xử lý logic lưu hình ảnh tại đây
-    console.log('File to save', imagePreviewUrl);
+
+  const handleSubmit = () => {
+    setLoading(true);
+
+    const submitAsync = async () => {
+      if (fileInputRef.current?.files?.length) {
+        const file = fileInputRef.current.files[0];
+        const formData = new FormData();
+        formData.append('avatar', file);
+  
+        try {
+          const result = await updateUser({ userId, formData }).unwrap();
+          notification.success({
+            message: 'Success',
+            description: result.message,
+            placement: 'topRight',
+          });
+        } catch (error) {
+          notification.error({
+            message: 'Error',
+            description: 'Error updating profile',
+            placement: 'topRight',
+          });
+        }
+      }
+    };
+  
+    submitAsync()
+      .catch(error => {
+        console.error('Error during async operation:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
+  
+
 
   return (
     <Form onFinish={handleSubmit} className='picture-form' layout='vertical'>
@@ -62,7 +107,7 @@ const PictureForm: React.FC = () => {
       </Form.Item>
       <Form.Item className='picture-form__submit'>
         <Button type='primary' htmlType='submit' block>
-          Save
+        {loading ? <Spin indicator={antIcon} /> : 'Save '}
         </Button>
       </Form.Item>
     </Form>
