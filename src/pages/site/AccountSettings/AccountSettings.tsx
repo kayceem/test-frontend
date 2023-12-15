@@ -6,7 +6,7 @@ import PictureForm from './PictureForm/PictureForm';
 import { useSelector } from 'react-redux';
 import { useGetUserQuery } from '../client.service';
 import { RootState } from '../../../store/store';
-import './AccountSettings.scss';
+import styles from './AccountSettings.module.scss';
 
 
 const AccountSetting: React.FC = () => {
@@ -33,10 +33,10 @@ const AccountSetting: React.FC = () => {
   ];
 
   return (
-    <div className='account-settings'>
-      <div className='account-settings-container container'>
-        <h2 className='account-settings__title spacing-h-sm'>Account Settings</h2>
-        <Tabs defaultActiveKey='1' className='account-settings__tabs' items={tabsItems} />
+    <div className={styles.accountSettings}>
+      <div className={`container`}>
+        <h2 className={`${styles.accountSettings__title} spacing-h-sm`}>Account Settings</h2>
+        <Tabs defaultActiveKey='1' className={styles.accountSettings__tabs} items={tabsItems} />
       </div>
     </div>
   );
