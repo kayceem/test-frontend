@@ -54,12 +54,14 @@ import ViewCart from './pages/site/ViewCart';
 import Privacy from './pages/site/Policy/Privacy';
 import Terms from './pages/site/Policy/Terms';
 import Cookie from './pages/site/Policy/Cookie';
+import AccountSettings from './pages/site/AccountSettings/AccountSettings';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
 import PagePost from './pages/site/PagePost/PagePost';
 import Inbox from './pages/site/Inbox/Inbox';
 import WishlistPage from './pages/site/Wishlist/Wishlist';
+import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -198,8 +200,16 @@ function App() {
           element: <Cookie />
         },
         {
+          path: 'account-settings',
+          element: isAuth ? <AccountSettings /> : <ErrorPage page='/' />
+        },
+        {
           path: 'wishlist',
           element: <WishlistPage />
+        },
+        {
+          path: 'payment-history',
+          element: <PaymentHistory />
         }
       ],
       errorElement: <ErrorPage page='/author' />

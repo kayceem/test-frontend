@@ -26,4 +26,15 @@ export interface IUser {
   resetTokenExpiration?: string;
   loginToken?: string;
   loginTokenExpiration?: string;
+  payment?: string;
+  headline?: string;
+  biography?: string;
+  website?: string;
+  twitter?: string;
+  facebook?: string;
+  linkedin?: string;
+  youtube?: string;
+  language?: string;
+  showProfile?: boolean;
+  showCourses?: boolean;
 }
