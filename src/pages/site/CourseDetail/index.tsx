@@ -18,6 +18,7 @@ import {
 import { addToCart } from '../client.slice';
 import './CourseDetail.scss';
 import SectionList from './components/SectionList';
+import FeedBackCourse from './components/FeedBackCourse/FeedBackCourse';
 // type Props = {}
 const courseData = [
   'Will learning some things at this course -- task 1.',
@@ -385,9 +386,12 @@ const CourseDetail = () => {
             </Col>
           </Row>
         </div>
+        {/* Feedback and comments*/}
+        <div className='feedback-course mt-12'>
+          <FeedBackCourse />
+        </div>
 
-        {/* Course author */}
-
+        {/*  Course author */}
         <div className='course-detail__author spacing-h-md'>
           <div className='course-detail__author-wrap container'>
             <Row>
