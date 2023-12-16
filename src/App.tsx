@@ -62,6 +62,8 @@ import PagePost from './pages/site/PagePost/PagePost';
 import Inbox from './pages/site/Inbox/Inbox';
 import WishlistPage from './pages/site/Wishlist/Wishlist';
 import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
+import PublicProfile from './pages/PublicProfile/PublicProfile';
+import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -152,7 +154,8 @@ function App() {
         },
         {
           path: 'profile',
-          element: isAuth ? <Profile /> : <ErrorPage page='/' />
+          // element: isAuth ? <Profile /> : <ErrorPage page='/' />
+          element: <Profile/>
         },
         {
           path: 'view-cart',
@@ -210,6 +213,16 @@ function App() {
         {
           path: 'payment-history',
           element: <PaymentHistory />
+         
+        },
+        {
+          path: 'publicprofile',
+          element: <PublicProfile />
+        }
+        ,
+        {
+          path: 'paymentmethod',
+          element: <PaymentMethod/>
         }
       ],
       errorElement: <ErrorPage page='/author' />
