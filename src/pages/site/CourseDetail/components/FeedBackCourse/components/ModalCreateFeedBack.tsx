@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Button, Card, Modal, Rate } from 'antd';
+import { Avatar, Button, Modal, Rate } from 'antd';
 import { useState } from 'react';
 
 interface ModalCreateFeedback {
