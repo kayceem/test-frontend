@@ -52,7 +52,7 @@ export default function ModalCreateFeedBack({ name }: ModalCreateFeedback) {
           ></textarea>
           <div className='text-right'>
             <Button type='primary' htmlType='submit' className='px-6'>
-              Submit
+              Create
             </Button>
           </div>
         </form>
