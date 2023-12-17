@@ -157,7 +157,7 @@ function App() {
         {
           path: 'profile',
           // element: isAuth ? <Profile /> : <ErrorPage page='/' />
-          element: <Profile/>
+          element: <Profile />
         },
         {
           path: 'view-cart',
@@ -219,7 +219,15 @@ function App() {
         {
           path: 'payment-history',
           element: <PaymentHistory />
-         
+        },
+        {
+          path: 'cart-receipt',
+          children: [
+            {
+              path: ':orderId',
+              element: isAuth ? <ReceiptPage /> : <ErrorPage page='/' />
+            }
+          ]
         },
         {
           path: 'publicprofile',
@@ -228,7 +236,7 @@ function App() {
         ,
         {
           path: 'paymentmethod',
-          element: <PaymentMethod/>
+          element: <PaymentMethod />
         }
       ],
       errorElement: <ErrorPage page='/author' />
@@ -358,20 +366,7 @@ function App() {
           element: isAuth ? <SubsribeCourse /> : <ErrorPage page='/' />
         }
       ]
-    }, {
-      path: 'dashboard',
-      children: [
-        {
-          path: 'cart-receipt',
-          children: [
-            {
-              path: ':orderId',
-              element: isAuth ? <ReceiptPage /> : <ErrorPage page='/' />
-            }
-          ]
-        },
-      ]
-    },
+    }
 
 
 

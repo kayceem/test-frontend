@@ -1,7 +1,7 @@
 @import '../../../../assets/sass/base';
 
 .receiptPage {
-  margin-top: 3rem;
+  margin-top: $header-height + 3rem;
   font-family: $text-font;
   font-size: 1.6rem;
   padding: 0 4.8rem;

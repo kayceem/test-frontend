@@ -24,7 +24,7 @@ const CoursesTable: React.FC = () => {
     };
 
     const handleReceiptClick = (orderId: string) => {
-        const receiptUrl = `/dashboard/cart-receipt/${orderId}`;
+        const receiptUrl = `/cart-receipt/${orderId}`;
 
         navigate(receiptUrl);
 
