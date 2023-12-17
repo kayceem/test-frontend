@@ -5,7 +5,7 @@ import { ICategory } from '../../types/category.type';
 import { ICertificate } from '../../types/certificate';
 import { ICourse } from '../../types/course.type';
 import { ILesson, ISection } from '../../types/lesson.type';
-import { IOrder } from '../../types/order.type';
+import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
 import { CustomError } from '../../utils/helpers';
@@ -162,9 +162,22 @@ export interface UpdateUserResponse {
   userId: string;
 }
 
+export interface getOrdersByUserIdResponse {
+  orders: IOrderHistory[];
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  message: string;
+}
+
+export interface GetOrderByIdResponse {
+  message: string;
+  order: IOrderHistory;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'User'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -399,47 +412,23 @@ export const clientApi = createApi({
           _limit: params._limit,
           _page: params._page
         }
-      }), // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      }),
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
-
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
-              ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
-              { type: 'Clients' as const, id: 'LIST' }
+              ...result.map(({ _id }: { _id: string }) => ({ type: 'Users' as const, _id })),
+              { type: 'Users' as const, id: 'LIST' }
             ];
             console.log('final: ', final);
 
             return final;
           }
         }
-
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
-        return [{ type: 'Clients', id: 'LIST' }];
+        return [{ type: 'Users', id: 'LIST' }];
       }
     }),
-    /**
-     * Chúng ta dùng mutation đối với các trường hợp POST, PUT, DELETE
-     * Post là response trả về và Omit<Post, 'id'> là body gửi lên
-     */
+
     getRetrieveCart: build.query<getRetrieveCartResponse, { courseIds: string[] }>({
       query: (params) => ({
         url: `/cart/retrieve`,
@@ -486,9 +475,6 @@ export const clientApi = createApi({
     createOrder: build.mutation<createOrderResponse, Omit<IOrder, '_id'>>({
       query(body) {
         try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
           return {
             url: 'order',
             method: 'POST',
@@ -498,12 +484,14 @@ export const clientApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Orders sẽ chạy lại
-       */
-      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Clients', id: 'LIST' }])
+
+      invalidatesTags: (result, error, body) =>
+        error
+          ? []
+          : [
+              { type: 'Orders', id: body.user._id },
+              { type: 'Clients' as const, id: 'LIST' }
+            ]
     }),
     updateLessonDoneByUser: build.mutation<createOrderResponse, { userId: string; lessonId: string }>({
       query(body) {
@@ -643,18 +631,26 @@ export const clientApi = createApi({
       query: (id) => ({
         url: `users/${id}`
       }),
-      providesTags: (result, error, id) => [{ type: 'User', id }]
+      providesTags: (result, error, id) => [{ type: 'Users', id }]
     }),
-
     updateUser: build.mutation<UpdateUserResponse, { userId: string; formData: FormData }>({
       query: ({ userId, formData }) => ({
-        url: `users/${userId}`, 
+        url: `users/${userId}`,
         method: 'PUT',
-        body: formData,
+        body: formData
       }),
-      invalidatesTags: (result, error, { userId }) => [{ type: 'User', id: userId }]
+      invalidatesTags: (result, error, { userId }) => [{ type: 'Users', id: userId }]
     }),
-    
+    getOrderById: build.query<GetOrderByIdResponse, string>({
+      query: (orderId) => ({
+        url: `orders/${orderId}`
+      }),
+      providesTags: (result, error, orderId) => [{ type: 'Orders', id: orderId }]
+    }),
+    getOrdersByUserId: build.query<getOrdersByUserIdResponse, { userId: string; page: number; limit: number }>({
+      query: ({ userId, page, limit }) => `orders/user/${userId}?page=${page}&limit=${limit}`,
+      providesTags: (result, error, { userId }) => [{ type: 'Orders', id: userId }]
+    })
   })
 });
 
@@ -677,5 +673,7 @@ export const {
   useGetRetrieveCartQuery,
   useGetCertificateQuery,
   useCreateCertificateMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useGetOrdersByUserIdQuery,
+  useGetOrderByIdQuery
 } = clientApi;

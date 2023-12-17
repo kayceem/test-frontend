@@ -83,9 +83,9 @@ const Header = () => {
     {
       label: (
         <Link to='/account-settings'>
-          <div>Account Settings</div>
+          <div>Account settings</div>
         </Link>
-      ) ,
+      ),
       key: 'account-settings',
       icon: <UserOutlined />
     },
@@ -95,7 +95,11 @@ const Header = () => {
       icon: <UserOutlined />
     },
     {
-      label: 'Purchase history',
+      label: (
+        <Link to='/purchase-history'>
+          <div>Purchase history</div>
+        </Link>
+      ),
       key: 'purchase-history',
       icon: <UserOutlined />
     },
@@ -383,10 +387,10 @@ const Header = () => {
       </div>
       {currentPath === '/' && showCategoriesNav && <CategoriesNav />}
       <Modal title='' open={isOpenAuthModal} onOk={handleOk} onCancel={handleCancel}>
-        {authState === 'login'  && <Login onClick={changeAuthState} />}
+        {authState === 'login' && <Login onClick={changeAuthState} />}
         {authState === 'signup' && <Signup onClick={changeAuthState} />}
         {authState === 'forgot' && <Forgot onClick={changeAuthState} />}
-        { authStateGlobal === 'changePassword' && <ChangePassword onClick={changeAuthState}/>}
+        {authStateGlobal === 'changePassword' && <ChangePassword onClick={changeAuthState} />}
       </Modal>
 
       <Drawer

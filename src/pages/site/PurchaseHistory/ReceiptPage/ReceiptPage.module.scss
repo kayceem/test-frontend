@@ -1,0 +1,67 @@
+@import '../../../../assets/sass/base';
+
+.receiptPage {
+  margin-top: $header-height + 3rem;
+  font-family: $text-font;
+  font-size: 1.6rem;
+  padding: 0 4.8rem;
+
+  &__title {
+    @include h-style('h2');
+  }
+
+  &__dateTitle {
+    @include h-style('h3');
+    margin-top: 3rem;
+  }
+
+  &__companyName {
+    font-size: 2rem;
+    opacity: 0.9;
+    margin-top: 3rem;
+  }
+
+  &__info {
+    margin-top: 1.5rem;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__soldTo {
+    margin-top: 3rem;
+    font-weight: 400;
+    opacity: 0.9;
+  }
+
+  &__table {
+    margin-top: 5rem;
+    font-weight: 400;
+
+    :global {
+      .ant-table-thead {
+        font-weight: 800;
+        font-size: 1.6rem;
+      }
+    }
+
+    &__footer {
+      margin-left: 70%;
+      font-weight: 500;
+    }
+  }
+
+  &__taxNote {
+    margin-top: 5rem;
+    font-weight: 400;
+    opacity: 0.9;
+    line-height: 1.5;
+
+    &Item {
+      margin-bottom: 3rem;
+    }
+  }
+}
