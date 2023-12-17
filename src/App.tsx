@@ -55,6 +55,8 @@ import Privacy from './pages/site/Policy/Privacy';
 import Terms from './pages/site/Policy/Terms';
 import Cookie from './pages/site/Policy/Cookie';
 import AccountSettings from './pages/site/AccountSettings/AccountSettings';
+import PurchaseHistory from './pages/site/PurchaseHistory/PurchaseHistory';
+import ReceiptPage from './pages/site/PurchaseHistory/ReceiptPage/ReceiptPage';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
@@ -207,6 +209,10 @@ function App() {
           element: isAuth ? <AccountSettings /> : <ErrorPage page='/' />
         },
         {
+          path: 'purchase-history',
+          element: isAuth ? <PurchaseHistory /> : <ErrorPage page='/' />
+        },
+        {
           path: 'wishlist',
           element: <WishlistPage />
         },
@@ -282,51 +288,51 @@ function App() {
           children:
             adminRole === UserRole.ADMIN
               ? [
-                  {
-                    index: true,
-                    element: <ReportsCenter />
-                  },
-                  {
-                    path: 'users-progress',
-                    element: <UsersProgress />
-                  },
-                  {
-                    path: 'users-segment',
-                    element: <UsersSegment />
-                  },
-                  {
-                    path: 'course-insights',
-                    element: <CourseInsights />
-                  },
-                  {
-                    path: 'courses-revenue',
-                    element: <CoursesRevenue />
-                  },
-                  {
-                    path: 'instructors-revenue',
-                    element: <InstructorsRevene />
-                  },
-                  {
-                    path: 'cancelled-sales',
-                    element: <CancelledSales />
-                  },
-                  {
-                    path: 'courses-revenues',
-                    element: <CoursesRevenues />
-                  },
-                  {
-                    path: 'instructors-revenues',
-                    element: <InstructorsRevenues />
-                  },
-                  {
-                    path: 'certifications',
-                    element: <Certifications />
-                  },
-                  {
-                    path: 'reviews-center',
-                    element: <ReviewsCenter />
-                  }
-                ]
+                {
+                  index: true,
+                  element: <ReportsCenter />
+                },
+                {
+                  path: 'users-progress',
+                  element: <UsersProgress />
+                },
+                {
+                  path: 'users-segment',
+                  element: <UsersSegment />
+                },
+                {
+                  path: 'course-insights',
+                  element: <CourseInsights />
+                },
+                {
+                  path: 'courses-revenue',
+                  element: <CoursesRevenue />
+                },
+                {
+                  path: 'instructors-revenue',
+                  element: <InstructorsRevene />
+                },
+                {
+                  path: 'cancelled-sales',
+                  element: <CancelledSales />
+                },
+                {
+                  path: 'courses-revenues',
+                  element: <CoursesRevenues />
+                },
+                {
+                  path: 'instructors-revenues',
+                  element: <InstructorsRevenues />
+                },
+                {
+                  path: 'certifications',
+                  element: <Certifications />
+                },
+                {
+                  path: 'reviews-center',
+                  element: <ReviewsCenter />
+                }
+              ]
               : []
         },
         {
@@ -352,7 +358,23 @@ function App() {
           element: isAuth ? <SubsribeCourse /> : <ErrorPage page='/' />
         }
       ]
-    }
+    }, {
+      path: 'dashboard',
+      children: [
+        {
+          path: 'cart-receipt',
+          children: [
+            {
+              path: ':orderId',
+              element: isAuth ? <ReceiptPage /> : <ErrorPage page='/' />
+            }
+          ]
+        },
+      ]
+    },
+
+
+
   ]);
 
   return (

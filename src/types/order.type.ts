@@ -31,3 +31,29 @@ export interface IOrderItem {
   finalPrice?: number;
   thumbnail?: string;
 }
+
+export interface IOrderHistory {
+  _id: string;
+  items: IOrderHistoryItem[];
+  user: {
+    _id: string;
+    email: string;
+    name: string;
+    phone?: string;
+    avatar?: string;
+    createdAt?: string;
+  };
+  transaction: ITransaction;
+  totalPrice: number;
+  vatFee: number;
+  note?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IOrderHistoryItem {
+  _id: string;
+  name?: string;
+  finalPrice?: number;
+  thumbnail?: string;
+}
