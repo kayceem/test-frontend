@@ -187,7 +187,7 @@ export const authApi = createApi({
       // Trong trường hợp này thì Authentication sẽ chạy lại
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-    resetPassword: build.mutation<{message: string, user: {_id: string; email: string}}, { email: string }>({
+    resetPassword: build.mutation<{ message: string; user: { _id: string; email: string } }, { email: string }>({
       query(data) {
         return {
           url: `reset`,
@@ -200,7 +200,7 @@ export const authApi = createApi({
       // Trong trường hợp này thì Authentication sẽ chạy lại
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-    generateNewPassword: build.mutation<any, { password: string, userId: string, passwordToken: string }>({
+    generateNewPassword: build.mutation<any, { password: string; userId: string; passwordToken: string }>({
       query(data) {
         return {
           url: `new-password`,
@@ -209,8 +209,18 @@ export const authApi = createApi({
         };
       },
       // Trong trường hợp này thì Authentication sẽ chạy lại
-      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST'}])
+      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
+    googleLogin: build.mutation<loginResponse, { token: string }>({
+      query(body) {
+        return {
+          url: 'google-login',
+          method: 'POST',
+          body
+        };
+      },
+      invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+    })
   })
 });
 
@@ -222,5 +232,6 @@ export const {
   useGenerateNewPasswordMutation,
   useUpdateLastLoginMutation,
   useLogoutMutation,
-  useAdminLogoutMutation
+  useAdminLogoutMutation,
+  useGoogleLoginMutation
 } = authApi;
