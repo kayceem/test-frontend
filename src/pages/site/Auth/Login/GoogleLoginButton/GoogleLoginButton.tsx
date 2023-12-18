@@ -34,9 +34,9 @@ const GoogleLoginButton: React.FC = () => {
                         .then(() => {
                             notification.success({ type: 'success', message: 'update last login successully!', duration: 2 });
                         })
-                        .catch((error) => {
-                            console.log('error: ', error);
-                        });
+                        .catch(() => {
+                            notification.error({ type: 'error', message: 'Failed to update your login information.', duration: 2 });
+                        });                        
 
                     localStorage.setItem('token', loginResponse.token);
                     const expirationTime = decodedToken.exp * 1000;
@@ -46,18 +46,17 @@ const GoogleLoginButton: React.FC = () => {
                         dispatch(closeAuthModal());
                         notification.success({ type: 'success', message: loginResponse.message, duration: 2 });
                     } else {
-                        console.log('Token has expired. Please log in again.');
+                        notification.error({ type: 'error', message: 'Your session has expired. Please log in again.', duration: 2 });
                     }
 
                 })
-                .catch((error) => {
-                    console.log('error:', error);
-                });
-
+                .catch(() => {
+                    notification.error({ type: 'error', message: 'An error occurred during the login process. Please try again.', duration: 2 });
+                });                
 
         },
         onError: () => {
-            console.log('Login Failed');
+            notification.error({ type: 'error', message: 'Login failed. Please try again.', duration: 2 });
         },
     });
 
