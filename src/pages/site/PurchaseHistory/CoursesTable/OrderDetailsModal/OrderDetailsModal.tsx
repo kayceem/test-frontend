@@ -54,7 +54,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, on
     return (
         <Modal title="Order Details" open={isOpen} onCancel={onClose} footer={null} width={1000}>
             <Row gutter={20} className={styles.orderDetails}>
-                <Col xs={24} sm={24} lg={12} className={styles.orderDetails__info}>
+                <Col xs={24} lg={12} className={styles.orderDetails__info}>
                     <div className={styles.orderDetails__item}>
                         <strong>Order ID:</strong>
                         <span>{order._id}</span>
@@ -88,7 +88,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, on
                         <span>{order.user.phone}</span>
                     </div>
                 </Col>
-                <Col xs={24} sm={24} lg={12} className={styles.orderDetails__productList}>
+                <Col xs={24} lg={12} className={styles.orderDetails__productList}>
                     <Table dataSource={dataSource} columns={columns} pagination={false} />
                 </Col>
             </Row>
