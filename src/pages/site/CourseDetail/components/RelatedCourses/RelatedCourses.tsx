@@ -4,6 +4,7 @@ import { useGetRelatedCoursesQuery } from '../../../client.service';
 import CourseList from '../../../components/CourseList';
 import { ICourse } from '../../../../../types/course.type';
 import { RootState } from '../../../../../store/store';
+import { Skeleton } from 'antd';
 import style from './RelatedCourses.module.scss'
 
 type RelatedCoursesProps = {
@@ -22,7 +23,12 @@ const RelatedCourses = ({ courseId }: RelatedCoursesProps) => {
     }, [data]);
 
     if (isFetching) {
-        return <div>Loading...</div>;
+        return (
+            <div className={style.relatedCourses}>
+                <h3 className={style.relatedCourses__title}>Related courses</h3>
+                <Skeleton active />
+            </div>
+        );
     }
 
     return (
