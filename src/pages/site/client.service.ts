@@ -175,9 +175,14 @@ export interface GetOrderByIdResponse {
   order: IOrderHistory;
 }
 
+export interface RelatedCoursesResponse {
+  message: string;
+  relatedCourses: ICourse[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -489,8 +494,9 @@ export const clientApi = createApi({
         error
           ? []
           : [
-              { type: 'Orders', id: body.user._id },
-              { type: 'Clients' as const, id: 'LIST' }
+              { type: 'Orders' as const, id: 'LIST' },
+              { type: 'Clients' as const, id: 'LIST' },
+              { type: 'Courses' as const, id: 'LIST' }
             ]
     }),
     updateLessonDoneByUser: build.mutation<createOrderResponse, { userId: string; lessonId: string }>({
@@ -650,6 +656,14 @@ export const clientApi = createApi({
     getOrdersByUserId: build.query<getOrdersByUserIdResponse, { userId: string; page: number; limit: number }>({
       query: ({ userId, page, limit }) => `orders/user/${userId}?page=${page}&limit=${limit}`,
       providesTags: (result, error, { userId }) => [{ type: 'Orders', id: userId }]
+    }),
+    getRelatedCourses: build.query<RelatedCoursesResponse, { courseId: string; limit: number; userId?: string }>({
+      query: ({ courseId, limit, userId }) => ({
+        url: `courses/related/${courseId}`,
+        params: { limit, userId },
+        method: 'GET'
+      }),
+      providesTags: () => [{ type: 'Courses', id: 'LIST' }]
     })
   })
 });
@@ -675,5 +689,6 @@ export const {
   useCreateCertificateMutation,
   useUpdateUserMutation,
   useGetOrdersByUserIdQuery,
-  useGetOrderByIdQuery
+  useGetOrderByIdQuery,
+  useGetRelatedCoursesQuery
 } = clientApi;

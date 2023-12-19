@@ -79,6 +79,7 @@ const clientSlice = createSlice({
     },
     clearCart: (state) => {
       state.cart.items = [];
+      localStorage.removeItem('cart');
     },
     removeCart: (state, action: PayloadAction<string>) => {
       const courseExistingIdx = state.cart.items.findIndex((item) => item.courseId === action.payload);
