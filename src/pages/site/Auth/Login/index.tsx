@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import ButtonCmp from '../../../../components/Button';
 import { useLoginMutation, useUpdateLastLoginMutation } from '../../../auth.service';
 import { closeAuthModal, setAuthenticated } from '../../../auth.slice';
-// import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginButton from './GoogleLoginButton/GoogleLoginButton';
 import '../Auth.scss';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
