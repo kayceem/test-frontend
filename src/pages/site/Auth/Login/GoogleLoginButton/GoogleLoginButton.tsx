@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode';
 import { useDispatch } from 'react-redux';
 import { setAuthenticated, closeAuthModal } from '../../../../auth.slice';
 import { useUpdateLastLoginMutation } from '../../../../auth.service';
-import { useGoogleLogin } from '@react-oauth/google';
+// import { useGoogleLogin } from '@react-oauth/google';
 import { useGoogleLoginMutation } from '../../../../auth.service';
 
 const GoogleLoginButton: React.FC = () => {
