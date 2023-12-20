@@ -9,7 +9,6 @@ import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
 import { CustomError } from '../../utils/helpers';
-import { Blog } from '../../types/page.type';
 
 /**
  * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post
@@ -174,17 +173,6 @@ export interface getOrdersByUserIdResponse {
 export interface GetOrderByIdResponse {
   message: string;
   order: IOrderHistory;
-}
-
-export interface GetAllBlogReponse {
-  blogs: Blog[];
-  message: string;
-  totalPages: number;
-}
-
-export interface GetBlogByIdResponse {
-  blog: Blog;
-  message: string;
 }
 
 export const clientApi = createApi({
@@ -662,18 +650,6 @@ export const clientApi = createApi({
     getOrdersByUserId: build.query<getOrdersByUserIdResponse, { userId: string; page: number; limit: number }>({
       query: ({ userId, page, limit }) => `orders/user/${userId}?page=${page}&limit=${limit}`,
       providesTags: (result, error, { userId }) => [{ type: 'Orders', id: userId }]
-    }),
-
-    getAllBlogs: build.query<GetAllBlogReponse, IParams>({
-      query: ({ _page = 1, _limit = 5 }) => ({
-        url: `/blog?page=${_page}&limit=${_limit}`
-      })
-    }),
-
-    getBlogById: build.query<GetBlogByIdResponse, string>({
-      query: (_id) => ({
-        url: `/blog/${_id}`
-      })
     })
   })
 });
@@ -699,7 +675,5 @@ export const {
   useCreateCertificateMutation,
   useUpdateUserMutation,
   useGetOrdersByUserIdQuery,
-  useGetOrderByIdQuery,
-  useGetAllBlogsQuery,
-  useGetBlogByIdQuery
+  useGetOrderByIdQuery
 } = clientApi;

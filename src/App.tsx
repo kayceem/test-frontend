@@ -147,7 +147,7 @@ function App() {
           element: <PagePost />
         },
         {
-          path: '/blog-detail/:id',
+          path: '/blog-detail',
           element: <Blog />
         },
         {
@@ -232,7 +232,8 @@ function App() {
         {
           path: 'publicprofile',
           element: <PublicProfile />
-        },
+        }
+        ,
         {
           path: 'paymentmethod',
           element: <PaymentMethod />
@@ -295,51 +296,51 @@ function App() {
           children:
             adminRole === UserRole.ADMIN
               ? [
-                  {
-                    index: true,
-                    element: <ReportsCenter />
-                  },
-                  {
-                    path: 'users-progress',
-                    element: <UsersProgress />
-                  },
-                  {
-                    path: 'users-segment',
-                    element: <UsersSegment />
-                  },
-                  {
-                    path: 'course-insights',
-                    element: <CourseInsights />
-                  },
-                  {
-                    path: 'courses-revenue',
-                    element: <CoursesRevenue />
-                  },
-                  {
-                    path: 'instructors-revenue',
-                    element: <InstructorsRevene />
-                  },
-                  {
-                    path: 'cancelled-sales',
-                    element: <CancelledSales />
-                  },
-                  {
-                    path: 'courses-revenues',
-                    element: <CoursesRevenues />
-                  },
-                  {
-                    path: 'instructors-revenues',
-                    element: <InstructorsRevenues />
-                  },
-                  {
-                    path: 'certifications',
-                    element: <Certifications />
-                  },
-                  {
-                    path: 'reviews-center',
-                    element: <ReviewsCenter />
-                  }
-                ]
+                {
+                  index: true,
+                  element: <ReportsCenter />
+                },
+                {
+                  path: 'users-progress',
+                  element: <UsersProgress />
+                },
+                {
+                  path: 'users-segment',
+                  element: <UsersSegment />
+                },
+                {
+                  path: 'course-insights',
+                  element: <CourseInsights />
+                },
+                {
+                  path: 'courses-revenue',
+                  element: <CoursesRevenue />
+                },
+                {
+                  path: 'instructors-revenue',
+                  element: <InstructorsRevene />
+                },
+                {
+                  path: 'cancelled-sales',
+                  element: <CancelledSales />
+                },
+                {
+                  path: 'courses-revenues',
+                  element: <CoursesRevenues />
+                },
+                {
+                  path: 'instructors-revenues',
+                  element: <InstructorsRevenues />
+                },
+                {
+                  path: 'certifications',
+                  element: <Certifications />
+                },
+                {
+                  path: 'reviews-center',
+                  element: <ReviewsCenter />
+                }
+              ]
               : []
         },
         {
@@ -366,6 +367,9 @@ function App() {
         }
       ]
     }
+
+
+
   ]);
 
   return (
