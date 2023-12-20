@@ -2,15 +2,15 @@ import { BookOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Avatar, Card } from 'antd';
 
 interface CustomCartProps {
-  title: string;
-  name: string;
+  blogImg: string;
+  author: string;
   content: string;
-  months: number;
-  minute: number;
   technology: string;
+  readTime: string;
+  title: string;
 }
 
-const CustomCard = ({ title, name, content, months, minute, technology }: CustomCartProps) => {
+const CustomCard = ({ author, content, technology, readTime, title, blogImg }: CustomCartProps) => {
   return (
     <>
       <Card>
@@ -19,8 +19,8 @@ const CustomCard = ({ title, name, content, months, minute, technology }: Custom
             <div className='blog_user my-8'>
               <div className='blog_Avatar flex justify-between'>
                 <div className='blog_Avatar-user'>
-                  <Avatar src='path_to_avatar_image' className='w-16 h-16' />
-                  <div className='inline ml-3 text-3xl'>{name}</div>
+                  <Avatar src={blogImg} className='w-16 h-16' />
+                  <div className='inline ml-3 text-3xl'>{author}</div>
                 </div>
                 <div className='blog_Avatar-icon'>
                   <div className='bookOutLine inline mr-4'>
@@ -32,15 +32,15 @@ const CustomCard = ({ title, name, content, months, minute, technology }: Custom
                 </div>
               </div>
             </div>
-            <h1 className='blog_Name text-4xl font-bold mb-12'>{title}</h1>
+            <h1 className='blog_Name text-4xl font-bold mb-12'>{content}</h1>
             <div className='blog_Detail'>
               <div className='blog_Detail-content'>
-                <p className='title my-10 text-2xl opacity-90'>{content}</p>
+                <p className='title my-10 text-2xl opacity-90'>{title}</p>
                 <div className='text-gray-500 text-1xl mb-4'>
-                  <span className='bg-slate-200 p-3 rounded-3xl text-black hover:opacity-75 cursor-pointer'>
+                  <span className='bg-slate-200 p-3 rounded-3xl text-black hover:opacity-75 cursor-pointer mr-6'>
                     {technology}
                   </span>{' '}
-                  • {months} tháng trước • {minute} phút đọc
+                  {readTime}
                 </div>
               </div>
             </div>
