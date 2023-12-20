@@ -9,6 +9,7 @@ import { AccessStatus, CourseLevel } from '../../../types/course.type';
 import { IOrder } from '../../../types/order.type';
 import { formatVideoLengthToHours, transformDate } from '../../../utils/functions';
 import { openAuthModal } from '../../auth.slice';
+import RelatedCourses from './components/RelatedCourses/RelatedCourses';
 import {
   useCreateOrderMutation,
   useGetCourseDetailQuery,
@@ -18,7 +19,6 @@ import {
 import { addToCart } from '../client.slice';
 import './CourseDetail.scss';
 import SectionList from './components/SectionList';
-import FeedBackCourse from './components/FeedBackCourse/FeedBackCourse';
 // type Props = {}
 const courseData = [
   'Will learning some things at this course -- task 1.',
@@ -387,8 +387,12 @@ const CourseDetail = () => {
           </Row>
         </div>
         {/* Feedback and comments*/}
-        <div className='feedback-course mt-12'>
+        {/* <div className='feedback-course mt-12'>
           <FeedBackCourse />
+        </div> */}
+
+        <div className='course-detail__related-courses container'>
+          {courseId !== undefined && <RelatedCourses courseId={courseId} />}
         </div>
 
         {/*  Course author */}
