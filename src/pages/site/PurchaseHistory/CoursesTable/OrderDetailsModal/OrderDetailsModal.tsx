@@ -1,6 +1,7 @@
 import { Modal, Table, Image, Button, Row, Col } from 'antd';
-import { IOrderHistory } from '../../../../../types/order.type';
-import React from 'react';
+import { IOrderHistory, IOrderHistoryItem } from '../../../../../types/order.type';
+import React, { useState } from 'react';
+import CourseReviewModal from './CourseReviewModal/CourseReviewModal';
 import styles from './OrderDetailsModal.module.scss';
 
 interface OrderDetailsModalProps {
@@ -10,7 +11,26 @@ interface OrderDetailsModalProps {
 }
 
 const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, onClose }) => {
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+    const [reviewCourseId, setReviewCourseId] = useState<string | null>(null);
+    const [reviewCourseInfo, setReviewCourseInfo] = useState<IOrderHistoryItem | null>(null);
+
     if (!order) return null;
+
+    const openReviewModal = (courseId: string) => {
+        const courseInfo = order.items.find(item => item._id === courseId) || null;
+
+        setReviewCourseId(courseId);
+        setReviewCourseInfo(courseInfo);
+        setIsReviewModalOpen(true);
+    };
+
+
+    const handleReviewSubmit = (courseId: string, rating: number, title: string, review: string) => {
+        console.log(`Review for course ${courseId} with rating ${rating}`);
+        console.log(`Review Title: ${title}`);
+        console.log(`Review Content: ${review}`);
+    };
 
     const dataSource = order.items.map(item => ({
         key: item._id,
@@ -40,15 +60,11 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, on
             dataIndex: 'key',
             key: 'key',
             render: (key: string) => (
-                <Button size="small" onClick={() => handleReviewProduct(key)}>Review</Button>
+                <Button size="small" onClick={() => openReviewModal(key)}>Review</Button>
             ),
         },
 
     ];
-
-    const handleReviewProduct = (courseId: string) => {
-        console.log(`Reviewing product with ID: ${courseId}`);
-    };
 
 
     return (
@@ -92,6 +108,13 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, on
                     <Table dataSource={dataSource} columns={columns} pagination={false} />
                 </Col>
             </Row>
+            <CourseReviewModal
+                courseId={reviewCourseId}
+                courseInfo={reviewCourseInfo}
+                isOpen={isReviewModalOpen}
+                onClose={() => setIsReviewModalOpen(false)}
+                onReviewSubmit={handleReviewSubmit}
+            />
         </Modal>
     );
 };
