@@ -1,21 +1,42 @@
-import { Modal, Table, Image, Button, Row, Col } from 'antd';
-import { IOrderHistory, IOrderHistoryItem } from '../../../../../types/order.type';
+import { Modal, Table, Image, Button, Row, Col, Spin, Alert } from 'antd';
+import { IOrderHistoryItem } from '../../../../../types/order.type';
 import React, { useState } from 'react';
+import { useCreateReviewMutation, useGetOrderByIdQuery } from '../../../client.service';
 import CourseReviewModal from './CourseReviewModal/CourseReviewModal';
 import styles from './OrderDetailsModal.module.scss';
+import { message } from 'antd';
 
 interface OrderDetailsModalProps {
-    order: IOrderHistory | null;
+    orderId: string | null;
     isOpen: boolean;
     onClose: () => void;
 }
 
-const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, onClose }) => {
+const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderId, isOpen, onClose }) => {
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
     const [reviewCourseId, setReviewCourseId] = useState<string | null>(null);
     const [reviewCourseInfo, setReviewCourseInfo] = useState<IOrderHistoryItem | null>(null);
+    const [createReview] = useCreateReviewMutation();
 
-    if (!order) return null;
+    const { data: orderData, isLoading, isError } = useGetOrderByIdQuery(orderId || '');
+
+    if (isLoading) {
+        return <Spin size="large" />;
+    }
+
+    if (isError || !orderData) {
+        return (
+            <Alert
+                message="Failed to load order details."
+                description="Please try again later."
+                type="error"
+            />
+        );
+    }
+
+
+    const order = orderData.order;
+
 
     const openReviewModal = (courseId: string) => {
         const courseInfo = order.items.find(item => item._id === courseId) || null;
@@ -27,9 +48,13 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, on
 
 
     const handleReviewSubmit = (courseId: string, rating: number, title: string, review: string) => {
-        console.log(`Review for course ${courseId} with rating ${rating}`);
-        console.log(`Review Title: ${title}`);
-        console.log(`Review Content: ${review}`);
+        createReview({ courseId, title, content: review, ratingStar: rating, orderId: order._id, userId: order.user._id }).unwrap()
+            .then(() => {
+                void message.success('Review created successfully');
+            })
+            .catch(() => {
+                void message.error('Error creating review');
+            });
     };
 
     const dataSource = order.items.map(item => ({
@@ -59,11 +84,15 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ order, isOpen, on
             title: 'Review Product',
             dataIndex: 'key',
             key: 'key',
-            render: (key: string) => (
-                <Button size="small" onClick={() => openReviewModal(key)}>Review</Button>
-            ),
+            render: (key: string) => {
+                const item = order.items.find(item => item._id === key);
+                if (item && item.reviewed) {
+                    return <Button size="small" disabled>Reviewed</Button>;
+                } else {
+                    return <Button size="small" onClick={() => openReviewModal(key)}>Review</Button>;
+                }
+            },
         },
-
     ];
 
 

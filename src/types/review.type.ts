@@ -1,14 +1,11 @@
 export interface IReview {
-  authorId: string;
-  title: string;
-  createdAt: string;
-  content: string;
+  _id: string;
   courseId: string;
+  title: string;
+  content: string;
+  ratingStar: number;
   orderId: string;
-  replies: IReplyReview[];
-}
-
-export interface IReplyReview {
   userId: string;
-  name: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -8,6 +8,7 @@ import { ILesson, ISection } from '../../types/lesson.type';
 import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
+import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/helpers';
 
 /**
@@ -180,9 +181,14 @@ export interface RelatedCoursesResponse {
   relatedCourses: ICourse[];
 }
 
+export interface CreateReviewResponse {
+  message: string;
+  review: IReview;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -664,6 +670,20 @@ export const clientApi = createApi({
         method: 'GET'
       }),
       providesTags: () => [{ type: 'Courses', id: 'LIST' }]
+    }),
+    createReview: build.mutation<
+      CreateReviewResponse,
+      { courseId: string; title: string; content: string; ratingStar: number; orderId: string; userId: string }
+    >({
+      query: ({ courseId, title, content, ratingStar, orderId, userId }) => ({
+        url: `courses/${courseId}/reviews`,
+        method: 'POST',
+        body: { courseId, title, content, ratingStar, orderId, userId }
+      }),
+      invalidatesTags: (result, error, { orderId }) => [
+        { type: 'Reviews', id: 'LIST' },
+        { type: 'Orders', id: orderId }
+      ]
     })
   })
 });
@@ -690,5 +710,6 @@ export const {
   useUpdateUserMutation,
   useGetOrdersByUserIdQuery,
   useGetOrderByIdQuery,
-  useGetRelatedCoursesQuery
+  useGetRelatedCoursesQuery,
+  useCreateReviewMutation
 } = clientApi;

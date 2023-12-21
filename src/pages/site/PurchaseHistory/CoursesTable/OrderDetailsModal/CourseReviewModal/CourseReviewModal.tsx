@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Modal, Rate, Input, Form, Image } from 'antd';
+import React from 'react';
+import { Modal, Rate, Input, Form, Image, Button } from 'antd';
 import { IOrderHistoryItem } from '../../../../../../types/order.type';
 
 interface CourseReviewModalProps {
@@ -10,62 +10,78 @@ interface CourseReviewModalProps {
     onReviewSubmit: (courseId: string, rating: number, title: string, review: string) => void;
 }
 
+interface FormValues {
+    rating: number;
+    title: string;
+    review: string;
+}
 
 const CourseReviewModal: React.FC<CourseReviewModalProps> = ({ courseId, courseInfo, isOpen, onClose, onReviewSubmit }) => {
-    const [rating, setRating] = useState(0);
-    const [title, setTitle] = useState('');
-    const [review, setReview] = useState('');
+    const [form] = Form.useForm<FormValues>();
 
-    const handleSubmit = () => {
+    const onFormFinish = (values: FormValues) => {
         if (!courseId) return;
 
-        onReviewSubmit(courseId, rating, title, review);
-
-        setRating(0);
-        setTitle('');
-        setReview('');
-
+        onReviewSubmit(courseId, values.rating, values.title, values.review);
+        form.resetFields();
         onClose();
     };
 
     const handleCancel = () => {
-        setRating(0);
-        setTitle('');
-        setReview('');
-
+        form.resetFields();
         onClose();
     };
-
-
 
     return (
         <Modal
             title={`Review Course: ${courseInfo?.name || "Unknown Course"}`}
             open={isOpen}
-            onOk={handleSubmit}
             onCancel={handleCancel}
-            okText="Submit Review"
-            cancelText="Cancel"
+            footer={null}
         >
-            <Form layout="vertical">
-                {courseInfo?.thumbnail && (
-                    <Form.Item >
-                        <Image src={courseInfo.thumbnail} alt={courseInfo.name} />
-                    </Form.Item>
-                )}
-                {courseInfo?.finalPrice && (
-                    <Form.Item >
-                        <span>${courseInfo.finalPrice.toFixed(2)}</span>
-                    </Form.Item>
-                )}
-                <Form.Item label="Rating">
-                    <Rate allowHalf onChange={setRating} value={rating} />
+            {courseInfo?.thumbnail && (
+                <Image src={courseInfo.thumbnail} alt={courseInfo.name} />
+            )}
+            {courseInfo?.finalPrice && (
+                <span>${courseInfo.finalPrice.toFixed(2)}</span>
+            )}
+
+            <Form form={form} layout="vertical" onFinish={onFormFinish}>
+
+                <Form.Item
+                    name="rating"
+                    label="Rating"
+                    rules={[{ required: true, message: 'Please select a rating!' }]}
+                >
+                    <Rate allowHalf />
                 </Form.Item>
-                <Form.Item label="Review Title">
-                    <Input onChange={e => setTitle(e.target.value)} value={title} />
+                <Form.Item
+                    name="title"
+                    label="Review Title"
+                    rules={[
+                        { required: true, message: 'Please enter a title for your review!' },
+                        { max: 50, message: 'Title cannot be longer than 50 characters!' }
+                    ]}
+                >
+                    <Input />
                 </Form.Item>
-                <Form.Item label="Your Review">
-                    <Input.TextArea onChange={e => setReview(e.target.value)} value={review} />
+                <Form.Item
+                    name="review"
+                    label="Your Review"
+                    rules={[
+                        { required: true, message: 'Please enter your review!' },
+                        { min: 20, message: 'Review should be at least 20 characters long!' }
+                    ]}
+                >
+                    <Input.TextArea />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit Review
+                    </Button>
+                    <Button onClick={handleCancel} style={{ marginLeft: '10px' }}>
+                        Cancel
+                    </Button>
                 </Form.Item>
 
             </Form>
