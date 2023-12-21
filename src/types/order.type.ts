@@ -30,6 +30,7 @@ export interface IOrderItem {
   name?: string;
   finalPrice?: number;
   thumbnail?: string;
+  reviewed?: boolean;
 }
 
 export interface IOrderHistory {
@@ -56,4 +57,5 @@ export interface IOrderHistoryItem {
   name?: string;
   finalPrice?: number;
   thumbnail?: string;
+  reviewed?: boolean;
 }
