@@ -1,12 +1,13 @@
 import { CaretRightOutlined } from '@ant-design/icons';
-import { Col, Collapse, CollapseProps, Divider, Row, Select, Skeleton, theme } from 'antd';
+import { Col, Collapse, CollapseProps, Divider, Row, Select, Skeleton, theme, Radio } from 'antd';
 import type { CSSProperties } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { IOrder } from '../../../types/order.type';
-import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery } from '../client.service';
+import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery, useCreateVNPaymentUrlMutation } from '../client.service';
 import { clearCart } from '../client.slice';
 import './Checkout.scss';
 import DetailItem from './components/DetailItem';
@@ -21,30 +22,109 @@ Expiry date
 5/2026
 `;
 
-const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => [
-  {
-    key: '1',
-    label: 'Visa  **** 0124',
-    children: <p>{text}</p>,
-    style: panelStyle
-  },
-  {
-    key: '2',
-    label: 'Credit/Debit Card',
-    children: <p>{text}</p>,
-    style: panelStyle
-  },
-  {
-    key: '3',
-    label: 'Paypal',
-    children: <p>{text}</p>,
-    style: panelStyle
-  }
-];
 
 const Checkout = () => {
   const { token } = theme.useToken();
   const [createOrder, createOrderResult] = useCreateOrderMutation();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Visa');
+  const [expandedPanel, setExpandedPanel] = useState(['1']);
+  const [createVNPaymentUrl] = useCreateVNPaymentUrlMutation();
+
+  const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => [
+    {
+      key: '1',
+      label: (
+        <div>
+          <Radio
+            value="Visa"
+            checked={selectedPaymentMethod === 'Visa'}
+            onChange={() => {
+              if (expandedPanel.includes('1')) {
+                setExpandedPanel([]);
+              } else {
+                setExpandedPanel(['1']);
+              }
+              setSelectedPaymentMethod('Visa');
+            }}
+          >
+            Visa **** 0124
+          </Radio>
+        </div>
+      ),
+      children: <p>{text}</p>,
+      style: panelStyle,
+    },
+    {
+      key: '2',
+      label: (
+        <div>
+          <Radio
+            value="Credit/Debit Card"
+            checked={selectedPaymentMethod === 'Credit/Debit Card'}
+            onChange={() => {
+              if (expandedPanel.includes('2')) {
+                setExpandedPanel([]);
+              } else {
+                setExpandedPanel(['2']);
+              }
+              setSelectedPaymentMethod('Credit/Debit Card');
+            }}
+          >
+            Credit/Debit Card
+          </Radio>
+        </div>
+      ),
+      children: <p>{text}</p>,
+      style: panelStyle,
+    },
+    {
+      key: '3',
+      label: (
+        <div>
+          <Radio
+            value="Paypal"
+            checked={selectedPaymentMethod === 'Paypal'}
+            onChange={() => {
+              if (expandedPanel.includes('3')) {
+                setExpandedPanel([]);
+              } else {
+                setExpandedPanel(['3']);
+              }
+              setSelectedPaymentMethod('Paypal');
+            }}
+          >
+            Paypal
+          </Radio>
+        </div>
+      ),
+      children: <p>{text}</p>,
+      style: panelStyle,
+    },
+    {
+      key: '4',
+      label: (
+        <div>
+          <Radio
+            value="VN Pay"
+            checked={selectedPaymentMethod === 'VN Pay'}
+            onChange={() => {
+              if (expandedPanel.includes('4')) {
+                setExpandedPanel([]);
+              } else {
+                setExpandedPanel(['4']);
+              }
+              setSelectedPaymentMethod('VN Pay');
+            }}
+          >
+            VN Pay
+          </Radio>
+        </div>
+      ),
+      children: <p>{text}</p>,
+      style: panelStyle,
+    },
+  ];
+
 
   const panelStyle = {
     marginBottom: 0,
@@ -85,7 +165,7 @@ const Checkout = () => {
         phone: userData?.user.phone
       },
       transaction: {
-        method: 'VNPay'
+        method: selectedPaymentMethod
       },
       totalPrice: totalPrice,
       note: 'No caption',
@@ -96,8 +176,23 @@ const Checkout = () => {
       .unwrap()
       .then((result) => {
         if (result.order._id) {
-          dispatch(clearCart());
-          navigate(`/order-completed?orderId=${result.order._id}`);
+          if (selectedPaymentMethod === 'VN Pay') {
+            createVNPaymentUrl({
+              orderId: result.order._id,
+              amount: totalPrice * 23000
+            })
+              .unwrap()
+              .then((paymentResponse) => {
+                dispatch(clearCart());
+                window.location.href = paymentResponse.redirectUrl;
+              })
+              .catch((error) => {
+                console.log("Lỗi khi tạo URL VNPay: ", error);
+              });
+          } else {
+            dispatch(clearCart());
+            navigate(`/order-completed?orderId=${result.order._id}`);
+          }
         }
       })
       .catch((error) => {
@@ -144,8 +239,9 @@ const Checkout = () => {
                 </div>
                 <div className='checkout__payment-body'>
                   <Collapse
+                    accordion
                     bordered={false}
-                    defaultActiveKey={['1']}
+                    activeKey={expandedPanel}
                     expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                     style={{ background: token.colorBgContainer }}
                     items={getItems(panelStyle)}

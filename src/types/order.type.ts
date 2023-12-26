@@ -15,6 +15,7 @@ export interface IOrder {
   note?: string;
   createdAt?: string;
   updatedAt?: string;
+  status?: string;
 }
 
 interface ITransaction {
@@ -50,6 +51,7 @@ export interface IOrderHistory {
   note?: string;
   createdAt?: string;
   updatedAt?: string;
+  status?: string;
 }
 
 export interface IOrderHistoryItem {
