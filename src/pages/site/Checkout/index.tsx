@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { IOrder } from '../../../types/order.type';
-import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery, useCreateVNPaymentUrlMutation } from '../client.service';
+import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery, useCreateVnpayUrlMutation } from '../client.service';
 import { clearCart } from '../client.slice';
 import './Checkout.scss';
 import DetailItem from './components/DetailItem';
@@ -28,7 +28,7 @@ const Checkout = () => {
   const [createOrder, createOrderResult] = useCreateOrderMutation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Visa');
   const [expandedPanel, setExpandedPanel] = useState(['1']);
-  const [createVNPaymentUrl] = useCreateVNPaymentUrlMutation();
+  const [createVnpayUrl] = useCreateVnpayUrlMutation();
 
   const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => [
     {
@@ -177,7 +177,7 @@ const Checkout = () => {
       .then((result) => {
         if (result.order._id) {
           if (selectedPaymentMethod === 'VN Pay') {
-            createVNPaymentUrl({
+            createVnpayUrl({
               orderId: result.order._id,
               amount: totalPrice * 23000
             })

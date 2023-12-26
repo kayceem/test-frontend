@@ -186,7 +186,7 @@ export interface CreateReviewResponse {
   review: IReview;
 }
 
-export interface CreateVNPaymentUrlResponse {
+export interface CreateVnpayUrlResponse {
   redirectUrl: string;
 }
 
@@ -689,10 +689,7 @@ export const clientApi = createApi({
         { type: 'Orders', id: orderId }
       ]
     }),
-    createVNPaymentUrl: build.mutation<
-      CreateVNPaymentUrlResponse,
-      { orderId: string; amount: number; bankCode?: string }
-    >({
+    createVnpayUrl: build.mutation<CreateVnpayUrlResponse, { orderId: string; amount: number; bankCode?: string }>({
       query: ({ orderId, amount, bankCode }) => ({
         url: `payments/create_vnpayment_url`,
         method: 'POST',
@@ -726,5 +723,5 @@ export const {
   useGetOrderByIdQuery,
   useGetRelatedCoursesQuery,
   useCreateReviewMutation,
-  useCreateVNPaymentUrlMutation
+  useCreateVnpayUrlMutation
 } = clientApi;
