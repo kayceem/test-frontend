@@ -1,5 +1,5 @@
 import { CaretRightOutlined } from '@ant-design/icons';
-import { Col, Collapse, CollapseProps, Divider, Row, Select, Skeleton, theme, Radio } from 'antd';
+import { Col, Collapse, CollapseProps, Divider, Row, Select, Skeleton, theme, Radio, message } from 'antd';
 import type { CSSProperties } from 'react';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,7 @@ Expiry date
 
 const Checkout = () => {
   const { token } = theme.useToken();
-  const [createOrder, createOrderResult] = useCreateOrderMutation();
+  const [createOrder] = useCreateOrderMutation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Visa');
   const [expandedPanel, setExpandedPanel] = useState(['1']);
   const [createVnpayUrl] = useCreateVnpayUrlMutation();
@@ -186,8 +186,8 @@ const Checkout = () => {
                 dispatch(clearCart());
                 window.location.href = paymentResponse.redirectUrl;
               })
-              .catch((error) => {
-                console.log("Lỗi khi tạo URL VNPay: ", error);
+              .catch(() => {
+                void message.error('An error occurred while processing your request. Please try again later.');
               });
           } else {
             dispatch(clearCart());
@@ -195,11 +195,9 @@ const Checkout = () => {
           }
         }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        void message.error('An error occurred while processing your request. Please try again later.');
       });
-
-    console.log(createOrderResult);
   };
 
   return (
