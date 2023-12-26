@@ -1,4 +1,4 @@
-import { Modal, Table, Image, Button, Row, Col, Spin, Alert } from 'antd';
+import { Modal, Table, Image, Button, Row, Col } from 'antd';
 import { IOrderHistoryItem } from '../../../../../types/order.type';
 import React, { useState } from 'react';
 import { useCreateReviewMutation, useGetOrderByIdQuery } from '../../../client.service';
@@ -18,20 +18,13 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderId, isOpen, 
     const [reviewCourseInfo, setReviewCourseInfo] = useState<IOrderHistoryItem | null>(null);
     const [createReview] = useCreateReviewMutation();
 
-    const { data: orderData, isLoading, isError } = useGetOrderByIdQuery(orderId || '');
+    const { data: orderData } = useGetOrderByIdQuery(orderId || '', {
+        skip: !isOpen || !orderId,
+    });
 
-    if (isLoading) {
-        return <Spin size="large" />;
-    }
 
-    if (isError || !orderData) {
-        return (
-            <Alert
-                message="Failed to load order details."
-                description="Please try again later."
-                type="error"
-            />
-        );
+    if (!orderData) {
+        return
     }
 
 
@@ -131,6 +124,10 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderId, isOpen, 
                     <div className={styles.orderDetails__item}>
                         <strong>Customer Phone:</strong>
                         <span>{order.user.phone}</span>
+                    </div>
+                    <div className={styles.orderDetails__item}>
+                        <strong>Status:</strong>
+                        <span>{order.status}</span>
                     </div>
                 </Col>
                 <Col xs={24} lg={12} className={styles.orderDetails__productList}>

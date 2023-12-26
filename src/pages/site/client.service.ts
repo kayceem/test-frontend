@@ -186,6 +186,10 @@ export interface CreateReviewResponse {
   review: IReview;
 }
 
+export interface CreateVnpayUrlResponse {
+  redirectUrl: string;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
   tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews'], // Những kiểu tag cho phép dùng trong blogApi
@@ -684,6 +688,13 @@ export const clientApi = createApi({
         { type: 'Reviews', id: 'LIST' },
         { type: 'Orders', id: orderId }
       ]
+    }),
+    createVnpayUrl: build.mutation<CreateVnpayUrlResponse, { orderId: string; amount: number; bankCode?: string }>({
+      query: ({ orderId, amount, bankCode }) => ({
+        url: `payments/create_vnpayment_url`,
+        method: 'POST',
+        body: { orderId, amount, bankCode }
+      })
     })
   })
 });
@@ -711,5 +722,6 @@ export const {
   useGetOrdersByUserIdQuery,
   useGetOrderByIdQuery,
   useGetRelatedCoursesQuery,
-  useCreateReviewMutation
+  useCreateReviewMutation,
+  useCreateVnpayUrlMutation
 } = clientApi;

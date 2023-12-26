@@ -64,7 +64,7 @@ import PagePost from './pages/site/PagePost/PagePost';
 import Inbox from './pages/site/Inbox/Inbox';
 import WishlistPage from './pages/site/Wishlist/Wishlist';
 import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
-import PublicProfile from './pages/PublicProfile/PublicProfile';
+import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 
 function App() {
