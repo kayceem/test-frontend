@@ -41,6 +41,7 @@ const AddLesson: React.FC<AddLessonProps> = () => {
     name: 'videoFile',
     action: `${BACKEND_URL}/upload-video`,
     fileList: fileList,
+    maxCount: 1,
     onChange(info) {
       setFileList(info.fileList);
       if (info.file.status === 'done') {
