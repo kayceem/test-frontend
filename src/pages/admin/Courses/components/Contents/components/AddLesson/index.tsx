@@ -1,7 +1,9 @@
-import { PlusOutlined } from '@ant-design/icons';
-import type { RadioChangeEvent } from 'antd';
-import { Button, Col, Drawer, Form, Input, Radio, Row, Space, notification } from 'antd';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
+import type { RadioChangeEvent, UploadProps } from 'antd';
+import { Button, Col, Drawer, Form, Input, Radio, Row, Space, notification, Upload, message } from 'antd';
 import React, { useRef, useState } from 'react';
+import { BACKEND_URL } from '../../../../../../../constant/backend-domain';
+import { UploadFile } from 'antd/lib/upload/interface';
 import ReactPlayer from 'react-player';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../store/store';
@@ -15,6 +17,12 @@ type AddLessonProps = {
   // onCloseActivies: () => void;
 };
 
+interface UploadVideoResponse {
+  message: string;
+  videoPath: string;
+}
+
+
 const AddLesson: React.FC<AddLessonProps> = () => {
   const [open, setOpen] = useState(false);
   const playerRef = useRef<ReactPlayer | null>(null);
@@ -22,6 +30,36 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   const [form] = Form.useForm();
   // const [formData, setFormData] = useState<Omit<ISection, '_id'>>(initialSection);
   const [addLesson, addLessonResult] = useAddLessonMutation();
+
+  const [uploadMethod, setUploadMethod] = useState('link');
+  const [uploadedVideoPath, setUploadedVideoPath] = useState('');
+  const [videoDuration, setVideoDuration] = useState(0);
+  const [fileList, setFileList] = useState<UploadFile<UploadVideoResponse>[]>([]);
+
+
+  const uploadVideoProps: UploadProps = {
+    name: 'videoFile',
+    action: `${BACKEND_URL}/upload-video`,
+    fileList: fileList,
+    onChange(info) {
+      setFileList(info.fileList);
+      if (info.file.status === 'done') {
+        void message.success(`${info.file.name} file uploaded successfully`);
+
+        const response = info.file.response as { videoPath: string };
+        if (response && response.videoPath) {
+          setUploadedVideoPath(response.videoPath);
+        }
+
+
+      } else if (info.file.status === 'error') {
+        void message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+
+  };
+
+
 
   const sectionId = useSelector((state: RootState) => state.course.sectionId);
 
@@ -58,12 +96,12 @@ const AddLesson: React.FC<AddLessonProps> = () => {
 
     const lessonData: Omit<ILesson, '_id'> = {
       name: formData.name,
-      content: formData.content,
+      content: uploadMethod === 'link' ? formData.content : uploadedVideoPath,
       access: formData.access,
       sectionId: sectionId,
       type: 'video',
       description: formData.description,
-      videoLength: playerRef.current?.getDuration() || 0
+      videoLength: uploadMethod === 'link' ? (playerRef.current?.getDuration() || 0) : videoDuration
     };
 
     addLesson(lessonData)
@@ -78,6 +116,8 @@ const AddLesson: React.FC<AddLessonProps> = () => {
 
         setOpen(false);
         form.resetFields();
+        setFileList([]);
+        setUploadedVideoPath('');
       })
       .catch((error) => {
         console.log(error);
@@ -85,6 +125,12 @@ const AddLesson: React.FC<AddLessonProps> = () => {
 
     console.log(addLessonResult);
   };
+
+  const onuploadMethodChange = (e: RadioChangeEvent) => {
+    setUploadMethod(e.target.value as string);
+  };
+
+
 
   return (
     <>
@@ -115,25 +161,43 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                   </Form.Item>
                 </Col>
                 <Col span={24}>
-                  <Form.Item
-                    name='content'
-                    label='Link Youtube'
-                    rules={[{ required: true, message: 'Please enter link youtube' }]}
-                  >
-                    <Input
-                      onPaste={onPasteVideoLink}
-                      onChange={onChangeVideoLink}
-                      // onChange={calcVideoLength}
-                      placeholder='Please enter link youtube'
-                    />
+                  <Form.Item label="Upload Method">
+                    <Radio.Group onChange={onuploadMethodChange} value={uploadMethod}>
+                      <Radio value="link">Link</Radio>
+                      <Radio value="upload">Upload Video</Radio>
+                    </Radio.Group>
                   </Form.Item>
-                  {/* <span>Video length: 30 minutes</span> */}
+                  {uploadMethod === 'link' && (
+                    <Form.Item
+                      name='content'
+                      label='Link Youtube'
+                      rules={[{ required: true, message: 'Please enter link youtube' }]}
+                    >
+                      <Input
+                        onPaste={onPasteVideoLink}
+                        onChange={onChangeVideoLink}
+                        placeholder='Please enter link youtube'
+                      />
+                    </Form.Item>
+                  )}
+
+                  {uploadMethod === 'upload' && (
+                    <Form.Item
+                      label='Upload Video'
+                      rules={[{ required: true, message: 'Please upload a video' }]}
+                    >
+                      <Upload {...uploadVideoProps}>
+                        <Button icon={<UploadOutlined style={{ color: 'black' }} />}>Click to Upload</Button>
+                      </Upload>
+                    </Form.Item>
+                  )}
+
                   <ReactPlayer
                     ref={playerRef}
-                    url={contentLink}
+                    url={uploadMethod === 'link' ? contentLink : uploadedVideoPath}
                     width={0}
                     height={0}
-                    // onDuration={handleDuration}
+                    onDuration={setVideoDuration}
                     config={{
                       youtube: {
                         playerVars: {
