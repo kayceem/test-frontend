@@ -31,6 +31,10 @@ const RelatedCourses = ({ courseId }: RelatedCoursesProps) => {
         );
     }
 
+    if (relatedCourses.length < 4) {
+        return null;
+    }
+
     return (
         <div className={style.relatedCourses}>
             <h3 className={style.relatedCourses__title}>Related courses</h3>

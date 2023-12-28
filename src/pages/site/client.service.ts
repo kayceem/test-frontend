@@ -190,6 +190,11 @@ export interface CreateVnpayUrlResponse {
   redirectUrl: string;
 }
 
+export interface SuggestedCoursesResponse {
+  message: string;
+  suggestedCourses: ICourse[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
   tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews'], // Những kiểu tag cho phép dùng trong blogApi
@@ -695,6 +700,14 @@ export const clientApi = createApi({
         method: 'POST',
         body: { orderId, amount, bankCode }
       })
+    }),
+    getSuggestedCourses: build.query<SuggestedCoursesResponse, { userId: string; limit?: number }>({
+      query: ({ userId, limit = 5 }) => ({
+        url: `courses/suggested/${userId}`,
+        params: { limit },
+        method: 'GET'
+      }),
+      providesTags: () => [{ type: 'Courses', id: 'LIST' }]
     })
   })
 });
@@ -723,5 +736,6 @@ export const {
   useGetOrderByIdQuery,
   useGetRelatedCoursesQuery,
   useCreateReviewMutation,
-  useCreateVnpayUrlMutation
+  useCreateVnpayUrlMutation,
+  useGetSuggestedCoursesQuery
 } = clientApi;
