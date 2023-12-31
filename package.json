@@ -14,13 +14,21 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.1",
+    "@mui/x-charts": "^6.18.3",
+    "@mui/x-data-grid": "^6.18.5",
+    "@mui/x-tree-view": "^6.17.0",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/uuid": "^9.0.7",
     "antd": "^5.7.0",
     "axios": "^1.4.0",
     "chart.js": "^4.3.0",
     "date-fns": "^2.30.0",
     "jwt-decode": "^3.1.2",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
@@ -29,7 +37,8 @@
     "react-router-dom": "^6.14.1",
     "react-slick": "^0.29.0",
     "react-use-search-params-state": "^1.0.1",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
