@@ -109,85 +109,89 @@ const Checkout = () => {
 
   return (
     <div className='checkout'>
-      <div className='checkout__wrap container '>
-        <Row>
-          <Col className='checkout__col checkout__col--left spacing-h-sm' md={12}>
-            <h2 className='checkout__title'>Checkout</h2>
-            <h3 className='checkout__billing-title'>Billing address</h3>
-            <div className='checkout__countries'>
-              <div className='checkout__countries-header'>
-                <span className='checkout__countries-header-item checkout__countries-title'>Country</span>
-                <span className='checkout__countries-header-item checkout__countries-required'>Required</span>
-              </div>
-              <div className='checkout__countries-body'>
-                <Select
-                  className='checkout__countries-select'
-                  defaultValue='Viet Nam'
-                  style={{ width: '50%' }}
-                  options={[
-                    { value: 'Singapore', label: 'Singapore' },
-                    { value: 'Indo', label: 'Indo' },
-                    { value: 'Malay', label: 'Malay' }
-                  ]}
-                />
-
-                <div className='checkout__countries-condition-term'>
-                  Udemy is required by law to collect applicable transaction taxes for purchases made in certain tax
-                  jurisdictions.
+      <div className='checkout__wrap'>
+        <div className='container '>
+          <Row className='row-wrap'>
+            <Col className='checkout__col checkout__col--left'>
+              <h2 className='checkout__title'>Checkout</h2>
+              <h3 className='checkout__billing-title'>Billing address</h3>
+              <div className='checkout__countries'>
+                <div className='checkout__countries-header'>
+                  <span className='checkout__countries-header-item checkout__countries-title'>Country</span>
+                  <span className='checkout__countries-header-item checkout__countries-required'>Required</span>
                 </div>
-              </div>
-
-              <div className='checkout__payment-methods'>
-                <div className='checkout__payment-header'>
-                  <h3 className='checkout__payment-title'>Payment method</h3>
-                  <span className='checkout__payment-secured'>Secured connection</span>
-                </div>
-                <div className='checkout__payment-body'>
-                  <Collapse
-                    bordered={false}
-                    defaultActiveKey={['1']}
-                    expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-                    style={{ background: token.colorBgContainer }}
-                    items={getItems(panelStyle)}
+                <div className='checkout__countries-body'>
+                  <Select
+                    className='checkout__countries-select'
+                    defaultValue='Viet Nam'
+                    style={{ width: '50%' }}
+                    options={[
+                      { value: 'Viet Nam', label: 'Viet Nam' },
+                      { value: 'Singapore', label: 'Singapore' },
+                      { value: 'Indo', label: 'Indo' },
+                      { value: 'Malay', label: 'Malay' }
+                    ]}
                   />
-                </div>
-              </div>
-              <div className='checkout__orders-detail'>
-                <h3 className='checkout__orders-detail-title'>Order details</h3>
-                {isCartFetching && <Skeleton />}
-                {!isCartFetching &&
-                  cartItems.map((cartItem: { _id: string; name: string; thumbnail: string; finalPrice: number }) => {
-                    return <DetailItem key={cartItem._id} courseItem={cartItem} />;
-                  })}
-              </div>
-            </div>
-          </Col>
-          <Col className='checkout__col checkout__col--right spacing-h-sm' md={12}>
-            <Row>
-              <Col md={12}>
-                <div className='checkout__summary'>
-                  <h3 className='checkout__summary-title'>Summary</h3>
-                  <div className='checkout__summary-row checkout__summary-price'>
-                    <span className='checkout__summary-col checkout__summary-price-label'>Original Price:</span>
-                    <span className='checkout__summary-col checkout__summary-price-text'>${totalPrice}</span>
-                  </div>
-                  <Divider className='checkout__summary-divider' />
-                  <div className='checkout__summary-row checkout__summary-total'>
-                    <span className='checkout__summary-col checkout__summary-total-label'>Total:</span>
-                    <span className='checkout__summary-col checkout__summary-total-text'>${totalPrice}</span>
-                  </div>
 
-                  <div className='checkout__summary-notify'>
-                    By completing your purchase you agree to these <Link to='/'> Terms of Service.</Link>
+                  <div className='checkout__countries-condition-term'>
+                    Udemy is required by law to collect applicable transaction taxes for purchases made in certain tax
+                    jurisdictions.
                   </div>
-                  <ButtonCmp onClick={checkoutHandler} className='checkout__summary-btn btn btn-primary btn-md'>
-                    Complete Checkout
-                  </ButtonCmp>
                 </div>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+
+                <div className='checkout__payment-methods'>
+                  <div className='checkout__payment-header'>
+                    <h3 className='checkout__payment-title'>Payment method</h3>
+                    <span className='checkout__payment-secured'>Secured connection</span>
+                  </div>
+                  <div className='checkout__payment-body'>
+                    <Collapse
+                      className='checkout__payment-content'
+                      bordered={false}
+                      defaultActiveKey={['1']}
+                      expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+                      style={{ background: token.colorBgContainer }}
+                      items={getItems(panelStyle)}
+                    />
+                  </div>
+                </div>
+                <div className='checkout__orders-detail'>
+                  <h3 className='checkout__orders-detail-title'>Order details</h3>
+                  {isCartFetching && <Skeleton />}
+                  {!isCartFetching &&
+                    cartItems.map((cartItem: { _id: string; name: string; thumbnail: string; finalPrice: number }) => {
+                      return <DetailItem key={cartItem._id} courseItem={cartItem} />;
+                    })}
+                </div>
+              </div>
+            </Col>
+            <Col className='checkout__col checkout__col--right'>
+              <Row className='checkout__col--right-wrap'>
+                <Col className='col'>
+                  <div className='checkout__summary'>
+                    <h3 className='checkout__summary-title'>Summary</h3>
+                    <div className='checkout__summary-row checkout__summary-price'>
+                      <span className='checkout__summary-col checkout__summary-price-label'>Original Price:</span>
+                      <span className='checkout__summary-col checkout__summary-price-text'>${totalPrice}</span>
+                    </div>
+                    <Divider className='checkout__summary-divider' />
+                    <div className='checkout__summary-row checkout__summary-total'>
+                      <span className='checkout__summary-col checkout__summary-total-label'>Total:</span>
+                      <span className='checkout__summary-col checkout__summary-total-text'>${totalPrice}</span>
+                    </div>
+
+                    <div className='checkout__summary-notify'>
+                      By completing your purchase you agree to these <Link to='/'> Terms of Service.</Link>
+                    </div>
+                    <ButtonCmp onClick={checkoutHandler} className='checkout__summary-btn btn btn-primary btn-md'>
+                      Complete Checkout
+                    </ButtonCmp>
+                  </div>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
   );
