@@ -107,7 +107,6 @@ const Login: React.FC<LoginProps> = (props) => {
     props.onClick('forgot');
   };
 
-
   return (
     <Fragment>
       <div className='auth__title'>
@@ -115,7 +114,7 @@ const Login: React.FC<LoginProps> = (props) => {
       </div>
       <div className='auth__socials'>
         <Space>
-          <GoogleOAuthProvider clientId="654961818615-ml2bg2915ljl8sntvmlnbb896o15csa7.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId='654961818615-ml2bg2915ljl8sntvmlnbb896o15csa7.apps.googleusercontent.com'>
             <GoogleLoginButton />
           </GoogleOAuthProvider>
           <Button className='auth__socials-btn'>

@@ -6,7 +6,7 @@ import {
   FundFilled,
   UserOutlined
 } from '@ant-design/icons';
-import { Col, Row, Skeleton, Space } from 'antd';
+import { Card, Col, Row, Skeleton, Space } from 'antd';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -14,11 +14,16 @@ import Button from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { IParams } from '../../../types/params.type';
 import { openAuthModal } from '../../auth.slice';
-import { useGetCoursesQuery, useGetPopularCoursesQuery, useGetSuggestedCoursesQuery } from '../client.service';
+
+import { useGetAllBlogsQuery, useGetCoursesQuery, useGetPopularCoursesQuery, useGetSuggestedCoursesQuery } from '../client.service';
+
 import CourseList from '../components/CourseList';
 import SubscribeEmail from './components/SubscribeEmail';
 import FeedbackStudent from './components/FeedbackStudent';
 import './Home.scss';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const HomePage = () => {
   const [courseLimit, setCourseLimit] = useState(4);
@@ -30,6 +35,40 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const { data, isLoading } = useGetAllBlogsQuery({});
+
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
 
   const params: IParams = {
     _limit: 4,
@@ -401,7 +440,31 @@ const HomePage = () => {
         )}
       </div>
 
-
+      {/* Blogs */}
+      <div className='blogs container spacing-h-sm'>
+        <h2 className='blogs__title text-6xl font-bold mb-16'>Blogs</h2>
+        <Slider {...settings}>
+          {data?.blogs.map((blog) => (
+            <Link to={`/blog-detail/${blog._id}`}>
+              <Card>
+                <div className='blogs__item border-dashed min-h-[400px]' key={blog._id}>
+                  <div className='div text-center mb-3 text-3xl'>
+                    <p className='mb-2'>{blog.author}</p>
+                  </div>
+                  <div className='blogs__item-img flex justify-center mb-8'>
+                    <img src={blog.blogImg} alt={blog.title} />
+                  </div>
+                  <div className='blogs__item-content'>
+                    <h3 className='blogs__item-title mb-6 text-3xl'>{blog.title}</h3>
+                    <p className='blogs__item-text opacity-75'>{blog.content}</p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </Slider>
+        {/* Blogs */}
+      </div>
     </div>
   );
 };
