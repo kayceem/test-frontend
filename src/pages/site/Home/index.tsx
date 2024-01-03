@@ -15,9 +15,7 @@ import { RootState } from '../../../store/store';
 import { IParams } from '../../../types/params.type';
 import { openAuthModal } from '../../auth.slice';
 
-import { useGetAllBlogsQuery, useGetCoursesQuery, useGetPopularCoursesQuery } from '../client.service';
-
-import { useGetCoursesQuery, useGetPopularCoursesQuery, useGetSuggestedCoursesQuery } from '../client.service';
+import { useGetAllBlogsQuery, useGetCoursesQuery, useGetPopularCoursesQuery, useGetSuggestedCoursesQuery } from '../client.service';
 
 import CourseList from '../components/CourseList';
 import SubscribeEmail from './components/SubscribeEmail';

@@ -187,6 +187,7 @@ export interface GetAllBlogReponse {
 export interface GetBlogByIdResponse {
   blog: Blog;
   message: string;
+}
 export interface RelatedCoursesResponse {
   message: string;
   relatedCourses: ICourse[];
@@ -693,6 +694,7 @@ export const clientApi = createApi({
       query: (_id) => ({
         url: `/blog/${_id}`
       })
+    }),
 
     getRelatedCourses: build.query<RelatedCoursesResponse, { courseId: string; limit: number; userId?: string }>({
       query: ({ courseId, limit, userId }) => ({
@@ -757,8 +759,7 @@ export const {
   useGetOrdersByUserIdQuery,
   useGetOrderByIdQuery,
   useGetAllBlogsQuery,
-  useGetBlogByIdQuery
-  useGetRelatedCoursesQuery
+  useGetBlogByIdQuery,
   useGetRelatedCoursesQuery,
   useCreateReviewMutation,
   useCreateVnpayUrlMutation,
