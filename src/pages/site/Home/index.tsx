@@ -14,7 +14,11 @@ import Button from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { IParams } from '../../../types/params.type';
 import { openAuthModal } from '../../auth.slice';
+
 import { useGetAllBlogsQuery, useGetCoursesQuery, useGetPopularCoursesQuery } from '../client.service';
+
+import { useGetCoursesQuery, useGetPopularCoursesQuery, useGetSuggestedCoursesQuery } from '../client.service';
+
 import CourseList from '../components/CourseList';
 import SubscribeEmail from './components/SubscribeEmail';
 import FeedbackStudent from './components/FeedbackStudent';
@@ -100,6 +104,7 @@ const HomePage = () => {
     userId: userId
   });
 
+  const { data: userSuggestedCoursesData, isFetching: isSuggestedCoursesFetching } = useGetSuggestedCoursesQuery({ userId, limit: 8 });
   const { data: userCoursesData, isFetching } = useGetCoursesQuery(userCoursesParams);
   const { data: frontendData, isFetching: isFrontendFetching } = useGetCoursesQuery(frontendParams);
   const { data: backendData, isFetching: isBackendFetching } = useGetCoursesQuery(backendParams);
@@ -113,6 +118,9 @@ const HomePage = () => {
   const isFrontendLoadMore = (frontendData?.pagination._totalRows || 0) > (frontendData?.courses.length || 0);
   const isBackendLoadMore = (backendData?.pagination._totalRows || 0) > (backendData?.courses.length || 0);
   const isDevopsLoadMore = (devopsData?.pagination._totalRows || 0) > (devopsData?.courses.length || 0);
+
+  const suggestedCourses = userSuggestedCoursesData?.suggestedCourses
+
 
   // users courses
   const usersCourses = userCoursesData?.courses;
@@ -322,6 +330,24 @@ const HomePage = () => {
           </div>
         </Fragment>
       )}
+
+      {isAuth && userSuggestedCoursesData && userSuggestedCoursesData.suggestedCourses.length > 4 && (
+        <div className={`our-courses-carousel container spacing-h-sm`}>
+          <h2 className='our-courses-carousel__title mt-md'>Suggested Courses</h2>
+          {isSuggestedCoursesFetching ? (
+            <Skeleton />
+          ) : (
+            <CourseList
+              courseState='notOrdered'
+              courses={suggestedCourses}
+              isCarousel={true}
+              className='our-courses-carousel__wrapper'
+            />
+          )}
+        </div>
+      )}
+
+
       {/* Popular Course Enrolled */}
 
       {!isAuth && (

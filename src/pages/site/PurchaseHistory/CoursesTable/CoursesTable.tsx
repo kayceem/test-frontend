@@ -13,7 +13,7 @@ const CoursesTable: React.FC = () => {
     const userId = useSelector((state: RootState) => state.auth.userId);
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState<IOrderHistory | null>(null);
+    const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
     const { data: ordersResponse } = useGetOrdersByUserIdQuery({ userId, page: currentPage, limit: 10 });
     const orders = ordersResponse?.orders;
@@ -30,11 +30,10 @@ const CoursesTable: React.FC = () => {
 
     };
 
-    const showModal = (order: IOrderHistory) => {
-        setSelectedOrder(order);
+    const showModal = (orderId: string) => {
+        setSelectedOrderId(orderId);
         setIsModalOpen(true);
     };
-
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -120,7 +119,7 @@ const CoursesTable: React.FC = () => {
                 <>
                     <Button onClick={() => handleReceiptClick(record._id)} type="link">Receipt</Button>
                     <Button onClick={() => handleInvoiceClick(record._id)} type="link">Invoice</Button>
-                    <Button onClick={() => showModal(record)} type="link">View Details</Button>
+                    <Button onClick={() => showModal(record._id)} type="link">View Details</Button>
 
                 </>
             ),
@@ -131,7 +130,7 @@ const CoursesTable: React.FC = () => {
         <Table dataSource={orders} columns={columns} rowKey="_id" pagination={false} />
         <Pagination current={currentPage} onChange={handlePageChange} total={ordersResponse?.totalItems} pageSize={10} />
         <OrderDetailsModal
-            order={selectedOrder}
+            orderId={selectedOrderId}
             isOpen={isModalOpen}
             onClose={handleCancel}
         />

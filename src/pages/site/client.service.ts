@@ -8,6 +8,7 @@ import { ILesson, ISection } from '../../types/lesson.type';
 import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
+import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/helpers';
 import { Blog } from '../../types/page.type';
 
@@ -191,9 +192,23 @@ export interface RelatedCoursesResponse {
   relatedCourses: ICourse[];
 }
 
+export interface CreateReviewResponse {
+  message: string;
+  review: IReview;
+}
+
+export interface CreateVnpayUrlResponse {
+  redirectUrl: string;
+}
+
+export interface SuggestedCoursesResponse {
+  message: string;
+  suggestedCourses: ICourse[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -686,6 +701,35 @@ export const clientApi = createApi({
         method: 'GET'
       }),
       providesTags: () => [{ type: 'Courses', id: 'LIST' }]
+    }),
+    createReview: build.mutation<
+      CreateReviewResponse,
+      { courseId: string; title: string; content: string; ratingStar: number; orderId: string; userId: string }
+    >({
+      query: ({ courseId, title, content, ratingStar, orderId, userId }) => ({
+        url: `courses/${courseId}/reviews`,
+        method: 'POST',
+        body: { courseId, title, content, ratingStar, orderId, userId }
+      }),
+      invalidatesTags: (result, error, { orderId }) => [
+        { type: 'Reviews', id: 'LIST' },
+        { type: 'Orders', id: orderId }
+      ]
+    }),
+    createVnpayUrl: build.mutation<CreateVnpayUrlResponse, { orderId: string; amount: number; bankCode?: string }>({
+      query: ({ orderId, amount, bankCode }) => ({
+        url: `payments/create_vnpayment_url`,
+        method: 'POST',
+        body: { orderId, amount, bankCode }
+      })
+    }),
+    getSuggestedCourses: build.query<SuggestedCoursesResponse, { userId: string; limit?: number }>({
+      query: ({ userId, limit = 5 }) => ({
+        url: `courses/suggested/${userId}`,
+        params: { limit },
+        method: 'GET'
+      }),
+      providesTags: () => [{ type: 'Courses', id: 'LIST' }]
     })
   })
 });
@@ -715,4 +759,8 @@ export const {
   useGetAllBlogsQuery,
   useGetBlogByIdQuery
   useGetRelatedCoursesQuery
+  useGetRelatedCoursesQuery,
+  useCreateReviewMutation,
+  useCreateVnpayUrlMutation,
+  useGetSuggestedCoursesQuery
 } = clientApi;

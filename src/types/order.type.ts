@@ -15,6 +15,7 @@ export interface IOrder {
   note?: string;
   createdAt?: string;
   updatedAt?: string;
+  status?: string;
 }
 
 interface ITransaction {
@@ -30,6 +31,7 @@ export interface IOrderItem {
   name?: string;
   finalPrice?: number;
   thumbnail?: string;
+  reviewed?: boolean;
 }
 
 export interface IOrderHistory {
@@ -49,6 +51,7 @@ export interface IOrderHistory {
   note?: string;
   createdAt?: string;
   updatedAt?: string;
+  status?: string;
 }
 
 export interface IOrderHistoryItem {
@@ -56,4 +59,5 @@ export interface IOrderHistoryItem {
   name?: string;
   finalPrice?: number;
   thumbnail?: string;
+  reviewed?: boolean;
 }
