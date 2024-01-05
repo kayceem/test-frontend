@@ -202,7 +202,7 @@ const Checkout = () => {
 
   return (
     <div className='checkout'>
-      <div className='checkout__wrap '>
+      <div className='checkout__wrap'>
         <div className='container'>
         <Row className='row-wrap'>
           <Col className='checkout__col checkout__col--left'>
