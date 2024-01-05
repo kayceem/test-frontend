@@ -12,7 +12,10 @@
     .slick-slider {
       .slick-list {
         .ant-col {
-          max-width: 95%;
+          max-width: 100%;
+        }
+        .slick-slide {
+          padding: 0 0.8rem;
         }
       }
 

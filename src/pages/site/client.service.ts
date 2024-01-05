@@ -10,6 +10,7 @@ import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
 import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/helpers';
+import { Blog } from '../../types/page.type';
 
 /**
  * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post
@@ -176,6 +177,17 @@ export interface GetOrderByIdResponse {
   order: IOrderHistory;
 }
 
+
+export interface GetAllBlogReponse {
+  blogs: Blog[];
+  message: string;
+  totalPages: number;
+}
+
+export interface GetBlogByIdResponse {
+  blog: Blog;
+  message: string;
+}
 export interface RelatedCoursesResponse {
   message: string;
   relatedCourses: ICourse[];
@@ -184,6 +196,15 @@ export interface RelatedCoursesResponse {
 export interface CreateReviewResponse {
   message: string;
   review: IReview;
+}
+
+export interface CreateVnpayUrlResponse {
+  redirectUrl: string;
+}
+
+export interface SuggestedCoursesResponse {
+  message: string;
+  suggestedCourses: ICourse[];
 }
 
 export const clientApi = createApi({
@@ -663,6 +684,18 @@ export const clientApi = createApi({
       query: ({ userId, page, limit }) => `orders/user/${userId}?page=${page}&limit=${limit}`,
       providesTags: (result, error, { userId }) => [{ type: 'Orders', id: userId }]
     }),
+    getAllBlogs: build.query<GetAllBlogReponse, IParams>({
+      query: ({ _page = 1, _limit = 5 }) => ({
+        url: `/blog?page=${_page}&limit=${_limit}`
+      })
+    }),
+
+    getBlogById: build.query<GetBlogByIdResponse, string>({
+      query: (_id) => ({
+        url: `/blog/${_id}`
+      })
+    }),
+
     getRelatedCourses: build.query<RelatedCoursesResponse, { courseId: string; limit: number; userId?: string }>({
       query: ({ courseId, limit, userId }) => ({
         url: `courses/related/${courseId}`,
@@ -684,6 +717,21 @@ export const clientApi = createApi({
         { type: 'Reviews', id: 'LIST' },
         { type: 'Orders', id: orderId }
       ]
+    }),
+    createVnpayUrl: build.mutation<CreateVnpayUrlResponse, { orderId: string; amount: number; bankCode?: string }>({
+      query: ({ orderId, amount, bankCode }) => ({
+        url: `payments/create_vnpayment_url`,
+        method: 'POST',
+        body: { orderId, amount, bankCode }
+      })
+    }),
+    getSuggestedCourses: build.query<SuggestedCoursesResponse, { userId: string; limit?: number }>({
+      query: ({ userId, limit = 5 }) => ({
+        url: `courses/suggested/${userId}`,
+        params: { limit },
+        method: 'GET'
+      }),
+      providesTags: () => [{ type: 'Courses', id: 'LIST' }]
     })
   })
 });
@@ -710,6 +758,10 @@ export const {
   useUpdateUserMutation,
   useGetOrdersByUserIdQuery,
   useGetOrderByIdQuery,
+  useGetAllBlogsQuery,
+  useGetBlogByIdQuery,
   useGetRelatedCoursesQuery,
-  useCreateReviewMutation
+  useCreateReviewMutation,
+  useCreateVnpayUrlMutation,
+  useGetSuggestedCoursesQuery
 } = clientApi;

@@ -1,9 +1,20 @@
 import { Col, Row } from 'antd';
+import { useGetAllBlogsQuery } from '../client.service';
 import CustomCard from './components/CustomCard';
 import Panigation from './components/Panigation';
 import PostTitle from './components/PostTitle';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const PagePost = () => {
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useGetAllBlogsQuery({ _page: page, _limit: 5 });
+  // console.log(data, isLoading);
+
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPage(page);
+  };
+
   return (
     <div>
       <div className='container mx-auto px-4 pb-20 pt-40'>
@@ -13,32 +24,27 @@ const PagePost = () => {
               title='Bài viết nổi bật'
               content='Tổng hợp các bài viết chia sẻ về kinh nghiệm tự học lập trình online và các kỹ thuật lập trình web.'
             />
-            <CustomCard
-              name='Kha'
-              title='Authentication & Authorization trong ReactJS'
-              content='Authentication và Authorization là một phần quan trọng trong việc phát triển phần mềm, giúp chúng ta xác thực và phân quyền...'
-              months={2}
-              minute={9}
-              technology='ReactJS'
-            />
-            <CustomCard
-              name='Kha'
-              title='Authentication & Authorization trong ReactJS'
-              content='Authentication và Authorization là một phần quan trọng trong việc phát triển phần mềm, giúp chúng ta xác thực và phân quyền...'
-              months={2}
-              minute={9}
-              technology='ReactJS'
-            />
-            <CustomCard
-              name='Kha'
-              title='Authentication & Authorization trong ReactJS'
-              content='Authentication và Authorization là một phần quan trọng trong việc phát triển phần mềm, giúp chúng ta xác thực và phân quyền...'
-              months={2}
-              minute={9}
-              technology='ReactJS'
-            />
+
+            {data?.blogs.map((blog) => (
+              <Link to={`/blog-detail/${blog._id}`}>
+                <CustomCard
+                  key={blog._id}
+                  blogImg={blog.blogImg}
+                  author={blog.author}
+                  content={blog.content}
+                  technology={blog.technology}
+                  readTime={blog.readTime}
+                  title={blog.title}
+                />
+              </Link>
+            ))}
             <div className='w-full text-center mt-14'>
-              <Panigation page={1} pageSize={5} />
+              <Panigation
+                page={page}
+                pageSize={page}
+                onPageChange={handlePageChange}
+                totalPages={data?.totalPages || 0}
+              />
             </div>
           </Col>
           <Col xs={0} sm={0} md={8} lg={6} xl={6} className='max-h-full'>
