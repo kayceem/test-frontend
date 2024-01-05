@@ -110,7 +110,7 @@ const Checkout = () => {
   return (
     <div className='checkout'>
       <div className='checkout__wrap'>
-        <div className='container '>
+        <div className='wrap'>
           <Row className='row-wrap'>
             <Col className='checkout__col checkout__col--left'>
               <h2 className='checkout__title'>Checkout</h2>
