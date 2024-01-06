@@ -15,7 +15,12 @@ import { RootState } from '../../../store/store';
 import { IParams } from '../../../types/params.type';
 import { openAuthModal } from '../../auth.slice';
 
-import { useGetAllBlogsQuery, useGetCoursesQuery, useGetPopularCoursesQuery, useGetSuggestedCoursesQuery } from '../client.service';
+import {
+  useGetAllBlogsQuery,
+  useGetCoursesQuery,
+  useGetPopularCoursesQuery,
+  useGetSuggestedCoursesQuery
+} from '../client.service';
 
 import CourseList from '../components/CourseList';
 import SubscribeEmail from './components/SubscribeEmail';
@@ -102,7 +107,10 @@ const HomePage = () => {
     userId: userId
   });
 
-  const { data: userSuggestedCoursesData, isFetching: isSuggestedCoursesFetching } = useGetSuggestedCoursesQuery({ userId, limit: 8 });
+  const { data: userSuggestedCoursesData, isFetching: isSuggestedCoursesFetching } = useGetSuggestedCoursesQuery({
+    userId,
+    limit: 8
+  });
   const { data: userCoursesData, isFetching } = useGetCoursesQuery(userCoursesParams);
   const { data: frontendData, isFetching: isFrontendFetching } = useGetCoursesQuery(frontendParams);
   const { data: backendData, isFetching: isBackendFetching } = useGetCoursesQuery(backendParams);
@@ -117,8 +125,7 @@ const HomePage = () => {
   const isBackendLoadMore = (backendData?.pagination._totalRows || 0) > (backendData?.courses.length || 0);
   const isDevopsLoadMore = (devopsData?.pagination._totalRows || 0) > (devopsData?.courses.length || 0);
 
-  const suggestedCourses = userSuggestedCoursesData?.suggestedCourses
-
+  const suggestedCourses = userSuggestedCoursesData?.suggestedCourses;
 
   // users courses
   const usersCourses = userCoursesData?.courses;
@@ -210,26 +217,28 @@ const HomePage = () => {
       {/* Banner */}
       <div className='banner mt-sm '>
         <div className='banner__wrapper'>
-          <div className='banner__wrapper-left'>
-            <div className='banner__cta-section'>
-              <h1 className='banner__title'>Learn and become better at your job</h1>
-              <p className='banner__content'>
-                Participate in a fully professional, social, engaging and interactive online school. Get the learning
-                experience you deserve.
-              </p>
-              <div className='banner__cta--btns'>
-                <Space>
-                  <Button onClick={startNowHandler} className='banner__cta-start-now btn btn-md btn-secondary'>
-                    Start Now
-                  </Button>
-                  <Link to='/courses'>
-                    <Button className='btn btn-md btn-tertiary'>View Courses</Button>
-                  </Link>
-                </Space>
+          <div className='container'>
+            <div className='banner__wrapper-left'>
+              <div className='banner__cta-section'>
+                <h1 className='banner__title'>Learn and become better at your job</h1>
+                <p className='banner__content'>
+                  Participate in a fully professional, social, engaging and interactive online school. Get the learning
+                  experience you deserve.
+                </p>
+                <div className='banner__cta--btns'>
+                  <Space>
+                    <Button onClick={startNowHandler} className='banner__cta-start-now btn btn-md btn-secondary'>
+                      Start Now
+                    </Button>
+                    <Link to='/courses'>
+                      <Button className='btn btn-md btn-tertiary'>View Courses</Button>
+                    </Link>
+                  </Space>
+                </div>
               </div>
             </div>
+            <div className='banner__wrapper-right'></div>
           </div>
-          <div className='banner__wrapper-right'></div>
         </div>
       </div>
 
@@ -279,49 +288,53 @@ const HomePage = () => {
 
           {/* Statistics */}
           <div className='statistics spacing-h-md '>
-            <Row className='statistics__list container'>
-              <Col className='statistics__item' md={8} xs={24}>
-                <div className='statistics__item-img'>
-                  <UserOutlined className='statistics__item-icon' />
-                </div>
-                <h3 className='statistics__item-number'>19,200</h3>
-                <p className='statistics__item-content'>STUDENTS</p>
-              </Col>
-              <Col className='statistics__item' md={8} xs={24}>
-                <div className='statistics__item-img'>
-                  <FlagOutlined className='statistics__item-icon' />
-                </div>
-                <h3 className='statistics__item-number'>92.000</h3>
-                <p className='statistics__item-content'>LEARNING STEPS DONE</p>
-              </Col>
-              <Col className='statistics__item' md={8} xs={24}>
-                <div className='statistics__item-img'>
-                  <FundFilled className='statistics__item-icon' />
-                </div>
-                <h3 className='statistics__item-number'>80%</h3>
-                <p className='statistics__item-content'>COURSE COMPLETION RATE</p>
-              </Col>
-            </Row>
+            <div className='container'>
+              <Row className='statistics__list '>
+                <Col className='statistics__item'>
+                  <div className='statistics__item-img'>
+                    <UserOutlined className='statistics__item-icon' />
+                  </div>
+                  <h3 className='statistics__item-number'>19,200</h3>
+                  <p className='statistics__item-content'>STUDENTS</p>
+                </Col>
+                <Col className='statistics__item'>
+                  <div className='statistics__item-img'>
+                    <FlagOutlined className='statistics__item-icon' />
+                  </div>
+                  <h3 className='statistics__item-number'>92.000</h3>
+                  <p className='statistics__item-content'>LEARNING STEPS DONE</p>
+                </Col>
+                <Col className='statistics__item'>
+                  <div className='statistics__item-img'>
+                    <FundFilled className='statistics__item-icon' />
+                  </div>
+                  <h3 className='statistics__item-number'>80%</h3>
+                  <p className='statistics__item-content'>COURSE COMPLETION RATE</p>
+                </Col>
+              </Row>
+            </div>
           </div>
 
           {/* Quotes  */}
-          <div className='quotes spacing-h-lg'>
-            <div className='quotes__wrapper'>
-              <div className='quotes__author'>
-                <div className='quotes__author-img-cover'>
-                  <div className='quotes__author-img'></div>
-                </div>
-                <div className='quotes__author-content'>
-                  <h3 className='quotes__author-content-title'>Get Closer To Your Goals</h3>
-                  <p className='quotes__author-content-text'>
-                    Are you feeling overwhelmed by the explosion of digital platforms and channels? Are you unsure how
-                    to best navigate this new environment to engage even more successfully with your colleagues?
-                  </p>
-                  <p className='quotes__author-content-text'>
-                    Studying with us will help you learn how to create, capture and deliver value in a digital world.
-                    You'll leave with smart strategies to optimize your performance and satisfaction both online AND
-                    offline.
-                  </p>
+          <div className='quotes'>
+            <div className='container'>
+              <div className='quotes__wrapper'>
+                <div className='quotes__author'>
+                  <div className='quotes__author-img-cover'>
+                    <div className='quotes__author-img'></div>
+                  </div>
+                  <div className='quotes__author-content'>
+                    <h3 className='quotes__author-content-title'>Get Closer To Your Goals</h3>
+                    <p className='quotes__author-content-text'>
+                      Are you feeling overwhelmed by the explosion of digital platforms and channels? Are you unsure how
+                      to best navigate this new environment to engage even more successfully with your colleagues?
+                    </p>
+                    <p className='quotes__author-content-text'>
+                      Studying with us will help you learn how to create, capture and deliver value in a digital world.
+                      You'll leave with smart strategies to optimize your performance and satisfaction both online AND
+                      offline.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -330,7 +343,7 @@ const HomePage = () => {
       )}
 
       {isAuth && userSuggestedCoursesData && userSuggestedCoursesData.suggestedCourses.length > 4 && (
-        <div className={`our-courses-carousel container spacing-h-sm`}>
+        <div className={`our-courses-carousel`}>
           <h2 className='our-courses-carousel__title mt-md'>Suggested Courses</h2>
           {isSuggestedCoursesFetching ? (
             <Skeleton />
@@ -345,76 +358,83 @@ const HomePage = () => {
         </div>
       )}
 
-
       {/* Popular Course Enrolled */}
 
       {!isAuth && (
-        <div className='our-courses container spacing-h-sm'>
-          <h2 className='our-courses__title'>Popular Courses</h2>
-          {isPoppularCoursesFetching ? (
-            <Skeleton />
-          ) : (
-            <CourseList
-              courseState='notOrdered'
-              onLoadMore={popularLoadMoreHandler}
-              isLoadMore={isPopularLoadMore}
-              courses={popularCourses}
-              className='our-courses__wrapper'
-            />
-          )}
+        <div className='our-courses'>
+          <div className='container'>
+            <h2 className='our-courses__title'>Popular Courses</h2>
+            {isPoppularCoursesFetching ? (
+              <Skeleton />
+            ) : (
+              <CourseList
+                courseState='notOrdered'
+                onLoadMore={popularLoadMoreHandler}
+                isLoadMore={isPopularLoadMore}
+                courses={popularCourses}
+                className='our-courses__wrapper'
+              />
+            )}
+          </div>
         </div>
       )}
 
       {/* Courses */}
 
       {isAuth && (
-        <div className={`our-courses container spacing-h-sm`}>
-          <h2 className='our-courses__title mt-md'>Our Courses</h2>
-          {isFetching ? (
-            <Skeleton />
-          ) : (
-            <CourseList
-              courseState='notOrdered'
-              courses={usersCourses}
-              onLoadMore={usersCoursesLoadMoreHandler}
-              isLoadMore={isUserCoursesLoadMore}
-              className='our-courses__wrapper'
-            />
-          )}
+        <div className={`our-courses`}>
+          <div className='container'>
+            <h2 className='our-courses__title mt-md'>Our Courses</h2>
+            {isFetching ? (
+              <Skeleton />
+            ) : (
+              <CourseList
+                courseState='notOrdered'
+                courses={usersCourses}
+                onLoadMore={usersCoursesLoadMoreHandler}
+                isLoadMore={isUserCoursesLoadMore}
+                className='our-courses__wrapper'
+              />
+            )}
+          </div>
         </div>
       )}
 
       {/* Frontend */}
 
-      <div className='our-courses container spacing-h-sm'>
-        <h2 className='our-courses__title'>Frontend</h2>
-        {isFrontendFetching ? (
-          <Skeleton />
-        ) : (
-          <CourseList
-            courseState='notOrdered'
-            isLoadMore={isFrontendLoadMore}
-            onLoadMore={frontendLoadMoreHandler}
-            courses={frontendCourses}
-            className='our-courses__wrapper'
-          />
-        )}
+      <div className='our-courses'>
+        <div className='container'>
+          <h2 className='our-courses__title'>Frontend</h2>
+          {isFrontendFetching ? (
+            <Skeleton />
+          ) : (
+            <CourseList
+              courseState='notOrdered'
+              isLoadMore={isFrontendLoadMore}
+              onLoadMore={frontendLoadMoreHandler}
+              courses={frontendCourses}
+              className='our-courses__wrapper'
+            />
+          )}
+        </div>
       </div>
 
       {/* Backend */}
-      <div className='our-courses container spacing-h-sm'>
-        <h2 className='our-courses__title'>Backend</h2>
-        {isBackendFetching ? (
-          <Skeleton />
-        ) : (
-          <CourseList
-            courseState='notOrdered'
-            isLoadMore={isBackendLoadMore}
-            onLoadMore={backendLoadMoreHandler}
-            courses={backendCourses}
-            className='our-courses__wrapper'
-          />
-        )}
+      <div className='our-courses'>
+        <div className='container'>
+          <h2 className='our-courses__title'>Backend</h2>
+          {isBackendFetching ? (
+            <Skeleton />
+          ) : (
+            <CourseList
+              courseState='notOrdered'
+              isLoadMore={isBackendLoadMore}
+              onLoadMore={backendLoadMoreHandler}
+              courses={backendCourses}
+              className='our-courses__wrapper'
+            />
+          )}
+        </div>
       </div>
 
       {/* Subscribe Email */}
@@ -425,45 +445,48 @@ const HomePage = () => {
 
       {/* Devops */}
 
-      <div className='our-courses container spacing-h-sm'>
-        <h2 className='our-courses__title'>Devops</h2>
-        {isDevopsFetching ? (
-          <Skeleton />
-        ) : (
-          <CourseList
-            courseState='notOrdered'
-            isLoadMore={isDevopsLoadMore}
-            onLoadMore={devopsLoadMoreHandler}
-            courses={devopsCourses}
-            className='our-courses__wrapper'
-          />
-        )}
+      <div className='our-courses'>
+        <div className='container'>
+          <h2 className='our-courses__title'>Devops</h2>
+          {isDevopsFetching ? (
+            <Skeleton />
+          ) : (
+            <CourseList
+              courseState='notOrdered'
+              isLoadMore={isDevopsLoadMore}
+              onLoadMore={devopsLoadMoreHandler}
+              courses={devopsCourses}
+              className='our-courses__wrapper'
+            />
+          )}
+        </div>
       </div>
-
       {/* Blogs */}
-      <div className='blogs container spacing-h-sm'>
-        <h2 className='blogs__title text-6xl font-bold mb-16'>Blogs</h2>
-        <Slider {...settings}>
-          {data?.blogs.map((blog) => (
-            <Link to={`/blog-detail/${blog._id}`}>
-              <Card>
-                <div className='blogs__item border-dashed min-h-[400px]' key={blog._id}>
-                  <div className='div text-center mb-3 text-3xl'>
-                    <p className='mb-2'>{blog.author}</p>
+      <div className='blogs'>
+        <div className='container'>
+          <h2 className='blogs__title text-6xl font-bold mb-16'>Blogs</h2>
+          <Slider {...settings}>
+            {data?.blogs.map((blog) => (
+              <Link to={`/blog-detail/${blog._id}`}>
+                <Card>
+                  <div className='blogs__item border-dashed min-h-[400px]' key={blog._id}>
+                    <div className='div text-center mb-3 text-3xl'>
+                      <p className='mb-2'>{blog.author}</p>
+                    </div>
+                    <div className='blogs__item-img flex justify-center mb-8'>
+                      <img src={blog.blogImg} alt={blog.title} />
+                    </div>
+                    <div className='blogs__item-content'>
+                      <h3 className='blogs__item-title mb-6 text-3xl'>{blog.title}</h3>
+                      <p className='blogs__item-text opacity-75'>{blog.content}</p>
+                    </div>
                   </div>
-                  <div className='blogs__item-img flex justify-center mb-8'>
-                    <img src={blog.blogImg} alt={blog.title} />
-                  </div>
-                  <div className='blogs__item-content'>
-                    <h3 className='blogs__item-title mb-6 text-3xl'>{blog.title}</h3>
-                    <p className='blogs__item-text opacity-75'>{blog.content}</p>
-                  </div>
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </Slider>
-        {/* Blogs */}
+                </Card>
+              </Link>
+            ))}
+          </Slider>
+          {/* Blogs */}
+        </div>
       </div>
     </div>
   );

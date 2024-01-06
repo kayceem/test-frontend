@@ -1,3 +1,29 @@
+.feedback-student{
+    padding: 8rem 0;
+    .row-wrap{
+        flex-wrap: nowrap;
+        width: 100%;
+        justify-content: space-between;
+        align-items: stretch;
+        height: 100%;
+        @media (max-width: 768px) {
+           flex-wrap: wrap;
+        }
+          @media(max-width: 500px){
+            flex-direction: column;
+        }
+    }
+    .col{
+        width: calc(100% * (4/12));
+        height: auto;
+        @media (max-width: 768px) {
+            width: 50%;
+        }
+        @media (max-width: 550px) {
+            width: 100%;
+        }
+    }
+}
 .fb-item {
     position: relative;
     // background-color: #112236;
@@ -6,12 +32,15 @@
     flex-direction: column;
     text-align: center;
     border-radius: 0;
-    padding: 2.4rem;
+    height: 100%;
 }
 .avatar{
     margin-bottom: 2.5rem;
     display: flex;
     justify-content: center;
+    @media (max-width: 1200px) {
+        margin-bottom: 1.6rem;
+    }
 }
 .bg-194583{
     background: #194583;
@@ -29,6 +58,9 @@
     font-size: 1.50rem;
     line-height: 1.55;
     display: block;
+    @media (max-width: 1200px) {
+        font-size: 1rem;
+    }
 }
 .txt-name{
     position: relative;
@@ -39,6 +71,9 @@
     letter-spacing: 0.01rem;
     line-height: 1.55;
     text-transform: uppercase;
+    @media (max-width: 1200px) {
+        font-size: 1.2rem;
+    }
 }
 .txt-black{
     color: #112236;
