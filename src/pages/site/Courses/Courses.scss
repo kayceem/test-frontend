@@ -38,6 +38,7 @@
 .courses {
     margin-top: $header-height;
     background: $light-bg-color;
+    padding: 8rem 0;
 
     &__wrap {
 
@@ -61,12 +62,16 @@
 
     &__content {
         display: flex;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1.6rem;
     }
 
     &__filter-bar {
         width: 25%;
         &-item {
-
+            
             margin-bottom: 2rem;
 
             &-title {
@@ -134,19 +139,19 @@
         
     }
 
-    @media (max-width: map-get($breakpoint, desktop)) {
-        padding: 0rem 2rem;
-    }
+    // @media (max-width: map-get($breakpoint, desktop)) {
+    //     padding: 0rem 2rem;
+    // }
 
-    @media (max-width: map-get($breakpoint, tablet-lg)) {
-        padding: 0rem 2rem;
-    }
+    // @media (max-width: map-get($breakpoint, tablet-lg)) {
+    //     padding: 0rem 2rem;
+    // }
 
     
-    @media (max-width: map-get($breakpoint, tablet)) {
+    // @media (max-width: map-get($breakpoint, tablet)) {
       
-        padding: 0rem 2rem;
-    }
+    //     padding: 0rem 2rem;
+    // }
 
     @media (max-width: map-get($breakpoint, mobile)) {
         &__filter-bar {
