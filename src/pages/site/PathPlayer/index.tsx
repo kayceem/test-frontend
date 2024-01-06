@@ -169,7 +169,7 @@ const PathPlayer = () => {
     <div className='path-player'>
       <div className='path-player__wrap'>
         <Row className='path-player__row'>
-          <Col md={24} lg={6} xl={6}>
+          <Col className='col col-left' md={24} lg={6} xl={6}>
             <div className='path-player__menu'>
               {/* Menu Header  */}
               <div className='path-player__menu-header'>
@@ -192,7 +192,7 @@ const PathPlayer = () => {
               </div>
             </div>
           </Col>
-          <Col md={24} lg={18} xl={18}>
+          <Col className='col col-right' md={24} lg={18} xl={18}>
             <div className='path-player__player'>
               <div className='path-player__player-nav'>
                 <div className='path-player__player-nav-item'>
