@@ -133,7 +133,8 @@ const Courses = () => {
 
   return (
     <div className='courses'>
-      <div className='courses__wrap container spacing-h-sm'>
+      <div className='courses__wrap'>
+        <div className='container'>
         <h2 className='courses__heading'>Find your best courses</h2>
         <div className='courses__search-results'>
           <div className='courses__search-results-left'></div>
@@ -393,6 +394,7 @@ const Courses = () => {
               onPaginate={paginateHandler}
             />
           </div>
+        </div>
         </div>
       </div>
     </div>
