@@ -6,7 +6,8 @@ const CategoriesNav = () => {
   const { data, isFetching } = useGetCategoriesQuery();
 
   return (
-    <div className='header__categories container'>
+    <div className='header__categories'>
+      <div className='container'>
       <div className='header__categories-wrap'>
         {isFetching && <Skeleton.Input block={true} />}
 
@@ -43,6 +44,7 @@ const CategoriesNav = () => {
         <div className='header__categories-item'>
           <Link to=''>Data science</Link>
         </div> */}
+      </div>
       </div>
     </div>
   );

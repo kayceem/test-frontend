@@ -3,13 +3,43 @@
 .profile {
     margin-top: $header-height;
     &__wrap {
-
-    }
-
-    &__header {
-        padding-top: 2.5rem;
+        padding: 8rem 0;
         background-color: $dark-bg-color;
         color: $light-text-color;
+    }
+    .row-wrap{
+        gap: 0 2.4rem;
+        flex-wrap: nowrap;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        @media(max-width: 768px){
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+          @media(max-width: 400px){
+            flex-direction: column;
+            gap: 2.4rem;
+        }
+    }
+    .col{
+        width: 20%;
+        @media(max-width: 768px){
+            width: 46%;
+        }
+        @media(max-width: 400px){
+            width: 100%;
+        }
+    }
+    .col.col-wrap{
+        @media(max-width: 768px){
+            width: 70%;
+        }
+        @media(max-width: 400px){
+            width: 100%;
+        }
+    }
+    &__header {
         &-wrap {
 
         }

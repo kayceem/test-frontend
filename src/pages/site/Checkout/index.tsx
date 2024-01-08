@@ -202,33 +202,35 @@ const Checkout = () => {
 
   return (
     <div className='checkout'>
-      <div className='checkout__wrap container '>
-        <Row>
-          <Col className='checkout__col checkout__col--left spacing-h-sm' md={12}>
+      <div className='checkout__wrap'>
+        <div className='container'>
+        <Row className='row-wrap'>
+          <Col className='checkout__col checkout__col--left'>
             <h2 className='checkout__title'>Checkout</h2>
             <h3 className='checkout__billing-title'>Billing address</h3>
             <div className='checkout__countries'>
               <div className='checkout__countries-header'>
-                <span className='checkout__countries-header-item checkout__countries-title'>Country</span>
-                <span className='checkout__countries-header-item checkout__countries-required'>Required</span>
-              </div>
-              <div className='checkout__countries-body'>
-                <Select
-                  className='checkout__countries-select'
-                  defaultValue='Viet Nam'
-                  style={{ width: '50%' }}
-                  options={[
-                    { value: 'Singapore', label: 'Singapore' },
-                    { value: 'Indo', label: 'Indo' },
-                    { value: 'Malay', label: 'Malay' }
-                  ]}
-                />
-
-                <div className='checkout__countries-condition-term'>
-                  Udemy is required by law to collect applicable transaction taxes for purchases made in certain tax
-                  jurisdictions.
+                  <span className='checkout__countries-header-item checkout__countries-title'>Country</span>
+                  <span className='checkout__countries-header-item checkout__countries-required'>Required</span>
                 </div>
-              </div>
+                <div className='checkout__countries-body'>
+                  <Select
+                    className='checkout__countries-select'
+                    defaultValue='Viet Nam'
+                    style={{ width: '50%' }}
+                    options={[
+                      { value: 'Viet Nam', label: 'Viet Nam' },
+                      { value: 'Singapore', label: 'Singapore' },
+                      { value: 'Indo', label: 'Indo' },
+                      { value: 'Malay', label: 'Malay' }
+                    ]}
+                  />
+
+                  <div className='checkout__countries-condition-term'>
+                    Udemy is required by law to collect applicable transaction taxes for purchases made in certain tax
+                    jurisdictions.
+                  </div>
+                </div>
 
               <div className='checkout__payment-methods'>
                 <div className='checkout__payment-header'>
@@ -237,6 +239,7 @@ const Checkout = () => {
                 </div>
                 <div className='checkout__payment-body'>
                   <Collapse
+                    className='checkout__payment-content'
                     accordion
                     bordered={false}
                     activeKey={expandedPanel}
@@ -256,9 +259,9 @@ const Checkout = () => {
               </div>
             </div>
           </Col>
-          <Col className='checkout__col checkout__col--right spacing-h-sm' md={12}>
-            <Row>
-              <Col md={12}>
+          <Col className='checkout__col checkout__col--right'>
+            <Row className='checkout__col--right-wrap'>
+              <Col className='col'>
                 <div className='checkout__summary'>
                   <h3 className='checkout__summary-title'>Summary</h3>
                   <div className='checkout__summary-row checkout__summary-price'>
@@ -282,6 +285,7 @@ const Checkout = () => {
             </Row>
           </Col>
         </Row>
+        </div>
       </div>
     </div>
   );

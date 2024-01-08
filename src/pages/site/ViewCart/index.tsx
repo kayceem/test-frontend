@@ -52,49 +52,51 @@ const ViewCart = () => {
 
   return (
     <div className='view-cart'>
-      <div className='view-cart__wrap container spacing-h-sm'>
-        <h2 className='view-cart__title'>Shopping Cart</h2>
-        <div className='view-cart__content '>
-          <Row>
-            <Col md={18} sm={24}>
-              <div className='view-cart__list'>
-                <h4 className='view-cart__list-title'>{cart?.items?.length || 0} Courses in Cart</h4>
-                <div className='view-cart__list-wrap'>
-                  {isCartFetching && <Skeleton />}
-                  {!isCartFetching &&
-                    cartItems.map((cartItem) => {
-                      return (
-                        <CartItem
-                          // onTotal={calcTotalCartPrice}
-                          key={cartItem._id}
-                          courseItem={cartItem}
-                          onRemove={removeCartHandler}
-                        />
-                      );
-                    })}
-                </div>
-              </div>
-            </Col>
-            <Col md={6}>
-              <div className='view-cart__summary'>
-                <h4 className='view-cart__summary-title'>Total: </h4>
-                <h3 className='view-cart__summary-price'>${totalPrice}</h3>
-                <div onClick={checkoutHandler}>
-                  <div className='view-cart__summary-btn btn btn-md'>Checkout</div>
-                </div>
-                <Divider />
-                <div className='view-cart__summary-promo'>
-                  <span className='view-cart__summary-promo-title'>Promo code</span>
-                  <div className='view-cart__summary-promo-input-group'>
-                    <Space.Compact style={{ width: '100%' }}>
-                      <Input defaultValue='Enter Coupon' />
-                      <ButtonCmp className='btn btn-sm'>Apply</ButtonCmp>
-                    </Space.Compact>
+      <div className='view-cart__wrap'>
+        <div className='container'>
+          <h2 className='view-cart__title'>Shopping Cart</h2>
+          <div className='view-cart__content '>
+            <Row className='row-wrap'>
+              <Col md={18} sm={24}>
+                <div className='view-cart__list'>
+                  <h4 className='view-cart__list-title'>{cart?.items?.length || 0} Courses in Cart</h4>
+                  <div className='view-cart__list-wrap'>
+                    {isCartFetching && <Skeleton />}
+                    {!isCartFetching &&
+                      cartItems.map((cartItem) => {
+                        return (
+                          <CartItem
+                            // onTotal={calcTotalCartPrice}
+                            key={cartItem._id}
+                            courseItem={cartItem}
+                            onRemove={removeCartHandler}
+                          />
+                        );
+                      })}
                   </div>
                 </div>
-              </div>
-            </Col>
-          </Row>
+              </Col>
+              <Col md={6} className='col view-cart__right'>
+                <div className='view-cart__summary'>
+                  <h4 className='view-cart__summary-title'>Total: </h4>
+                  <h3 className='view-cart__summary-price'>${totalPrice}</h3>
+                  <div onClick={checkoutHandler}>
+                    <div className='view-cart__summary-btn btn btn-md'>Checkout</div>
+                  </div>
+                  <Divider />
+                  <div className='view-cart__summary-promo'>
+                    <span className='view-cart__summary-promo-title'>Promo code</span>
+                    <div className='view-cart__summary-promo-input-group'>
+                      <Space.Compact style={{ width: '100%' }}>
+                        <Input defaultValue='Enter Coupon' />
+                        <ButtonCmp className='btn btn-sm'>Apply</ButtonCmp>
+                      </Space.Compact>
+                    </div>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
         </div>
       </div>
     </div>
