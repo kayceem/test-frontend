@@ -66,6 +66,7 @@ import WishlistPage from './pages/site/Wishlist/Wishlist';
 import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
 import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
+import Social from './pages/site/Social';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -182,6 +183,10 @@ function App() {
         {
           path: 'about-us',
           element: <About />
+        },
+        {
+          path: 'social',
+          element: <Social/>
         },
         {
           path: 'user',
