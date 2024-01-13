@@ -11,7 +11,7 @@ interface AuthState {
   adminToken: string | null;
   isOpenAuthModal: boolean;
   adminRole: UserRole | null;
-  authState: string
+  authState: string;
 }
 
 const initialState: AuthState = {

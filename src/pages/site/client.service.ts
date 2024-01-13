@@ -177,7 +177,6 @@ export interface GetOrderByIdResponse {
   order: IOrderHistory;
 }
 
-
 export interface GetAllBlogReponse {
   blogs: Blog[];
   message: string;
@@ -684,9 +683,10 @@ export const clientApi = createApi({
       query: ({ userId, page, limit }) => `orders/user/${userId}?page=${page}&limit=${limit}`,
       providesTags: (result, error, { userId }) => [{ type: 'Orders', id: userId }]
     }),
+
     getAllBlogs: build.query<GetAllBlogReponse, IParams>({
       query: ({ _page = 1, _limit = 5 }) => ({
-        url: `/blog?page=${_page}&limit=${_limit}`
+        url: `blog/?page=${_page}&limit=${_limit}`
       })
     }),
 

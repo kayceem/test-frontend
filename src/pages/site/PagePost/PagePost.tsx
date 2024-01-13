@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const PagePost = () => {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetAllBlogsQuery({ _page: page, _limit: 5 });
-  // console.log(data, isLoading);
+  console.log(data, isLoading);
 
   const handlePageChange = (page: number, pageSize: number) => {
     setPage(page);
