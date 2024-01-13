@@ -19,6 +19,7 @@ interface ClientState {
   currentProgress: number;
   certificatePath: string;
   isLessonChange: boolean;
+  percentHavePlayed: number; // Add this line
   //   formData: IClient;
 }
 
@@ -41,7 +42,8 @@ const initialState: ClientState = {
   lessonIdsDoneByCourseId: [],
   currentProgress: 0,
   certificatePath: '',
-  isLessonChange: false
+  isLessonChange: false,
+  percentHavePlayed: 0
 };
 
 const clientSlice = createSlice({
@@ -136,6 +138,9 @@ const clientSlice = createSlice({
     },
     resetLessonChange: (state) => {
       state.isLessonChange = false;
+    },
+    setPercentHavePlayed: (state, action: PayloadAction<number>) => {
+      state.percentHavePlayed = action.payload;
     }
     // handleFormData: (state, action: PayloadAction<IOrder>) => {
     //   state.formData = action.payload;
@@ -159,7 +164,8 @@ export const {
   updateCurrentProgress,
   createCertificatePath,
   updateIsLessonChange,
-  resetLessonChange
+  resetLessonChange,
+  setPercentHavePlayed
   // refetchCourseEnrolledbyUser
 } = clientSlice.actions;
 export default clientReducer;

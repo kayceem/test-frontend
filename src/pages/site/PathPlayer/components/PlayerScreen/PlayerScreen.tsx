@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { useUpdateLessonDoneByUserMutation } from '../../../client.service';
-import { updateLessonDoneAtBrowser } from '../../../client.slice';
+import { setPercentHavePlayed, updateLessonDoneAtBrowser } from '../../../client.slice';
 import './PlayerScreen.scss';
 
 const PlayerScreen = () => {
@@ -19,13 +19,28 @@ const PlayerScreen = () => {
   };
 
   const playerEl = useRef<ReactPlayer>(null);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (playerEl.current) {
+        const percentHavePlayed = playerEl.current.getCurrentTime() / playerEl.current.getDuration();
+        dispatch(setPercentHavePlayed(percentHavePlayed));
+      }
+    }, 1000); // Dispatch mỗi giây
+
+    return () => {
+      clearInterval(interval); // Dọn dẹp khi component unmount
+    };
+  }, [dispatch]);
+
   const onProgress = () => {
     if (!apiCalled && playerEl.current) {
       const percentHavePlayed = playerEl.current.getCurrentTime() / playerEl.current.getDuration();
+      dispatch(setPercentHavePlayed(percentHavePlayed));
+      console.log(percentHavePlayed);
+
       if (percentHavePlayed >= 0.95) {
         // Update lesson done at current state
         dispatch(updateLessonDoneAtBrowser(currLessonId));
-
         // Update lesson Done at database
         updateLessonDone({
           userId: currUserId,
