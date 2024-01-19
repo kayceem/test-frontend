@@ -271,7 +271,7 @@ const Header = () => {
         <MenuOutlined onClick={showMobileMenuHandler} className='header__menu-mobile font-bold lg:hidden' />
         <Link to='/' className='header__logo'>
           <img
-            src='https://cdn.mycourse.app/images/site-templates/79ae2363c5798f1d6e79d14f2c7c3730.png'
+            src='https://i.imgur.com/NZj5m3U.png'
             alt=''
             className='header__logo-img'
           />
