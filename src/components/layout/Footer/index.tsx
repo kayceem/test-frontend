@@ -11,7 +11,7 @@ const Footer = () => {
             <div className='footer__col'>
               <div className='footer__logo'>
                 <img
-                  src='https://cdn.mycourse.app/images/site-templates/5eacfe0d804d3c71aef6fe9da29f202b.png'
+                  src='https://i.imgur.com/5XlMJjI.png'
                   alt=''
                   className='footer__logo-img'
                 />
