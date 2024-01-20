@@ -280,16 +280,16 @@
     }
 
     &-img-cover {
-      background-image: url('https://cdn.mycourse.app/v2.28.4/images/laptop-white-draw.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      width: 50%;
-      padding: 3.5% 10.5% 3.2%;
+      width: 30%;
+      img{
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px 0 rgba(#999, .25);
+      }
       @media (max-width: 768px){
         width: 100%;
       }
     }
+
 
     &-img {
       background-image: url('https://cdn.mycourse.app/images/site-templates/57ad0b239703f4b3e09108dc8e7ddfc5.jpeg');
@@ -298,7 +298,7 @@
     }
 
     &-content {
-      width: 50%;
+      width: 70%;
       @media (max-width: 768px){
         width: 100%;
       }

@@ -321,7 +321,7 @@ const HomePage = () => {
               <div className='quotes__wrapper'>
                 <div className='quotes__author'>
                   <div className='quotes__author-img-cover'>
-                    <div className='quotes__author-img'></div>
+                    <img src='https://i.imgur.com/osnehcc.jpg' className='quotes__author-img'/>
                   </div>
                   <div className='quotes__author-content'>
                     <h3 className='quotes__author-content-title'>Get Closer To Your Goals</h3>
