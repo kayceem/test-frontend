@@ -80,7 +80,6 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   const [open, setOpen] = useState(false);
 
   const showUserDetail = () => {
-    console.log('click');
     setOpen(true);
   };
 
@@ -89,15 +88,15 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
       const { transaction, user, _id, totalPrice, items } = order;
 
       const orderTemplateItem = {
-        key: order._id,
+        key: order?._id,
         name: (
           <a href='#' onClick={showUserDetail}>
             <div className='user-info'>
-              <img alt={user.name} src={user.avatar || ''} className='user-info__avatar' />
+              <img alt={user?.name} src={user?.avatar || ''} className='user-info__avatar' />
 
               <div className='user-info__content'>
-                <div className='user-info__name'>{user.name}</div>
-                <div className='user-info__email'>{user.email}</div>
+                <div className='user-info__name'>{user?.name}</div>
+                <div className='user-info__email'>{user?.email}</div>
               </div>
             </div>
           </a>
@@ -112,7 +111,7 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
           <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar> */}
             <Tooltip title='Courses' placement='top'>
               {(items || []).map((course) => (
-                <Avatar src={course.thumbnail} />
+                <Avatar src={course?.thumbnail} />
               ))}
             </Tooltip>
             {/* <Avatar style={{ backgroundColor: '#1677ff' }} icon={<AntDesignOutlined />} /> */}
@@ -129,7 +128,7 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
           </>
         ),
         amount: `$${totalPrice}`,
-        payment: transaction.method
+        payment: transaction?.method
       };
 
       return orderTemplateItem;
