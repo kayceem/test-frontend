@@ -364,6 +364,7 @@ function App() {
     },
     {
       path: 'cart/subscribe/course/',
+      element: <RootLayout />,
       children: [
         {
           path: ':courseId',
