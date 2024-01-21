@@ -1,11 +1,14 @@
 import {
   BarChartOutlined,
+  BoldOutlined,
   BorderOuterOutlined,
   DesktopOutlined,
   FileOutlined,
+  IdcardOutlined,
   PieChartOutlined,
   SettingOutlined,
   ShoppingCartOutlined,
+  TagsOutlined,
   UnorderedListOutlined,
   UserAddOutlined,
   UserOutlined
@@ -46,7 +49,6 @@ const SideBar = () => {
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
 
   const navigateHandler: MenuProps['onClick'] = (e) => {
-    console.log('click', e);
     navigate(e.key);
     setOpenDrawer(true);
   };
@@ -54,15 +56,22 @@ const SideBar = () => {
   const items: MenuItem[] = [
     getItem('sangtrandev', 'myprofile', <BorderOuterOutlined />),
     getItem('Dashboard', 'dashboard', <PieChartOutlined />),
-    getItem('Categories', 'categories', <UnorderedListOutlined />, [getItem('Categories', 'categories')]),
-    getItem('Courses', 'courses', <DesktopOutlined />, [getItem('Course Manager', 'courses')]),
+    getItem('Categories', 'categories', <UnorderedListOutlined />, [getItem('Course Categories', 'categories'), getItem('Lesson Type', 'lesson-type')]),
+    getItem('Courses', 'courses', <DesktopOutlined />, 
+    [
+      getItem('Course Manager', 'courses'), 
+      getItem('Course Discuss', 'courses-discusses'), 
+      getItem('Course Notes', 'courses-notes')]),
     (adminRole === UserRole.ADMIN &&
-      getItem('Orders', 'orders', <ShoppingCartOutlined />, [getItem('Order Manager', 'orders')])) as MenuItem,
+      getItem('Orders', 'orders', <ShoppingCartOutlined />, [
+        getItem('Order Manager', 'orders'), 
+        getItem('Transactions', 'transaction')])) as MenuItem,
     (adminRole === UserRole.ADMIN &&
       getItem('Users', 'users', <UserOutlined />, [
         getItem('All Users', 'users'),
         getItem('Admins', 'admins'),
-        getItem('Intructors', 'intructors')
+        getItem('Intructors', 'intructors'),
+        getItem('Permission', 'permission'), // Permission for each user and function
       ])) as MenuItem,
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
@@ -101,6 +110,24 @@ const SideBar = () => {
           'group'
         )
       ])) as MenuItem,
+    getItem('Marketing', 'marketing', <TagsOutlined />, 
+    [
+      getItem('Coupons Type', 'marketing/coupon-types'),
+      getItem('Bundles', 'marketing/bundles'),
+      getItem('Subscriptions', 'marketing/subscriptions'),
+      getItem('Coupons', 'marketing/coupons'),
+    ]),
+    getItem('Blog', 'blog', <BoldOutlined />, 
+    [
+      getItem('Blog Type', 'blog/blog-type'),
+      getItem('Posts', 'blog/posts'),
+      getItem('Blog comments', 'blog/comments'),
+    ]),
+    getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, 
+    [
+      getItem('Feedbacks', 'feedbacks/list'),
+      // getItem('Blog comments', 'blog/comments'),
+    ]),
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
     getItem('My account', 'account', <UserAddOutlined />),
     getItem('Need Help ?', 'help', <FileOutlined />)
