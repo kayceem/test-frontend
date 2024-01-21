@@ -105,7 +105,7 @@ export const userApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: 'user',
+            url: '/users/user/create',
             method: 'POST',
             body
           };
@@ -124,7 +124,7 @@ export const userApi = createApi({
     }),
     getUser: build.query<getUserResponse, string>({
       query: (id) => ({
-        url: `users/${id}`
+        url: `/users/user/${id}`
         // headers: {
         //   hello: 'Im duoc'
         // },
@@ -137,7 +137,7 @@ export const userApi = createApi({
     updateUser: build.mutation<IUser, { _id: string; body: Omit<IUser, '_id'> }>({
       query(data) {
         return {
-          url: `user/${data._id}`,
+          url: `/users/user/update/${data._id}`,
           method: 'PUT',
           body: data.body
         };
@@ -148,7 +148,7 @@ export const userApi = createApi({
     deleteUser: build.mutation<Record<string, never>, string>({
       query(id) {
         return {
-          url: `users/${id}`,
+          url: `/users/user/delete/${id}`,
           method: 'DELETE'
         };
       },

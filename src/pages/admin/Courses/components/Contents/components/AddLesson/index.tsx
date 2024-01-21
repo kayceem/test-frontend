@@ -39,7 +39,7 @@ const AddLesson: React.FC<AddLessonProps> = () => {
 
   const uploadVideoProps: UploadProps = {
     name: 'videoFile',
-    action: `${BACKEND_URL}/upload-video`,
+    action: `${BACKEND_URL}/uploads/video`,
     fileList: fileList,
     maxCount: 1,
     onChange(info) {
