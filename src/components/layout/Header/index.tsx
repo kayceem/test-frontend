@@ -155,8 +155,12 @@ const Header = () => {
 
   const wishlistItems: MenuProps['items'] = [
     {
-      label: 'wishlist 1',
-      key: '1',
+      label: (
+        <Link to='/wishlist'>
+          <div>Wishlist</div>
+        </Link>
+      ),
+      key: 'wishlist',
       icon: <UserOutlined />
     },
     {

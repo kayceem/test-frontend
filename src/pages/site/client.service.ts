@@ -206,9 +206,32 @@ export interface SuggestedCoursesResponse {
   suggestedCourses: ICourse[];
 }
 
+export interface CreateWishlistResponse {
+  message: string;
+  wishlist: {
+    _id: string;
+    courseId: string;
+    userId: string;
+  };
+}
+
+export interface DeleteWishlistResponse {
+  message: string;
+}
+
+export interface GetCourseIdsFromWishlistByUserIdResponse {
+  message: string;
+  data: string[];
+}
+
+export interface GetCoursesFromWishlistByUserIdResponse {
+  message: string;
+  courses: ICourse[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -730,6 +753,33 @@ export const clientApi = createApi({
         method: 'GET'
       }),
       providesTags: () => [{ type: 'Courses', id: 'LIST' }]
+    }),
+    getCourseIdsFromWishlistByUserId: build.query<GetCourseIdsFromWishlistByUserIdResponse, string>({
+      query: (userId) => `courses/id/wishlist/${userId}`,
+      providesTags: () => [{ type: 'Wishlist', id: 'LIST' }]
+    }),
+    getCoursesFromWishlistByUserId: build.query<GetCoursesFromWishlistByUserIdResponse, string>({
+      query: (userId) => `courses/wishlist/${userId}`,
+      providesTags: () => [
+        { type: 'Courses', id: 'LIST' },
+        { type: 'Wishlist', id: 'CREATE' }
+      ]
+    }),
+    createWishlist: build.mutation<CreateWishlistResponse, { courseId: string; userId: string }>({
+      query: ({ courseId, userId }) => ({
+        url: `wishlists/wishlist/create`,
+        method: 'POST',
+        body: { courseId, userId }
+      }),
+      invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }, { type: 'Wishlist', id: 'CREATE' }]
+    }),
+    deleteWishlist: build.mutation<DeleteWishlistResponse, { courseId: string; userId: string }>({
+      query: ({ courseId, userId }) => ({
+        url: `wishlists/wishlist/delete/${courseId}`,
+        method: 'DELETE',
+        body: { userId }
+      }),
+      invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }]
     })
   })
 });
@@ -761,5 +811,9 @@ export const {
   useGetRelatedCoursesQuery,
   useCreateReviewMutation,
   useCreateVnpayUrlMutation,
-  useGetSuggestedCoursesQuery
+  useGetSuggestedCoursesQuery,
+  useCreateWishlistMutation,
+  useDeleteWishlistMutation,
+  useGetCourseIdsFromWishlistByUserIdQuery,
+  useGetCoursesFromWishlistByUserIdQuery
 } = clientApi;
