@@ -1,87 +1,331 @@
-import { Col, Row } from 'antd';
-import Button from '../../../components/Button';
 import './About.scss';
 const About = () => {
   return (
-    <div className='about spacing-h-sm'>
-      <div className='container about__intro text-center bg-slate-300 py-4'>
-        <h2 className='about__title sec-com-tt'>About Us Page</h2>
-        <p className='mt-8'>Some text about who we are and what we do.</p>
-        <p>
-          We are education organizations for helping students more grow up. With technology and modern methods, we
-          confidently are able to create more things for the worlds
-        </p>
-      </div>
-      <h3 className='about__sub-title mt-8' style={{ textAlign: 'center' }}>
-        Our Team
-      </h3>
-      <div className='about__wrapper container '>
-        <Row gutter={16}>
-          <Col xs={24} sm={12} md={8} lg={8}>
-            <div className='column text-center about__member-item bg-slate-200 '>
-              <div className='card'>
-                <img
-                  src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'
-                  alt='Jane'
-                  style={{ width: '100%' }}
-                  className='about__member-img'
-                />
-                <div className='container about__member-desc'>
-                  <h2 className='mb-4 about__member-name text-3xl'>Jane Doe</h2>
-                  <p className='mb-4 title about__member-title'>CEO &amp; Founder</p>
-                  <p className='mb-4 about__member-info-desc'>Some text that describes me lorem ipsum ipsum lorem.</p>
-                  <p className='mb-4 about__member-email'>jane@example.com</p>
-                  <p>
-                    <Button className='button btn btn-primary btn-sm'>Contact</Button>
-                  </p>
+    <div className='about'>
+      <div className='about__intro'>
+        <div className='about__intro-header'>
+          <div className='container'>
+            <h2 className='about__title sec-com-tt'>About Us Page</h2>
+            <p className='abou-desc'>
+              We are education organizations for helping students more grow up.
+              <br />
+              With technology and modern methods, we confidently are able to create more things for the worlds
+            </p>
+          </div>
+        </div>
+        <div className='about__intro-content'>
+            <div className="container">
+          <h3 className='about__sub-title'>Our Team</h3>
+          <div className='about__intro-list'>
+            <div className='wrapper'>
+              <div className='profile-card js-profile-card'>
+                <div className='profile-card__img'>
+                  <img
+                    src='https://i.pinimg.com/564x/c2/85/78/c28578d3c5d0333a7ec4b3e94f48f3e5.jpg'
+                    alt='profile card'
+                  />
                 </div>
-              </div>
-            </div>
-          </Col>
-          <Col xs={24} sm={12} md={8} lg={8}>
-            <div className='column text-center about__member-item bg-slate-200'>
-              <div className='card'>
-                <img
-                  src='https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'
-                  alt='Mike'
-                  style={{ width: '100%' }}
-                  className='about__member-img'
-                />
-                <div className='container about__member-desc'>
-                  <h2 className='mb-4 about__member-name text-3xl'>Mike Ross</h2>
-                  <p className='mb-4 title about__member-title'>Art Director</p>
-                  <p className='mb-4 about__member-info-desc'>Some text that describes me lorem ipsum ipsum lorem.</p>
-                  <p className='mb-4 about__member-email'>mike@example.com</p>
-                  <p>
-                    <Button className='button btn btn-primary btn-sm'>Contact</Button>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Col>
 
-          <Col xs={24} sm={12} md={8} lg={8}>
-            <div className='column text-center about__member-item bg-slate-200'>
-              <div className='card'>
-                <img
-                  src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=580&q=80'
-                  alt='Mike'
-                  style={{ width: '100%' }}
-                  className='about__member-img'
-                />
-                <div className='container about__member-desc'>
-                  <h2 className='mb-4 about__member-name text-3xl'>John Doe</h2>
-                  <p className='mb-4 title about__member-title'>Designer</p>
-                  <p className='mb-4 about__member-info-desc'>Some text that describes me lorem ipsum ipsum lorem.</p>
-                  <p className='mb-4 about__member-email'>john@example.com</p>
-                  <p>
-                    <Button className='button btn btn-primary btn-sm'>Contact</Button>
-                  </p>
+                <div className='profile-card__cnt js-profile-cnt'>
+                  <div className='profile-card__name'>Le Van Hieu</div>
+                  <div className='profile-card__txt'>
+                    Front-end Developer from <strong>Mona</strong>
+                  </div>
+                  <div className='profile-card-loc'>
+                    <span className='profile-card-loc__icon'>
+                      <svg className='icon'>
+                        <use xlinkHref='#icon-location'></use>
+                      </svg>
+                    </span>
+
+                    <span className='profile-card-loc__txt'>Tan Phu, Viet Nam</span>
+                  </div>
+
+                  <div className='profile-card-inf'>
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>1598</div>
+                      <div className='profile-card-inf__txt'>Followers</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>65</div>
+                      <div className='profile-card-inf__txt'>Following</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>123</div>
+                      <div className='profile-card-inf__txt'>Articles</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>85</div>
+                      <div className='profile-card-inf__txt'>Works</div>
+                    </div>
+                  </div>
+
+                  <div className='profile-card-social'>
+                    <a
+                      href='https://www.facebook.com/#'
+                      className='profile-card-social__item facebook'
+                      target='_blank'
+                    >
+                      <span className='icon-font'>
+                      <span className='icon-font'>
+                        <img src='https://i.imgur.com/zik404q.png' className='icon icon-fb'/>
+                      </span>
+                      </span>
+                    </a>
+
+
+                    <a
+                      href='https://github.com/muhammederdem'
+                      className='profile-card-social__item github'
+                      target='_blank'
+                    >
+                      <span className='icon-font'>
+                      <span className='icon-font'>
+                        <img src='https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png' className='icon'/>
+                      </span>
+                      </span>
+                    </a>
+
+                    <a href='http://muhammederdem.com.tr/' className='profile-card-social__item link' target='_blank'>
+                      <span className='icon-font'>
+                        <img src='https://i.imgur.com/yROcq3s.png' className='icon'/>
+                      </span>
+                    </a>
+                  </div>
+
+                  <div className='profile-card-ctr'>
+                    <button className='profile-card__button button--blue js-message-btn'>Contact</button>
+                    <button className='profile-card__button button--orange'>Follow</button>
+                  </div>
+                </div>
+
+                <div className='profile-card-message js-message'>
+                  <form className='profile-card-form'>
+                    <div className='profile-card-form__container'>
+                      <textarea placeholder='Say something...'></textarea>
+                    </div>
+
+                    <div className='profile-card-form__bottom'>
+                      <button className='profile-card__button button--blue js-message-close'>Send</button>
+
+                      <button className='profile-card__button button--gray js-message-close'>Cancel</button>
+                    </div>
+                  </form>
+
+                  <div className='profile-card__overlay js-message-close'></div>
                 </div>
               </div>
             </div>
-          </Col>
-        </Row>
+            <div className='wrapper'>
+              <div className='profile-card js-profile-card'>
+                <div className='profile-card__img'>
+                  <img
+                    src='https://i.pinimg.com/564x/c2/85/78/c28578d3c5d0333a7ec4b3e94f48f3e5.jpg'
+                    alt='profile card'
+                  />
+                </div>
+
+                <div className='profile-card__cnt js-profile-cnt'>
+                  <div className='profile-card__name'>Le Van Hieu</div>
+                  <div className='profile-card__txt'>
+                    Front-end Developer from <strong>Mona</strong>
+                  </div>
+                  <div className='profile-card-loc'>
+                    <span className='profile-card-loc__icon'>
+                      <svg className='icon'>
+                        <use xlinkHref='#icon-location'></use>
+                      </svg>
+                    </span>
+
+                    <span className='profile-card-loc__txt'>Tan Phu, Viet Nam</span>
+                  </div>
+
+                  <div className='profile-card-inf'>
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>1598</div>
+                      <div className='profile-card-inf__txt'>Followers</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>65</div>
+                      <div className='profile-card-inf__txt'>Following</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>123</div>
+                      <div className='profile-card-inf__txt'>Articles</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>85</div>
+                      <div className='profile-card-inf__txt'>Works</div>
+                    </div>
+                  </div>
+
+                  <div className='profile-card-social'>
+                    <a
+                      href='https://www.facebook.com/#'
+                      className='profile-card-social__item facebook'
+                      target='_blank'
+                    >
+                      <span className='icon-font'>
+                      <span className='icon-font'>
+                        <img src='https://i.imgur.com/zik404q.png' className='icon icon-fb'/>
+                      </span>
+                      </span>
+                    </a>
+
+
+                    <a
+                      href='https://github.com/muhammederdem'
+                      className='profile-card-social__item github'
+                      target='_blank'
+                    >
+                      <span className='icon-font'>
+                      <span className='icon-font'>
+                        <img src='https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png' className='icon'/>
+                      </span>
+                      </span>
+                    </a>
+
+                    <a href='http://muhammederdem.com.tr/' className='profile-card-social__item link' target='_blank'>
+                      <span className='icon-font'>
+                        <img src='https://i.imgur.com/yROcq3s.png' className='icon'/>
+                      </span>
+                    </a>
+                  </div>
+
+                  <div className='profile-card-ctr'>
+                    <button className='profile-card__button button--blue js-message-btn'>Contact</button>
+                    <button className='profile-card__button button--orange'>Follow</button>
+                  </div>
+                </div>
+
+                <div className='profile-card-message js-message'>
+                  <form className='profile-card-form'>
+                    <div className='profile-card-form__container'>
+                      <textarea placeholder='Say something...'></textarea>
+                    </div>
+
+                    <div className='profile-card-form__bottom'>
+                      <button className='profile-card__button button--blue js-message-close'>Send</button>
+
+                      <button className='profile-card__button button--gray js-message-close'>Cancel</button>
+                    </div>
+                  </form>
+
+                  <div className='profile-card__overlay js-message-close'></div>
+                </div>
+              </div>
+            </div>
+            <div className='wrapper'>
+              <div className='profile-card js-profile-card'>
+                <div className='profile-card__img'>
+                  <img
+                    src='https://i.pinimg.com/564x/c2/85/78/c28578d3c5d0333a7ec4b3e94f48f3e5.jpg'
+                    alt='profile card'
+                  />
+                </div>
+
+                <div className='profile-card__cnt js-profile-cnt'>
+                  <div className='profile-card__name'>Le Van Hieu</div>
+                  <div className='profile-card__txt'>
+                    Front-end Developer from <strong>Mona</strong>
+                  </div>
+                  <div className='profile-card-loc'>
+                    <span className='profile-card-loc__icon'>
+                      <svg className='icon'>
+                        <use xlinkHref='#icon-location'></use>
+                      </svg>
+                    </span>
+
+                    <span className='profile-card-loc__txt'>Tan Phu, Viet Nam</span>
+                  </div>
+
+                  <div className='profile-card-inf'>
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>1598</div>
+                      <div className='profile-card-inf__txt'>Followers</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>65</div>
+                      <div className='profile-card-inf__txt'>Following</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>123</div>
+                      <div className='profile-card-inf__txt'>Articles</div>
+                    </div>
+
+                    <div className='profile-card-inf__item'>
+                      <div className='profile-card-inf__title'>85</div>
+                      <div className='profile-card-inf__txt'>Works</div>
+                    </div>
+                  </div>
+
+                  <div className='profile-card-social'>
+                    <a
+                      href='https://www.facebook.com/#'
+                      className='profile-card-social__item facebook'
+                      target='_blank'
+                    >
+                      <span className='icon-font'>
+                      <span className='icon-font'>
+                        <img src='https://i.imgur.com/zik404q.png' className='icon icon-fb'/>
+                      </span>
+                      </span>
+                    </a>
+
+
+                    <a
+                      href='https://github.com/muhammederdem'
+                      className='profile-card-social__item github'
+                      target='_blank'
+                    >
+                      <span className='icon-font'>
+                      <span className='icon-font'>
+                        <img src='https://static-00.iconduck.com/assets.00/github-icon-2048x1988-jzvzcf2t.png' className='icon'/>
+                      </span>
+                      </span>
+                    </a>
+
+                    <a href='http://muhammederdem.com.tr/' className='profile-card-social__item link' target='_blank'>
+                      <span className='icon-font'>
+                        <img src='https://i.imgur.com/yROcq3s.png' className='icon'/>
+                      </span>
+                    </a>
+                  </div>
+
+                  <div className='profile-card-ctr'>
+                    <button className='profile-card__button button--blue js-message-btn'>Contact</button>
+                    <button className='profile-card__button button--orange'>Follow</button>
+                  </div>
+                </div>
+
+                <div className='profile-card-message js-message'>
+                  <form className='profile-card-form'>
+                    <div className='profile-card-form__container'>
+                      <textarea placeholder='Say something...'></textarea>
+                    </div>
+
+                    <div className='profile-card-form__bottom'>
+                      <button className='profile-card__button button--blue js-message-close'>Send</button>
+
+                      <button className='profile-card__button button--gray js-message-close'>Cancel</button>
+                    </div>
+                  </form>
+
+                  <div className='profile-card__overlay js-message-close'></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   );

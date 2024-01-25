@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginButton from './GoogleLoginButton/GoogleLoginButton';
 import '../Auth.scss';
 import GithubLoginButton from './GithubLoginButton/GithubLoginButton';
+import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface LoginProps {
   onClick: (authState: string) => void;
@@ -119,7 +120,8 @@ const Login: React.FC<LoginProps> = (props) => {
             <GoogleLoginButton />
           </GoogleOAuthProvider>
           <Button className='auth__socials-btn'>
-            <FacebookFilled className='auth__socials-icon' />
+            {/* <FacebookFilled className='auth__socials-icon' /> */}
+            <FacebookLoginButton />
           </Button>
           <Button className='auth__socials-btn'>
             <LinkedinFilled className='auth__socials-icon' />

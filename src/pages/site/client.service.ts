@@ -206,9 +206,32 @@ export interface SuggestedCoursesResponse {
   suggestedCourses: ICourse[];
 }
 
+export interface CreateWishlistResponse {
+  message: string;
+  wishlist: {
+    _id: string;
+    courseId: string;
+    userId: string;
+  };
+}
+
+export interface DeleteWishlistResponse {
+  message: string;
+}
+
+export interface GetCourseIdsFromWishlistByUserIdResponse {
+  message: string;
+  data: string[];
+}
+
+export interface GetCoursesFromWishlistByUserIdResponse {
+  message: string;
+  courses: ICourse[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -354,7 +377,7 @@ export const clientApi = createApi({
 
     getAuthors: build.query<getAuthorsResponse, void>({
       query: () => ({
-        url: '/authors'
+        url: '/users/authors'
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array
@@ -394,7 +417,7 @@ export const clientApi = createApi({
     }),
     getCoursesOrderedByUser: build.query<getCoursesResponse, IParams>({
       query: (params) => ({
-        url: `/courses/${params._userId as string}/ordered`,
+        url: `/courses/ordered/${params._userId as string}`,
         params: {
           _limit: params._limit,
           _page: params._page
@@ -438,7 +461,7 @@ export const clientApi = createApi({
     }),
     getUserDetail: build.query<getUserDetailResponse, IParams>({
       query: (params) => ({
-        url: `/users/${params._userId as string}/detail`,
+        url: `/users/user/detail/${params._userId as string}`,
         params: {
           _limit: params._limit,
           _page: params._page
@@ -459,10 +482,9 @@ export const clientApi = createApi({
         return [{ type: 'Users', id: 'LIST' }];
       }
     }),
-
     getRetrieveCart: build.query<getRetrieveCartResponse, { courseIds: string[] }>({
       query: (params) => ({
-        url: `/cart/retrieve`,
+        url: `/carts/retrieve`,
         params: {
           _courseIds: params.courseIds
         }
@@ -507,7 +529,7 @@ export const clientApi = createApi({
       query(body) {
         try {
           return {
-            url: 'order',
+            url: 'orders/order/create',
             method: 'POST',
             body
           };
@@ -532,7 +554,7 @@ export const clientApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: `lesson-done/${body.lessonId}`,
+            url: `lessons/lesson/done/${body.lessonId}`,
             method: 'POST',
             body: {
               userId: body.userId
@@ -551,7 +573,7 @@ export const clientApi = createApi({
     }),
     getCategory: build.query<ICategory, string>({
       query: (id) => ({
-        url: `categories/${id}`,
+        url: `categories/category/${id}`,
         headers: {
           hello: 'Im Sang'
         }
@@ -559,12 +581,12 @@ export const clientApi = createApi({
     }),
     getCourse: build.query<getCourseResponse, string>({
       query: (id) => ({
-        url: `courses/${id}`
+        url: `courses/course/${id}`
       })
     }),
     getCourseEnrolledByUser: build.query<getCourseEnrolledByUserResponse, string>({
       query: (id) => ({
-        url: `courses/${id}/enrolled`
+        url: `courses/course/enrolled/${id}`
         // headers: {
         //   hello: 'Im Sang'
         // }
@@ -602,13 +624,13 @@ export const clientApi = createApi({
     getCourseDetail: build.query<getCourseDetailResponse, { courseId: string; userId: string }>({
       query: (params) => {
         return {
-          url: `courses/${params.courseId}/detail?userId=${params.userId}`
+          url: `courses/course/detail/${params.courseId}?userId=${params.userId}`
         };
       }
     }),
     getSectionsByCourseId: build.query<getSectionsResponse, string>({
       query: (courseId) => ({
-        url: `sections/${courseId}/course`
+        url: `sections/course/${courseId}`
         // headers: {
         //   userId: 'Im Sang'
         // }
@@ -616,7 +638,7 @@ export const clientApi = createApi({
     }),
     getCertificate: build.query<getCertificateResponse, { courseId: string; userId: string }>({
       query: (params) => ({
-        url: `get-certificate`,
+        url: `certificates/certificate/get`,
         params: params
       })
     }),
@@ -627,7 +649,7 @@ export const clientApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: `generate-certificate`,
+            url: `certificates/certificate/generate`,
             method: 'POST',
             body: body
           };
@@ -642,10 +664,9 @@ export const clientApi = createApi({
        */
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Clients', id: 'LIST' }])
     }),
-
     getLessonsBySectionId: build.query<getLessonsResponse, { sectionId: string; userId: string }>({
       query: (payload) => ({
-        url: `lessons/${payload.sectionId}/section`,
+        url: `lessons/section/${payload.sectionId}`,
         headers: {
           userId: payload.userId
         }
@@ -653,7 +674,7 @@ export const clientApi = createApi({
     }),
     getLessonsBySectionIdEnrolledCourse: build.query<getLessonsResponse, { sectionId: string; userId: string }>({
       query: (payload) => ({
-        url: `lessons/${payload.sectionId}/section/course-enrolled`,
+        url: `lessons/section/course-enrolled/${payload.sectionId}`,
         headers: {
           userId: payload.userId
         }
@@ -661,13 +682,13 @@ export const clientApi = createApi({
     }),
     getUser: build.query<getUserResponse, string>({
       query: (id) => ({
-        url: `users/${id}`
+        url: `users/user/${id}`
       }),
       providesTags: (result, error, id) => [{ type: 'Users', id }]
     }),
     updateUser: build.mutation<UpdateUserResponse, { userId: string; formData: FormData }>({
       query: ({ userId, formData }) => ({
-        url: `users/${userId}`,
+        url: `users//user/${userId}`,
         method: 'PUT',
         body: formData
       }),
@@ -675,7 +696,7 @@ export const clientApi = createApi({
     }),
     getOrderById: build.query<GetOrderByIdResponse, string>({
       query: (orderId) => ({
-        url: `orders/${orderId}`
+        url: `orders/order/${orderId}`
       }),
       providesTags: (result, error, orderId) => [{ type: 'Orders', id: orderId }]
     }),
@@ -709,7 +730,7 @@ export const clientApi = createApi({
       { courseId: string; title: string; content: string; ratingStar: number; orderId: string; userId: string }
     >({
       query: ({ courseId, title, content, ratingStar, orderId, userId }) => ({
-        url: `courses/${courseId}/reviews`,
+        url: `courses/course/reviews/${courseId}`,
         method: 'POST',
         body: { courseId, title, content, ratingStar, orderId, userId }
       }),
@@ -720,7 +741,7 @@ export const clientApi = createApi({
     }),
     createVnpayUrl: build.mutation<CreateVnpayUrlResponse, { orderId: string; amount: number; bankCode?: string }>({
       query: ({ orderId, amount, bankCode }) => ({
-        url: `payments/create_vnpayment_url`,
+        url: `payments/vnpay/create_vnpayment_url`,
         method: 'POST',
         body: { orderId, amount, bankCode }
       })
@@ -732,6 +753,33 @@ export const clientApi = createApi({
         method: 'GET'
       }),
       providesTags: () => [{ type: 'Courses', id: 'LIST' }]
+    }),
+    getCourseIdsFromWishlistByUserId: build.query<GetCourseIdsFromWishlistByUserIdResponse, string>({
+      query: (userId) => `courses/id/wishlist/${userId}`,
+      providesTags: () => [{ type: 'Wishlist', id: 'LIST' }]
+    }),
+    getCoursesFromWishlistByUserId: build.query<GetCoursesFromWishlistByUserIdResponse, string>({
+      query: (userId) => `courses/wishlist/${userId}`,
+      providesTags: () => [
+        { type: 'Courses', id: 'LIST' },
+        { type: 'Wishlist', id: 'CREATE' }
+      ]
+    }),
+    createWishlist: build.mutation<CreateWishlistResponse, { courseId: string; userId: string }>({
+      query: ({ courseId, userId }) => ({
+        url: `wishlists/wishlist/create`,
+        method: 'POST',
+        body: { courseId, userId }
+      }),
+      invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }, { type: 'Wishlist', id: 'CREATE' }]
+    }),
+    deleteWishlist: build.mutation<DeleteWishlistResponse, { courseId: string; userId: string }>({
+      query: ({ courseId, userId }) => ({
+        url: `wishlists/wishlist/delete/${courseId}`,
+        method: 'DELETE',
+        body: { userId }
+      }),
+      invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }]
     })
   })
 });
@@ -763,5 +811,9 @@ export const {
   useGetRelatedCoursesQuery,
   useCreateReviewMutation,
   useCreateVnpayUrlMutation,
-  useGetSuggestedCoursesQuery
+  useGetSuggestedCoursesQuery,
+  useCreateWishlistMutation,
+  useDeleteWishlistMutation,
+  useGetCourseIdsFromWishlistByUserIdQuery,
+  useGetCoursesFromWishlistByUserIdQuery
 } = clientApi;

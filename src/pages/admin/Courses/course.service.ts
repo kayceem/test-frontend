@@ -187,7 +187,7 @@ export const courseApi = createApi({
     }),
     getSectionsByCourseId: build.query<getSectionsResponse, string>({
       query: (courseId) => ({
-        url: `sections/${courseId}/course`
+        url: `/sections/course/${courseId}`
         // headers: {
         //   hello: 'Im duoc'
         // },
@@ -234,7 +234,7 @@ export const courseApi = createApi({
     }),
     getLessonsBySectionId: build.query<getLessonsResponse, string>({
       query: (sectionId) => ({
-        url: `lessons/${sectionId}/section`
+        url: `/lessons/section/${sectionId}`
         // headers: {
         //   hello: 'Im duoc'
         // },
@@ -290,7 +290,7 @@ export const courseApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: 'course',
+            url: '/courses/course/create',
             method: 'POST',
             body
           };
@@ -312,7 +312,7 @@ export const courseApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: 'section',
+            url: '/sections/section/create',
             method: 'POST',
             body
           };
@@ -334,7 +334,7 @@ export const courseApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: 'lesson',
+            url: '/lessons/lesson/create',
             method: 'POST',
             body
           };
@@ -351,7 +351,7 @@ export const courseApi = createApi({
     }),
     getCourse: build.query<ICourse, string>({
       query: (id) => ({
-        url: `courses/${id}`,
+        url: `/courses/course/${id}`,
         headers: {
           hello: 'Im duoc'
         },
@@ -364,7 +364,7 @@ export const courseApi = createApi({
     updateCourse: build.mutation<ICourse, { id: string; body: ICourse }>({
       query(data) {
         return {
-          url: `courses/${data.id}`,
+          url: `/courses/course/update/${data.id}`,
           method: 'PUT',
           body: data.body
         };
@@ -375,7 +375,7 @@ export const courseApi = createApi({
     deleteCourse: build.mutation<Record<string, never>, string>({
       query(id) {
         return {
-          url: `courses/${id}`,
+          url: `/courses/course/delete/${id}`,
           method: 'DELETE'
         };
       },

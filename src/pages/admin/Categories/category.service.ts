@@ -55,7 +55,7 @@ export const categoryApi = createApi({
     // Generic type theo thứ tự là kiểu response trả về và argument
     getAllCategories: build.query<getCategoriesResponse, void>({
       query: () => ({
-        url: '/all-categories'
+        url: '/categories/get-all'
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array
@@ -145,7 +145,7 @@ export const categoryApi = createApi({
           // let a: any = null
           // a.b = 1
           return {
-            url: 'category',
+            url: '/categories/category/create',
             method: 'POST',
             body
           };
@@ -162,7 +162,7 @@ export const categoryApi = createApi({
     }),
     getCategory: build.query<getCategoryResponse, string>({
       query: (id) => ({
-        url: `categories/${id}/single`
+        url: `/categories/category/${id}`
         // headers: {
         //   hello: 'Im duoc'
         // },
@@ -175,7 +175,7 @@ export const categoryApi = createApi({
     updateCategory: build.mutation<ICategory, ICategory>({
       query(data) {
         return {
-          url: `category/${data._id}`,
+          url: `/categories/category/update/${data._id}`,
           method: 'PUT',
           body: data
         };
@@ -186,7 +186,7 @@ export const categoryApi = createApi({
     deleteCategory: build.mutation<Record<string, never>, string>({
       query(id) {
         return {
-          url: `categories/${id}`,
+          url: `/categories/category/delete/${id}`,
           method: 'DELETE'
         };
       },

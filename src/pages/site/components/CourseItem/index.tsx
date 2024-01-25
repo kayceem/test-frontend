@@ -2,13 +2,14 @@ import { Badge, Col, Progress, Row, notification } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import Button from '../../../../components/Button';
 import { BACKEND_URL } from '../../../../constant/backend-domain';
 import { RootState } from '../../../../store/store';
 import { ICourse } from '../../../../types/course.type';
 import { IOrderItem } from '../../../../types/order.type';
 import { openAuthModal } from '../../../auth.slice';
-import { ICourseEnrolledByUser, useGetUserDetailQuery } from '../../client.service';
+import { ICourseEnrolledByUser, useGetUserDetailQuery, useGetCourseIdsFromWishlistByUserIdQuery, useCreateWishlistMutation, useDeleteWishlistMutation } from '../../client.service';
 import { addToCart } from '../../client.slice';
 import './CourseItem.scss';
 
@@ -27,6 +28,18 @@ const CourseItem = (props: CourseItemProps) => {
 
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const userId = useSelector((state: RootState) => state.auth.userId);
+
+  const [createWishlist] = useCreateWishlistMutation();
+  const [deleteWishlist] = useDeleteWishlistMutation();
+
+  const { data: wishlistData } = useGetCourseIdsFromWishlistByUserIdQuery(userId, {
+    skip: !userId || !isAuth
+  });
+
+  const wishlistCourseIds: string[] = wishlistData?.data || [];
+
+  const courseId = props.courseItem._id.toString();
+  const isCourseInWishlist = wishlistCourseIds.includes(courseId);
 
   const { data, isFetching } = useGetUserDetailQuery(
     { _userId: userId },
@@ -111,6 +124,40 @@ const CourseItem = (props: CourseItemProps) => {
     badgeCourse = 'Special Offer';
   }
 
+
+  const handleWishlistChange = async (courseId: string, isRemoving: boolean, userId: string) => {
+    if (!isAuth) {
+      dispatch(openAuthModal());
+      return;
+    }
+
+    try {
+      if (isRemoving) {
+        await deleteWishlist({ courseId, userId }).unwrap();
+        notification.success({
+          message: 'Removed from Wishlist',
+          description: `The course has been removed from your wishlist.`,
+        });
+      } else {
+        await createWishlist({ courseId, userId }).unwrap();
+        notification.success({
+          message: 'Added to Wishlist',
+          description: `The course has been added to your wishlist.`,
+        });
+      }
+    } catch {
+      notification.error({
+        message: 'Error Changing Wishlist',
+        description: `An error occurred while changing your wishlist.`,
+      });
+    }
+  };
+
+  const handleWishlistClick = (courseId: string, isRemoving: boolean, userId: string) => {
+    handleWishlistChange(courseId, isRemoving, userId).catch(console.error);
+  };
+
+
   return (
     <Col
       lg={currentPath === '/start' || currentPath === '/' ? 6 : 8}
@@ -152,11 +199,10 @@ const CourseItem = (props: CourseItemProps) => {
                     <Button
                       onClick={btnClickHandler}
                       action={props.courseItem.finalPrice === 0 ? 'enroll' : 'buynow'}
-                      className={`course-item__enrolls-btn btn btn-secondary btn-sm ${
-                        props.courseItem.finalPrice === 0 && props.courseState !== 'ordered'
-                          ? 'course-item__enrolls-btn--free'
-                          : ''
-                      }`}
+                      className={`course-item__enrolls-btn btn btn-secondary btn-sm ${props.courseItem.finalPrice === 0 && props.courseState !== 'ordered'
+                        ? 'course-item__enrolls-btn--free'
+                        : ''
+                        }`}
                     >
                       {props.courseState !== 'ordered' && (props.courseItem.finalPrice === 0 ? 'Enroll' : 'Buy Now')}
                     </Button>
@@ -187,6 +233,17 @@ const CourseItem = (props: CourseItemProps) => {
                 </Col>
               </Row>
             </div>
+          </div>
+          <div className='course-item__wishlist'>
+            {isCourseInWishlist ? (
+              <Button className="wishlist-button" onClick={() => handleWishlistClick(courseId, true, userId)}>
+                <HeartFilled /> Remove from Wishlist
+              </Button>
+            ) : (
+              <Button className="wishlist-button" onClick={() => handleWishlistClick(courseId, false, userId)}>
+                <HeartOutlined /> Add to Wishlist
+              </Button>
+            )}
           </div>
         </div>
       </Badge.Ribbon>
