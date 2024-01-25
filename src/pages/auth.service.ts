@@ -220,6 +220,16 @@ export const authApi = createApi({
         };
       },
       invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+    }),
+    facebookLogin: build.mutation<loginResponse, { token: string }>({
+      query(body) {
+        return {
+          url: 'facebook-login',
+          method: 'POST',
+          body
+        };
+      },
+      invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     })
   })
 });
@@ -233,5 +243,6 @@ export const {
   useUpdateLastLoginMutation,
   useLogoutMutation,
   useAdminLogoutMutation,
-  useGoogleLoginMutation
+  useGoogleLoginMutation,
+  useFacebookLoginMutation
 } = authApi;
