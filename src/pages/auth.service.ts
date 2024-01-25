@@ -221,6 +221,11 @@ export const authApi = createApi({
       },
       invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
+
+    githubLogin: build.mutation<loginResponse, { code: string }>({
+      query(body) {
+        return {
+          url: 'github-login',
     facebookLogin: build.mutation<loginResponse, { token: string }>({
       query(body) {
         return {
@@ -244,5 +249,6 @@ export const {
   useLogoutMutation,
   useAdminLogoutMutation,
   useGoogleLoginMutation,
-  useFacebookLoginMutation
+  useGithubLoginMutation,
+ useFacebookLoginMutation
 } = authApi;
