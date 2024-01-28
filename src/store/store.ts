@@ -15,8 +15,12 @@ import { authApi } from '../pages/auth.service';
 import authReducer from '../pages/auth.slice';
 import { reportApi } from '../pages/admin/report.service';
 import reportReducer from '../pages/admin/report.slice';
+<<<<<<< Updated upstream
 import blogReducer from '../pages/admin/Blog/blog.slice';
 import { blogApi } from '../pages/admin/Blog/blog.service';
+=======
+import { feedbackApi } from '../pages/admin/Feedbacks/feedback.service'; 
+>>>>>>> Stashed changes
 
 const rootReducer = combineReducers({
   course: courseReducer,
@@ -33,8 +37,12 @@ const rootReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   report: reportReducer,
   [reportApi.reducerPath]: reportApi.reducer,
+<<<<<<< Updated upstream
   blog: blogReducer,
   [blogApi.reducerPath]: blogApi.reducer
+=======
+  [feedbackApi.reducerPath]: feedbackApi.reducer,
+>>>>>>> Stashed changes
 });
 
 export const store = configureStore({
@@ -49,7 +57,11 @@ export const store = configureStore({
       clientApi.middleware,
       authApi.middleware,
       reportApi.middleware,
+<<<<<<< Updated upstream
       blogApi.middleware,
+=======
+      feedbackApi.middleware,
+>>>>>>> Stashed changes
       rtkQueryErrorLogger
     )
 });

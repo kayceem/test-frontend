@@ -42,6 +42,7 @@ import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
 import Checkout from './pages/site/Checkout';
 import Contact from './pages/site/Contact';
+import Feedbacks from './pages/admin/Feedbacks/Feedbacks';
 import CourseDetail from './pages/site/CourseDetail';
 import SiteCourses from './pages/site/Courses';
 import HomePage from './pages/site/Home';
@@ -292,6 +293,16 @@ function App() {
             {
               index: true,
               element: <Categories />
+            }
+          ]
+        },
+        {
+          path: 'feedbacks',
+          children: [
+            {
+              index: true,
+              path: 'list',
+              element: <Feedbacks />
             }
           ]
         },
