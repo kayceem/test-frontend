@@ -8,6 +8,7 @@ import { ILesson, ISection } from '../../types/lesson.type';
 import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
+import { IContact } from '../../types/contact.type';
 import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/helpers';
 import { Blog } from '../../types/page.type';
@@ -229,9 +230,14 @@ export interface GetCoursesFromWishlistByUserIdResponse {
   courses: ICourse[];
 }
 
+export interface CreateContactResponse {
+  message: string;
+  contact: IContact;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist'], // Những kiểu tag cho phép dùng trong blogApi
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist', 'Feedbacks'], // Những kiểu tag cho phép dùng trong blogApi
   keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -771,7 +777,10 @@ export const clientApi = createApi({
         method: 'POST',
         body: { courseId, userId }
       }),
-      invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }, { type: 'Wishlist', id: 'CREATE' }]
+      invalidatesTags: () => [
+        { type: 'Wishlist', id: 'LIST' },
+        { type: 'Wishlist', id: 'CREATE' }
+      ]
     }),
     deleteWishlist: build.mutation<DeleteWishlistResponse, { courseId: string; userId: string }>({
       query: ({ courseId, userId }) => ({
@@ -780,6 +789,14 @@ export const clientApi = createApi({
         body: { userId }
       }),
       invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }]
+    }),
+    createFeedback: build.mutation<CreateContactResponse, IContact>({
+      query: (contactDetails) => ({
+        url: 'feedbacks/feedback/create',
+        method: 'POST',
+        body: contactDetails
+      }),
+      invalidatesTags: [{ type: 'Feedbacks', id: 'LIST' }]
     })
   })
 });
@@ -815,5 +832,6 @@ export const {
   useCreateWishlistMutation,
   useDeleteWishlistMutation,
   useGetCourseIdsFromWishlistByUserIdQuery,
-  useGetCoursesFromWishlistByUserIdQuery
+  useGetCoursesFromWishlistByUserIdQuery,
+  useCreateFeedbackMutation
 } = clientApi;
