@@ -1,5 +1,5 @@
 import { ReadOutlined } from '@ant-design/icons';
-import { Col, Row, Skeleton } from 'antd';
+import { Col, Pagination, Row, Skeleton } from 'antd';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
@@ -8,15 +8,17 @@ import { formatVideoLengthToHours } from '../../../utils/functions';
 import { useGetUserDetailQuery } from '../client.service';
 import CourseList from '../components/CourseList';
 import './StartLearning.scss';
+import { useState } from 'react';
 // type Props = {};
 
 const StartLearning = () => {
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const params = {
     _userId: userId,
-    _limit: 12,
-    _page: 1
+    _limit: 8,
+    _page: currentPage
   };
 
   const { data, isFetching } = useGetUserDetailQuery(params, {
@@ -105,6 +107,11 @@ const StartLearning = () => {
                     courses={data?.user.courses || []}
                     className='start-learning__courses-row'
                   />
+                )}
+                {data?.user.courses && data?.user.courses.length > 0 && (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Pagination current={currentPage} onChange={setCurrentPage} pageSize={8} />
+                  </div>
                 )}
               </div>
             </div>
