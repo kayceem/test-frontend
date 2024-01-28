@@ -67,6 +67,7 @@ import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
 import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 import Social from './pages/site/Social';
+import BlogList from './pages/admin/Blog/Blog';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -255,7 +256,6 @@ function App() {
         },
         {
           path: 'courses',
-
           children: [
             {
               index: true,
@@ -300,56 +300,65 @@ function App() {
           children:
             adminRole === UserRole.ADMIN
               ? [
-                {
-                  index: true,
-                  element: <ReportsCenter />
-                },
-                {
-                  path: 'users-progress',
-                  element: <UsersProgress />
-                },
-                {
-                  path: 'users-segment',
-                  element: <UsersSegment />
-                },
-                {
-                  path: 'course-insights',
-                  element: <CourseInsights />
-                },
-                {
-                  path: 'courses-revenue',
-                  element: <CoursesRevenue />
-                },
-                {
-                  path: 'instructors-revenue',
-                  element: <InstructorsRevene />
-                },
-                {
-                  path: 'cancelled-sales',
-                  element: <CancelledSales />
-                },
-                {
-                  path: 'courses-revenues',
-                  element: <CoursesRevenues />
-                },
-                {
-                  path: 'instructors-revenues',
-                  element: <InstructorsRevenues />
-                },
-                {
-                  path: 'certifications',
-                  element: <Certifications />
-                },
-                {
-                  path: 'reviews-center',
-                  element: <ReviewsCenter />
-                }
-              ]
+                  {
+                    index: true,
+                    element: <ReportsCenter />
+                  },
+                  {
+                    path: 'users-progress',
+                    element: <UsersProgress />
+                  },
+                  {
+                    path: 'users-segment',
+                    element: <UsersSegment />
+                  },
+                  {
+                    path: 'course-insights',
+                    element: <CourseInsights />
+                  },
+                  {
+                    path: 'courses-revenue',
+                    element: <CoursesRevenue />
+                  },
+                  {
+                    path: 'instructors-revenue',
+                    element: <InstructorsRevene />
+                  },
+                  {
+                    path: 'cancelled-sales',
+                    element: <CancelledSales />
+                  },
+                  {
+                    path: 'courses-revenues',
+                    element: <CoursesRevenues />
+                  },
+                  {
+                    path: 'instructors-revenues',
+                    element: <InstructorsRevenues />
+                  },
+                  {
+                    path: 'certifications',
+                    element: <Certifications />
+                  },
+                  {
+                    path: 'reviews-center',
+                    element: <ReviewsCenter />
+                  }
+                ]
               : []
         },
         {
           path: 'settings',
           element: <Settings />
+        },
+        {
+          path: 'blog',
+          children: [
+            {
+              index: true,
+              element: <BlogList />
+            }
+          ]
         }
       ],
       errorElement: <div>Admin Error</div>

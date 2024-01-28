@@ -91,6 +91,14 @@ export interface CourseError {
   };
 }
 
+export interface BlogError {
+  status: number;
+  data: {
+    message: string;
+    errorType: string;
+  };
+}
+
 export interface adminLoginError {
   error: {
     data: {

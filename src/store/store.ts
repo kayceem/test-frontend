@@ -15,6 +15,8 @@ import { authApi } from '../pages/auth.service';
 import authReducer from '../pages/auth.slice';
 import { reportApi } from '../pages/admin/report.service';
 import reportReducer from '../pages/admin/report.slice';
+import blogReducer from '../pages/admin/Blog/blog.slice';
+import { blogApi } from '../pages/admin/Blog/blog.service';
 
 const rootReducer = combineReducers({
   course: courseReducer,
@@ -30,7 +32,9 @@ const rootReducer = combineReducers({
   auth: authReducer,
   [authApi.reducerPath]: authApi.reducer,
   report: reportReducer,
-  [reportApi.reducerPath]: reportApi.reducer
+  [reportApi.reducerPath]: reportApi.reducer,
+  blog: blogReducer,
+  [blogApi.reducerPath]: blogApi.reducer
 });
 
 export const store = configureStore({
@@ -45,6 +49,7 @@ export const store = configureStore({
       clientApi.middleware,
       authApi.middleware,
       reportApi.middleware,
+      blogApi.middleware,
       rtkQueryErrorLogger
     )
 });
