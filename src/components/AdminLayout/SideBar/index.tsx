@@ -56,22 +56,26 @@ const SideBar = () => {
   const items: MenuItem[] = [
     getItem('sangtrandev', 'myprofile', <BorderOuterOutlined />),
     getItem('Dashboard', 'dashboard', <PieChartOutlined />),
-    getItem('Categories', 'categories', <UnorderedListOutlined />, [getItem('Course Categories', 'categories'), getItem('Lesson Type', 'lesson-type')]),
-    getItem('Courses', 'courses', <DesktopOutlined />, 
-    [
-      getItem('Course Manager', 'courses'), 
-      getItem('Course Discuss', 'courses-discusses'), 
-      getItem('Course Notes', 'courses-notes')]),
+    getItem('Categories', 'categories', <UnorderedListOutlined />, [
+      getItem('Course Categories', 'categories'),
+      getItem('Lesson Type', 'lesson-type')
+    ]),
+    getItem('Courses', 'courses', <DesktopOutlined />, [
+      getItem('Course Manager', 'courses'),
+      getItem('Course Discuss', 'courses-discusses'),
+      getItem('Course Notes', 'courses-notes')
+    ]),
     (adminRole === UserRole.ADMIN &&
       getItem('Orders', 'orders', <ShoppingCartOutlined />, [
-        getItem('Order Manager', 'orders'), 
-        getItem('Transactions', 'transaction')])) as MenuItem,
+        getItem('Order Manager', 'orders'),
+        getItem('Transactions', 'transaction')
+      ])) as MenuItem,
     (adminRole === UserRole.ADMIN &&
       getItem('Users', 'users', <UserOutlined />, [
         getItem('All Users', 'users'),
         getItem('Admins', 'admins'),
         getItem('Intructors', 'intructors'),
-        getItem('Permission', 'permission'), // Permission for each user and function
+        getItem('Permission', 'permission') // Permission for each user and function
       ])) as MenuItem,
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
@@ -110,22 +114,19 @@ const SideBar = () => {
           'group'
         )
       ])) as MenuItem,
-    getItem('Marketing', 'marketing', <TagsOutlined />, 
-    [
+    getItem('Marketing', 'marketing', <TagsOutlined />, [
       getItem('Coupons Type', 'marketing/coupon-types'),
       getItem('Bundles', 'marketing/bundles'),
       getItem('Subscriptions', 'marketing/subscriptions'),
-      getItem('Coupons', 'marketing/coupons'),
+      getItem('Coupons', 'marketing/coupons')
     ]),
-    getItem('Blog', 'blog', <BoldOutlined />, 
-    [
-      getItem('Blog Type', 'blog/blog-type'),
+    getItem('Blog', 'blog', <BoldOutlined />, [
+      getItem('Blog List', 'blog'),
       getItem('Posts', 'blog/posts'),
-      getItem('Blog comments', 'blog/comments'),
+      getItem('Blog comments', 'blog/comments')
     ]),
-    getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, 
-    [
-      getItem('Feedbacks', 'feedbacks/list'),
+    getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [
+      getItem('Feedbacks', 'feedbacks/list')
       // getItem('Blog comments', 'blog/comments'),
     ]),
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
