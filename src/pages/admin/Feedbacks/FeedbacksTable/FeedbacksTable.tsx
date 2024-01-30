@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Input, Table, Pagination, Button, Space, message } from 'antd';
-import { useGetFeedbacksQuery, useDeleteFeedbackMutation  } from '../feedback.service';
+import { useGetFeedbacksQuery, useDeleteFeedbackMutation } from '../feedback.service';
 import FeedbackDetailsModal from '../FeedbackDetailsModal/FeedbackDetailsModal';
 import { IContact } from '../../../../types/contact.type';
+import './FeedbacksTable.scss';
 
 const { Search } = Input;
 
@@ -28,7 +29,8 @@ const FeedbacksTable: React.FC = () => {
   };
 
   const handleDelete = (feedbackId: string) => {
-    deleteFeedback(feedbackId).unwrap()
+    deleteFeedback(feedbackId)
+      .unwrap()
       .then(() => {
         void message.success('Feedback deleted successfully');
       })
@@ -36,26 +38,25 @@ const FeedbacksTable: React.FC = () => {
         void message.error('Failed to delete feedback');
       });
   };
-  
 
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: 'Message',
       dataIndex: 'message',
       key: 'message',
-      ellipsis: true
+      ellipsis: true,
     },
     {
       title: 'Actions',
@@ -65,8 +66,8 @@ const FeedbacksTable: React.FC = () => {
           <Button onClick={() => handleViewDetails(record._id)}>View Details</Button>
           <Button onClick={() => handleDelete(record._id)}>Delete</Button>
         </Space>
-      )
-    }
+      ),
+    },
   ];
 
   const handlePageChange = (page: number, pageSize?: number) => {
@@ -75,8 +76,10 @@ const FeedbacksTable: React.FC = () => {
   };
 
   return (
-    <div>
-      <Search placeholder='Search by name' onSearch={handleSearch} enterButton allowClear />
+    <div className='feedbacks-table'>
+      <div className='search-bar'>
+        <Search placeholder='Search by name' onSearch={handleSearch} enterButton allowClear />
+      </div>
       <Table
         dataSource={data?.feedbacks as IContact[]}
         columns={columns}
@@ -85,6 +88,7 @@ const FeedbacksTable: React.FC = () => {
         loading={isFetching}
       />
       <Pagination
+        className='pagination'
         current={currentPage}
         pageSize={pageSize}
         total={data?.total}

@@ -13,6 +13,7 @@ import ReviewsCenter from './components/ReviewsCenter';
 import UsersHeader from './components/UsersHeader';
 import UsersProgressHeader from './components/UsersProgress';
 import BlogHeader from './components/BlogHeader';
+import FeedbacksHeader from './components/Feedbacks/Feedbacks';
 const { Header } = Layout;
 const AdminHeader = () => {
   const {
@@ -37,6 +38,7 @@ const AdminHeader = () => {
       {path === '/author/reports/instructors-revenue' && <InstructorsRevenues />}
       {path === '/author/reports/cancelled-sales' && <CancelledSales />}
       {path === '/author/blog' && <BlogHeader />}
+      {path === '/author/feedbacks/list' && <FeedbacksHeader />}
     </Header>
   );
 };
