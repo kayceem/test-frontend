@@ -322,8 +322,6 @@ const CourseDetail = () => {
                     <div className='course-detail__overview-includes'>
                       <h4 className='course-detail__overview-includes-title'>This course includes:</h4>
                       <List
-                        // header={<div>Header</div>}
-                        // footer={<div>Footer</div>}
                         dataSource={overviewData}
                         renderItem={(item) => (
                           <List.Item>
@@ -339,7 +337,6 @@ const CourseDetail = () => {
           </div>
         </div>
         <div className='container'>
-          {/* Include section */}
           <div className='course-detail__includes'>
             <div className='course-detail__includes-list'>
               <div className='course-detail__includes-item'>
@@ -347,7 +344,6 @@ const CourseDetail = () => {
                   <List
                     header={<div className='course-detail__includes-header'>What you'll learn</div>}
                     footer={<div className='course-detail__includes-footer'>Show more</div>}
-                    //   bordered
                     dataSource={courseData}
                     renderItem={(item) => (
                       <List.Item>
@@ -364,7 +360,6 @@ const CourseDetail = () => {
               </div>
             </div>
           </div>
-          {/* Content section */}
           <div className='course-detail__content'>
             <div className='course-detail__content-list'>
               <div className='course-detail__content-item'>
@@ -382,21 +377,14 @@ const CourseDetail = () => {
                     </Row>
                   </div>
                 </div>
-                {/* Collapse section */}
                 {courseId && <SectionList courseId={courseId} />}
               </div>
             </div>
           </div>
-          {/* Feedback and comments*/}
-          {/* <div className='feedback-course mt-12'>
-          <FeedBackCourse />
-        </div> */}
-
           <div className='course-detail__related-courses container'>
             {courseId !== undefined && <RelatedCourses courseId={courseId} />}
           </div>
           </div>
-          {/*  Course author */}
           <div className='course-detail__author spacing-h-md'>
             <div className='course-detail__author-wrap container'>
               <div className='course-detail__author-list'>

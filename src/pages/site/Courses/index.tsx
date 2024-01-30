@@ -18,8 +18,6 @@ const Courses = () => {
   const filtersDefaults: SearchParamsStateType = {
     minPrice: { type: 'number', default: null },
     maxPrice: { type: 'number', default: null },
-    // isSold: { type: 'boolean', default: true },
-    // types: { type: 'string', default: null, multiple: true },
     _author: { type: 'string', default: [], multiple: true },
     _level: { type: 'string', default: [], multiple: true },
     _price: { type: 'string', default: [], multiple: true },
@@ -29,7 +27,6 @@ const Courses = () => {
 
   const sortDefaults: SearchParamsStateType = {
     sort: { type: 'string', default: 'relavant' }
-    // orderDir: { type: 'string', default: 'asc' }
   };
 
   const [filterParams, setFilterParams] = useSearchParamsState(filtersDefaults);
@@ -79,14 +76,12 @@ const Courses = () => {
   const navigate = useNavigate();
 
   const sortChangeHandler = (value: string) => {
-    console.log('value: ', value);
 
     setSortParams({ _sort: value });
   };
 
   const filterAuthorsHandler = (e: CheckboxChangeEvent) => {
     const { checked, value } = e.target;
-    // console.log('e.target: ', e.target.getAttribute('author-id'));
     const newValues = checked
       ? [...filterParams._author, value]
       : filterParams._author.filter((item: string) => item !== value);
@@ -171,7 +166,6 @@ const Courses = () => {
               </div>
             </div>
             <div className='courses__filter-bar-item'>
-              {/* <Search placeholder='Search for courses' onSearch={onSearch} style={{ width: 200 }} /> */}
             </div>
             <div className='courses__filter-bar-item'>
               <div className='status-filter'>
@@ -195,16 +189,6 @@ const Courses = () => {
                       </li>
                     </>
                   )}
-                  {/* <li className='status-filter__item'>
-                    <a href='' className='status-filter__item-link'>
-                      Popular
-                    </a>
-                  </li>
-                  <li className='status-filter__item'>
-                    <a href='' className='status-filter__item-link'>
-                      Free
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -223,27 +207,12 @@ const Courses = () => {
                         >
                           {author[1].name}
                         </Checkbox>
-                        {/* <a
-                          onClick={filterAuthorsHandler}
-                          className='authors-filter__item-link'
-                          href=''
-                          author-id={author[1]._id}
-                        >
-                          {author[1].name}
-                        </a> */}
                       </li>
                     );
                   })}
-                  {/* <li className='authors-filter__item'>
-                    <a className='authors-filter__item-link' href=''>
-                      Sang
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
-
-            {/* Level filter */}
             <div className='courses__filter-bar-item'>
               <h3 className='courses__filter-bar-item-title'>Level</h3>
               <div className='course-level'>
@@ -261,31 +230,9 @@ const Courses = () => {
                       </li>
                     );
                   })}
-                  {/* <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      All Levels
-                    </a>
-                  </li>
-                  <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      Beginer
-                    </a>
-                  </li>
-                  <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      Intermidate
-                    </a>
-                  </li>
-                  <li className='course-level__item'>
-                    <a className='course-level__item-link' href=''>
-                      Expert
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
-
-            {/* Price filter */}
             <div className='courses__filter-bar-item'>
               <h3 className='courses__filter-bar-item-title'>Price</h3>
               <div className='course-by-price'>
@@ -303,8 +250,6 @@ const Courses = () => {
                 </ul>
               </div>
             </div>
-
-            {/* Topic filter */}
             <div className='courses__filter-bar-item'>
               <h3 className='courses__filter-bar-item-title'>Topic course</h3>
               <div className='course-topic'>
@@ -322,16 +267,6 @@ const Courses = () => {
                       </li>
                     );
                   })}
-                  {/* <li className='course-topic__item'>
-                    <a className='course-topic__item-link' href=''>
-                      Javascript
-                    </a>
-                  </li>
-                  <li className='course-topic__item'>
-                    <a className='course-topic__item-link' href=''>
-                      Free
-                    </a>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -340,17 +275,7 @@ const Courses = () => {
               <h3 className='courses__filter-bar-item-title'>Course Ratings</h3>
               <div className='course-ratings'>
                 <ul className='course-ratings__list'>
-                  {/* <li className='course-ratings__item'>
-                    <a className='course-ratings__item-link' href=''>
-                      5 star
-                    </a>
-                  </li>
-                  <li className='course-ratings__item'>
-                    <a className='course-ratings__item-link' href=''>
-                      4.5 star
-                    </a>
-                  </li> */}
-                  {/* onChange={filterRatingHandler} value={value} */}
+                  
                   <Radio.Group>
                     <Space direction='vertical'>
                       <Radio value={1}>
@@ -369,10 +294,6 @@ const Courses = () => {
                         <Rate allowHalf defaultValue={3} />
                         <span className='ml-2 font-normal'> 3 & up</span>
                       </Radio>
-                      {/* <Radio value={4}>
-                        More...
-                        {value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
-                      </Radio> */}
                     </Space>
                   </Radio.Group>
                 </ul>

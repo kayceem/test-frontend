@@ -4,7 +4,6 @@ import type { FilterValue } from 'antd/es/table/interface';
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './OrdersList.scss';
-// import { useGetCourseQuery, useGetCoursesQuery } from '../../course.service';
 import { DownloadOutlined } from '@ant-design/icons';
 import { IOrder } from '../../../../../types/order.type';
 interface DataOrderType {
@@ -46,13 +45,11 @@ const columns: ColumnsType<DataOrderType> = [
     ],
     filterMode: 'tree',
     filterSearch: true,
-    // onFilter: (value: string | number | boolean, record) => record.name.startsWith(value.toString()),
     width: '30%'
   },
   {
     title: 'Register',
     dataIndex: 'register'
-    // sorter: (a, b) => Number(a.author) - Number(b.author)
   },
   {
     title: 'Courses',
@@ -107,14 +104,11 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
             {(items || []).map((course) => (
               <Avatar src={course.thumbnail} />
             ))}
-            {/* <Avatar src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=2' />
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar> */}
             <Tooltip title='Courses' placement='top'>
               {(items || []).map((course) => (
                 <Avatar src={course?.thumbnail} />
               ))}
             </Tooltip>
-            {/* <Avatar style={{ backgroundColor: '#1677ff' }} icon={<AntDesignOutlined />} /> */}
           </Avatar.Group>
         ),
         transaction: (
@@ -142,7 +136,6 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   });
 
   const onChange: TableProps<DataOrderType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
 
     setTableParams({
       pagination
@@ -152,7 +145,6 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   return (
     <Fragment>
       <div className='users-list'>
-        {/* {isFetching && <Skeleton />} */}
         <Table columns={columns} dataSource={ordersData} onChange={onChange} pagination={tableParams.pagination} />
       </div>
     </Fragment>

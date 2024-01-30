@@ -30,7 +30,6 @@ const CourseTitle = () => {
     value: string,
     options: { label: string; value: string } | { label: string; value: string }[]
   ) => {
-    console.log(`selected ${value}`, options);
 
     dispatch(
       handleFormData({
@@ -69,7 +68,6 @@ const CourseTitle = () => {
             Course Categories
           </label>
           <Select
-            // defaultValue='frontend'
             value={formData.categoryId.name}
             style={{ width: '100%' }}
             onChange={cateChangeHandler}

@@ -28,7 +28,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   const playerRef = useRef<ReactPlayer | null>(null);
   const [contentLink, setContentLink] = useState('');
   const [form] = Form.useForm();
-  // const [formData, setFormData] = useState<Omit<ISection, '_id'>>(initialSection);
   const [addLesson, addLessonResult] = useAddLessonMutation();
 
   const [uploadMethod, setUploadMethod] = useState('link');
@@ -65,9 +64,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   const sectionId = useSelector((state: RootState) => state.course.sectionId);
 
   const showDrawer = () => {
-    // props.onCloseActivies();
-
-    // Close section add activities --> Add later
     setOpen(true);
   };
 
@@ -86,14 +82,10 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   };
 
   const onPasteVideoLink = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    console.log(e.clipboardData.getData('text'));
     setContentLink(e.clipboardData.getData('text'));
   };
 
   const onFinish = (formData: Omit<ILesson, '_id'>) => {
-    console.log(formData);
-    console.log(playerRef.current?.getDuration());
-    console.log(formatTime(playerRef.current?.getDuration() || 0));
 
     const lessonData: Omit<ILesson, '_id'> = {
       name: formData.name,
@@ -108,7 +100,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
     addLesson(lessonData)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         notification.success({
           message: 'Add lesson successfully',
@@ -124,7 +115,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
         console.log(error);
       });
 
-    console.log(addLessonResult);
   };
 
   const onuploadMethodChange = (e: RadioChangeEvent) => {
@@ -153,7 +143,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
         <Row>
           <Col md={8}></Col>
           <Col md={16}>
-            {/* Form maybe cange layter */}
             <Form form={form} layout='vertical' hideRequiredMark onFinish={onFinish}>
               <Row gutter={16}>
                 <Col span={24}>
@@ -219,10 +208,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                         <Radio value='SOON'>SOON</Radio>
                         <Radio value='FREE'>FREE</Radio>
                         <Radio value='PAID'>PAID</Radio>
-                        {/* <Radio value={4}>
-                          More...
-                          {value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
-                        </Radio> */}
                       </Space>
                     </Radio.Group>
                   </Form.Item>
@@ -230,30 +215,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
               </Row>
 
               <Row gutter={16}>
-                {/* <Col span={12}>
-                  <Form.Item
-                    name='approver'
-                    label='Approver'
-                    rules={[{ required: true, message: 'Please choose the approver' }]}
-                  >
-                    <Select placeholder='Please choose the approver'>
-                      <Option value='jack'>Jack Ma</Option>
-                      <Option value='tom'>Tom Liu</Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name='dateTime'
-                    label='DateTime'
-                    rules={[{ required: true, message: 'Please choose the dateTime' }]}
-                  >
-                    <DatePicker.RangePicker
-                      style={{ width: '100%' }}
-                      getPopupContainer={(trigger) => trigger.parentElement!}
-                    />
-                  </Form.Item>
-                </Col> */}
               </Row>
               <Row gutter={16}>
                 <Col span={24}>

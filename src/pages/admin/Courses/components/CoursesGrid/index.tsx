@@ -15,7 +15,6 @@ const CoursesGrid = (props: CoursesGridProps) => {
   const [current, setCurrent] = useState(props.pagination._page);
 
   const onChange: PaginationProps['onChange'] = (page: number) => {
-    console.log(page);
     props.onPaginate(page);
     setCurrent(page);
   };

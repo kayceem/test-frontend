@@ -11,10 +11,8 @@ type SectionItemProps = {
 };
 
 const SectionItem = (props: SectionItemProps) => {
-  // const userId = useSelector((state: RootState) => state.auth.admin);
 
   const { data, isFetching } = useGetLessonsBySectionIdQuery(props.section._id);
-  console.log(data);
 
   return (
     <div className='section-item'>

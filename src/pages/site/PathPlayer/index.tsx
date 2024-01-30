@@ -64,7 +64,6 @@ const PathPlayer = () => {
       createCertificate(newCertificate)
         .unwrap()
         .then((result) => {
-          console.log('create certificate successfully!', result);
           notification.success({
             message:
               'Congratulation! You have completed the course. Let check the certificate section to get your achievement!'
@@ -83,8 +82,6 @@ const PathPlayer = () => {
   // First initital first lesson of course
 
   useEffect(() => {
-    // console.log('lesson id: ', data?.course.lessons[0]._id || '');
-    // console.log('content: ', data?.course.lessons[0].content || '');
     let currentPlayingVideo = {
       lessonId: '',
       content: ''
@@ -177,9 +174,6 @@ const PathPlayer = () => {
                   <Link className='path-player__menu-header-nav-back' to='/start'>
                     <ArrowLeftOutlined className='path-player__menu-header-nav-back-icon' /> Back to course page
                   </Link>
-                  {/* <Button className='path-player__menu-header-nav-collapse'>
-                    <DoubleLeftOutlined className='path-player__menu-header-nav-collapse-btn' />
-                  </Button> */}
                 </div>
                 <h3 className='path-player__menu-header-title'>{data?.course.name}</h3>
                 <div className='path-player__menu-progress'>

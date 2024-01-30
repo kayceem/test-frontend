@@ -36,7 +36,6 @@ const Categories = () => {
 
   const dispatch = useDispatch();
   const onSearchHandler = (value: string) => {
-    console.log(value);
 
     setParams({ ...params, _q: value });
   };
@@ -63,7 +62,6 @@ const Categories = () => {
   };
 
   const cateFilterHandler = (value: string) => {
-    console.log('value: ', value);
     setParams({ ...params, _cateName: value });
   };
 
@@ -81,33 +79,10 @@ const Categories = () => {
               size='middle'
               placeholder='Please select your category'
               defaultValue={'All Categories'}
-              // onChange={handleChange}
               onChange={cateFilterHandler}
               style={{ width: '240px' }}
               options={cateFilterList}
             />
-            {/* Tags filter here */}
-            {/* <Select
-              size='middle'
-              placeholder='Please select'
-              defaultValue={['All tags', '']}
-              // onChange={handleChange}
-              style={{ width: '100%' }}
-              options={[
-                {
-                  value: 'jack',
-                  label: 'Jack'
-                },
-                {
-                  value: 'lucy',
-                  label: 'Lucy'
-                },
-                {
-                  value: 'tom',
-                  label: 'Tom'
-                }
-              ]}
-            /> */}
           </Space>
         </div>
         <div className='users__show-result'></div>
@@ -115,7 +90,6 @@ const Categories = () => {
           {isFetching ? <Skeleton /> : <CategoriesList onCateEdit={cateEditHandler} data={data?.categories || []} />}
         </div>
       </div>
-      {/* isOpen={open} onClose={() => setOpen(false)} */}
       <CreateCategory isOpen={open} onClose={closeDrawerHandler} />
     </div>
   );

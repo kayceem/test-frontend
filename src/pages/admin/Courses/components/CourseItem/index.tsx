@@ -19,7 +19,6 @@ import './CourseItem.scss';
 import CourseSettings from './CourseSettings';
 
 const CourseItem = (props: CourseItemProps) => {
-  console.log('props.course: ', props.course);
 
   const {
     access,
@@ -42,16 +41,12 @@ const CourseItem = (props: CourseItemProps) => {
   const clickHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    console.log((e.target as HTMLAnchorElement).dataset.action);
-
     const eventAction = (e.target as HTMLAnchorElement).dataset.action;
 
-    console.log(eventAction);
 
     deleteCourse(_id)
       .unwrap()
       .then((res) => {
-        console.log(res);
 
         notification.success({
           message: 'Success',
@@ -62,7 +57,6 @@ const CourseItem = (props: CourseItemProps) => {
         console.log(err);
       });
 
-    console.log(deleteCourseResult);
   };
 
   let thumbnailUrl = '';
@@ -78,7 +72,6 @@ const CourseItem = (props: CourseItemProps) => {
         <Badge.Ribbon text='Special offer'>
           <Card
             className='course-content__item-card'
-            // style={{ width: 300 }}
             cover={<img className='course-content__item-thumb' alt={name} src={thumbnailUrl} />}
             actions={[
               <div></div>,

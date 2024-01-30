@@ -34,7 +34,6 @@ const AddUser: React.FC<AddUserProps> = (props) => {
   });
 
   const submitHandler = (formData: Omit<IUser, '_id'>) => {
-    console.log('submit', formData);
 
     const newUser: Omit<IUser, '_id'> = {
       name: formData.name,
@@ -46,7 +45,6 @@ const AddUser: React.FC<AddUserProps> = (props) => {
     };
 
     if (userId) {
-      console.log('update user');
 
       updateUser({
         _id: userId,
@@ -54,7 +52,6 @@ const AddUser: React.FC<AddUserProps> = (props) => {
       })
         .unwrap()
         .then((result) => {
-          console.log('result: ', result);
           props.onClose();
 
           notification.success({
@@ -68,23 +65,13 @@ const AddUser: React.FC<AddUserProps> = (props) => {
     } else {
       addUser(newUser)
         .then((result) => {
-          console.log(result);
           props.onClose();
           notification.success({
             message: 'Add User',
             description: 'Add user successfully!'
           });
-          // if(result.status === 401) {
-          //   notification.error({
-          //     message: 'Add User',
-          //     description: 'Add user failed!'
-          //   });
-          // }else {
-
-          // }
         })
         .catch((error: UserError) => {
-          console.log(error);
 
           notification.error({
             message: 'Add User failed',
@@ -99,7 +86,6 @@ const AddUser: React.FC<AddUserProps> = (props) => {
       setFormData(data.user);
       form.setFieldsValue(data.user);
     } else {
-      // setFormData(initialState);
       form.setFieldsValue({
         _id: '',
         name: '',

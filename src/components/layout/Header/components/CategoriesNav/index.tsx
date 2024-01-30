@@ -19,31 +19,6 @@ const CategoriesNav = () => {
               </div>
             );
           })}
-
-        {/* <div className='header__categories-item'>
-          <Link to=''>Frontend</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>Backend</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>Devops</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>Fullstack</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>IOT</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>Blockchain</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>Ai</Link>
-        </div>
-        <div className='header__categories-item'>
-          <Link to=''>Data science</Link>
-        </div> */}
       </div>
       </div>
     </div>
