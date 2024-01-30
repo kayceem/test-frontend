@@ -39,18 +39,15 @@ const SettingContent = (blogId: string) => {
   const [softDeleteBlog] = useSoftDeleteBlogMutation();
 
   const softDeleteBlogHandler = (blogId: string) => {
-    console.log(blogId);
     softDeleteBlog(blogId)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         notification.success({
           message: 'Blog delete successfully'
         });
       })
       .catch((error: BlogError) => {
-        console.log('error: ', error);
 
         notification.error({
           message: 'Failed to delete blog'
@@ -152,7 +149,6 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit }) => {
   });
 
   const onChange: TableProps<DataBlogType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
     setTableParams({
       pagination,
       ...filters
@@ -161,7 +157,6 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit }) => {
 
   return (
     <div className='users-list'>
-      {/* {isFetching && <Skeleton />} */}
       <Table columns={columns} dataSource={blogsSource} onChange={onChange} pagination={tableParams.pagination} />
     </div>
   );

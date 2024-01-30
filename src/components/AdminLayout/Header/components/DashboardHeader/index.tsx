@@ -34,7 +34,6 @@ const DashboardHeader = () => {
     adminLogout()
       .unwrap()
       .then((result) => {
-        console.log('result: ', result);
 
         notification.success({
           message: result.message

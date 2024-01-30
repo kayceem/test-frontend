@@ -40,12 +40,10 @@ const SettingContent = (props: { courseId: string }) => {
   const [deleteCourse, deleteCourseResult] = useDeleteCourseMutation();
 
   const deleteCourseHandler = () => {
-    console.log(props.courseId);
 
     deleteCourse(props.courseId)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         notification.success({
           message: 'Delete course ',
@@ -80,7 +78,6 @@ const Courses = () => {
   };
 
   const changeTableToList = () => {
-    console.log('changeTableToList');
 
     setViewTable('list');
   };
@@ -315,9 +312,6 @@ const Courses = () => {
     value: string,
     option: { _id: string; text: string; name: string } | { _id: string; text: string; name: string }[]
   ) => {
-    console.log('cate filter: ', value);
-
-    console.log('record: ', option);
 
     if (!Array.isArray(option)) {
       setParams({
@@ -332,28 +326,7 @@ const Courses = () => {
       <Header className='sub-header'>
         <Space className='sub-header__wrap'>
           <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} />
-          {/* <Select
-            showSearch
-            placeholder='Select a person'
-            optionFilterProp='children'
-            onChange={onSelectChange}
-            onSearch={onSelectSearch}
-            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
-            options={[
-              {
-                value: 'jack',
-                label: 'Jack'
-              },
-              {
-                value: 'lucy',
-                label: 'Lucy'
-              },
-              {
-                value: 'tom',
-                label: 'Tom'
-              }
-            ]}
-          /> */}
+        
 
           {viewTable === 'grid' && (
             <Select
@@ -370,7 +343,6 @@ const Courses = () => {
             <Select
               size='middle'
               placeholder='Please select Your Authors'
-              // defaultValue={[{ text: 'All Authors', value: 'all' }]}
               onChange={authorsFitlerHandler}
               style={{ width: '200px' }}
               options={authorFilterList}

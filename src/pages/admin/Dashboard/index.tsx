@@ -31,24 +31,20 @@ const Dashboard: React.FC = () => {
   const chartName = useSelector((state: RootState) => state.report.chartName);
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
 
     dispatch(selectPreviousDays(Number(value)));
   };
 
   const showNewUserSignupsChart = () => {
-    console.log('showNewUserSignupsChart');
 
     dispatch(showChart('new-signups'));
   };
 
   const showRevenuesChart = () => {
-    console.log('showRevenuesChart');
     dispatch(showChart('revenues'));
   };
 
   const showCourseSalesChart = () => {
-    console.log('showCourseSalesChart');
     dispatch(showChart('course-sales'));
   };
 
@@ -88,7 +84,6 @@ const Dashboard: React.FC = () => {
                   >
                     Course sales
                   </Button>
-                  {/* <Button className='dashboard__chart-header-nav-item'>Active learners</Button> */}
                   <Select
                     className='dashboard__chart-header-nav-item dashboard__chart-header-nav-item--select'
                     defaultValue='7'
@@ -309,14 +304,6 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div className='online-users__body dashboard__latest-item-body'>
                   <div className='online-users__item'>
-                    {/* <img
-                      src='https://lwfiles.mycourse.app/648eaf1c0c0c35ee7db7e0a2-public/avatars/thumbs/648eaf1c0c0c35ee7db7e0a3.jpg'
-                      className='online-users__item-avatar'
-                    ></img>
-                    <div className='online-users__item-info'>
-                      <div className='online-users__item-name'>Tran Nhat Sang</div>
-                      <div className='online-users__item-time'>1 month</div>
-                    </div> */}
                   </div>
                 </div>
               </div>

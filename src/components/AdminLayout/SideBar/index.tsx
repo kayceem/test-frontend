@@ -85,7 +85,6 @@ const SideBar = () => {
           null,
           [
             getItem('User Progress', 'reports/users-progress'),
-            // getItem('User Segment', 'reports/users-segment'),
             getItem('Course Insights', 'reports/course-insights')
           ],
           'group'
@@ -97,7 +96,6 @@ const SideBar = () => {
           [
             getItem('Certifications', 'reports/certifications'),
             getItem('Review center', 'reports/reviews-center')
-            // getItem('Question bank', 'reports/questions-bank')
           ],
           'group'
         ),
@@ -127,7 +125,6 @@ const SideBar = () => {
     ]),
     getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [
       getItem('Feedbacks', 'feedbacks/list')
-      // getItem('Blog comments', 'blog/comments'),
     ]),
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
     getItem('My account', 'account', <UserAddOutlined />),

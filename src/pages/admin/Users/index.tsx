@@ -15,7 +15,6 @@ const Users = () => {
 
   const [searchValue, setSearchValue] = useState('');
   const onSearchHandler = (value: string) => {
-    console.log(value);
 
     setSearchValue(value);
   };

@@ -34,8 +34,6 @@ const CourseList = (props: CourseListProps) => {
 
   const userId = useSelector((state: RootState) => state.auth.userId);
 
-  // const isAuth = useSelector((state: RootState) => state.auth.isAuth);
-
   const { data: userData } = useGetUserQuery(userId);
 
   const params = {
@@ -63,7 +61,6 @@ const CourseList = (props: CourseListProps) => {
   };
 
   const subscribeCourseHandler = (orderItem: IOrderItem) => {
-    console.log('subscribe course', orderItem);
 
     const newOrder: Omit<IOrder, '_id'> = {
       items: [orderItem],
@@ -85,7 +82,6 @@ const CourseList = (props: CourseListProps) => {
     createOrder(newOrder)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         navigate(`../cart/subscribe/course/${orderItem.courseId}`);
         notification.success({

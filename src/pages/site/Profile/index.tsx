@@ -44,8 +44,6 @@ const tabBarStyleCss = {
 const Profile = () => {
   const userId = useSelector((state: RootState) => state.auth.userId);
 
-  console.log('user id: ', userId);
-
   const params = {
     _userId: userId,
     _limit: 12,

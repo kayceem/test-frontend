@@ -33,9 +33,6 @@ const Login: React.FC<LoginProps> = (props) => {
     setIsSubmitting(true);
     login(userCredentials)
       .then((result) => {
-        // if(result.error) {
-        //   notification.error({ type: 'error', message: result.error.data.message, duration: 2 });
-        // }
         if ('error' in result) {
           notification.error({ type: 'error', message: 'login failed', description: 'Email or password incorrect' });
         }
@@ -79,16 +76,6 @@ const Login: React.FC<LoginProps> = (props) => {
         if (!loginResult.isLoading) {
           setIsSubmitting(false);
         }
-
-        // Handling error failed login here
-        // if ('error' in result) {
-        //   if ('status' in result.error) {
-        //     console.log('show notification!');
-        //   }
-        // }
-        // if (result.error.status === 500) {
-        //   console.log('show notification!');
-        // }
       })
       .catch((error) => {
         console.log('error:', error);
@@ -120,7 +107,6 @@ const Login: React.FC<LoginProps> = (props) => {
             <GoogleLoginButton />
           </GoogleOAuthProvider>
           <Button className='auth__socials-btn'>
-            {/* <FacebookFilled className='auth__socials-icon' /> */}
             <FacebookLoginButton />
           </Button>
           <Button className='auth__socials-btn'>
@@ -163,9 +149,6 @@ const Login: React.FC<LoginProps> = (props) => {
           <ButtonCmp disabled={isSubmitting} className='btn btn-primary btn-sm w-full'>
             {isSubmitting ? <Spin indicator={antIcon} /> : 'Login '}
           </ButtonCmp>
-          {/* <Button loading={true}>
-            Submit Ant Design <Spin indicator={antIcon} />;
-          </Button> */}
         </Form.Item>
       </Form>
       <div className='auth__footer'>

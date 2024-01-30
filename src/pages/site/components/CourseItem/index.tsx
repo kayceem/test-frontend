@@ -58,8 +58,6 @@ const CourseItem = (props: CourseItemProps) => {
     const btnEl = e.target as HTMLButtonElement;
     const dataAction = btnEl.dataset.action;
 
-    console.log('btn click handler!!!');
-
     // If already logined
 
     if (isAuth) {
@@ -68,7 +66,6 @@ const CourseItem = (props: CourseItemProps) => {
 
         navigate('/checkout');
       } else if (dataAction === 'enroll') {
-        console.log('go to enroll page');
 
         const newOrderItem: IOrderItem = {
           courseId: props.courseItem._id,
@@ -89,7 +86,6 @@ const CourseItem = (props: CourseItemProps) => {
       dispatch(openAuthModal());
     }
 
-    // console.log('enrolled or buy now!');
   };
 
   if (!props.courseItem) return null;
@@ -101,7 +97,6 @@ const CourseItem = (props: CourseItemProps) => {
     progressPercent = 0;
   }
 
-  // Go to course handler
   const gotoCourseHandler = () => {
     navigate(`/path-player?courseId=${props.courseItem._id}`);
   };
@@ -251,7 +246,6 @@ const CourseItem = (props: CourseItemProps) => {
   );
 };
 
-// generate default props for this component
 
 CourseItem.defaultProps = {
   courseItem: {
