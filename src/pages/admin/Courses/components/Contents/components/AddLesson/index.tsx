@@ -34,6 +34,8 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   const [uploadedVideoPath, setUploadedVideoPath] = useState('');
   const [videoDuration, setVideoDuration] = useState(0);
   const [fileList, setFileList] = useState<UploadFile<UploadVideoResponse>[]>([]);
+  const [uploadedPDFPath, setUploadedPDFPath] = useState('');
+  const [pdfFileList, setPdfFileList] = useState<UploadFile[]>([]);
 
 
   const uploadVideoProps: UploadProps = {
@@ -57,6 +59,33 @@ const AddLesson: React.FC<AddLessonProps> = () => {
       }
     },
 
+  };
+
+  const uploadPDFProps: UploadProps = {
+    name: 'pdfFile',
+    action: `${BACKEND_URL}/uploads/pdf`, 
+    fileList: pdfFileList,
+    maxCount: 1,
+    onChange(info) {
+      setPdfFileList(info.fileList);
+      if (info.file.status === 'done') {
+        void message.success(`${info.file.name} file uploaded successfully`);
+        const response = info.file.response as { pdfPath: string };
+        if (response && response.pdfPath) {
+          setUploadedPDFPath(response.pdfPath);
+        }
+      } else if (info.file.status === 'error') {
+        void message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    beforeUpload(file) {
+      const isPDF = file.type === 'application/pdf';
+      if (!isPDF) {
+        void message.error('You can only upload PDF file!');
+      }
+      return isPDF || Upload.LIST_IGNORE;
+    },
+    accept: '.pdf',
   };
 
 
@@ -86,15 +115,41 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   };
 
   const onFinish = (formData: Omit<ILesson, '_id'>) => {
+    let content;
+    let lessonType;
+    let videoLength = 0; 
+
+    switch (uploadMethod) {
+      case 'linkYoutube':
+        content = formData.content;
+        lessonType = 'link';
+        if (playerRef.current && playerRef.current.getDuration) {
+          videoLength = playerRef.current.getDuration();
+        }
+        break;
+      case 'uploadVideo':
+        content = uploadedVideoPath;
+        lessonType = 'video';
+        videoLength = videoDuration;
+        break;
+      case 'uploadPdf':
+        content = uploadedPDFPath;
+        lessonType = 'pdf';
+        videoLength = 0;
+        break;
+      default:
+        content = formData.content;
+        lessonType = 'link'; 
+    }
 
     const lessonData: Omit<ILesson, '_id'> = {
       name: formData.name,
-      content: uploadMethod === 'link' ? formData.content : uploadedVideoPath,
+      content: content,
       access: formData.access,
       sectionId: sectionId,
-      type: 'video',
+      type: lessonType,
       description: formData.description,
-      videoLength: uploadMethod === 'link' ? (playerRef.current?.getDuration() || 0) : videoDuration
+      videoLength: videoLength 
     };
 
     addLesson(lessonData)
@@ -153,11 +208,12 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                 <Col span={24}>
                   <Form.Item label="Upload Method">
                     <Radio.Group onChange={onuploadMethodChange} value={uploadMethod}>
-                      <Radio value="link">Link</Radio>
-                      <Radio value="upload">Upload Video</Radio>
+                      <Radio value="linkYoutube">Link</Radio>
+                      <Radio value="uploadVideo">Upload Video</Radio>
+                      <Radio value="uploadPdf">Upload PDF</Radio>
                     </Radio.Group>
                   </Form.Item>
-                  {uploadMethod === 'link' && (
+                  {uploadMethod === 'linkYoutube' && (
                     <Form.Item
                       name='content'
                       label='Link Youtube'
@@ -171,7 +227,7 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                     </Form.Item>
                   )}
 
-                  {uploadMethod === 'upload' && (
+                  {uploadMethod === 'uploadVideo' && (
                     <Form.Item
                       label='Upload Video'
                       rules={[{ required: true, message: 'Please upload a video' }]}
@@ -182,9 +238,22 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                     </Form.Item>
                   )}
 
+                  {
+                    uploadMethod === 'uploadPdf' && (
+                      <Form.Item
+                        label='Upload PDF'
+                        rules={[{ required: true, message: 'Please upload a PDF file' }]}
+                      >
+                        <Upload {...uploadPDFProps}>
+                          <Button icon={<UploadOutlined style={{ color: 'black' }} />}>Click to Upload PDF</Button>
+                        </Upload>
+                      </Form.Item>
+                    )
+                  }
+
                   <ReactPlayer
                     ref={playerRef}
-                    url={uploadMethod === 'link' ? contentLink : uploadedVideoPath}
+                    url={uploadMethod === 'linkYoutube' ? contentLink : uploadedVideoPath}
                     width={0}
                     height={0}
                     onDuration={setVideoDuration}
