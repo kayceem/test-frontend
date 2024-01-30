@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
-import { IOrder } from '../../../types/order.type';
+import { IOrder, IOrderHistory } from '../../../types/order.type';
 import { CustomError } from '../../../utils/helpers';
 
 interface getOrdersResponse {
@@ -8,6 +8,11 @@ interface getOrdersResponse {
   count: number;
   total: number;
   message: string;
+}
+
+export interface getOrderResponse {
+  message: string;
+  order: IOrderHistory;
 }
 
 export const orderApi = createApi({
@@ -60,17 +65,11 @@ export const orderApi = createApi({
     
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Orders', id: 'LIST' }])
     }),
-    getOrder: build.query<IOrder, string>({
-      query: (id) => ({
-        url: `orders/${id}`,
-        headers: {
-          hello: 'Im duoc'
-        },
-        params: {
-          first_name: 'du',
-          'last-name': 'duoc'
-        }
-      })
+    getOrder: build.query<getOrderResponse, string>({
+      query: (orderId) => ({
+        url: `orders/order/${orderId}`
+      }),
+      providesTags: (result, error, orderId) => [{ type: 'Orders', id: orderId }]
     }),
     updateOrder: build.mutation<IOrder, { id: string; body: IOrder }>({
       query(data) {
