@@ -69,6 +69,7 @@ import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 import Social from './pages/site/Social';
 import BlogList from './pages/admin/Blog/Blog';
+import TransactionsPage from './pages/admin/Transactions/Transactions';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -284,6 +285,15 @@ function App() {
             {
               index: true,
               element: adminRole === UserRole.ADMIN ? <Orders /> : <Navigate to='/error' />
+            }
+          ]
+        },
+        {
+          path: 'transaction',
+          children: [
+            {
+              index: true,
+              element: adminRole === UserRole.ADMIN ? <TransactionsPage /> : <Navigate to='/error' />
             }
           ]
         },
