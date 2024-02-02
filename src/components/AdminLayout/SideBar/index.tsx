@@ -11,7 +11,8 @@ import {
   TagsOutlined,
   UnorderedListOutlined,
   UserAddOutlined,
-  UserOutlined
+  UserOutlined,
+  StarOutlined 
 } from '@ant-design/icons';
 import { Layout, Menu, MenuProps } from 'antd';
 import React, { useState } from 'react';
@@ -83,20 +84,14 @@ const SideBar = () => {
           'User Analytics',
           'user-analytics',
           null,
-          [
-            getItem('User Progress', 'reports/users-progress'),
-            getItem('Course Insights', 'reports/course-insights')
-          ],
+          [getItem('User Progress', 'reports/users-progress'), getItem('Course Insights', 'reports/course-insights')],
           'group'
         ),
         getItem(
           'Exams',
           'exams',
           null,
-          [
-            getItem('Certifications', 'reports/certifications'),
-            getItem('Review center', 'reports/reviews-center')
-          ],
+          [getItem('Certifications', 'reports/certifications'), getItem('Review center', 'reports/reviews-center')],
           'group'
         ),
         getItem(
@@ -123,9 +118,8 @@ const SideBar = () => {
       getItem('Posts', 'blog/posts'),
       getItem('Blog comments', 'blog/comments')
     ]),
-    getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [
-      getItem('Feedbacks', 'feedbacks/list')
-    ]),
+    getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')]),
+    getItem('Reviews', 'reviews', <StarOutlined />, [getItem('Reviews Manager', 'reviews')]),
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
     getItem('My account', 'account', <UserAddOutlined />),
     getItem('Need Help ?', 'help', <FileOutlined />)

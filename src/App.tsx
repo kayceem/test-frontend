@@ -70,6 +70,7 @@ import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 import Social from './pages/site/Social';
 import BlogList from './pages/admin/Blog/Blog';
 import TransactionsPage from './pages/admin/Transactions/Transactions';
+import ReviewsPage from './pages/admin/Reviews/Reviews';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -313,6 +314,15 @@ function App() {
               index: true,
               path: 'list',
               element: <Feedbacks />
+            }
+          ]
+        },
+        {
+          path: 'reviews',
+          children: [
+            {
+              index: true,
+              element: <ReviewsPage />
             }
           ]
         },
