@@ -58,6 +58,7 @@ import Cookie from './pages/site/Policy/Cookie';
 import AccountSettings from './pages/site/AccountSettings/AccountSettings';
 import PurchaseHistory from './pages/site/PurchaseHistory/PurchaseHistory';
 import ReceiptPage from './pages/site/PurchaseHistory/ReceiptPage/ReceiptPage';
+import InvoicePage from './pages/site/PurchaseHistory/InvoicePage/InvoicePage';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
@@ -237,6 +238,10 @@ function App() {
               element: isAuth ? <ReceiptPage /> : <ErrorPage page='/' />
             }
           ]
+        },
+        {
+          path: 'cart-invoice/:orderId',
+          element: <InvoicePage />
         },
         {
           path: 'publicprofile',
