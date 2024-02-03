@@ -135,13 +135,13 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         transaction: (
           <>
             <div>
-              <Link to='/'>
+              <Link to={`/cart-invoice/${order._id}`}>
                 Invoice <DownloadOutlined />
               </Link>
             </div>
             <div>sandbox_64bccb1fc177e</div>
           </>
-        ),
+        ),        
         amount: `$${totalPrice}`,
         payment: transaction?.method
       };
