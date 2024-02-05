@@ -1,15 +1,11 @@
-import jwtDecode from 'jwt-decode';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { FloatButton } from 'antd';
+import { useSelector } from 'react-redux';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import './assets/sass/_base.scss';
 import './assets/sass/reset.css';
 import './assets/sass/tailwind.css';
 import './assets/sass/App.css';
 import InstructorsRevenues from './components/AdminLayout/Header/components/InstructorsRevenues';
 import RootAdminLayout from './components/AdminLayout/RootLayout';
-import BigSpinner from './components/BigSpinner';
 import RootLayout from './components/layout/RootLayout';
 import ErrorPage from './pages/Error/404Error';
 import AdminAuth from './pages/admin/Auth';
@@ -32,12 +28,6 @@ import UsersProgress from './pages/admin/Reports/components/UsersProgress';
 import UsersSegment from './pages/admin/Reports/components/UsersSegments';
 import Settings from './pages/admin/Settings';
 import Users from './pages/admin/Users';
-import {
-  setAdminAuthenticated,
-  setAdminUnauthenticated,
-  setAuthenticated,
-  setUnauthenticated
-} from './pages/auth.slice';
 import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
 import Checkout from './pages/site/Checkout';
