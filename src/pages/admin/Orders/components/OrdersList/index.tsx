@@ -123,7 +123,7 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(items || []).map((course) => (
-              <Avatar src={course.thumbnail} />
+              <Avatar src={course?.thumbnail} />
             ))}
             <Tooltip title='Courses' placement='top'>
               {(items || []).map((course) => (
