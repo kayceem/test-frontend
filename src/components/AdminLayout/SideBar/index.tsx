@@ -76,7 +76,7 @@ const SideBar = () => {
         getItem('All Users', 'users'),
         getItem('Admins', 'admins'),
         getItem('Intructors', 'intructors'),
-        getItem('Permission', 'permission') // Permission for each user and function
+        getItem('Permission', 'users/permission') // Permission for each user and function
       ])) as MenuItem,
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
