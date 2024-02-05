@@ -58,6 +58,7 @@ import Cookie from './pages/site/Policy/Cookie';
 import AccountSettings from './pages/site/AccountSettings/AccountSettings';
 import PurchaseHistory from './pages/site/PurchaseHistory/PurchaseHistory';
 import ReceiptPage from './pages/site/PurchaseHistory/ReceiptPage/ReceiptPage';
+import InvoicePage from './pages/site/PurchaseHistory/InvoicePage/InvoicePage';
 import { RootState } from './store/store';
 import { UserRole } from './types/user.type';
 import Blog from './pages/site/Blog/Blog';
@@ -69,6 +70,8 @@ import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 import Social from './pages/site/Social';
 import BlogList from './pages/admin/Blog/Blog';
+import TransactionsPage from './pages/admin/Transactions/Transactions';
+import ReviewsPage from './pages/admin/Reviews/Reviews';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -237,6 +240,10 @@ function App() {
           ]
         },
         {
+          path: 'cart-invoice/:orderId',
+          element: <InvoicePage />
+        },
+        {
           path: 'publicprofile',
           element: <PublicProfile />
         },
@@ -288,6 +295,15 @@ function App() {
           ]
         },
         {
+          path: 'transaction',
+          children: [
+            {
+              index: true,
+              element: adminRole === UserRole.ADMIN ? <TransactionsPage /> : <Navigate to='/error' />
+            }
+          ]
+        },
+        {
           path: 'categories',
           children: [
             {
@@ -303,6 +319,15 @@ function App() {
               index: true,
               path: 'list',
               element: <Feedbacks />
+            }
+          ]
+        },
+        {
+          path: 'reviews',
+          children: [
+            {
+              index: true,
+              element: <ReviewsPage />
             }
           ]
         },

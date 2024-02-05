@@ -1,0 +1,15 @@
+/* Modal */
+.feedback-details-modal {
+  max-width: 400px;
+  margin: 0 auto;
+
+  /* Content */
+  .feedback-details-content {
+    padding: 20px;
+
+    /* Typography */
+    .ant-typography {
+      margin-bottom: 12px;
+    }
+  }
+}

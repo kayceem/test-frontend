@@ -1,6 +1,9 @@
 import React from 'react';
-import { Modal, Spin } from 'antd';
+import { Modal, Spin, Typography } from 'antd';
 import { useGetFeedbackQuery } from '../feedback.service';
+import './FeedbackDetailsModal.scss';
+
+const { Title, Text } = Typography;
 
 interface FeedbackDetailsModalProps {
   feedbackId: string;
@@ -12,14 +15,17 @@ const FeedbackDetailsModal: React.FC<FeedbackDetailsModalProps> = ({ feedbackId,
   const { data, isFetching } = useGetFeedbackQuery(feedbackId);
 
   return (
-    <Modal title='Feedback Details' open={isOpen} onCancel={onClose} footer={null}>
+    <Modal className="feedback-details-modal" title="Feedback Details" open={isOpen} onCancel={onClose} footer={null}>
       {isFetching ? (
         <Spin />
       ) : (
-        <div>
-          <p>Name: {data?.feedback.name}</p>
-          <p>Email: {data?.feedback.email}</p>
-          <p>Message: {data?.feedback.message}</p>
+        <div className="feedback-details-content">
+          <Title level={4}>Name:</Title>
+          <Text>{data?.feedback.name}</Text>
+          <Title level={4}>Email:</Title>
+          <Text>{data?.feedback.email}</Text>
+          <Title level={4}>Message:</Title>
+          <Text>{data?.feedback.message}</Text>
         </div>
       )}
     </Modal>

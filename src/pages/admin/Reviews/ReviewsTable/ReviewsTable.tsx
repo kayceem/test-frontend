@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { Input, Table, Pagination, Button, Space, message } from 'antd';
-import { useGetFeedbacksQuery, useDeleteFeedbackMutation } from '../feedback.service';
-import FeedbackDetailsModal from '../FeedbackDetailsModal/FeedbackDetailsModal';
-import { IContact } from '../../../../types/contact.type';
-import './FeedbacksTable.scss';
+import { useGetReviewsQuery, useDeleteReviewMutation } from '../review.service';
+import ReviewDetailsModal from '../ReviewDetailsModal/ReviewDetailsModal';
+import { IReview } from '../../../../types/review.type'; 
+import './ReviewsTable.scss';
 
 const { Search } = Input;
 
-const FeedbacksTable: React.FC = () => {
+const ReviewsTable: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { data, isFetching } = useGetFeedbacksQuery({ _page: currentPage, _limit: pageSize, _q: searchTerm });
-  const [deleteFeedback, { isLoading: isDeleting }] = useDeleteFeedbackMutation();
+  const { data, isFetching } = useGetReviewsQuery({ _page: currentPage, _limit: pageSize, _q: searchTerm });
+  const [deleteReview, { isLoading: isDeleting }] = useDeleteReviewMutation();
 
-  const [selectedFeedbackId, setSelectedFeedbackId] = useState<string | null>(null);
+  const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleSearch = (value: string) => {
@@ -23,45 +23,45 @@ const FeedbacksTable: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleViewDetails = (feedbackId: string) => {
-    setSelectedFeedbackId(feedbackId);
+  const handleViewDetails = (reviewId: string) => {
+    setSelectedReviewId(reviewId);
     setIsModalVisible(true);
   };
 
-  const handleDelete = (feedbackId: string) => {
-    deleteFeedback(feedbackId)
+  const handleDelete = (reviewId: string) => {
+    deleteReview(reviewId)
       .unwrap()
       .then(() => {
-        void message.success('Feedback deleted successfully');
+        void message.success('Review deleted successfully');
       })
       .catch(() => {
-        void message.error('Failed to delete feedback');
+        void message.error('Failed to delete review');
       });
   };
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Course ID',
+      dataIndex: 'courseId',
+      key: 'courseId',
       ellipsis: true,
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
       ellipsis: true,
     },
     {
-      title: 'Message',
-      dataIndex: 'message',
-      key: 'message',
+      title: 'Rating',
+      dataIndex: 'ratingStar',
+      key: 'ratingStar',
       ellipsis: true,
     },
     {
       title: 'Actions',
       key: 'actions',
-      render: (_: IContact, record: IContact) => (
+      render: (_: IReview, record: IReview) => (
         <Space size='middle'>
           <Button onClick={() => handleViewDetails(record._id)}>View Details</Button>
           <Button onClick={() => handleDelete(record._id)}>Delete</Button>
@@ -76,12 +76,12 @@ const FeedbacksTable: React.FC = () => {
   };
 
   return (
-    <div className='feedbacks-table'>
+    <div className='reviews-table'>
       <div className='search-bar'>
-        <Search placeholder='Search by name' onSearch={handleSearch} enterButton allowClear />
+        <Search placeholder='Search by title' onSearch={handleSearch} enterButton allowClear />
       </div>
       <Table
-        dataSource={data?.feedbacks as IContact[]}
+        dataSource={data?.reviews as IReview[]}
         columns={columns}
         rowKey='_id'
         pagination={false}
@@ -95,9 +95,9 @@ const FeedbacksTable: React.FC = () => {
         onChange={handlePageChange}
         showSizeChanger
       />
-      {selectedFeedbackId && (
-        <FeedbackDetailsModal
-          feedbackId={selectedFeedbackId}
+      {selectedReviewId && (
+        <ReviewDetailsModal
+          reviewId={selectedReviewId}
           isOpen={isModalVisible}
           onClose={() => setIsModalVisible(false)}
         />
@@ -106,4 +106,4 @@ const FeedbacksTable: React.FC = () => {
   );
 };
 
-export default FeedbacksTable;
+export default ReviewsTable;
