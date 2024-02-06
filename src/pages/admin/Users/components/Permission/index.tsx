@@ -1,8 +1,9 @@
 import React, { Fragment, Key, useState } from 'react';
 import './Permission.scss';
-import { Col, Row, Skeleton, TreeDataNode } from 'antd';
+import { Button, Col, Row, Select, Skeleton, TreeDataNode } from 'antd';
 import { Tree } from 'antd';
-import { useGetPermissionsQuery } from '../../user.service';
+import { useGetPermissionsQuery, useGetUsersSelectQuery } from '../../user.service';
+import { DownloadOutlined, SaveOutlined, SearchOutlined } from '@ant-design/icons';
 const treeData: TreeDataNode[] = [
   {
     title: '0-0',
@@ -52,11 +53,13 @@ const Permission: React.FC = () => {
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>(['0-0-0']);
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
-
+  const [permissionQuery, setPermissionQuery] = useState({})
+  const [selectUser, setSelectedUser] = useState<string>();
   // Fetch permission data list
-  const { data: permissionResponse, isFetching } = useGetPermissionsQuery({});
+  const { data: permissionResponse, isFetching: isPermissionFetching, refetch } = useGetPermissionsQuery(permissionQuery);
+  const { data: usersSelectRes, isFetching: isUsersSelectFetching } = useGetUsersSelectQuery({});
   const listPermission = permissionResponse?.listPermission;
-
+  const listUserSelect = usersSelectRes?.users;
   const onExpand = (expandedKeysValue: React.Key[]) => {
     console.log('onExpand', expandedKeysValue);
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
@@ -76,10 +79,49 @@ const Permission: React.FC = () => {
     setSelectedKeys(selectedKeysValue);
   };
 
+  // Selection box section
+  const onChangeUserSelect = (value: string) => {
+    setSelectedUser(value);
+  };
+  
+  const onSearchUserSelect = (value: string) => {
+    console.log('search:', value);
+  };
+
+  const searchPermissionData = () => {
+    console.log("oke")
+    console.log("selectUser", selectUser)
+    setPermissionQuery({userId: selectUser})
+    refetch().then((res) => {
+      console.log("res")
+    }).catch((err: any) => {
+      console.log("error", err)
+    })
+  }
+
   return (
     
     <Fragment >
-      {isFetching && <Skeleton/>}
+
+    <div>
+    <Select
+    showSearch
+    placeholder="Select a user"
+    optionFilterProp="children"
+    onChange={onChangeUserSelect}
+    onSearch={onSearchUserSelect}
+    options={listUserSelect}
+  />
+    <Button type="primary" icon={<SearchOutlined />} onClick={searchPermissionData}>
+        Search
+      </Button>
+      <Button type="primary" icon={<SaveOutlined />}>
+            Save
+      </Button>
+
+    </div>
+
+      {isPermissionFetching && <Skeleton/>}
   
        <Row className="mt-4" gutter={[16, 16]}>
        {listPermission?.map((permissionTreeData) => {
@@ -101,21 +143,6 @@ const Permission: React.FC = () => {
         </Col>
         )
       })}
-          {/* <Col span={6}>
-            <Tree
-              checkable
-              onExpand={onExpand}
-              expandedKeys={expandedKeys}
-              autoExpandParent={autoExpandParent}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              onCheck={onCheck}
-              checkedKeys={checkedKeys}
-              onSelect={onSelect}
-              selectedKeys={selectedKeys}
-              treeData={treeData}
-          />
-          </Col> */}
        </Row>
     </Fragment>
   );

@@ -4,6 +4,7 @@ import { IParams } from '../../../types/params.type';
 import { IUser } from '../../../types/user.type';
 import { CustomError } from '../../../utils/helpers';
 import { TreeNode } from '../../../types/treeNode.type';
+import { ISelectBox } from '../../../types/selectBox.type';
 
 /**
  * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post
@@ -29,6 +30,11 @@ import { TreeNode } from '../../../types/treeNode.type';
 
 interface getUsersResponse {
   users: IUser[];
+  message: string;
+}
+
+interface getUsersSelectResponse {
+  users: ISelectBox[];
   message: string;
 }
 
@@ -62,6 +68,48 @@ export const userApi = createApi({
     getUsers: build.query<getUsersResponse, IParams>({
       query: (params) => ({
         url: '/users',
+        params: params
+      }), // method không có argument
+      /**
+       * providesTags có thể là array hoặc callback return array
+       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
+       * thì sẽ làm cho Users method chạy lại
+       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
+       */
+      providesTags(result) {
+        /**
+         * Cái callback này sẽ chạy mỗi khi Users chạy
+         * Mong muốn là sẽ return về một mảng kiểu
+         * ```ts
+         * interface Tags: {
+         *    type: "User";
+         *    id: string;
+         *  }[]
+         *```
+         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
+         */
+
+        if (Array.isArray(result) && result.map) {
+          if (result) {
+            const final = [
+              ...result.map(({ _id }: { _id: string }) => ({ type: 'Users' as const, _id })),
+              { type: 'Users' as const, id: 'LIST' }
+            ];
+            console.log('final: ', final);
+
+            return final;
+          }
+        }
+
+        // const final = [{ type: 'Users' as const, id: 'LIST' }]
+        // return final
+        return [{ type: 'Users', id: 'LIST' }];
+      }
+    }),
+    // Generic type theo thứ tự là kiểu response trả về và argument
+    getUsersSelect: build.query<getUsersSelectResponse, IParams>({
+      query: (params) => ({
+        url: '/users/select',
         params: params
       }), // method không có argument
       /**
@@ -206,5 +254,5 @@ export const userApi = createApi({
   })
 });
 
-export const { useGetUsersQuery, useGetPermissionsQuery,  useAddUserMutation, useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } =
+export const { useGetUsersQuery, useGetUsersSelectQuery, useGetPermissionsQuery,  useAddUserMutation, useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } =
   userApi;
