@@ -186,12 +186,10 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const handleOk = () => {
-    // setIsModalOpen(false);
     dispatch(closeAuthModal());
   };
 
   const handleCancel = () => {
-    // setIsModalOpen(false);
     dispatch(closeAuthModal());
   };
 
@@ -272,7 +270,6 @@ const Header = () => {
     <div className='header'>
       <div className='container'>
         <div className='header__wrapper '>
-          {/* <Spin size='large' /> */}
           <MenuOutlined onClick={showMobileMenuHandler} className='header__menu-mobile font-bold lg:hidden' />
           <Link to='/' className='header__logo'>
             <img src='https://i.imgur.com/NZj5m3U.png' alt='' className='header__logo-img' />
@@ -310,13 +307,6 @@ const Header = () => {
               <li className='header__nav-item'>
                 <DropDownMenu />
               </li>
-              {/* <li className='header__nav-item header__nav-item--cart'>
-              <Link className='header__nav-link' to='/view-cart'>
-                <Badge count={cart?.items?.length || 0}>
-                  <ShoppingCartOutlined className='header__nav-link-icon' />
-                </Badge>
-              </Link>
-            </li> */}
             </ul>
 
             <div className='header-icon'>
@@ -346,12 +336,10 @@ const Header = () => {
                 <li className='header__nav-item'>
                   <Dropdown menu={menuWishlistProps} placement='bottomRight'>
                     <Badge dot={true}>
-                      {/* <Avatar shape="square" size="large" /> */}
                       <HeartOutlined
                         className='header__nav-item-user-icon header__nav-link-icon'
                         style={{ cursor: 'pointer' }}
                       />
-                      {/* <UserOutlined className='header__nav-item-user-icon' style={{ cursor: 'pointer' }} /> */}
                     </Badge>
                   </Dropdown>
                 </li>
@@ -361,12 +349,10 @@ const Header = () => {
                 <li className='header__nav-item'>
                   <Dropdown menu={menuNotificationsProps} placement='bottomRight'>
                     <Badge dot={true}>
-                      {/* <Avatar shape="square" size="large" /> */}
                       <BellOutlined
                         className='header__nav-item-notify-icon header__nav-link-icon'
                         style={{ cursor: 'pointer' }}
                       />
-                      {/* <UserOutlined className='header__nav-item-user-icon' style={{ cursor: 'pointer' }} /> */}
                     </Badge>
                   </Dropdown>
                 </li>
@@ -376,7 +362,6 @@ const Header = () => {
                   <Dropdown menu={menuUserProps} placement='bottomRight'>
                     <Badge dot={true}>
                       <Avatar className='header__nav-item-user-icon' src={userData?.avatar} />
-                      {/* <UserOutlined className='header__nav-item-user-icon' style={{ cursor: 'pointer' }} /> */}
                     </Badge>
                   </Dropdown>
                 </div>

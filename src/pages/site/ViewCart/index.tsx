@@ -39,7 +39,6 @@ const ViewCart = () => {
     }
 
     if (isAuth) {
-      console.log('checkout handler');
       navigate('/checkout');
     } else {
       notification.error({

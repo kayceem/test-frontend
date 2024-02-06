@@ -58,8 +58,6 @@ const CourseItem = (props: CourseItemProps) => {
     const btnEl = e.target as HTMLButtonElement;
     const dataAction = btnEl.dataset.action;
 
-    console.log('btn click handler!!!');
-
     // If already logined
 
     if (isAuth) {
@@ -68,7 +66,6 @@ const CourseItem = (props: CourseItemProps) => {
 
         navigate('/checkout');
       } else if (dataAction === 'enroll') {
-        console.log('go to enroll page');
 
         const newOrderItem: IOrderItem = {
           courseId: props.courseItem._id,
@@ -89,7 +86,6 @@ const CourseItem = (props: CourseItemProps) => {
       dispatch(openAuthModal());
     }
 
-    // console.log('enrolled or buy now!');
   };
 
   if (!props.courseItem) return null;
@@ -101,7 +97,6 @@ const CourseItem = (props: CourseItemProps) => {
     progressPercent = 0;
   }
 
-  // Go to course handler
   const gotoCourseHandler = () => {
     navigate(`/path-player?courseId=${props.courseItem._id}`);
   };
@@ -160,8 +155,8 @@ const CourseItem = (props: CourseItemProps) => {
 
   return (
     <Col
-      lg={currentPath === '/start' || currentPath === '/' ? 6 : 8}
-      md={currentPath === '/start' || currentPath === '/' ? 8 : 12}
+      lg={currentPath === '/start' || currentPath === '/' || currentPath === '/wishlist'  ? 6 : 8}
+      md={currentPath === '/start' || currentPath === '/' || currentPath === '/wishlist'  ? 8 : 12}
       sm={12}
       xs={24}
     >
@@ -185,12 +180,20 @@ const CourseItem = (props: CourseItemProps) => {
             )}
             <div className='course-item__desc'>{props.courseItem.description}</div>
             <div className='course-item__author'>
+            <div className="course-item__author-details">
               <img
-                src={props.courseItem.userId.avatar || 'https://via.placeholder.com/150'}
-                alt=''
-                className='course-item__author-img'
-              />
+                  src={props.courseItem.userId.avatar || 'https://via.placeholder.com/150'}
+                  alt=''
+                  className='course-item__author-img'
+                />
               <div className='course-item__author-name'>{props.courseItem.userId.name}</div>
+              </div>
+              <Button 
+                className="course-item__wishlist-btn" 
+                onClick={() => handleWishlistClick(courseId, isCourseInWishlist, userId)}
+              >
+                {isCourseInWishlist ? <HeartFilled /> : <HeartOutlined />}
+              </Button>
             </div>
             <div className='course-item__enrolls'>
               <Row className='course-item__enrolls-row' justify='space-around' align='middle'>
@@ -234,24 +237,12 @@ const CourseItem = (props: CourseItemProps) => {
               </Row>
             </div>
           </div>
-          <div className='course-item__wishlist'>
-            {isCourseInWishlist ? (
-              <Button className="wishlist-button" onClick={() => handleWishlistClick(courseId, true, userId)}>
-                <HeartFilled /> Remove from Wishlist
-              </Button>
-            ) : (
-              <Button className="wishlist-button" onClick={() => handleWishlistClick(courseId, false, userId)}>
-                <HeartOutlined /> Add to Wishlist
-              </Button>
-            )}
-          </div>
         </div>
       </Badge.Ribbon>
     </Col>
   );
 };
 
-// generate default props for this component
 
 CourseItem.defaultProps = {
   courseItem: {

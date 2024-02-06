@@ -41,7 +41,9 @@ const CoursesTable: React.FC = () => {
 
 
     const handleInvoiceClick = (orderId: string) => {
-        console.log(orderId);
+        const invoiceUrl = `/cart-invoice/${orderId}`;
+
+        navigate(invoiceUrl);
     };
 
     const [expandedOrder, setExpandedOrder] = useState<string | null>(null);

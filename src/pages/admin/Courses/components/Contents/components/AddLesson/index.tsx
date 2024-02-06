@@ -28,13 +28,14 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   const playerRef = useRef<ReactPlayer | null>(null);
   const [contentLink, setContentLink] = useState('');
   const [form] = Form.useForm();
-  // const [formData, setFormData] = useState<Omit<ISection, '_id'>>(initialSection);
   const [addLesson, addLessonResult] = useAddLessonMutation();
 
   const [uploadMethod, setUploadMethod] = useState('link');
   const [uploadedVideoPath, setUploadedVideoPath] = useState('');
   const [videoDuration, setVideoDuration] = useState(0);
   const [fileList, setFileList] = useState<UploadFile<UploadVideoResponse>[]>([]);
+  const [uploadedPDFPath, setUploadedPDFPath] = useState('');
+  const [pdfFileList, setPdfFileList] = useState<UploadFile[]>([]);
 
 
   const uploadVideoProps: UploadProps = {
@@ -60,14 +61,38 @@ const AddLesson: React.FC<AddLessonProps> = () => {
 
   };
 
+  const uploadPDFProps: UploadProps = {
+    name: 'pdfFile',
+    action: `${BACKEND_URL}/uploads/pdf`, 
+    fileList: pdfFileList,
+    maxCount: 1,
+    onChange(info) {
+      setPdfFileList(info.fileList);
+      if (info.file.status === 'done') {
+        void message.success(`${info.file.name} file uploaded successfully`);
+        const response = info.file.response as { pdfPath: string };
+        if (response && response.pdfPath) {
+          setUploadedPDFPath(response.pdfPath);
+        }
+      } else if (info.file.status === 'error') {
+        void message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    beforeUpload(file) {
+      const isPDF = file.type === 'application/pdf';
+      if (!isPDF) {
+        void message.error('You can only upload PDF file!');
+      }
+      return isPDF || Upload.LIST_IGNORE;
+    },
+    accept: '.pdf',
+  };
+
 
 
   const sectionId = useSelector((state: RootState) => state.course.sectionId);
 
   const showDrawer = () => {
-    // props.onCloseActivies();
-
-    // Close section add activities --> Add later
     setOpen(true);
   };
 
@@ -86,29 +111,50 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   };
 
   const onPasteVideoLink = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    console.log(e.clipboardData.getData('text'));
     setContentLink(e.clipboardData.getData('text'));
   };
 
   const onFinish = (formData: Omit<ILesson, '_id'>) => {
-    console.log(formData);
-    console.log(playerRef.current?.getDuration());
-    console.log(formatTime(playerRef.current?.getDuration() || 0));
+    let content;
+    let lessonType;
+    let videoLength = 0; 
+
+    switch (uploadMethod) {
+      case 'linkYoutube':
+        content = formData.content;
+        lessonType = 'link';
+        if (playerRef.current && playerRef.current.getDuration) {
+          videoLength = playerRef.current.getDuration();
+        }
+        break;
+      case 'uploadVideo':
+        content = uploadedVideoPath;
+        lessonType = 'video';
+        videoLength = videoDuration;
+        break;
+      case 'uploadPdf':
+        content = uploadedPDFPath;
+        lessonType = 'pdf';
+        videoLength = 0;
+        break;
+      default:
+        content = formData.content;
+        lessonType = 'link'; 
+    }
 
     const lessonData: Omit<ILesson, '_id'> = {
       name: formData.name,
-      content: uploadMethod === 'link' ? formData.content : uploadedVideoPath,
+      content: content,
       access: formData.access,
       sectionId: sectionId,
-      type: 'video',
+      type: lessonType,
       description: formData.description,
-      videoLength: uploadMethod === 'link' ? (playerRef.current?.getDuration() || 0) : videoDuration
+      videoLength: videoLength 
     };
 
     addLesson(lessonData)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         notification.success({
           message: 'Add lesson successfully',
@@ -124,7 +170,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
         console.log(error);
       });
 
-    console.log(addLessonResult);
   };
 
   const onuploadMethodChange = (e: RadioChangeEvent) => {
@@ -153,7 +198,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
         <Row>
           <Col md={8}></Col>
           <Col md={16}>
-            {/* Form maybe cange layter */}
             <Form form={form} layout='vertical' hideRequiredMark onFinish={onFinish}>
               <Row gutter={16}>
                 <Col span={24}>
@@ -164,11 +208,12 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                 <Col span={24}>
                   <Form.Item label="Upload Method">
                     <Radio.Group onChange={onuploadMethodChange} value={uploadMethod}>
-                      <Radio value="link">Link</Radio>
-                      <Radio value="upload">Upload Video</Radio>
+                      <Radio value="linkYoutube">Link</Radio>
+                      <Radio value="uploadVideo">Upload Video</Radio>
+                      <Radio value="uploadPdf">Upload PDF</Radio>
                     </Radio.Group>
                   </Form.Item>
-                  {uploadMethod === 'link' && (
+                  {uploadMethod === 'linkYoutube' && (
                     <Form.Item
                       name='content'
                       label='Link Youtube'
@@ -182,7 +227,7 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                     </Form.Item>
                   )}
 
-                  {uploadMethod === 'upload' && (
+                  {uploadMethod === 'uploadVideo' && (
                     <Form.Item
                       label='Upload Video'
                       rules={[{ required: true, message: 'Please upload a video' }]}
@@ -193,9 +238,22 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                     </Form.Item>
                   )}
 
+                  {
+                    uploadMethod === 'uploadPdf' && (
+                      <Form.Item
+                        label='Upload PDF'
+                        rules={[{ required: true, message: 'Please upload a PDF file' }]}
+                      >
+                        <Upload {...uploadPDFProps}>
+                          <Button icon={<UploadOutlined style={{ color: 'black' }} />}>Click to Upload PDF</Button>
+                        </Upload>
+                      </Form.Item>
+                    )
+                  }
+
                   <ReactPlayer
                     ref={playerRef}
-                    url={uploadMethod === 'link' ? contentLink : uploadedVideoPath}
+                    url={uploadMethod === 'linkYoutube' ? contentLink : uploadedVideoPath}
                     width={0}
                     height={0}
                     onDuration={setVideoDuration}
@@ -219,10 +277,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                         <Radio value='SOON'>SOON</Radio>
                         <Radio value='FREE'>FREE</Radio>
                         <Radio value='PAID'>PAID</Radio>
-                        {/* <Radio value={4}>
-                          More...
-                          {value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
-                        </Radio> */}
                       </Space>
                     </Radio.Group>
                   </Form.Item>
@@ -230,30 +284,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
               </Row>
 
               <Row gutter={16}>
-                {/* <Col span={12}>
-                  <Form.Item
-                    name='approver'
-                    label='Approver'
-                    rules={[{ required: true, message: 'Please choose the approver' }]}
-                  >
-                    <Select placeholder='Please choose the approver'>
-                      <Option value='jack'>Jack Ma</Option>
-                      <Option value='tom'>Tom Liu</Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name='dateTime'
-                    label='DateTime'
-                    rules={[{ required: true, message: 'Please choose the dateTime' }]}
-                  >
-                    <DatePicker.RangePicker
-                      style={{ width: '100%' }}
-                      getPopupContainer={(trigger) => trigger.parentElement!}
-                    />
-                  </Form.Item>
-                </Col> */}
               </Row>
               <Row gutter={16}>
                 <Col span={24}>

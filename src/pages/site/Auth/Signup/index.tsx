@@ -15,7 +15,6 @@ const Signup: React.FC<SignupProps> = (props) => {
   const [signup, signupResult] = useSignupMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const onFinish = (formValues: Omit<IUser, '_id'>) => {
-    console.log('Success:', formValues);
 
     const newUser: Omit<IUser, '_id'> = {
       email: formValues.email,
@@ -29,10 +28,8 @@ const Signup: React.FC<SignupProps> = (props) => {
 
     signup(newUser)
       .then((result) => {
-        console.log(result);
 
         if ('data' in result) {
-          console.log(result.data);
 
           const signupResponse: { message: string; userId: string } = result.data;
 

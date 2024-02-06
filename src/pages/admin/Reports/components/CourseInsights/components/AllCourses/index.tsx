@@ -27,11 +27,6 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'learners',
     key: 'learners'
   },
-  //   {
-  //     title: 'Total Enrollments',
-  //     dataIndex: 'totalEnrollment',
-  //     key: 'totalEnrollment'
-  //   },
   {
     title: 'Avg. Study time',
     dataIndex: 'avgStudyTime',

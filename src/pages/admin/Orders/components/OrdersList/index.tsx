@@ -4,9 +4,9 @@ import type { FilterValue } from 'antd/es/table/interface';
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './OrdersList.scss';
-// import { useGetCourseQuery, useGetCoursesQuery } from '../../course.service';
 import { DownloadOutlined } from '@ant-design/icons';
 import { IOrder } from '../../../../../types/order.type';
+import OrderDetailModal from '../OrderDetailModal/OrderDetailModal';
 interface DataOrderType {
   key: React.Key;
   name: JSX.Element;
@@ -26,51 +26,6 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-const columns: ColumnsType<DataOrderType> = [
-  {
-    title: 'Learners',
-    dataIndex: 'name',
-    filters: [
-      {
-        text: 'Joe',
-        value: 'Joe'
-      },
-      {
-        text: 'Category 1',
-        value: 'Category 1'
-      },
-      {
-        text: 'Category 2',
-        value: 'Category 2'
-      }
-    ],
-    filterMode: 'tree',
-    filterSearch: true,
-    // onFilter: (value: string | number | boolean, record) => record.name.startsWith(value.toString()),
-    width: '30%'
-  },
-  {
-    title: 'Register',
-    dataIndex: 'register'
-    // sorter: (a, b) => Number(a.author) - Number(b.author)
-  },
-  {
-    title: 'Courses',
-    dataIndex: 'courses'
-  },
-  {
-    title: 'Invoice / Transaction ID',
-    dataIndex: 'transaction'
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'amount'
-  },
-  {
-    title: 'Payment Gateway',
-    dataIndex: 'payment'
-  }
-];
 
 interface OrdersListProps {
   ordersList: IOrder[];
@@ -78,10 +33,73 @@ interface OrdersListProps {
 
 const OrdersList: React.FC<OrdersListProps> = (props) => {
   const [open, setOpen] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
   const showUserDetail = () => {
     setOpen(true);
   };
+
+  const showDetailModal = (orderId: string) => {
+    setSelectedOrderId(orderId);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedOrderId(null);
+  };
+
+  const columns: ColumnsType<DataOrderType> = [
+    {
+      title: 'Learners',
+      dataIndex: 'name',
+      filters: [
+        {
+          text: 'Joe',
+          value: 'Joe'
+        },
+        {
+          text: 'Category 1',
+          value: 'Category 1'
+        },
+        {
+          text: 'Category 2',
+          value: 'Category 2'
+        }
+      ],
+      filterMode: 'tree',
+      filterSearch: true,
+      width: '30%'
+    },
+    {
+      title: 'Register',
+      dataIndex: 'register'
+    },
+    {
+      title: 'Courses',
+      dataIndex: 'courses'
+    },
+    {
+      title: 'Invoice / Transaction ID',
+      dataIndex: 'transaction'
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'amount'
+    },
+    {
+      title: 'Payment Gateway',
+      dataIndex: 'payment'
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <a onClick={() => showDetailModal(record.key.toString())}>View Details</a>
+      ),
+    },
+  ];
 
   const ordersData: DataOrderType[] =
     props.ordersList.map((order) => {
@@ -105,28 +123,25 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(items || []).map((course) => (
-              <Avatar src={course.thumbnail} />
+              <Avatar src={course?.thumbnail} />
             ))}
-            {/* <Avatar src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=2' />
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar> */}
             <Tooltip title='Courses' placement='top'>
               {(items || []).map((course) => (
                 <Avatar src={course?.thumbnail} />
               ))}
             </Tooltip>
-            {/* <Avatar style={{ backgroundColor: '#1677ff' }} icon={<AntDesignOutlined />} /> */}
           </Avatar.Group>
         ),
         transaction: (
           <>
             <div>
-              <Link to='/'>
+              <Link to={`/cart-invoice/${order._id}`}>
                 Invoice <DownloadOutlined />
               </Link>
             </div>
             <div>sandbox_64bccb1fc177e</div>
           </>
-        ),
+        ),        
         amount: `$${totalPrice}`,
         payment: transaction?.method
       };
@@ -142,7 +157,6 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   });
 
   const onChange: TableProps<DataOrderType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
 
     setTableParams({
       pagination
@@ -152,9 +166,15 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   return (
     <Fragment>
       <div className='users-list'>
-        {/* {isFetching && <Skeleton />} */}
         <Table columns={columns} dataSource={ordersData} onChange={onChange} pagination={tableParams.pagination} />
       </div>
+      {isModalVisible && selectedOrderId && (
+        <OrderDetailModal 
+          isVisible={isModalVisible} 
+          onClose={handleModalClose} 
+          orderId={selectedOrderId}
+        />
+      )}
     </Fragment>
   );
 };

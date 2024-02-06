@@ -6,16 +6,6 @@ const UsersHeader = () => {
   return (
     <Fragment>
       <Space>
-        {/* <Button
-      type='text'
-      icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-      onClick={() => setCollapsed(!collapsed)}
-      style={{
-        fontSize: '16px',
-        width: 64,
-        height: 64
-      }}
-    /> */}
         <h3 className='admin-header__page-title'>Users</h3>
 
         <Button>

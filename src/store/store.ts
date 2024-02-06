@@ -19,6 +19,10 @@ import blogReducer from '../pages/admin/Blog/blog.slice';
 import { blogApi } from '../pages/admin/Blog/blog.service';
 import BlogcategoryReducer from '../pages/admin/BlogCategories/categoriesBlog.slice';
 import { categoriesBlogApi } from '../pages/admin/BlogCategories/categoriesBlog.service';
+import { feedbackApi } from '../pages/admin/Feedbacks/feedback.service';
+import { transactionApi } from '../pages/admin/Transactions/transaction.service';
+import { reviewApi } from '../pages/admin/Reviews/review.service';
+
 
 const rootReducer = combineReducers({
   course: courseReducer,
@@ -39,6 +43,9 @@ const rootReducer = combineReducers({
   [blogApi.reducerPath]: blogApi.reducer,
   blogCategories: BlogcategoryReducer,
   [categoriesBlogApi.reducerPath]: categoriesBlogApi.reducer
+  [feedbackApi.reducerPath]: feedbackApi.reducer,
+  [transactionApi.reducerPath]: transactionApi.reducer,
+  [reviewApi.reducerPath]: reviewApi.reducer
 });
 
 export const store = configureStore({
@@ -55,6 +62,9 @@ export const store = configureStore({
       reportApi.middleware,
       blogApi.middleware,
       categoriesBlogApi.middleware,
+      feedbackApi.middleware,
+      transactionApi.middleware,
+      reviewApi.middleware,
       rtkQueryErrorLogger
     )
 });

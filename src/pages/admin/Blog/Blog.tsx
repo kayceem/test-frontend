@@ -41,7 +41,6 @@ const Blogs = () => {
   const dispatch = useDispatch();
 
   const onSearchHandler = (value: string) => {
-    console.log(value);
     setParams({ ...params, _q: value });
   };
 
@@ -69,6 +68,7 @@ const Blogs = () => {
   const blogFilterHandler = (value: string) => {
     console.log('value: ', value);
     setParams({ ...params, _author: value });
+    setParams({ ...params, _blogName: value });
   };
 
   return (

@@ -18,7 +18,6 @@ const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = (formValues: { email: string; password: string }) => {
-    console.log('Success:', formValues);
 
     const adminCredentials: { email: string; password: string } = {
       email: formValues.email,
@@ -29,10 +28,8 @@ const AdminLogin: React.FC = () => {
 
     adminLogin(adminCredentials)
       .then((result) => {
-        console.log(result);
 
         if ('data' in result) {
-          console.log(result.data);
 
           const loginResponse: { token: string; message: string; userId: string } = result.data;
           const decodedToken: { exp: number; iat: number; userId: string; email: string; adminRole: UserRole } =
@@ -40,7 +37,6 @@ const AdminLogin: React.FC = () => {
 
           localStorage.setItem('adminToken', loginResponse.token);
           const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
-          console.log(decodedToken);
 
           // Check if the token has not expired
           if (Date.now() < expirationTime) {
@@ -59,7 +55,6 @@ const AdminLogin: React.FC = () => {
         // Handling error failed login here
         if ('error' in result) {
           if ('status' in result.error) {
-            console.log('show notification!');
 
             notification.error({
               message: 'Login failed',
@@ -71,12 +66,8 @@ const AdminLogin: React.FC = () => {
         if (!adminLoginResult.isLoading) {
           setIsSubmitting(false);
         }
-        // if (result.error.status === 500) {
-        //   console.log('show notification!');
-        // }
       })
       .catch((error: adminLoginError) => {
-        console.log(error);
 
         notification.error({
           message: 'Login failed',

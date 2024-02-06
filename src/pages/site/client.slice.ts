@@ -2,8 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { notification } from 'antd';
 import { ICart } from '../../types/cart.type';
 import { IParams } from '../../types/params.type';
-// import { IOrder } from '../../../types/order.type';
-// import { IUser } from '../../types/user.type';
 
 interface ClientState {
   lessonId: string;
@@ -20,7 +18,6 @@ interface ClientState {
   certificatePath: string;
   isLessonChange: boolean;
   percentHavePlayed: number; // Add this line
-  //   formData: IClient;
 }
 
 const storedCart = JSON.parse(localStorage.getItem('cart') || '{}') as ICart;
@@ -52,19 +49,11 @@ const clientSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<string>) => {
       if (action.payload) {
-        console.log('state cart: ', state.cart);
-
-        // const cartItems = state.cart.items;
-
-        // if (cartItems) {
-        //   state.cart.items = [];
-        // }
-        // console.log('state cart items: ', state.cart.items);
+        
         const courseExistingIdx = state.cart.items.findIndex((item) => item.courseId === action.payload);
 
         if (courseExistingIdx === -1) {
           state.cart.items.push({ courseId: action.payload });
-          // state.cart.items = [...state.cart.items, { courseId: action.payload }];
 
           const cartForStorage = {
             items: state.cart.items
@@ -90,9 +79,6 @@ const clientSlice = createSlice({
         localStorage.setItem('cart', JSON.stringify(state.cart));
       }
     },
-    // createOrder: (state, action: PayloadAction<Omit<IOrder, "_id">) => {
-    //   state.state = action.payload;
-    // },
     startPlayingVideo: (state, action: PayloadAction<{ lessonId: string; content: string }>) => {
       state.playingVideo = action.payload.content;
       state.lessonId = action.payload.lessonId;
@@ -142,9 +128,6 @@ const clientSlice = createSlice({
     setPercentHavePlayed: (state, action: PayloadAction<number>) => {
       state.percentHavePlayed = action.payload;
     }
-    // handleFormData: (state, action: PayloadAction<IOrder>) => {
-    //   state.formData = action.payload;
-    // }
   }
 });
 

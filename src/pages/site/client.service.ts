@@ -8,31 +8,10 @@ import { ILesson, ISection } from '../../types/lesson.type';
 import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
+import { IContact } from '../../types/contact.type';
 import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/helpers';
 import { Blog } from '../../types/page.type';
-
-/**
- * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post
- * Thường sẽ có 2 cách tiếp cận
- * Cách 1: Đây là cách những video trước đây mình dùng
- * 1. Sau khi thêm 1 bài post thì server sẽ trả về data của bài post đó
- * 2. Chúng ta sẽ tiến hành lấy data đó thêm vào state redux
- * 3. Lúc này UI chúng ta sẽ được sync
- *
- * ====> Rủi ro cách này là nếu khi gọi request add post mà server trả về data không đủ các field để
- * chúng ta hiển thị thì sẽ gặp lỗi. Nếu có nhiều người cùng add post thì data sẽ sync thiếu,
- * Chưa kể chúng ta phải quản lý việc cập nhật state nữa, hơi mệt!
- *
- *
- * Cách 2: Đây là cách thường dùng với RTK query
- * 1. Sau khi thêm 1 bài post thì server sẽ trả về data của bài post đó
- * 2. Chúng ta sẽ tiến hành fetch lại API get Orders để cập nhật state redux
- * 3. Lúc này UI chúng ta sẽ được sync
- *
- * =====> Cách này giúp data dưới local sẽ luôn mới nhất, luôn đồng bộ với server
- * =====> Khuyết điểm là chúng ta sẽ tốn thêm một lần gọi API. Thực ra thì điều này có thể chấp nhận được
- */
 
 interface getCategoriesResponse {
   categories: ICategory[];
@@ -229,10 +208,15 @@ export interface GetCoursesFromWishlistByUserIdResponse {
   courses: ICourse[];
 }
 
+export interface CreateContactResponse {
+  message: string;
+  contact: IContact;
+}
+
 export const clientApi = createApi({
-  reducerPath: 'clientApi', // Tên field trong Redux state
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist'], // Những kiểu tag cho phép dùng trong blogApi
-  keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
+  reducerPath: 'clientApi', 
+  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist', 'Feedbacks'], 
+  keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
     prepareHeaders(headers) {
@@ -246,49 +230,23 @@ export const clientApi = createApi({
         headers.set('UserId', decodedToken.userId);
       }
 
-      // Add the userId header
-
-      // Set some headers here !
       return headers;
     }
   }),
   endpoints: (build) => ({
-    // Generic type theo thứ tự là kiểu response trả về và argument
     getCategories: build.query<getCategoriesResponse, void>({
-      query: () => '/categories', // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      query: () => '/categories', 
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
-
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
-
             return final;
           }
         }
 
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -296,25 +254,8 @@ export const clientApi = createApi({
       query: (params) => ({
         url: '/courses',
         params: params
-      }), // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      }), 
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
 
         if (Array.isArray(result) && result.map) {
           if (result) {
@@ -322,14 +263,11 @@ export const clientApi = createApi({
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
 
             return final;
           }
         }
 
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -337,40 +275,18 @@ export const clientApi = createApi({
       query: (params) => ({
         url: '/courses/popular',
         params: params
-      }), // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      }), 
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
-
+        
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
-
             return final;
           }
         }
-
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -378,25 +294,8 @@ export const clientApi = createApi({
     getAuthors: build.query<getAuthorsResponse, void>({
       query: () => ({
         url: '/users/authors'
-      }), // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      }),
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
 
         if (Array.isArray(result) && result.map) {
           if (result) {
@@ -404,14 +303,12 @@ export const clientApi = createApi({
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
 
             return final;
           }
         }
 
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
+       
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -422,40 +319,19 @@ export const clientApi = createApi({
           _limit: params._limit,
           _page: params._page
         }
-      }), // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      }), 
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
-
+       
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
-
             return final;
           }
         }
 
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -474,8 +350,6 @@ export const clientApi = createApi({
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Users' as const, _id })),
               { type: 'Users' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
-
             return final;
           }
         }
@@ -488,40 +362,19 @@ export const clientApi = createApi({
         params: {
           _courseIds: params.courseIds
         }
-      }), // method không có argument
-      /**
-       * providesTags có thể là array hoặc callback return array
-       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
-       * thì sẽ làm cho Orders method chạy lại
-       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
-       */
+      }), 
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
-
+        
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
-
             return final;
           }
         }
 
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -550,9 +403,6 @@ export const clientApi = createApi({
     updateLessonDoneByUser: build.mutation<createOrderResponse, { userId: string; lessonId: string }>({
       query(body) {
         try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
           return {
             url: `lessons/lesson/done/${body.lessonId}`,
             method: 'POST',
@@ -564,12 +414,6 @@ export const clientApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       }
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Orders sẽ chạy lại
-       */
-      // invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Clients', id: 'LIST' }])
     }),
     getCategory: build.query<ICategory, string>({
       query: (id) => ({
@@ -587,37 +431,19 @@ export const clientApi = createApi({
     getCourseEnrolledByUser: build.query<getCourseEnrolledByUserResponse, string>({
       query: (id) => ({
         url: `courses/course/enrolled/${id}`
-        // headers: {
-        //   hello: 'Im Sang'
-        // }
       }),
       providesTags(result) {
-        /**
-         * Cái callback này sẽ chạy mỗi khi Orders chạy
-         * Mong muốn là sẽ return về một mảng kiểu
-         * ```ts
-         * interface Tags: {
-         *    type: "User";
-         *    id: string;
-         *  }[]
-         *```
-         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
-         */
-
+        
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Clients' as const, _id })),
               { type: 'Clients' as const, id: 'LIST' }
             ];
-            console.log('final: ', final);
-
             return final;
           }
         }
 
-        // const final = [{ type: 'Orders' as const, id: 'LIST' }]
-        // return final
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -631,9 +457,6 @@ export const clientApi = createApi({
     getSectionsByCourseId: build.query<getSectionsResponse, string>({
       query: (courseId) => ({
         url: `sections/course/${courseId}`
-        // headers: {
-        //   userId: 'Im Sang'
-        // }
       })
     }),
     getCertificate: build.query<getCertificateResponse, { courseId: string; userId: string }>({
@@ -645,9 +468,6 @@ export const clientApi = createApi({
     createCertificate: build.mutation<createCertificateResponse, certificateRequest>({
       query(body) {
         try {
-          // throw Error('hehehehe')
-          // let a: any = null
-          // a.b = 1
           return {
             url: `certificates/certificate/generate`,
             method: 'POST',
@@ -657,11 +477,6 @@ export const clientApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       },
-      /**
-       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
-       * match với nó sẽ bị gọi lại
-       * Trong trường hợp này Orders sẽ chạy lại
-       */
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Clients', id: 'LIST' }])
     }),
     getLessonsBySectionId: build.query<getLessonsResponse, { sectionId: string; userId: string }>({
@@ -771,7 +586,10 @@ export const clientApi = createApi({
         method: 'POST',
         body: { courseId, userId }
       }),
-      invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }, { type: 'Wishlist', id: 'CREATE' }]
+      invalidatesTags: () => [
+        { type: 'Wishlist', id: 'LIST' },
+        { type: 'Wishlist', id: 'CREATE' }
+      ]
     }),
     deleteWishlist: build.mutation<DeleteWishlistResponse, { courseId: string; userId: string }>({
       query: ({ courseId, userId }) => ({
@@ -780,6 +598,14 @@ export const clientApi = createApi({
         body: { userId }
       }),
       invalidatesTags: () => [{ type: 'Wishlist', id: 'LIST' }]
+    }),
+    createFeedback: build.mutation<CreateContactResponse, IContact>({
+      query: (contactDetails) => ({
+        url: 'feedbacks/feedback/create',
+        method: 'POST',
+        body: contactDetails
+      }),
+      invalidatesTags: [{ type: 'Feedbacks', id: 'LIST' }]
     })
   })
 });
@@ -815,5 +641,6 @@ export const {
   useCreateWishlistMutation,
   useDeleteWishlistMutation,
   useGetCourseIdsFromWishlistByUserIdQuery,
-  useGetCoursesFromWishlistByUserIdQuery
+  useGetCoursesFromWishlistByUserIdQuery,
+  useCreateFeedbackMutation
 } = clientApi;

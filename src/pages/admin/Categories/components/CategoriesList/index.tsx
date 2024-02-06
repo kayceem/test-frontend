@@ -3,7 +3,6 @@ import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/tab
 import type { FilterValue } from 'antd/es/table/interface';
 import React, { useState } from 'react';
 import './CategoriesList.scss';
-// import { useGetCourseQuery, useGetCoursesQuery } from '../../course.service';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
 import { useDispatch } from 'react-redux';
@@ -37,12 +36,10 @@ const SettingContent = (cateId: string) => {
   const [deleteCategory, deleteCategoryResult] = useDeleteCategoryMutation();
 
   const deleteCateHandler = () => {
-    console.log(cateId);
 
     deleteCategory(cateId)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         notification.success({
           message: 'Delete cate successfully',
@@ -50,7 +47,6 @@ const SettingContent = (cateId: string) => {
         });
       })
       .catch((error: CategoryError) => {
-        console.log('error: ', error);
 
         notification.error({
           message: 'Delete cate failed',
@@ -70,10 +66,7 @@ const SettingContent = (cateId: string) => {
 const CategoriesList: React.FC<CategoryListProps> = (props) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  //   const showUserDetail = () => {
-  //     console.log('click');
-  //     setOpen(true);
-  //   };
+
 
   const columns: ColumnsType<DataCategoryType> = [
     {
@@ -154,7 +147,6 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
   });
 
   const onChange: TableProps<DataCategoryType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
 
     setTableParams({
       pagination
@@ -163,7 +155,6 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
 
   return (
     <div className='users-list'>
-      {/* {isFetching && <Skeleton />} */}
       <Table columns={columns} dataSource={categoriesSource} onChange={onChange} pagination={tableParams.pagination} />
     </div>
   );

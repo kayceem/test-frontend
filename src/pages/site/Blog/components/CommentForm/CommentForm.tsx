@@ -11,8 +11,6 @@ const CommentForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle the submission logic here
-    console.log(comment);
     setComment('');
   };
 

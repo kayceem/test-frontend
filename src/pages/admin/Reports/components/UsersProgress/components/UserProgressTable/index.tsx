@@ -11,7 +11,6 @@ interface DataType {
   lastLogin: string;
   lastEnrollment: string;
   studyTime: string;
-  //   totalTimeOnPlatform: number;
   allCourses: number;
   completedCourses: number;
   inCompletedCourses: number;
@@ -51,11 +50,6 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'studyTime',
     key: 'studyTime'
   },
-  //   {
-  //     title: 'Total time on platform',
-  //     dataIndex: 'totalTimeOnPlatform',
-  //     key: 'totalTimeOnPlatform'
-  //   },
   {
     title: 'All Courses',
     dataIndex: 'allCourses',

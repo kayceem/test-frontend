@@ -32,8 +32,6 @@ const Forgot: React.FC<ForgotProps> = (props) => {
       .unwrap()
       .then((result) => {
 
-        console.log("result: ", result);
-
         if ('error' in result) {
           notification.error({ type: 'error', message: 'login failed', description: 'Email or password incorrect' });
         }else {
@@ -90,9 +88,6 @@ const Forgot: React.FC<ForgotProps> = (props) => {
           <ButtonCmp disabled={isSubmitting} className='btn btn-primary btn-sm w-full'>
             {isSubmitting ? <Spin indicator={antIcon} /> : 'Send Email '}
           </ButtonCmp>
-          {/* <Button loading={true}>
-            Submit Ant Design <Spin indicator={antIcon} />;
-          </Button> */}
         </Form.Item>
       </Form>
       <div className='auth__footer'>

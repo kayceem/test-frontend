@@ -26,8 +26,6 @@ const CourseContents = () => {
           return <SectionItem key={section._id} section={section} index={index} />;
         })}
 
-        {/* <SectionItem />
-        <SectionItem /> */}
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/tab
 import type { FilterValue } from 'antd/es/table/interface';
 import React, { Fragment, useEffect, useState } from 'react';
 import './UsersList.scss';
-// import { useGetCourseQuery, useGetCoursesQuery } from '../../course.service';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { useDeleteUserMutation, useGetUsersQuery } from '../../user.service';
@@ -32,29 +31,11 @@ const columns: ColumnsType<DataUserType> = [
   {
     title: 'User',
     dataIndex: 'name',
-    // filters: [
-    //   {
-    //     text: 'Joe',
-    //     value: 'Joe'
-    //   },
-    //   {
-    //     text: 'Category 1',
-    //     value: 'Category 1'
-    //   },
-    //   {
-    //     text: 'Category 2',
-    //     value: 'Category 2'
-    //   }
-    // ],
-    // filterMode: 'tree',
-    // filterSearch: true,
-    // onFilter: (value: string | number | boolean, record) => record.name.startsWith(value.toString()),
     width: '30%'
   },
   {
     title: 'Last login',
     dataIndex: 'lastLogin'
-    // sorter: (a, b) => Number(a.author) - Number(b.author)
   },
   {
     title: 'Registerd',
@@ -69,7 +50,6 @@ const columns: ColumnsType<DataUserType> = [
         value: 'New York'
       }
     ],
-    // onFilter: (value: string | number | boolean, record) => record.categories.startsWith(value.toString()),
     filterSearch: true
   },
   {
@@ -90,12 +70,10 @@ const SettingContent = (props: { userId: string }) => {
   const [deleteUser, deleteUserResult] = useDeleteUserMutation();
 
   const deleteUserHandler = () => {
-    console.log(props.userId);
 
     deleteUser(props.userId)
       .unwrap()
       .then((result) => {
-        console.log(result);
 
         notification.success({
           message: 'Delete User successfully',
@@ -134,32 +112,19 @@ const UsersList: React.FC<UserListProps> = (props) => {
     });
   }, [props.searchValue]);
 
-  // useEffect(() => {
-  //   setUsersParams({
-  //     ...usersParams,
-  //     _q: ''
-  //   });
-  // }, []);
 
   const { data, isFetching } = useGetUsersQuery(usersParams);
   const dispatch = useDispatch();
   const showUserDetail = () => {
-    console.log('click');
     setOpen(true);
   };
 
   const editUserHandler = (userId: string) => {
-    // startEditingUser()
-    console.log('userid: ', userId);
     dispatch(startEditUser(userId));
-    // setOpen(true);
     props.onEditUser();
   };
 
   const onChange: TableProps<DataUserType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
-
-    console.log('pagination: ', pagination);
 
     setTableParams({ pagination: pagination });
   };
@@ -172,31 +137,28 @@ const UsersList: React.FC<UserListProps> = (props) => {
           <>
             <a href='#' onClick={showUserDetail}>
               <div className='user-info'>
-                <img alt={user.name} src={user.avatar} className='user-info__avatar' />
+                <img alt={user?.name} src={user?.avatar} className='user-info__avatar' />
 
                 <div className='user-info__content'>
-                  <div className='user-info__name'>{user.name}</div>
-                  <div className='user-info__email'>{user.email}</div>
+                  <div className='user-info__name'>{user?.name}</div>
+                  <div className='user-info__email'>{user?.email}</div>
                 </div>
               </div>
             </a>
           </>
         ),
-        lastLogin: user.lastLogin || '',
-        createdAt: user.createdAt,
+        lastLogin: user?.lastLogin || '',
+        createdAt: user?.createdAt,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(user.courses || []).map((course) => (
-              <Avatar key={course._id} src={course.thumbnail} />
+              <Avatar key={course?._id} src={course?.thumbnail} />
             ))}
-            {/* <Avatar src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=2' />
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar> */}
             <Tooltip title='Ant User' placement='top'>
               {(user.courses || []).map((course) => (
-                <Avatar key={course._id} src={course.thumbnail} />
+                <Avatar key={course?._id} src={course?.thumbnail} />
               ))}
             </Tooltip>
-            {/* <Avatar style={{ backgroundColor: '#1677ff' }} icon={<AntDesignOutlined />} /> */}
           </Avatar.Group>
         ),
         tags: (
@@ -235,7 +197,6 @@ const UsersList: React.FC<UserListProps> = (props) => {
       {isFetching && <Skeleton />}
       {!isFetching && (
         <div className='users-list'>
-          {/* {isFetching && <Skeleton />} */}
           <Table columns={columns} dataSource={usersData} onChange={onChange} pagination={tableParams.pagination} />
           <UserDetail isOpen={open} onClose={() => setOpen(false)} />
         </div>
