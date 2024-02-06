@@ -122,7 +122,7 @@ const SideBar = () => {
     ]),
     getItem('Blog', 'blog', <BoldOutlined />, [
       getItem('Blog List', 'blog'),
-      getItem('Posts', 'blog/posts'),
+      getItem('Blog Category', 'blog-category'),
       getItem('Blog comments', 'blog/comments')
     ]),
     getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [

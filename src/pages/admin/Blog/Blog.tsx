@@ -13,7 +13,7 @@ type ParamsType = {
   _limit: number;
   _page: number;
   _q: string;
-  _blogName?: string;
+  _author?: string;
 };
 
 const Blogs = () => {
@@ -28,12 +28,10 @@ const Blogs = () => {
   const [open, setOpen] = useState(false);
 
   const blogFilterList =
-    allBlogsData?.blogs.map((blog) => {
-      return {
-        value: blog.author,
-        label: blog.author
-      };
-    }) || [];
+    Array.from(new Set(allBlogsData?.blogs.map((blog) => blog.author))).map((author) => ({
+      value: author,
+      label: author
+    })) || [];
 
   blogFilterList.unshift({
     value: 'all',
@@ -70,7 +68,7 @@ const Blogs = () => {
 
   const blogFilterHandler = (value: string) => {
     console.log('value: ', value);
-    setParams({ ...params, _blogName: value });
+    setParams({ ...params, _author: value });
   };
 
   return (

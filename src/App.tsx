@@ -68,6 +68,8 @@ import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 import Social from './pages/site/Social';
 import BlogList from './pages/admin/Blog/Blog';
+import BlogCategory from './pages/admin/Blog/Components/BlogCategory/BlogCategory';
+import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -357,6 +359,15 @@ function App() {
             {
               index: true,
               element: <BlogList />
+            }
+          ]
+        },
+        {
+          path: 'blog-category',
+          children: [
+            {
+              index: true,
+              element: <BlogCategories />
             }
           ]
         }
