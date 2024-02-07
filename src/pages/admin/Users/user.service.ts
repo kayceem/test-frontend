@@ -218,6 +218,28 @@ export const userApi = createApi({
        */
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Users', id: 'LIST' }])
     }),
+    updatePermission: build.mutation<any, {userId: string, listPermission: TreeNode[][] | undefined} >({
+      query(body) {
+        try {
+  
+          return {
+            url: '/permissions/update',
+            method: 'PUT',
+            body: body
+          };
+        } catch (error: any) {
+          console.log('error: ', error);
+
+          throw new CustomError((error as CustomError).message);
+        }
+      },
+      /**
+       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
+       * match với nó sẽ bị gọi lại
+       * Trong trường hợp này Permissions sẽ chạy lại
+       */
+      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Permissions', id: 'LIST_PERMISSION' }])
+    }),
     getUser: build.query<getUserResponse, string>({
       query: (id) => ({
         url: `/users/user/${id}`
@@ -254,5 +276,5 @@ export const userApi = createApi({
   })
 });
 
-export const { useGetUsersQuery, useGetUsersSelectQuery, useGetPermissionsQuery,  useAddUserMutation, useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } =
+export const { useGetUsersQuery, useGetUsersSelectQuery, useGetPermissionsQuery,  useAddUserMutation, useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation, useUpdatePermissionMutation } =
   userApi;
