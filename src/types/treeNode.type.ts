@@ -7,6 +7,11 @@ export interface TreeNode {
   checked?: boolean
   selected?: boolean
   isLeaf?: boolean
+  isExpanded?:boolean
+  level?: number
+  isChecked?: boolean
+  origin?: any
+  parentChecked?: boolean
 }
 
 export interface Action {
