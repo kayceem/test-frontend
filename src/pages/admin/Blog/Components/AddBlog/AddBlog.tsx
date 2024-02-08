@@ -15,7 +15,7 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose }) => {
   const [addBlog] = useAddBlogMutation();
   const [updateBlog] = useUpdateBlogMutation();
   const blogId = useSelector((state: RootState) => state.blog.blogId);
-  const adminId = useSelector((state: RootState) => state.auth.adminId); // Assumed path to adminId in state
+  const adminId = useSelector((state: RootState) => state.auth.adminId);
   const { data: blogData, isFetching } = useGetBlogQuery(blogId, {
     skip: !blogId
   });
@@ -43,6 +43,7 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose }) => {
         await addBlog(blogToSubmit).unwrap();
         notification.success({ message: 'Blog added successfully' });
       }
+      form.resetFields();
       onClose();
     } catch (error) {
       notification.error({ message: 'Operation failed', description: 'An error occurred' });
