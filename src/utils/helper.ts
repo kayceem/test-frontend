@@ -12,9 +12,6 @@ export class Helper {
     this.enumData = JSON.parse(localStorage.getItem("enumData") as string)
     this.Role = this.enumData?.Role 
     this.listPermission = JSON.parse(localStorage.getItem("listPermission") as string)
-
-    console.log("this.listPermission", this.listPermission)
-
   }
 
   public checkPermission(role: string) {
