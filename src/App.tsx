@@ -14,6 +14,7 @@ import {
   setAuthenticated,
   setUnauthenticated
 } from './pages/auth.slice';
+
 import RouterHooks from './router';
 
 function App() {
@@ -65,7 +66,7 @@ function App() {
     }
   }, [dispatch]);
 
-  const hookRouter = RouterHooks()
+ const hookRouter = RouterHooks()
 
   return (
     <>
