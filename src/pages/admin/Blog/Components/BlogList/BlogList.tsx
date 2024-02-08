@@ -6,7 +6,7 @@ import Link from 'antd/es/typography/Link';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IBlog } from '../../../../../types/blog.type';
-import { BlogError } from '../../../../../utils/helpers';
+import { BlogError } from '../../../../../utils/errorHelpers';
 import { useSoftDeleteBlogMutation } from '../../blog.service';
 import { startEditBlog } from '../../blog.slice';
 import './BlogList.scss';

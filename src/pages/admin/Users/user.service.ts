@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
 import { IParams } from '../../../types/params.type';
 import { IUser } from '../../../types/user.type';
-import { CustomError } from '../../../utils/helpers';
+import { CustomError } from '../../../utils/errorHelpers';
 import { TreeNode } from '../../../types/treeNode.type';
 import { ISelectBox } from '../../../types/selectBox.type';
 
@@ -51,7 +51,7 @@ interface getUserResponse {
 export const userApi = createApi({
   reducerPath: 'userApi', // Tên field trong Redux state
   tagTypes: ['Users', 'Permissions'], // Những kiểu tag cho phép dùng trong userAPI, permissionAPI
-  keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
+  // keepUnusedDataFor: 10, // Giữ data trong 10s sẽ xóa (mặc định 60s)
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/admin`,
     prepareHeaders(headers) {

@@ -4,7 +4,7 @@ import { Button, Col, Drawer, Form, Input, Row, Space, notification } from 'antd
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { IBlog } from '../../../../../types/blog.type';
-import { BlogError } from '../../../../../utils/helpers';
+import { BlogError } from '../../../../../utils/errorHelpers';
 import { useAddBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../blog.service';
 
 interface CreateBlogProps {

@@ -70,6 +70,8 @@ class ObjectTreeHelper {
   
         if (node.isChecked || checkKeyMaps?.includes(node.key)) {
           nodeData['checked'] = true
+        }else {
+          nodeData['checked'] = false
         }
     
         if (isAnyChildChecked) {
@@ -81,6 +83,8 @@ class ObjectTreeHelper {
         // Additional properties can be added here as needed
         if (node.isLeaf) {
           nodeData['isLeaf'] = true
+        }else {
+          nodeData['isLeaf'] = false
         }
     
         return nodeData

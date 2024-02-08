@@ -10,7 +10,7 @@ import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
 import { IContact } from '../../types/contact.type';
 import { IReview } from '../../types/review.type';
-import { CustomError } from '../../utils/helpers';
+import { CustomError } from '../../utils/errorHelpers';
 import { Blog } from '../../types/page.type';
 
 interface getCategoriesResponse {
