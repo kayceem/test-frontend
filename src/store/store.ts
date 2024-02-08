@@ -42,7 +42,7 @@ const rootReducer = combineReducers({
   blog: blogReducer,
   [blogApi.reducerPath]: blogApi.reducer,
   blogCategories: BlogcategoryReducer,
-  [categoriesBlogApi.reducerPath]: categoriesBlogApi.reducer
+  [categoriesBlogApi.reducerPath]: categoriesBlogApi.reducer,
   [feedbackApi.reducerPath]: feedbackApi.reducer,
   [transactionApi.reducerPath]: transactionApi.reducer,
   [reviewApi.reducerPath]: reviewApi.reducer
