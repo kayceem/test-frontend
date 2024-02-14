@@ -66,7 +66,7 @@ export const store = configureStore({
       transactionApi.middleware,
       reviewApi.middleware,
       rtkQueryErrorLogger
-    )
+    ) 
 });
 
 // Optional, nhưng bắt buộc nếu dùng tính năng refetchOnFocus/refetchOnReconnect
