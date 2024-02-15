@@ -1,13 +1,13 @@
-FROM node:18-alpine
+FROM node:19.5.0-alpine
 
-WORKDIR /react-vite-app
+WORKDIR /app
 
-EXPOSE 8000
-
-COPY package.json package-lock.json ./ 
+COPY package.json .
 
 RUN yarn
 
-COPY . ./
+COPY . .
+
+EXPOSE 8000
 
 CMD ["yarn", "dev"]
