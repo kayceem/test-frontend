@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-
-
 export class Helper {
   private enumData: Record<string, Record<string, string>>; 
   private Role: any;
