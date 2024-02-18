@@ -361,7 +361,7 @@ const Courses = () => {
         <div className='course-content__wrap'>
           <div className='course-content__show-result'>
             {viewTable === 'grid' && (
-              <span className='course-content__show-text'>Showing {dataList?.pagination._totalRows} courses</span>
+              <span className='course-content__show-text'>Showing {dataList?.pagination?._totalRows} courses</span>
             )}
           </div>
           <div className='course-content__list'>
