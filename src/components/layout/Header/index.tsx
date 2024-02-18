@@ -18,6 +18,7 @@ import CategoriesNav from './components/CategoriesNav';
 import Forgot from '../../../pages/site/Auth/Forgot';
 import ChangePassword from '../../../pages/site/Auth/ChangePassword';
 import DropDownMenu from './components/Dropdown/Dropdown';
+import { io } from 'socket.io-client';
 
 const { Search } = Input;
 
@@ -42,6 +43,11 @@ const Header = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPath = location.pathname;
+
+  const socket = io("http://localhost:9000" );
+  socket.on("login", (data: any) => {
+   console.log(data)
+ })
 
   useEffect(() => {
     if (data) {

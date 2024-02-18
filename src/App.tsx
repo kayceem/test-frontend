@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { FloatButton } from 'antd';
+import { io } from "socket.io-client";
 import './assets/sass/_base.scss';
 import './assets/sass/reset.css';
 import './assets/sass/tailwind.css';
@@ -16,6 +17,7 @@ import {
 } from './pages/auth.slice';
 
 import RouterHooks from './router';
+
 
 function App() {
   if (!localStorage.getItem('cart')) {
@@ -67,6 +69,10 @@ function App() {
   }, [dispatch]);
 
  const hookRouter = RouterHooks()
+ const socket = io("http://localhost:9000" );
+   socket.on("connect", () => {
+    console.log("Socket connect!")
+  })
 
   return (
     <>

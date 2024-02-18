@@ -118,12 +118,12 @@ const HomePage = () => {
   const { data: popularCoursesData, isFetching: isPoppularCoursesFetching } = useGetPopularCoursesQuery(popularParams);
 
   const isPopularLoadMore =
-    (popularCoursesData?.pagination._totalRows || 0) > (popularCoursesData?.courses.length || 0);
+    (popularCoursesData?.pagination?._totalRows || 0) > (popularCoursesData?.courses?.length || 0);
 
-  const isUserCoursesLoadMore = (userCoursesData?.pagination._totalRows || 0) > (userCoursesData?.courses.length || 0);
-  const isFrontendLoadMore = (frontendData?.pagination._totalRows || 0) > (frontendData?.courses.length || 0);
-  const isBackendLoadMore = (backendData?.pagination._totalRows || 0) > (backendData?.courses.length || 0);
-  const isDevopsLoadMore = (devopsData?.pagination._totalRows || 0) > (devopsData?.courses.length || 0);
+  const isUserCoursesLoadMore = (userCoursesData?.pagination?._totalRows || 0) > (userCoursesData?.courses?.length || 0);
+  const isFrontendLoadMore = (frontendData?.pagination?._totalRows || 0) > (frontendData?.courses?.length || 0);
+  const isBackendLoadMore = (backendData?.pagination?._totalRows || 0) > (backendData?.courses?.length || 0);
+  const isDevopsLoadMore = (devopsData?.pagination?._totalRows || 0) > (devopsData?.courses?.length || 0);
 
   const suggestedCourses = userSuggestedCoursesData?.suggestedCourses;
 
@@ -342,7 +342,7 @@ const HomePage = () => {
         </Fragment>
       )}
 
-      {isAuth && userSuggestedCoursesData && userSuggestedCoursesData.suggestedCourses.length > 4 && (
+      {isAuth && userSuggestedCoursesData && userSuggestedCoursesData.suggestedCourses?.length > 4 && (
         <div className={`our-courses-carousel`}>
           <h2 className='our-courses-carousel__title mt-md'>Suggested Courses</h2>
           {isSuggestedCoursesFetching ? (
@@ -466,7 +466,7 @@ const HomePage = () => {
         <div className='container'>
           <h2 className='blogs__title text-6xl font-bold mb-16'>Blogs</h2>
           <Slider {...settings}>
-            {data?.blogs.map((blog) => (
+            {data?.blogs?.map((blog) => (
               <Link to={`/blog-detail/${blog._id}`}>
                 <Card>
                   <div className='blogs__item border-dashed min-h-[400px]' key={blog._id}>
