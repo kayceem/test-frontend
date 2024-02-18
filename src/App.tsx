@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { FloatButton } from 'antd';
@@ -17,6 +17,7 @@ import {
 } from './pages/auth.slice';
 
 import RouterHooks from './router';
+import { BACKEND_URL } from './constant/backend-domain';
 
 
 function App() {
@@ -69,10 +70,12 @@ function App() {
   }, [dispatch]);
 
  const hookRouter = RouterHooks()
- const socket = io("http://localhost:9000" );
-   socket.on("connect", () => {
-    console.log("Socket connect!")
-  })
+  useMemo(() => {
+    // const socket = io(`${BACKEND_URL} ` );
+  //   socket.on("connect", () => {
+  //    console.log("Socket connect!")
+  //  })
+  }, [])
 
   return (
     <>

@@ -60,7 +60,7 @@ const Courses = () => {
 
   const isFiltered = authorValue || levelValue || priceValue;
 
-  const numberOfResult = data?.pagination._totalRows || 0;
+  const numberOfResult = data?.pagination?._totalRows || 0;
   // Get all categories at db
   const { data: categoriesData } = useGetCategoriesQuery();
 

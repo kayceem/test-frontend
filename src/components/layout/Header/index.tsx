@@ -1,7 +1,7 @@
 import { BellOutlined, HeartOutlined, MenuOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Badge, Drawer, Dropdown, Input, Modal, Space, notification } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useLogoutMutation } from '../../../pages/auth.service';
@@ -19,6 +19,7 @@ import Forgot from '../../../pages/site/Auth/Forgot';
 import ChangePassword from '../../../pages/site/Auth/ChangePassword';
 import DropDownMenu from './components/Dropdown/Dropdown';
 import { io } from 'socket.io-client';
+import { BACKEND_URL } from '../../../constant/backend-domain';
 
 const { Search } = Input;
 
@@ -44,10 +45,13 @@ const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPath = location.pathname;
 
-  const socket = io("http://localhost:9000" );
-  socket.on("login", (data: any) => {
-   console.log(data)
- })
+  useMemo(() => {
+    const socket = io(`${BACKEND_URL}` );
+    socket.on("login", (data: any) => {
+    console.log(data)
+  })
+  }, [])
+
 
   useEffect(() => {
     if (data) {
