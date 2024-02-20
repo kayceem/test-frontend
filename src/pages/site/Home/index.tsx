@@ -120,7 +120,8 @@ const HomePage = () => {
   const isPopularLoadMore =
     (popularCoursesData?.pagination?._totalRows || 0) > (popularCoursesData?.courses?.length || 0);
 
-  const isUserCoursesLoadMore = (userCoursesData?.pagination?._totalRows || 0) > (userCoursesData?.courses?.length || 0);
+  const isUserCoursesLoadMore =
+    (userCoursesData?.pagination?._totalRows || 0) > (userCoursesData?.courses?.length || 0);
   const isFrontendLoadMore = (frontendData?.pagination?._totalRows || 0) > (frontendData?.courses?.length || 0);
   const isBackendLoadMore = (backendData?.pagination?._totalRows || 0) > (backendData?.courses?.length || 0);
   const isDevopsLoadMore = (devopsData?.pagination?._totalRows || 0) > (devopsData?.courses?.length || 0);
@@ -321,7 +322,7 @@ const HomePage = () => {
               <div className='quotes__wrapper'>
                 <div className='quotes__author'>
                   <div className='quotes__author-img-cover'>
-                    <img src='https://i.imgur.com/osnehcc.jpg' className='quotes__author-img'/>
+                    <img src='https://i.imgur.com/osnehcc.jpg' className='quotes__author-img' />
                   </div>
                   <div className='quotes__author-content'>
                     <h3 className='quotes__author-content-title'>Get Closer To Your Goals</h3>
@@ -344,17 +345,19 @@ const HomePage = () => {
 
       {isAuth && userSuggestedCoursesData && userSuggestedCoursesData.suggestedCourses?.length > 4 && (
         <div className={`our-courses-carousel`}>
-          <h2 className='our-courses-carousel__title mt-md'>Suggested Courses</h2>
-          {isSuggestedCoursesFetching ? (
-            <Skeleton />
-          ) : (
-            <CourseList
-              courseState='notOrdered'
-              courses={suggestedCourses}
-              isCarousel={true}
-              className='our-courses-carousel__wrapper'
-            />
-          )}
+          <div className='container'>
+            <h2 className='our-courses-carousel__title mt-md'>Suggested Courses</h2>
+            {isSuggestedCoursesFetching ? (
+              <Skeleton />
+            ) : (
+              <CourseList
+                courseState='notOrdered'
+                courses={suggestedCourses}
+                isCarousel={true}
+                className='our-courses-carousel__wrapper'
+              />
+            )}
+          </div>
         </div>
       )}
 
