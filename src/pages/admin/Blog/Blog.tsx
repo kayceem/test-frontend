@@ -7,7 +7,8 @@ import { useGetAllBlogsQuery, useGetBlogsQuery } from './blog.service';
 import AddBlog from './Components/AddBlog/AddBlog';
 import BlogListDetail from './Components/BlogList/BlogList';
 import { useGetCategoriesQuery } from '../BlogCategories/categoriesBlog.service';
-
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 const { Search } = Input;
 
 type ParamsType = {
@@ -77,6 +78,18 @@ const Blogs = () => {
 
   return (
     <div className='blogs'>
+      <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Blog'
+            },
+            {
+              title: <Link to='#'>Blog List</Link>
+            }
+          ]}
+        />
+      </div>
       <div className='blogs__wrap'>
         <div className='blogs__filter'>
           <Space className='sub-header__wrap'>
