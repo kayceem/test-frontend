@@ -44,6 +44,8 @@ const rootReducer = combineReducers({
   [feedbackApi.reducerPath]: feedbackApi.reducer,
   [transactionApi.reducerPath]: transactionApi.reducer,
   [reviewApi.reducerPath]: reviewApi.reducer
+  
+
 });
 
 export const store = configureStore({
