@@ -5,11 +5,11 @@
         font-size: 1.8rem;
         a{
             color: #3a3a3a;
-        }
-        &:hover{
-            text-decoration: underline;
-            text-underline-offset: .6rem;
-            background-color: transparent;
+            &:hover{
+                text-decoration: underline;
+                text-underline-offset: .6rem;
+                background-color: transparent;
+            }
         }
     }
 }
