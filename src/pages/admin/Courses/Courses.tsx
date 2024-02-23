@@ -12,6 +12,7 @@ import { useGetCategoriesQuery } from '../Categories/category.service';
 import './Courses.scss';
 import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
+import { Breadcrumb } from 'antd';
 import { useDeleteCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
 
 enum Access {
@@ -323,6 +324,17 @@ const Courses = () => {
 
   return (
     <Fragment>
+      <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Courses'
+            },
+            {
+              title: <Link to='#'>Course Manager</Link>
+            }
+          ]}
+        />
       <Header className='sub-header'>
         <Space className='sub-header__wrap'>
           <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} />
@@ -358,6 +370,8 @@ const Courses = () => {
         </Space>
       </Header>
       <div className='course-content'>
+      
+      </div>
         <div className='course-content__wrap'>
           <div className='course-content__show-result'>
             {viewTable === 'grid' && (
