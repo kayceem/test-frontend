@@ -6,7 +6,8 @@ import './Users.scss';
 import AddUser from './components/AddUser';
 import UsersList from './components/UsersList';
 import { startEditUser } from './user.slice';
-
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 const { Search } = Input;
 
 const Users = () => {
@@ -34,6 +35,18 @@ const Users = () => {
 
   return (
     <div className='users'>
+       <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Users'
+            },
+            {
+              title: <Link to='#'>All Users</Link>
+            }
+          ]}
+        />
+      </div>
       <div className='users__wrap'>
         <div className='users__filter'>
           <Space className='sub-header__wrap'>
