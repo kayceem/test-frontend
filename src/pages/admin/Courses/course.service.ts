@@ -148,7 +148,7 @@ export const courseApi = createApi({
         try {
         
           return {
-            url: '/courses/course/create',
+            url: 'courses/course/create',
             method: 'POST',
             body
           };

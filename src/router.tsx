@@ -63,6 +63,7 @@ import BlogList from './pages/admin/Blog/Blog';
 import TransactionsPage from './pages/admin/Transactions/Transactions';
 import Permission from './pages/admin/Users/components/Permission';
 import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
+import AdminAuthSignUp from './pages/admin/Auth/AuthSignup';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
@@ -350,6 +351,10 @@ const RouterHooks = () => {
     {
       path: 'author-login',
       element: <AdminAuth />
+    },
+    {
+      path: 'author-signup',
+      element: <AdminAuthSignUp />
     },
     {
       path: 'cart/subscribe/course/',

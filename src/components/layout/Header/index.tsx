@@ -46,10 +46,10 @@ const Header = () => {
   const currentPath = location.pathname;
 
   useMemo(() => {
-    const socket = io(`${BACKEND_URL}` );
-    socket.on("login", (data: any) => {
-    console.log(data)
-  })
+  //   const socket = io(`${BACKEND_URL}` );
+  //   socket.on("login", (data: any) => {
+  //   console.log(data)
+  // })
   }, [])
 
 

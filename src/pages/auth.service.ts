@@ -16,6 +16,10 @@ interface signupResponse {
   userId: string;
   message: string;
 }
+interface signUpRequestResponse {
+  userId: string;
+  message: string;
+}
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -54,6 +58,7 @@ export const authApi = createApi({
      
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
+   
     logout: build.mutation<loginResponse, void>({
       query(body) {
         try {
@@ -115,6 +120,21 @@ export const authApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       },
+      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+    }),
+    adminSignUpRequest: build.mutation<signUpRequestResponse, { email: string; password: string }>({
+      query(body) {
+        try {
+          return {
+            url: 'admin/signup-request',
+            method: 'POST',
+            body
+          };
+        } catch (error: any) {
+          throw new CustomError((error as CustomError).message);
+        }
+      },
+     
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
     signup: build.mutation<signupResponse, Omit<IUser, '_id'>>({

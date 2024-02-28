@@ -14,6 +14,7 @@ import { CustomError } from '../../utils/errorHelpers';
 import { Blog } from '../../types/page.type';
 import { BlogComment } from '../../types/blogComments.type';
 import { INote } from '../../types/note.type';
+import { IDataSelect } from '../../types/dataSelect.type';
 
 interface getCategoriesResponse {
   categories: ICategory[];
@@ -57,6 +58,14 @@ export interface getAuthorsResponse {
       _id: string;
     }
   ][];
+}
+export interface getAuthorsSelectResponse {
+  message: string;
+  authors:
+    {
+      name: string;
+      label: string;
+    }[]
 }
 
 export interface getSectionsResponse {
@@ -339,6 +348,14 @@ export const clientApi = createApi({
           }
         }
 
+        return [{ type: 'Clients', id: 'LIST' }];
+      }
+    }),
+    getAuthorsSelect: build.query<IDataSelect[], void>({
+      query: () => ({
+        url: '/users/authors/select'
+      }),
+      providesTags() {
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
@@ -745,6 +762,7 @@ export const {
   useGetCoursesQuery,
   useGetPopularCoursesQuery,
   useGetAuthorsQuery,
+  useGetAuthorsSelectQuery,
   useGetCourseEnrolledByUserQuery,
   useGetCoursesOrderedByUserQuery,
   useGetSectionsByCourseIdQuery,
