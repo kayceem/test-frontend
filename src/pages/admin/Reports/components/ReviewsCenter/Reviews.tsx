@@ -9,10 +9,13 @@ const Reviews: React.FC = () => {
         <Breadcrumb
           items={[
             {
-              title: 'Reviews'
+              title: 'Reports Center'
             },
             {
-              title: <Link to='#'>Reviews Manager</Link>
+              title: 'Exams'
+            },
+            {
+              title: <Link to='#'>Review center</Link>
             }
           ]}
         />
