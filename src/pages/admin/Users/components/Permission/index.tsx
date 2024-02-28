@@ -11,6 +11,8 @@ import { useGetPermissionsQuery, useGetUsersSelectQuery, useUpdatePermissionMuta
 import { SaveOutlined, SearchOutlined } from '@ant-design/icons';
 import { TreeNode } from '../../../../../types/treeNode.type';
 import { objectTreeHelper } from '../../../../../utils/objectTreeHelper';
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 const Permission: React.FC = () => {
 
   // ... (other state and logic)
@@ -122,7 +124,18 @@ const Permission: React.FC = () => {
   return (
     
     <Fragment >
-
+      <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Users'
+            },
+            {
+              title: <Link to='#'>Permission</Link>
+            }
+          ]}
+        />
+      </div>
     <div>
     <Select
     showSearch

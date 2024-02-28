@@ -6,7 +6,8 @@ import { startEditCategory } from './categoriesBlog.slice';
 import AddCategoriesBlog from './components/AddCategoriesBlog';
 import CategoriesBlogList from './components/CategoriesBlogList';
 import { useGetCategoriesQuery } from './categoriesBlog.service';
-
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 const { Search } = Input;
 
 type ParamsType = {
@@ -52,6 +53,18 @@ const BlogCategories = () => {
 
   return (
     <div className='blog-categories'>
+      <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Blog'
+            },
+            {
+              title: <Link to='#'>Blog Category</Link>
+            }
+          ]}
+        />
+      </div>
       <div className='blog-categories__wrap'>
         <div className='blog-categories__filter'>
           <Space className='sub-header__wrap'>
