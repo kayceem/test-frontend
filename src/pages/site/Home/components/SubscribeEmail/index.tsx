@@ -29,7 +29,7 @@ export default function SubscribeEmail() {
           </div>
           <div className='subscribeemail-item'>
             <div className='subscribeemail-img'>
-              <img src='https://cdn.mycourse.app/v2.49.9/images/smartphone-portrait-white-realistic.png' alt='' />
+              <img src='https://i.imgur.com/Ufc9Fxj.png' alt='' />
             </div>
           </div>
         </div>
