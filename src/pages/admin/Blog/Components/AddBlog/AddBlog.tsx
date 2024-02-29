@@ -27,6 +27,10 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
   const [form] = Form.useForm();
 
   useEffect(() => {
+    form.setFieldsValue({ userId: adminId });
+  }, [adminId, form]);
+
+  useEffect(() => {
     if (blogId && blogData) {
       form.setFieldsValue({ ...blogData.blog, tags: blogData.blog.tags.join(', ') });
     } else {

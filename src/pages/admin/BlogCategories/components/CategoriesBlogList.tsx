@@ -6,7 +6,6 @@ import Link from 'antd/es/typography/Link';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ICategoryBlogs } from '../../../../types/categoryBlogs.type';
-import { BlogsCategoryError } from '../../../../utils/helpers';
 import { useDeleteCategoryMutation } from '../categoriesBlog.service';
 import { startEditCategory } from '../categoriesBlog.slice';
 
@@ -51,7 +50,7 @@ const SettingContent = (BlogcategoryId: string) => {
               });
               resolve(undefined);
             })
-            .catch((error: BlogsCategoryError) => {
+            .catch((error: any) => {
               console.error('error: ', error);
               notification.error({
                 message: 'Failed to delete category'
