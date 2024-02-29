@@ -3,6 +3,7 @@ import Button from '../../../components/Button';
 import './Auth.scss';
 import AdminLogin from './Login';
 import AdminSignUpRequest from './SignUpRequest';
+import { Link } from 'react-router-dom';
 const AdminAuthSignUp = () => {
   return (
     <Row className='admin-auth'>
@@ -23,7 +24,7 @@ const AdminAuthSignUp = () => {
           <p className='admin-auth__welcome-back'>Welcome Back</p>
           <AdminSignUpRequest />
           <div className='admin-auth__forgot-password'>
-            <a href='#'>Forgot Password</a>
+            <Link to='/author-login'>Login</Link>
           </div>
         </div>
       </Col>

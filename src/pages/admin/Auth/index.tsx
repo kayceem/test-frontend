@@ -1,7 +1,8 @@
-import { Col, Row } from 'antd';
+import { Col, Row, Space } from 'antd';
 import Button from '../../../components/Button';
 import './Auth.scss';
 import AdminLogin from './Login';
+import { Link } from 'react-router-dom';
 const AdminAuth = () => {
   return (
     <Row className='admin-auth'>
@@ -22,7 +23,10 @@ const AdminAuth = () => {
           <p className='admin-auth__welcome-back'>Welcome Back</p>
           <AdminLogin />
           <div className='admin-auth__forgot-password'>
+          <Space>
             <a href='#'>Forgot Password</a>
+            <Link to='/author-signup'>Sign up to become author!</Link>
+          </Space>
           </div>
         </div>
       </Col>
