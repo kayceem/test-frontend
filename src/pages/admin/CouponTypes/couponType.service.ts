@@ -72,7 +72,10 @@ export const couponTypeApi = createApi({
         url: `/coupon-type/histories/${couponTypeId}`,
         params: params
       }),
-      providesTags: (result, error, { couponTypeId }) => [{ type: 'CouponTypes', id: couponTypeId }]
+      providesTags: (result, error, { couponTypeId }) => [
+        { type: 'CouponTypes', id: 'LIST' },
+        { type: 'CouponTypes', id: couponTypeId }
+      ]
     }),
     postCouponType: build.mutation<void, ICouponType>({
       query: (couponType) => ({
