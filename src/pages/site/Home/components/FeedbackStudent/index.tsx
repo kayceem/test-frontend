@@ -10,7 +10,7 @@ export default function FeedbackStudent() {
               {/*  col 1 */}
               <div className='fb-wrap'>
                 <div className='avatar'>
-                  <Avatar src='path_to_avatar_image' size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} />
+                  <Avatar src='https://photo-cms-anninhthudo.epicdn.me/w800/Uploaded/2024/bpcpcwvo/2023_06_28/eddie-ryans-portrait-3204-7485.jpg' size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} />
                 </div>
                 <div className='inline text-3xl txt-desc'>
                   "Course materials were excellent, the mentoring approach was excellent. The instructors did a good job
@@ -26,7 +26,7 @@ export default function FeedbackStudent() {
               {/*  col 1 */}
               <div className='fb-wrap'>
                 <div className='avatar'>
-                  <Avatar src='path_to_avatar_image' size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} />
+                  <Avatar src='https://tuyenquang.dcs.vn/Image/Large/2021641852_29877.jpeg' size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} />
                 </div>
                 <div className='inline text-3xl txt-desc txt-black'>
                   "Taking online classes here at eSchoolM has been a major benefit to me. The courses are well laid out
@@ -42,7 +42,7 @@ export default function FeedbackStudent() {
               {/*  col 1 */}
               <div className='fb-wrap'>
                 <div className='avatar'>
-                  <Avatar src='path_to_avatar_image' size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} />
+                  <Avatar src='https://image.vietstock.vn/2013/06/18/Mr.%20Kokalari%20Picture%201.JPG' size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} />
                 </div>
                 <div className='inline text-3xl txt-desc'>
                   "I received my certificate, and I would like to thank eShoolM for their continuous support. The

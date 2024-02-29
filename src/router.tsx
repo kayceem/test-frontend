@@ -64,6 +64,7 @@ import TransactionsPage from './pages/admin/Transactions/Transactions';
 import Permission from './pages/admin/Users/components/Permission';
 import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
 import AdminAuthSignUp from './pages/admin/Auth/AuthSignup';
+import CourseNotes from './pages/admin/CourseNotes';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
@@ -217,6 +218,15 @@ const RouterHooks = () => {
               id: 'course-detail',
               path: ':courseId',
               element: <AdminCourseDetail />
+            }
+          ]
+        },
+        {
+          path: 'courses-notes',
+          children: [
+            {
+              index: true,
+              element: <CourseNotes />
             }
           ]
         },

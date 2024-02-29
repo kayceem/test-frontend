@@ -22,6 +22,8 @@ import { categoriesBlogApi } from '../pages/admin/BlogCategories/categoriesBlog.
 import { feedbackApi } from '../pages/admin/Feedbacks/feedback.service';
 import { transactionApi } from '../pages/admin/Transactions/transaction.service';
 import { reviewApi } from '../pages/admin/Reports/components/ReviewsCenter/review.service';
+import notesCourseReducer from '../pages/admin/CourseNotes/courseNotes.slice';
+import { courseNoteApi } from '../pages/admin/CourseNotes/courseNotes.service';
 const rootReducer = combineReducers({
   course: courseReducer,
   [courseApi.reducerPath]: courseApi.reducer,
@@ -43,9 +45,9 @@ const rootReducer = combineReducers({
   [categoriesBlogApi.reducerPath]: categoriesBlogApi.reducer,
   [feedbackApi.reducerPath]: feedbackApi.reducer,
   [transactionApi.reducerPath]: transactionApi.reducer,
-  [reviewApi.reducerPath]: reviewApi.reducer
-  
-
+  [reviewApi.reducerPath]: reviewApi.reducer,
+  noteCourse: notesCourseReducer,
+  [courseNoteApi.reducerPath]: courseNoteApi.reducer
 });
 
 export const store = configureStore({
@@ -65,6 +67,7 @@ export const store = configureStore({
       feedbackApi.middleware,
       transactionApi.middleware,
       reviewApi.middleware,
+      courseNoteApi.middleware,
       rtkQueryErrorLogger
     )
 });

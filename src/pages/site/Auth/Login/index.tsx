@@ -1,4 +1,4 @@
-import { LinkedinFilled, LoadingOutlined } from '@ant-design/icons';
+import { FacebookFilled, GithubOutlined, GoogleOutlined, LinkedinFilled, LoadingOutlined } from '@ant-design/icons';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Button, Divider, Form, Input, Space, Spin, notification } from 'antd';
 import jwtDecode from 'jwt-decode';
@@ -113,7 +113,7 @@ const Login: React.FC<LoginProps> = (props) => {
             <LinkedinFilled className='auth__socials-icon' />
           </Button>
           <Button className='auth__socials-btn'>
-            <GithubLoginButton />
+            <GithubLoginButton/>
           </Button>
         </Space>
       </div>

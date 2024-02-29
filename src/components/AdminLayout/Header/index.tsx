@@ -18,6 +18,7 @@ import BlogCategoryHeader from './components/BlogCategory';
 import FeedbacksHeader from './components/Feedbacks/Feedbacks';
 import ReviewsHeader from './components/Reviews/Reviews';
 import TransactionsHeader from './components/Transactions/Transactions';
+import CoursesNotes from './components/CourseNotes';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -33,6 +34,7 @@ const AdminHeader = () => {
       {path === '/author/dashboard' && <DashboardHeader />}
       {path === '/author/categories' && <CategoriesHeader />}
       {path === '/author/courses' && <CoursesHeader />}
+      {path === '/author/courses-notes' && <CoursesNotes />}
       {path === '/author/users' && <UsersHeader />}
       {path === '/author/orders' && <OrdersHeader />}
       {path === '/author/reports/users-progress' && <UsersProgressHeader />}

@@ -323,18 +323,17 @@ const Courses = () => {
 
   return (
     <Fragment>
-      <div>
-      <Breadcrumb
+      <div className='breakcrumb'>
+        <Breadcrumb
           items={[
             {
-              title: 'Course',
+              title: 'Courses'
             },
             {
-              title: <Link to="/author/courses">Course Manager</Link>,
-            },
+              title: <Link to='#'>Course Manager</Link>
+            }
           ]}
         />
-      </div>
       <Header className='sub-header'>
         <Space className='sub-header__wrap'>
           <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} />
@@ -370,6 +369,8 @@ const Courses = () => {
         </Space>
       </Header>
       <div className='course-content'>
+      
+      </div>
         <div className='course-content__wrap'>
           <div className='course-content__show-result'>
             {viewTable === 'grid' && (

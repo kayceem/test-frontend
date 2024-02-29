@@ -195,8 +195,6 @@ const Dashboard: React.FC = () => {
                   </a>
                 </div>
                 <div className='latest-users__body dashboard__latest-item-body'>
-                  {/* Mapp all news users here!!! */}
-
                   <div className='latest-users__item'>
                     <img
                       alt=''

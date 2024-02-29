@@ -1,7 +1,9 @@
 @import '../../../assets/sass/base';
 
+.anticon.anticon-github{
+    font-size: 2rem;
+}
 .auth {
-
     &__title {
         text-align: center;
         @include h-style("h3");
@@ -17,11 +19,15 @@
         margin: 2rem 0rem;
         &-btn {
             border-radius: 50%;
-            height: 4rem;
+            height: 5rem;
+            width: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         &-icon {
-            font-size: 1.2rem;
+            font-size: 2rem;
         }
     }
 
