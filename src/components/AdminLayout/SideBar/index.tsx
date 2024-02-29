@@ -107,7 +107,7 @@ const SideBar = () => {
         )
       ])) as MenuItem,
     getItem('Marketing', 'marketing', <TagsOutlined />, [
-      getItem('Coupons Type', 'marketing/coupon-types'),
+      getItem('Coupon Types', 'marketing/coupon-types'),
       getItem('Bundles', 'marketing/bundles'),
       getItem('Subscriptions', 'marketing/subscriptions'),
       getItem('Coupons', 'marketing/coupons')
