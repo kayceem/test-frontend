@@ -185,8 +185,8 @@ const UsersProgress = () => {
           {/* Apply filters - reset filters */}
 
           <div className='users-progress__btns'>
-            <Button className='users-progress__btns-filter'>Apply filters</Button>
-            <Button className='users-progress__btns-reset'>Reset filters</Button>
+            <Button className='users-progress__btns-filter btn-wrap'>Apply filters</Button>
+            <Button className='users-progress__btns-reset btn-wrap'>Reset filters</Button>
           </div>
         </Row>
         {/* Showing results of table */}

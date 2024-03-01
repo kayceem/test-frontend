@@ -361,10 +361,10 @@ const Courses = () => {
             />
           )}
 
-          <Button onClick={changeTableToGrid}>
+          <Button onClick={changeTableToGrid} className='btn-wrap'>
             <AppstoreOutlined />
           </Button>
-          <Button onClick={changeTableToList}>
+          <Button onClick={changeTableToList} className='btn-wrap'>
             <UnorderedListOutlined />
           </Button>
         </Space>

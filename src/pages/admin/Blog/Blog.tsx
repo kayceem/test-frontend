@@ -93,7 +93,7 @@ const Blogs = () => {
       <div className='blogs__wrap'>
         <div className='blogs__filter'>
           <Space className='sub-header__wrap'>
-            <Button onClick={newBlogHandler} type='primary' icon={<PlusOutlined />}>
+            <Button onClick={newBlogHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New Blog
             </Button>
             <Search placeholder='Search blogs' onSearch={onSearchHandler} style={{ width: 200 }} />

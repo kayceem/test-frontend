@@ -68,7 +68,7 @@ const BlogCategories = () => {
       <div className='blog-categories__wrap'>
         <div className='blog-categories__filter'>
           <Space className='sub-header__wrap'>
-            <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />}>
+            <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New Category
             </Button>
             <Search placeholder='Search categories' onSearch={onSearchHandler} style={{ width: 200 }} />

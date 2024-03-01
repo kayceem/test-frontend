@@ -106,7 +106,7 @@ const Categories = () => {
         <div className='users__filter'>
           <Space className='sub-header__wrap'>
             {isCreate && (
-              <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />}>
+              <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
                 New Category
               </Button>
             )}

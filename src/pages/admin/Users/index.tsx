@@ -50,7 +50,7 @@ const Users = () => {
       <div className='users__wrap'>
         <div className='users__filter'>
           <Space className='sub-header__wrap'>
-            <Button onClick={createUserHandler} type='primary' icon={<PlusOutlined />}>
+            <Button onClick={createUserHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New User
             </Button>
             <Search placeholder='Search Name of User' onSearch={onSearchHandler} style={{ width: 200 }} />

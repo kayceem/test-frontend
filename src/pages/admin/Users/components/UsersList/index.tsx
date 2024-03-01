@@ -169,12 +169,12 @@ const UsersList: React.FC<UserListProps> = (props) => {
         ),
         manage: (
           <Space>
-            <Button onClick={() => editUserHandler(user._id)}>
+            <Button onClick={() => editUserHandler(user._id)} className='btn-wrap'>
               <EditOutlined />
             </Button>
 
             <Popover placement='bottomRight' content={<SettingContent userId={user._id} />} title='Actions'>
-              <Button>
+              <Button className='btn-wrap'>
                 <EllipsisOutlined />
               </Button>
             </Popover>

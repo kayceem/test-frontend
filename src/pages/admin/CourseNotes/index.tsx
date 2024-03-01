@@ -86,7 +86,7 @@ const CourseNotes = () => {
         />
       </div>
       <Space className='sub-header__wrap'>
-        <Button onClick={newNoteHandler} type='primary' icon={<PlusOutlined />}>
+        <Button onClick={newNoteHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
           New Note
         </Button>
         <Space>

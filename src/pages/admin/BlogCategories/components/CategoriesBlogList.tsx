@@ -125,11 +125,11 @@ const CategoriesBlogList: React.FC<CategoryListProps> = ({ data, onCategoryEdit 
       createdAt,
       actions: (
         <Space>
-          <Button onClick={() => categoryEditHandler(_id)}>
+          <Button onClick={() => categoryEditHandler(_id)} className='btn-wrap'>
             <EditOutlined />
           </Button>
           <Popover placement='bottomRight' content={() => SettingContent(_id)} title='Actions'>
-            <Button>
+            <Button className='btn-wrap'>
               <EllipsisOutlined />
             </Button>
           </Popover>
