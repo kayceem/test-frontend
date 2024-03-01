@@ -53,7 +53,7 @@ const Users = () => {
             <Button onClick={createUserHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New User
             </Button>
-            <Search placeholder='Search Name of User' onSearch={onSearchHandler} style={{ width: 200 }} />
+            <Search placeholder='Search Name of User' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
             <Select
               showSearch
               placeholder='Search by course'

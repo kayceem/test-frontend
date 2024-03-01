@@ -31,3 +31,14 @@
         }
     }
 }
+.search-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    .ant-btn-icon{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

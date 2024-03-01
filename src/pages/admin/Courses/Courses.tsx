@@ -337,7 +337,7 @@ const Courses = () => {
         />
       <Header className='sub-header'>
         <Space className='sub-header__wrap'>
-          <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} />
+          <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
         
 
           {viewTable === 'grid' && (

@@ -96,7 +96,7 @@ const Blogs = () => {
             <Button onClick={newBlogHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New Blog
             </Button>
-            <Search placeholder='Search blogs' onSearch={onSearchHandler} style={{ width: 200 }} />
+            <Search placeholder='Search blogs' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
             <Select
               size='middle'
               placeholder='Please select a authors'

@@ -71,7 +71,7 @@ const BlogCategories = () => {
             <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New Category
             </Button>
-            <Search placeholder='Search categories' onSearch={onSearchHandler} style={{ width: 200 }} />
+            <Search placeholder='Search categories' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
           </Space>
         </div>
         <div className='blog-categories__content'>
