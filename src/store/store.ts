@@ -24,6 +24,8 @@ import { transactionApi } from '../pages/admin/Transactions/transaction.service'
 import { reviewApi } from '../pages/admin/Reports/components/ReviewsCenter/review.service';
 import notesCourseReducer from '../pages/admin/CourseNotes/courseNotes.slice';
 import { courseNoteApi } from '../pages/admin/CourseNotes/courseNotes.service';
+import { couponTypeApi } from '../pages/admin/CouponTypes/couponType.service';
+
 const rootReducer = combineReducers({
   course: courseReducer,
   [courseApi.reducerPath]: courseApi.reducer,
@@ -47,7 +49,8 @@ const rootReducer = combineReducers({
   [transactionApi.reducerPath]: transactionApi.reducer,
   [reviewApi.reducerPath]: reviewApi.reducer,
   noteCourse: notesCourseReducer,
-  [courseNoteApi.reducerPath]: courseNoteApi.reducer
+  [courseNoteApi.reducerPath]: courseNoteApi.reducer,
+  [couponTypeApi.reducerPath]: couponTypeApi.reducer
 });
 
 export const store = configureStore({
@@ -68,6 +71,7 @@ export const store = configureStore({
       transactionApi.middleware,
       reviewApi.middleware,
       courseNoteApi.middleware,
+      couponTypeApi.middleware,
       rtkQueryErrorLogger
     )
 });

@@ -61,6 +61,7 @@ import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
 import Social from './pages/site/Social';
 import BlogList from './pages/admin/Blog/Blog';
 import TransactionsPage from './pages/admin/Transactions/Transactions';
+import CouponTypesPage from './pages/admin/CouponTypes/CouponTypes';
 import Permission from './pages/admin/Users/components/Permission';
 import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
 import CourseNotes from './pages/admin/CourseNotes';
@@ -276,6 +277,15 @@ const RouterHooks = () => {
               index: true,
               path: 'list',
               element: <Feedbacks />
+            }
+          ]
+        },
+        {
+          path: 'marketing',
+          children: [
+            {
+              path: 'coupon-types',
+              element: adminRole === UserRole.ADMIN ? <CouponTypesPage /> : <Navigate to='/error' />
             }
           ]
         },
