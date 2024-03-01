@@ -2,12 +2,11 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, DatePicker, Input, InputNumber, Skeleton, Space } from 'antd';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import AddCourseNotes from './components/AddCourseNotes';
 import CourseNotesList from './components/CourseNotesList';
 import { useGetCourseNotesQuery } from './courseNotes.service';
 import { startEditNotesCourse } from './courseNotes.slice';
-
+import { Link } from 'react-router-dom';
 const { Search } = Input;
 const { RangePicker } = DatePicker;
 
@@ -73,12 +72,19 @@ const CourseNotes = () => {
 
   return (
     <div className='course-notes'>
-      <Breadcrumb>
-        <Breadcrumb.Item>Course</Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link to='#'>Course Notes</Link>
-        </Breadcrumb.Item>
-      </Breadcrumb>
+      <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Course'
+            },
+            {
+              title: <Link to='#'>Course Notes</Link>
+            }
+            
+          ]}
+        />
+      </div>
       <Space className='sub-header__wrap'>
         <Button onClick={newNoteHandler} type='primary' icon={<PlusOutlined />}>
           New Note
