@@ -113,13 +113,13 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
               <img alt={user?.name} src={user?.avatar || ''} className='user-info__avatar' />
 
               <div className='user-info__content'>
-                <div className='user-info__name'>{user?.name}</div>
+                <div className='user-info__name txt-tt'>{user?.name}</div>
                 <div className='user-info__email'>{user?.email}</div>
               </div>
             </div>
           </a>
         ),
-        register: order.createdAt || '',
+        register: <div className='txt-desc'>{order.createdAt || ''}</div>,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(items || []).map((course) => (
@@ -134,16 +134,16 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         ),
         transaction: (
           <>
-            <div>
+            <div className='txt-desc'>
               <Link to={`/cart-invoice/${order._id}`}>
                 Invoice <DownloadOutlined />
               </Link>
             </div>
-            <div>sandbox_64bccb1fc177e</div>
+            <div className='txt-desc'>sandbox_64bccb1fc177e</div>
           </>
         ),        
-        amount: `$${totalPrice}`,
-        payment: transaction?.method
+        amount:  <div className='txt-desc'>{`$${totalPrice}`}</div>,
+        payment:  <div className='txt-desc'>{transaction?.method}</div>,
       };
 
       return orderTemplateItem;
