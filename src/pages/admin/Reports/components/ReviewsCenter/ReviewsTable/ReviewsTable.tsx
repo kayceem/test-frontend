@@ -134,7 +134,7 @@ const ReviewsTable: React.FC = () => {
     <div className='reviews-table'>
       <div className='search-bar-container'>
         <div className='search-bar'>
-          <Search placeholder='Search by title' onSearch={handleSearch} enterButton allowClear />
+          <Search placeholder='Search by title' onSearch={handleSearch} enterButton allowClear className='search-wrap'/>
         </div>
         <div className='status-filter'>
           <Select defaultValue='all' style={{ width: 120 }} onChange={handleChangeStatusFilter}>

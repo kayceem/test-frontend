@@ -79,25 +79,25 @@ const DashboardHeader = () => {
       <Space>
         <h3 className='admin-header__page-title'>Dashboard</h3>
 
-        <Button onClick={openCreateCourseHandler}>
+        <Button onClick={openCreateCourseHandler} className='btn-wrap'>
           <PlusCircleOutlined />
           Create Course
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Preview Hompage
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Preview Hompage after login
         </Button>
       </Space>
       <Space className='admin-header__notify'>
-        <Button>
+        <Button className='btn-wrap'>
           <BellOutlined />
           <span>What's new</span>
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <QuestionOutlined />
           <span>Help</span>
         </Button>

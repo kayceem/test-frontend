@@ -14,17 +14,20 @@ import { objectTreeHelper } from '../../../../../utils/objectTreeHelper';
 import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 const Permission: React.FC = () => {
-
   // ... (other state and logic)
-  
-  const [permissionQuery, setPermissionQuery] = useState({})
+
+  const [permissionQuery, setPermissionQuery] = useState({});
   const [isSearch, setIsSearch] = useState(false);
   const [selectUser, setSelectedUser] = useState<string>();
   // Fetch permission data list
-  const { data: permissionResponse, isFetching: isPermissionFetching, refetch } = useGetPermissionsQuery(permissionQuery, {
-    skip: !selectUser || !isSearch,
+  const {
+    data: permissionResponse,
+    isFetching: isPermissionFetching,
+    refetch
+  } = useGetPermissionsQuery(permissionQuery, {
+    skip: !selectUser || !isSearch
   });
-  const { data: usersSelectRes } = useGetUsersSelectQuery({})
+  const { data: usersSelectRes } = useGetUsersSelectQuery({});
   const [updatePermission, updatePermissionResult] = useUpdatePermissionMutation();
   const listPermission = permissionResponse?.listPermission;
   const listUserSelect = usersSelectRes?.users;
@@ -34,9 +37,7 @@ const Permission: React.FC = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([]);
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
 
-
   const [checkedKeysMap, setCheckedKeysMap] = useState<React.Key[][]>([]);
-
 
   const onExpand = (expandedKeysValue: React.Key[]) => {
     // if not set autoExpandParent to false, if children expanded, parent can not collapse.
@@ -44,7 +45,7 @@ const Permission: React.FC = () => {
     setExpandedKeys(expandedKeysValue);
     setAutoExpandParent(false);
   };
- 
+
   const onCheck = (checkedKeys: React.Key[], info: any, index: number) => {
     const newCheckedKeysMap = [...checkedKeysMap];
     newCheckedKeysMap[index] = checkedKeys;
@@ -54,76 +55,74 @@ const Permission: React.FC = () => {
   // Selection box section
   const onChangeUserSelect = (value: string) => {
     setSelectedUser(value);
-    setPermissionQuery({userId: value})
+    setPermissionQuery({ userId: value });
   };
-  
+
   const onSearchUserSelect = () => {};
 
   const searchPermissionData = () => {
-    if(selectUser) {
+    if (selectUser) {
       setIsSearch(true);
-    }else {
+    } else {
       notification.warning({
-        message: "Please select user first!"
+        message: 'Please select user first!'
       });
       setIsSearch(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if(isSearch) {
-      refetch().then((res: any) => {
-
-        const newListPermission = res.data?.listPermission as TreeNode[][]
-        const newCheckedKeys: React.Key[][] = []
-        // recheck after search
-        newListPermission?.forEach((treePermissionData, index) => {
-        newCheckedKeys[index] = objectTreeHelper.getInitialCheckedKeys(treePermissionData)
-       })
+    if (isSearch) {
+      refetch()
+        .then((res: any) => {
+          const newListPermission = res.data?.listPermission as TreeNode[][];
+          const newCheckedKeys: React.Key[][] = [];
+          // recheck after search
+          newListPermission?.forEach((treePermissionData, index) => {
+            newCheckedKeys[index] = objectTreeHelper.getInitialCheckedKeys(treePermissionData);
+          });
           setCheckedKeysMap(newCheckedKeys);
           setIsSearch(false);
-      }).catch(() => {
+        })
+        .catch(() => {
           setIsSearch(false);
-      })
+        });
     }
-  }, [isSearch, refetch])
-
+  }, [isSearch, refetch]);
 
   const saveData = () => {
-
     const result = listPermission?.map((permissionTreeData, index) => {
       const treeData = permissionTreeData.map((node) => objectTreeHelper.createNodeData(node, checkedKeysMap[index]));
       return treeData;
     });
 
-    if(selectUser) {
+    if (selectUser) {
       updatePermission({
         userId: selectUser,
         listPermission: result
       })
-      .unwrap()
-      .then((res: any) => {
-        if(res) {
-          notification.success({
-            message: "Update permission successfully!",
+        .unwrap()
+        .then((res: any) => {
+          if (res) {
+            notification.success({
+              message: 'Update permission successfully!'
+            });
+          }
+        })
+        .catch(() => {
+          notification.error({
+            message: 'Update permission failed!'
           });
-        }        
-      }).catch(() => {
-        notification.error({
-          message: "Update permission failed!",
         });
-      })
-    }else {
+    } else {
       notification.warning({
-        message: "Please select user first!",
+        message: 'Please select user first!'
       });
     }
-
-  }
+  };
 
   return (
-    
-    <Fragment >
+    <Fragment>
       <div className='breakcrumb'>
         <Breadcrumb
           items={[
@@ -136,50 +135,49 @@ const Permission: React.FC = () => {
           ]}
         />
       </div>
-    <div>
-    <Select
-    showSearch
-    placeholder="Select a user"
-    optionFilterProp="children"
-    onChange={onChangeUserSelect}
-    onSearch={onSearchUserSelect}
-    options={listUserSelect}
-  />
-    <Button type="primary" icon={<SearchOutlined />} onClick={searchPermissionData}>
-        Search
-      </Button>
-      <Button type="primary" icon={<SaveOutlined />} onClick={saveData}>
-            Save
-      </Button>
+      <div className='permission-list-item-head'>
+        <Select
+          showSearch
+          placeholder='Select a user'
+          optionFilterProp='children'
+          onChange={onChangeUserSelect}
+          onSearch={onSearchUserSelect}
+          options={listUserSelect}
+        />
+        <Button type='primary' icon={<SearchOutlined />} onClick={searchPermissionData} className='btn-wrap'>
+          Search
+        </Button>
+        <Button type='primary' icon={<SaveOutlined />} onClick={saveData} className='btn-wrap'>
+          Save
+        </Button>
+      </div>
 
-    </div>
+      {isPermissionFetching && <Skeleton />}
 
-      {isPermissionFetching && <Skeleton/>}
-  
-       {!isPermissionFetching && (
-        <Row className="mt-4" gutter={[16, 16]}>
-        {listPermission?.map((permissionTreeData, index) => {
-         const currentKey = permissionTreeData[0].key;
- 
-         return (
-           <Col key={currentKey} span={6}>
-           <Tree
-             checkable
-             onExpand={onExpand}
-             expandedKeys={expandedKeys}
-             autoExpandParent={autoExpandParent}
-             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-             // @ts-ignore
-             onCheck={(checkedKeys, info) => onCheck(checkedKeys, info, index)}
-             checkedKeys={checkedKeysMap[index]}
-             selectedKeys={selectedKeys}
-             treeData={permissionTreeData}
-         />
-         </Col>
-         )
-       })}
+      {!isPermissionFetching && (
+        <Row className='mt-4' gutter={[16, 16]}>
+          {listPermission?.map((permissionTreeData, index) => {
+            const currentKey = permissionTreeData[0].key;
+
+            return (
+              <Col key={currentKey} span={6}>
+                <Tree
+                  checkable
+                  onExpand={onExpand}
+                  expandedKeys={expandedKeys}
+                  autoExpandParent={autoExpandParent}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  onCheck={(checkedKeys, info) => onCheck(checkedKeys, info, index)}
+                  checkedKeys={checkedKeysMap[index]}
+                  selectedKeys={selectedKeys}
+                  treeData={permissionTreeData}
+                />
+              </Col>
+            );
+          })}
         </Row>
-       )}
+      )}
     </Fragment>
   );
 };

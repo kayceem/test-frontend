@@ -336,7 +336,7 @@ const Courses = () => {
         />
       <Header className='sub-header'>
         <Space className='sub-header__wrap'>
-          <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} />
+          <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
         
 
           {viewTable === 'grid' && (
@@ -360,10 +360,10 @@ const Courses = () => {
             />
           )}
 
-          <Button onClick={changeTableToGrid}>
+          <Button onClick={changeTableToGrid} className='btn-wrap'>
             <AppstoreOutlined />
           </Button>
-          <Button onClick={changeTableToList}>
+          <Button onClick={changeTableToList} className='btn-wrap'>
             <UnorderedListOutlined />
           </Button>
         </Space>

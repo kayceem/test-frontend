@@ -106,11 +106,11 @@ const Categories = () => {
         <div className='users__filter'>
           <Space className='sub-header__wrap'>
             {isCreate && (
-              <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />}>
+              <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
                 New Category
               </Button>
             )}
-            <Search placeholder='Search categories' onSearch={onSearchHandler} style={{ width: 200 }} />
+            <Search placeholder='Search categories' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
 
             <Select
               size='middle'

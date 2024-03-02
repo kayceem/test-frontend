@@ -17,7 +17,7 @@ interface DataCategoryType {
   courses: number;
   tags: string[];
   createdAt: string; // Convert to date: Example: 18 jun 2023
-  description: string;
+  description: any;
   actions?: any;
 }
 
@@ -31,24 +31,21 @@ interface TableParams {
 interface CategoryListProps {
   data: ICategory[];
   onCateEdit: (cateId: string) => void;
-  permission: {isEdit: boolean, isDelete: boolean, isViewDetail: boolean}
+  permission: { isEdit: boolean; isDelete: boolean; isViewDetail: boolean };
 }
 const SettingContent = (cateId: string) => {
   const [deleteCategory, deleteCategoryResult] = useDeleteCategoryMutation();
 
   const deleteCateHandler = () => {
-
     deleteCategory(cateId)
       .unwrap()
       .then((result) => {
-
         notification.success({
           message: 'Delete cate successfully',
           description: result.message
         });
       })
       .catch((error: CategoryError) => {
-
         notification.error({
           message: 'Delete cate failed',
           description: error.data.message
@@ -62,8 +59,14 @@ const SettingContent = (cateId: string) => {
     // Xem chi tiết (popup)
     <div>
       <p>Content</p>
-      <div> <Link onClick={deleteCateHandler}>Delete</Link> </div>
-      <div> <Link >View Detail</Link> </div>
+      <div>
+        {' '}
+        <Link onClick={deleteCateHandler}>Delete</Link>{' '}
+      </div>
+      <div>
+        {' '}
+        <Link>View Detail</Link>{' '}
+      </div>
     </div>
   );
 };
@@ -71,7 +74,6 @@ const SettingContent = (cateId: string) => {
 const CategoriesList: React.FC<CategoryListProps> = (props) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-
 
   const columns: ColumnsType<DataCategoryType> = [
     {
@@ -118,22 +120,22 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
             <img alt='' src={cateImage} className='category-info__avatar' />
 
             <div className='category-info__content'>
-              <div className='category-info__name'>{name}</div>
+              <div className='category-info__name txt-tt'>{name}</div>
             </div>
           </div>
         </a>
       ),
-      description: description,
-      createdAt: createdAt || '',
-      courses: courses || 0,
-      tags: ['23432k', 'dsfdjsk'],
+      description: <div className='txt-desc'>{description}</div>,
+      createdAt: <div className='txt-desc'>{createdAt || ''}</div>,
+      courses:  <div className='txt-desc'>{courses || 0}</div>,
+      tags:  <div className='txt-desc'>{['23432k', 'dsfdjsk']}</div>,
       actions: (
         <Space>
-         {props.permission.isEdit && (
-          <Button onClick={() => cateEditHandler(_id)}>
-           <EditOutlined />
-         </Button>
-         )}
+          {props.permission.isEdit && (
+            <Button onClick={() => cateEditHandler(_id)}>
+              <EditOutlined />
+            </Button>
+          )}
           <Popover placement='bottomRight' content={SettingContent(_id)} title='Actions'>
             <Button>
               <EllipsisOutlined />
@@ -154,7 +156,6 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
   });
 
   const onChange: TableProps<DataCategoryType>['onChange'] = (pagination, filters, sorter, extra) => {
-
     setTableParams({
       pagination
     });

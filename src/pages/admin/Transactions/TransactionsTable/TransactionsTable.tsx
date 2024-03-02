@@ -94,7 +94,7 @@ const TransactionsTable: React.FC = () => {
         />
       </div>
       <div className='search-bar'>
-        <Search placeholder='Search by user name or email' onSearch={handleSearch} enterButton allowClear />
+        <Search placeholder='Search by user name or email' onSearch={handleSearch} enterButton allowClear className='search-wrap'/>
       </div>
       <Table
         dataSource={data?.transactions as TransactionResponse[]}

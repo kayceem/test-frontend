@@ -43,19 +43,19 @@ const UsersProgressHeader = () => {
       <Space>
         <h3 className='admin-header__page-title'>User Progress</h3>
 
-        <Button onClick={openCreateCourseHandler}>
+        <Button onClick={openCreateCourseHandler} className='btn-wrap'>
           <PlusCircleOutlined />
           Save Segment
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           View segments
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Shedule report
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Export user progress
         </Button>

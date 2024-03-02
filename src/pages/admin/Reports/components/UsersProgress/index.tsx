@@ -77,7 +77,7 @@ const UsersProgress = () => {
             {/* With average score */}
             <Row className='users-progress__select-course-row'>
               <Col md={6}>With average score</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Select
                   defaultValue='lucy'
                   style={{ width: 120 }}
@@ -96,7 +96,7 @@ const UsersProgress = () => {
             {/* With progress */}
             <Row className='users-progress__select-course-row'>
               <Col md={6}>With progress</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Select
                   defaultValue='more than'
                   style={{ width: 120 }}
@@ -122,7 +122,7 @@ const UsersProgress = () => {
 
             <Row className='user-pgoress__select-course-row'>
               <Col md={6}>Is Completed</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Select
                   style={{ width: 200 }}
                   onChange={progressSelectChange}
@@ -139,14 +139,14 @@ const UsersProgress = () => {
             <h3 className='users-progress__select-user-title'>Select users</h3>
             <Row className='user-progress__select-user-row'>
               <Col md={6}>Email contains</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Input placeholder='Enter email (min 3 charcter)' />
               </Col>
             </Row>
             {/* User name contains */}
             <Row className='user-progress__select-user-row'>
               <Col md={6}>User name contains</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Input placeholder='Ex: user name' />
               </Col>
             </Row>
@@ -155,7 +155,7 @@ const UsersProgress = () => {
 
             <Row className='user-progress__select-user-row'>
               <Col md={6}>Have tag</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Select
                   options={[
                     { value: 'jack', label: 'Jack' },
@@ -169,7 +169,7 @@ const UsersProgress = () => {
             {/* Registered */}
             <Row className='user-progress__select-user-row'>
               <Col md={6}>Have tag</Col>
-              <Col md={12}>
+              <Col md={12} className='users-progress__select-course-row-item'>
                 <Select
                   options={[
                     { value: 'jack', label: 'Jack' },
@@ -185,8 +185,8 @@ const UsersProgress = () => {
           {/* Apply filters - reset filters */}
 
           <div className='users-progress__btns'>
-            <Button className='users-progress__btns-filter'>Apply filters</Button>
-            <Button className='users-progress__btns-reset'>Reset filters</Button>
+            <Button className='users-progress__btns-filter btn-wrap'>Apply filters</Button>
+            <Button className='users-progress__btns-reset btn-wrap'>Reset filters</Button>
           </div>
         </Row>
         {/* Showing results of table */}

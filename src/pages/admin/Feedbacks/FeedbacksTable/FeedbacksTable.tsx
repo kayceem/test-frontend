@@ -78,7 +78,7 @@ const FeedbacksTable: React.FC = () => {
   return (
     <div className='feedbacks-table'>
       <div className='search-bar'>
-        <Search placeholder='Search by name' onSearch={handleSearch} enterButton allowClear />
+        <Search placeholder='Search by name' onSearch={handleSearch} enterButton allowClear className='search-wrap'/>
       </div>
       <Table
         dataSource={data?.feedbacks as IContact[]}
