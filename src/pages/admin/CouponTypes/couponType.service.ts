@@ -13,6 +13,11 @@ interface GetCouponTypesResponse {
   limit: number;
 }
 
+interface GetAllActiveCouponTypesResponse {
+  couponTypes: ICouponType[];
+  message: string;
+}
+
 interface GetCouponTypeResponse {
   couponType: ICouponType;
   message: string;
@@ -50,6 +55,20 @@ export const couponTypeApi = createApi({
       query: (params) => ({
         url: '',
         params: params
+      }),
+      providesTags(result) {
+        if (result && Array.isArray(result.couponTypes)) {
+          return [
+            ...result.couponTypes.map(({ _id }: { _id: string }) => ({ type: 'CouponTypes' as const, _id })),
+            { type: 'CouponTypes' as const, id: 'LIST' }
+          ];
+        }
+        return [{ type: 'CouponTypes', id: 'LIST' }];
+      }
+    }),
+    getAllActiveCouponTypes: build.query<GetAllActiveCouponTypesResponse, void>({
+      query: () => ({
+        url: 'all-active'
       }),
       providesTags(result) {
         if (result && Array.isArray(result.couponTypes)) {
@@ -115,6 +134,7 @@ export const couponTypeApi = createApi({
 
 export const {
   useGetCouponTypesQuery,
+  useGetAllActiveCouponTypesQuery,
   useGetCouponTypeByIdQuery,
   useGetCouponTypeHistoriesQuery,
   usePostCouponTypeMutation,
