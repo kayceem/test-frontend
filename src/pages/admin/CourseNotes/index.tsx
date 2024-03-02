@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import AddCourseNotes from './components/AddCourseNotes';
 import CourseNotesList from './components/CourseNotesList';
-import { useGetCourseNotesQuery } from './courseNotes.service';
+import { useGetNotesQuery } from './courseNotes.service';
 import { startEditNotesCourse } from './courseNotes.slice';
 import { Link } from 'react-router-dom';
 const { Search } = Input;
@@ -26,10 +26,8 @@ const CourseNotes = () => {
     _q: ''
   });
 
-  const { data: courseNotesResponse, isFetching: isFetchingCourseNotes } = useGetCourseNotesQuery(params);
-
-  // const filteredCourseNotes =
-  //   courseNotesResponse?.notes.filter((note) => note.content.toLowerCase().includes(params._q.toLowerCase())) || [];
+  const { data: courseNotesResponse, isFetching: isFetchingCourseNotes } = useGetNotesQuery(params);
+  console.log('courseNotesResponse', courseNotesResponse);
 
   const filteredCourseNotes =
     courseNotesResponse?.notes.filter((note) => {

@@ -694,7 +694,16 @@ export const clientApi = createApi({
             ]
           : [{ type: 'Note' as const, id: 'LIST' }]
     }),
-
+    getNotesByLessonId: build.query<GetNotesResponse, string>({
+      query: (lessonId) => `/note/lesson/${lessonId}`,
+      providesTags: (result, error, lessonId) =>
+        result
+          ? [
+              ...result.notes.map(({ _id }) => ({ type: 'Note' as const, id: _id.toString() })),
+              { type: 'Note', id: 'LIST' }
+            ]
+          : [{ type: 'Note', id: 'LIST' }]
+    }),
     // Fetch notes by user ID
     getNotesByUserId: build.query<GetNotesResponse, string>({
       query: (userId) => ({
@@ -711,10 +720,15 @@ export const clientApi = createApi({
 
     // Create a note
     createNote: build.mutation<NoteResponse, CreateNoteRequest>({
-      query: (note) => ({
-        url: '/note/createNote',
+      query: ({ userId, lessonId, content, videoMinute }) => ({
+        url: `/note/createNote/${lessonId}`, // URL đã điều chỉnh để bao gồm lessonId
         method: 'POST',
-        body: note
+        body: {
+          userId,
+          lessonId,
+          content,
+          videoMinute
+        }
       }),
       invalidatesTags: [{ type: 'Note', id: 'LIST' }]
     }),
@@ -783,5 +797,6 @@ export const {
   useGetNotesByUserIdQuery,
   useCreateNoteMutation,
   useUpdateNoteMutation,
-  useDeleteNoteMutation
+  useDeleteNoteMutation,
+  useGetNotesByLessonIdQuery
 } = clientApi;

@@ -24,7 +24,6 @@ const AddCategoriesBlog: React.FC<CreateCategoryBlogProps> = ({ isOpen, onClose 
 
   useEffect(() => {
     if (categoryId && categoryResponse) {
-      // Đảm bảo rằng trường setFieldsValue phản ánh đúng cấu trúc dữ liệu của danh mục
       form.setFieldsValue(categoryResponse.blogCategories);
     }
   }, [categoryId, categoryResponse, form]);
