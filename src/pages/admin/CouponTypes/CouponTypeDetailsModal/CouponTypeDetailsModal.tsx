@@ -42,6 +42,10 @@ const CouponTypeDetailsModal: React.FC<CouponTypeDetailsModalProps> = ({ couponT
     >
       <div className='coupon-type-details'>
         <div className='coupon-type-details__section'>
+          <Text className='coupon-type-details__label'>Coupon Type ID:</Text>
+          <Text>{data.couponType._id}</Text>
+        </div>
+        <div className='coupon-type-details__section'>
           <Text className='coupon-type-details__label'>Coupon Type Name:</Text>
           <Text>{data.couponType.name}</Text>
         </div>
@@ -63,7 +67,7 @@ const CouponTypeDetailsModal: React.FC<CouponTypeDetailsModalProps> = ({ couponT
         </div>
         {data.couponType.updatedBy && (
           <div className='coupon-type-details__section'>
-            <Text className='coupon-type-details__label'>Updated By:</Text> 
+            <Text className='coupon-type-details__label'>Updated By:</Text>
             <Text>
               {typeof data.couponType.updatedBy === 'string'
                 ? data.couponType.updatedBy
