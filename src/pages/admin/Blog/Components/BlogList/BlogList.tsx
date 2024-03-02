@@ -10,7 +10,8 @@ import { BlogError } from '../../../../../utils/errorHelpers';
 import { useSoftDeleteBlogMutation } from '../../blog.service';
 import { startEditBlog } from '../../blog.slice';
 import './BlogList.scss';
-import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type';
+import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type'; 
+import BlogDetailModal from '../BlogsDetailModal/BlogDetailModal';
 
 interface DataBlogType {
   key: React.Key;
@@ -36,47 +37,24 @@ interface BlogListProps {
   categories: ICategoryBlogs[];
 }
 
-const SettingContent = (blogId: string) => {
-  const [softDeleteBlog] = useSoftDeleteBlogMutation();
-
-  const softDeleteBlogHandler = (blogId: string) => {
-    Modal.confirm({
-      title: 'Are you sure you want to delete this blog ?',
-      content: 'This action cannot be undone and will permanently delete the blog.',
-      okText: 'Yes, delete it',
-      okType: 'danger',
-      cancelText: 'No, cancel',
-      onOk: () => {
-        return softDeleteBlog(blogId)
-          .unwrap()
-          .then((result) => {
-            notification.success({
-              message: 'Blog deleted successfully'
-            });
-          })
-          .catch((error: BlogError) => {
-            notification.error({
-              message: 'Failed to delete blog'
-            });
-          });
-      }
-    });
-  };
-
-  return (
-    <div>
-      <p>Content</p>
-      <Link onClick={() => softDeleteBlogHandler(blogId)}>Delete</Link>{' '}
-    </div>
-  );
-};
-
 const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) => {
   const dispatch = useDispatch();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState<IBlog | null>(null);
+
+  const showModal = (blog: IBlog) => {
+    setSelectedBlog(blog);
+    setIsModalVisible(true);
+  };
 
   const getCategoryName = (categoryId: string) => {
     const category = categories.find((c) => c._id === categoryId);
     return category ? category.name : 'Unknown Category';
+  };
+
+  const blogEditHandler = (blogId: string) => {
+    onBlogEdit(blogId);
+    dispatch(startEditBlog(blogId));
   };
 
   const columns: ColumnsType<DataBlogType> = [
@@ -122,11 +100,6 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
     }
   ];
 
-  const blogEditHandler = (blogId: string) => {
-    onBlogEdit(blogId);
-    dispatch(startEditBlog(blogId));
-  };
-
   const blogsSource = data
     .filter((blog) => !blog.isDeleted)
     .map((blogItem) => {
@@ -144,7 +117,7 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
             <Button onClick={() => blogEditHandler(_id)} className='btn-wrap'>
               <EditOutlined />
             </Button>
-            <Popover placement='bottomRight' content={() => SettingContent(_id)} title='Actions'>
+            <Popover placement='bottomRight' content={() => SettingContent(_id, showModal, blogItem)} title='Actions'>
               <Button className='btn-wrap'>
                 <EllipsisOutlined />
               </Button>
@@ -172,7 +145,52 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
   return (
     <div className='users-list'>
       <Table columns={columns} dataSource={blogsSource} onChange={onChange} pagination={tableParams.pagination} />
+      {selectedBlog && (
+        <BlogDetailModal
+          blog={selectedBlog}
+          isVisible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          categories={categories}
+        />
+      )}
     </div>
   );
 };
+
+const SettingContent = (blogId: string, showModal: (blog: IBlog) => void, blog: IBlog) => {
+  const [softDeleteBlog] = useSoftDeleteBlogMutation();
+
+  const softDeleteBlogHandler = (blogId: string) => {
+    Modal.confirm({
+      title: 'Are you sure you want to delete this blog ?',
+      content: 'This action cannot be undone and will permanently delete the blog.',
+      okText: 'Yes, delete it',
+      okType: 'danger',
+      cancelText: 'No, cancel',
+      onOk: () => {
+        return softDeleteBlog(blogId)
+          .unwrap()
+          .then((result) => {
+            notification.success({
+              message: 'Blog deleted successfully'
+            });
+          })
+          .catch((error: BlogError) => {
+            notification.error({
+              message: 'Failed to delete blog'
+            });
+          });
+      }
+    });
+  };
+
+  return (
+    <div>
+      <Link onClick={() => showModal(blog)}>Show Modal</Link>
+      <br />
+      <Link onClick={() => softDeleteBlogHandler(blogId)}>Delete</Link>{' '}
+    </div>
+  );
+};
+
 export default BlogsList;
