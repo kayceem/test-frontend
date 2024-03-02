@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, Drawer, Form, Input, InputNumber, notification } from 'antd';
+import { Button, Drawer, Form, Input, InputNumber, Select, notification } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { INote } from '../../../../../types/note.type';
 import {
-  useAddCourseNoteMutation,
-  useGetCourseNoteQuery,
-  useUpdateCourseNoteMutation
+  useCreateNoteMutation,
+  useGetAllNotesQuery,
+  useGetLessonsQuery,
+  useGetNoteByIdQuery,
+  useGetNotesQuery,
+  useUpdateNoteMutation
 } from '../../courseNotes.service';
 
 interface AddCourseNoteProps {
@@ -16,45 +19,55 @@ interface AddCourseNoteProps {
 }
 
 const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
-  const [addCourseNote] = useAddCourseNoteMutation();
-  const [updateCourseNote] = useUpdateCourseNoteMutation();
+  const [addCourseNote] = useCreateNoteMutation();
+  const [updateCourseNote] = useUpdateNoteMutation();
   const noteId = useSelector((state: RootState) => state.noteCourse.courseNotesId);
+  const adminId = useSelector((state: RootState) => state.auth.adminId);
+  const { data: lessons, isFetching: isFetchingLession } = useGetLessonsQuery();
 
-  const { data: noteResponse, isFetching } = useGetCourseNoteQuery(noteId, {
+  const { data: noteResponse, isFetching } = useGetNoteByIdQuery(noteId, {
     skip: !noteId
   });
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (noteId && noteResponse && noteResponse.notes) {
-      form.setFieldsValue(noteResponse.notes);
-    }
-  }, [noteId, noteResponse, form]);
-
-  useEffect(() => {
-    if (!isOpen || !noteId) {
+    if (noteResponse && !isFetching) {
+      form.setFieldsValue({
+        ...noteResponse,
+        lessonId: noteResponse.notes.lessonId
+      });
+    } else {
       form.resetFields();
     }
-  }, [isOpen, noteId, form]);
+  }, [form, noteId, noteResponse, isFetching]);
 
   const handleClose = () => {
+    form.resetFields();
     onClose();
   };
 
-  const submitHandler = async (values: INote) => {
+  const submitHandler = async (values: Omit<INote, '_id'>) => {
     try {
-      const noteToSubmit = noteId ? { ...values, _id: noteId } : values;
+      const { lessonId, ...rest } = values;
+      const payload = {
+        ...rest,
+        adminId: adminId,
+        lessonId: lessonId
+      };
       if (noteId) {
-        await updateCourseNote(noteToSubmit).unwrap();
+        await updateCourseNote({
+          ...payload,
+          id: noteId
+        }).unwrap();
         notification.success({ message: 'Note updated successfully' });
       } else {
-        await addCourseNote(noteToSubmit).unwrap();
+        await addCourseNote(payload).unwrap();
         notification.success({ message: 'Note added successfully' });
       }
-      form.resetFields();
-      onClose();
+      handleClose();
     } catch (error) {
+      console.error('Error: ', error);
       notification.error({ message: 'Operation failed', description: 'An error occurred' });
     }
   };
@@ -68,15 +81,21 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
       bodyStyle={{ paddingBottom: 80 }}
     >
       <Form form={form} layout='vertical' onFinish={submitHandler}>
-        <Form.Item name='content' label='Content' rules={[{ required: true, message: 'Please enter the Content' }]}>
-          <Input placeholder='Enter the Content' />
+        <Form.Item name='content' label='Content' rules={[{ required: true, message: 'Please enter the content' }]}>
+          <Input placeholder='Enter the content' />
         </Form.Item>
         <Form.Item
           name='lessonId'
-          label='Lesson ID'
-          rules={[{ required: true, message: 'Please enter the lesson ID' }]}
+          label='Lesson Id'
+          rules={[{ required: true, message: 'Please enter the Lesson Id' }]}
         >
-          <Input placeholder='Enter the lesson ID' />
+          <Select placeholder='Select a lesson'>
+            {lessons?.lessons.map((lesson) => (
+              <Select.Option key={lesson._id} value={lesson._id}>
+                {lesson.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           name='videoMinute'

@@ -473,16 +473,23 @@ const HomePage = () => {
               <Skeleton />
             ) : (
               data?.blogs?.map((blog) => (
-                <div key={blog._id} className='px-1 inline-block'>
+                <div key={blog._id} className='px-1 inline-block '>
                   <Link to={`/blog-detail/${blog._id}`}>
                     <Card
                       className='mx-4'
                       key={blog._id}
                       hoverable
-                      style={{ width: 280 }}
+                      style={{ width: 280 , minHeight: 400}}
                       cover={<img alt={blog.title} src={blog.blogImg} className='w-full object-cover' />} // Đảm bảo hình ảnh phủ đầy thẻ Card
                     >
-                      <Card.Meta title={blog.title} description={blog.content} />
+                      <Card.Meta
+                        title={blog.title}
+                        description={
+                          <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                            {blog.content}
+                          </div>
+                        }
+                      />
                     </Card>
                   </Link>
                 </div>

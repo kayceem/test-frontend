@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
+import React, { useEffect, useRef, useState } from 'react';
 import { notification } from 'antd';
-import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
-import { formatTime, formatTimeAndMinutes } from '../../../../../utils/functions';
+import { formatTimeAndMinutes } from '../../../../../utils/functions';
 import { useCreateNoteMutation, useUpdateLessonDoneByUserMutation } from '../../../client.service';
 import { setPercentHavePlayed, updateLessonDoneAtBrowser } from '../../../client.slice';
-import './PlayerScreen.scss';
 import AddNoteDrawer from './components/AddNotesDrawer';
 
 const PlayerScreen = () => {
@@ -18,55 +16,31 @@ const PlayerScreen = () => {
   const percentHavePlayed = useSelector((state: RootState) => state.client.percentHavePlayed);
 
   const [noteContent, setNoteContent] = useState('');
-  const [videoMinute, setVideoMinute] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
-
   const [drawerVisible, setDrawerVisible] = useState(false);
-
   const [formattedTime, setFormattedTime] = useState('00:00');
-
-  const showDrawer = () => {
-    setIsPlaying(false); // Cập nhật trạng thái isPlaying thành false để dừng video
-    setDrawerVisible(true); // Hiển thị drawer
-  };
-
-  const onClose = () => {
-    setDrawerVisible(false);
-    setIsPlaying(true); // Reset trạng thái phát video khi đóng drawer
-  };
-
   const [createNote, { isLoading }] = useCreateNoteMutation();
   const [updateLessonDone] = useUpdateLessonDoneByUserMutation();
   const [apiCalled, setApiCalled] = useState(false);
 
-  const onDuration = (number: number) => {
-    console.log(number);
-  };
-
   const playerEl = useRef<ReactPlayer>(null);
 
-  useEffect(() => {
-    if (playerEl.current) {
-      const duration = playerEl.current.getDuration();
-      const playedTime = percentHavePlayed * duration;
-      setFormattedTime(formatTimeAndMinutes(playedTime));
-    }
-  }, [percentHavePlayed, playerEl]);
+  const showDrawer = () => {
+    setIsPlaying(false); // Dừng video khi mở drawer
+    setDrawerVisible(true);
+  };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (playerEl.current) {
-        const percentHavePlayed = playerEl.current.getCurrentTime() / playerEl.current.getDuration();
-        dispatch(setPercentHavePlayed(percentHavePlayed));
-      }
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [dispatch]);
+  const onClose = () => {
+    setDrawerVisible(false);
+    setIsPlaying(true); // Tiếp tục phát video khi đóng drawer
+  };
 
   const handleSubmitNote = async () => {
     if (!noteContent.trim()) {
+      notification.error({
+        message: 'Lỗi',
+        description: 'Nội dung ghi chú không được để trống'
+      });
       return;
     }
     const currentTimeInSeconds = playerEl.current ? playerEl.current.getCurrentTime() : 0;
@@ -76,45 +50,58 @@ const PlayerScreen = () => {
         userId: currUserId,
         lessonId: currLessonId,
         content: noteContent,
-        videoMinute: currentTimeInSeconds
+        videoMinute: Math.floor(currentTimeInSeconds) // Lưu thời gian hiện tại của video dưới dạng số giây
       }).unwrap();
+      notification.success({
+        message: 'Thành công',
+        description: 'Ghi chú đã được lưu thành công'
+      });
       setNoteContent('');
-      setVideoMinute(0);
+      onClose(); // Đóng drawer sau khi lưu thành công
     } catch (error) {
-      console.error('Failed to create note:', error);
+      notification.error({
+        message: 'Đã xảy ra lỗi',
+        description: 'Không thể lưu ghi chú'
+      });
     }
   };
 
+  useEffect(() => {
+    if (playerEl.current) {
+      const playedTime = percentHavePlayed * playerEl.current.getDuration();
+      setFormattedTime(formatTimeAndMinutes(playedTime));
+    }
+  }, [percentHavePlayed]);
+
+  // Tính toán và cập nhật tiến trình đã xem của video
   const onProgress = () => {
     if (!apiCalled && playerEl.current) {
-      const percentHavePlayed = playerEl.current.getCurrentTime() / playerEl.current.getDuration();
-      dispatch(setPercentHavePlayed(percentHavePlayed));
+      const percent = playerEl.current.getCurrentTime() / playerEl.current.getDuration();
+      dispatch(setPercentHavePlayed(percent));
 
-      if (percentHavePlayed >= 0.95) {
-        // Update lesson done at current state
+      if (percent >= 0.95 && !apiCalled) {
+        // Nếu đã xem hơn 95% video
+        // Cập nhật trạng thái hoàn thành bài học trong Redux và cơ sở dữ liệu
         dispatch(updateLessonDoneAtBrowser(currLessonId));
-        // Update lesson Done at database
         updateLessonDone({
           userId: currUserId,
           lessonId: currLessonId
         })
           .then(() => {
             notification.success({
-              message: 'You have finished this video'
+              message: 'Hoàn thành video',
+              description: 'Bạn đã xem xong video này'
             });
+            setApiCalled(true); // Đánh dấu đã gọi API cập nhật
           })
           .catch((error) => {
-            console.log(error);
+            console.error('Lỗi cập nhật tiến trình bài học', error);
           });
-
-        setApiCalled(true);
-      } else {
-        console.log('have not watched done the video');
       }
     }
   };
 
-  // Reset state when lesson id change
+  // Reset API called flag when lesson changes
   useEffect(() => {
     setApiCalled(false);
   }, [currLessonId]);
@@ -129,26 +116,18 @@ const PlayerScreen = () => {
         height='90vh'
         controls={true}
         playing={isPlaying}
-        onDuration={onDuration}
         onProgress={onProgress}
       />
       <div className='notes-section'>
-        <button className='ml-4 mt-4 mb-4 flex items-center bg-red-500 text-white px-6 py-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50'>
-          <svg
-            className='w-4 h-4 mr-2'
-            fill='none'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-          >
-            <path d='M12 4v16m8-8H4'></path>
-          </svg>
-          <button onClick={showDrawer}>Thêm ghi chú tại {formattedTime}</button>
+        <button
+          className='ml-4 mt-4 mb-4 flex items-center bg-red-500 text-white px-6 py-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50'
+          onClick={showDrawer}
+        >
+          <span>Thêm ghi chú tại {formattedTime}</span>
         </button>
       </div>
       <AddNoteDrawer
+        currLessonId={currLessonId}
         visible={drawerVisible}
         onClose={onClose}
         noteContent={noteContent}

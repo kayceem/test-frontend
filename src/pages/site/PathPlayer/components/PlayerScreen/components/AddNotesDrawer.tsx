@@ -11,6 +11,7 @@ interface AddNoteDrawerProps {
   onSubmitNote: () => Promise<void>;
   isLoading: boolean;
   formattedTime: string;
+  currLessonId: string;
 }
 
 const AddNoteDrawer: React.FC<AddNoteDrawerProps> = ({
@@ -20,7 +21,8 @@ const AddNoteDrawer: React.FC<AddNoteDrawerProps> = ({
   setNoteContent,
   onSubmitNote,
   formattedTime,
-  isLoading
+  isLoading,
+  currLessonId
 }) => {
   const [error, setError] = useState('');
 
