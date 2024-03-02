@@ -2,20 +2,24 @@ import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { Button, Modal, Popover, Space, Table, notification } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
 import type { FilterValue } from 'antd/es/table/interface';
+import Link from 'antd/es/typography/Link';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { INote } from '../../../../../types/note.type';
-import { useDeleteCourseNoteMutation } from '../../courseNotes.service'; // Update the import path as needed
-import { startEditNotesCourse } from '../../courseNotes.slice'; // Update the import path as needed
-import Link from 'antd/es/typography/Link';
+import { INote, Lesson } from '../../../../../types/note.type';
 import { formatTimeRounded, transformDate } from '../../../../../utils/functions';
+import { useDeleteNoteMutation } from '../../courseNotes.service'; // Update the import path as needed
+import { startEditNotesCourse } from '../../courseNotes.slice'; // Update the import path as needed
 
 interface DataNoteType {
   key: React.Key;
+  name?: string;
+  avatar?: string;
   content: string;
   videoMinute?: string;
   createdAt?: string;
   actions?: any;
+  userId?: string;
+  lessonName?: string; // Add lesson name
 }
 
 interface TableParams {
@@ -31,7 +35,7 @@ interface CourseNotesListProps {
 }
 
 const SettingContent = (noteId: string) => {
-  const [softDeleteNote] = useDeleteCourseNoteMutation();
+  const [softDeleteNote] = useDeleteNoteMutation();
 
   const softDeleteNoteHandler = (noteId: string) => {
     Modal.confirm({
@@ -75,9 +79,20 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
 
   const columns: ColumnsType<DataNoteType> = [
     {
-      title: 'Content',
-      dataIndex: 'content',
-      key: 'content'
+      title: 'Avatar',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      render: (_, record) => <img src={record.avatar} alt='avatar' width='50' />
+    },
+    {
+      title: 'Name',
+      key: 'user',
+      render: (_, record) => <Space>{record.name}</Space>
+    },
+    {
+      title: 'Lesson Name',
+      dataIndex: 'lessonName',
+      key: 'lessonName'
     },
     {
       title: 'Video minutes',
@@ -102,9 +117,13 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
   };
 
   const notesSource = data.map((noteItem) => {
-    const { _id, videoMinute, content, createdAt } = noteItem;
+    const { _id, videoMinute, content, createdAt, userId, lessonId } = noteItem;
+
     const noteTemplateItem: DataNoteType = {
       key: _id,
+      name: userId?.name,
+      avatar: userId?.avatar,
+      lessonName: lessonId?.name,
       content,
       videoMinute: formatTimeRounded(videoMinute),
       createdAt: transformDate(createdAt),
@@ -127,7 +146,7 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 10 // Adjust the pageSize as needed
+      pageSize: 10
     }
   });
 

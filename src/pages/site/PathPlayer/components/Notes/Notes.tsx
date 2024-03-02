@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { formatTimeAndMinutes, transformDate } from '../../../../../utils/functions';
-import { useDeleteNoteMutation, useGetNotesByUserIdQuery, useUpdateNoteMutation } from '../../../client.service';
+import { useDeleteNoteMutation, useGetNotesByLessonIdQuery, useUpdateNoteMutation } from '../../../client.service';
 import './Notes.scss';
 import { INote } from '../../../../../types/note.type';
 type Props = {
@@ -14,6 +14,7 @@ type Props = {
 const Notes = (props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const userId = useSelector<RootState, string>((state: RootState) => state.auth.userId);
+  const currLessonId = useSelector((state: RootState) => state.client.lessonId);
 
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [newContent, setNewContent] = useState('');
@@ -21,8 +22,8 @@ const Notes = (props: Props) => {
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
   const [deleteNote, { isLoading: isDeleting }] = useDeleteNoteMutation();
 
-  const { data, error, isLoading } = useGetNotesByUserIdQuery(userId, {
-    pollingInterval: 15000 // Polling mỗi 15 giây
+  const { data, error, isLoading } = useGetNotesByLessonIdQuery(currLessonId, {
+    pollingInterval: 1000
   });
 
   const startEditing = (note: INote) => {

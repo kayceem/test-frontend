@@ -15,9 +15,9 @@ interface getCategoryResponse {
 }
 
 export const categoryApi = createApi({
-  reducerPath: 'categoryApi', 
-  tagTypes: ['Categories'], 
-  keepUnusedDataFor: 10, 
+  reducerPath: 'categoryApi',
+  tagTypes: ['Categories'],
+  keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/admin`,
     prepareHeaders(headers) {
@@ -53,20 +53,17 @@ export const categoryApi = createApi({
       query: (params) => ({
         url: '/categories',
         params: params
-      }), 
+      }),
       providesTags(result) {
-       
         if (Array.isArray(result) && result.map) {
           if (result) {
             const final = [
               ...result.map(({ _id }: { _id: string }) => ({ type: 'Categories' as const, _id })),
               { type: 'Categories' as const, id: 'LIST' }
             ];
-
             return final;
           }
         }
-
         return [{ type: 'Categories', id: 'LIST' }];
       }
     }),
@@ -107,7 +104,6 @@ export const categoryApi = createApi({
         };
       },
       invalidatesTags: (result, error, id) => {
-
         return [{ type: 'Categories', id: 'LIST' }];
       }
     })
