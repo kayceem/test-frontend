@@ -8,15 +8,15 @@ const UsersHeader = () => {
       <Space>
         <h3 className='admin-header__page-title'>Users</h3>
 
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Add User
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Bulk actions
         </Button>
-        <Button>
+        <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Export users report
         </Button>

@@ -140,15 +140,15 @@ const UsersList: React.FC<UserListProps> = (props) => {
                 <img alt={user?.name} src={user?.avatar} className='user-info__avatar' />
 
                 <div className='user-info__content'>
-                  <div className='user-info__name'>{user?.name}</div>
-                  <div className='user-info__email'>{user?.email}</div>
+                  <div className='user-info__name txt-tt'>{user?.name}</div>
+                  <div className='user-info__email txt-desc'>{user?.email}</div>
                 </div>
               </div>
             </a>
           </>
         ),
-        lastLogin: user?.lastLogin || '',
-        createdAt: user?.createdAt,
+        lastLogin:   <div className='txt-desc'>{user?.lastLogin || ''}</div>,
+        createdAt:  <div className='txt-desc'>{user?.createdAt}</div>,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(user.courses || []).map((course) => (
@@ -169,12 +169,12 @@ const UsersList: React.FC<UserListProps> = (props) => {
         ),
         manage: (
           <Space>
-            <Button onClick={() => editUserHandler(user._id)}>
+            <Button onClick={() => editUserHandler(user._id)} className='btn-wrap'>
               <EditOutlined />
             </Button>
 
             <Popover placement='bottomRight' content={<SettingContent userId={user._id} />} title='Actions'>
-              <Button>
+              <Button className='btn-wrap'>
                 <EllipsisOutlined />
               </Button>
             </Popover>

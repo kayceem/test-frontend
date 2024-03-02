@@ -86,11 +86,11 @@ const CourseNotes = () => {
         />
       </div>
       <Space className='sub-header__wrap'>
-        <Button onClick={newNoteHandler} type='primary' icon={<PlusOutlined />}>
+        <Button onClick={newNoteHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
           New Note
         </Button>
         <Space>
-          <Search placeholder='Search notes' onChange={onNameChange} style={{ width: 200 }} />
+          <Search placeholder='Search notes' onChange={onNameChange} style={{ width: 200 }} className='search-wrap'/>
           <InputNumber min={0} placeholder='Min minute' onChange={onMinMinuteChange} style={{ width: 100 }} />
           <InputNumber min={0} placeholder='Max minute' onChange={onMaxMinuteChange} style={{ width: 100 }} />
         </Space>

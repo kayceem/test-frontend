@@ -87,7 +87,7 @@ const Orders = () => {
       <div className='orders__wrap'>
         <div className='orders__filter'>
           <Space className='sub-header__wrap'>
-            <Search placeholder='input search text' onSearch={onSearchHandler} style={{ width: 200 }} />
+            <Search placeholder='Input search text' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
 
             <Select
               size='middle'

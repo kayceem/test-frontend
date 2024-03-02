@@ -141,11 +141,11 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
         category: categoryId,
         actions: (
           <Space>
-            <Button onClick={() => blogEditHandler(_id)}>
+            <Button onClick={() => blogEditHandler(_id)} className='btn-wrap'>
               <EditOutlined />
             </Button>
             <Popover placement='bottomRight' content={() => SettingContent(_id)} title='Actions'>
-              <Button>
+              <Button className='btn-wrap'>
                 <EllipsisOutlined />
               </Button>
             </Popover>
