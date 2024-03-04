@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserRole } from '../../../../types/user.type';
 import { adminLoginError } from '../../../../utils/errorHelpers';
 import { useAdminLoginMutation } from '../../../auth.service';
-import { setAdminAuthenticated} from '../../../auth.slice';
+import { setAdminAuthenticated } from '../../../auth.slice';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const AdminLogin: React.FC = () => {
@@ -18,7 +18,6 @@ const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = (formValues: { email: string; password: string }) => {
-
     const adminCredentials: { email: string; password: string } = {
       email: formValues.email,
       password: formValues.password
@@ -28,18 +27,22 @@ const AdminLogin: React.FC = () => {
 
     adminLogin(adminCredentials)
       .then((result) => {
-
         if ('data' in result) {
-
-          const loginResponse: { token: string; message: string; userId: string, enumData?: Record<string, Record<string, string>>, listPermission?: string[] } = result.data;
+          const loginResponse: {
+            token: string;
+            message: string;
+            userId: string;
+            enumData?: Record<string, Record<string, string>>;
+            listPermission?: string[];
+          } = result.data;
           const decodedToken: { exp: number; iat: number; userId: string; email: string; adminRole: UserRole } =
             jwtDecode(loginResponse.token);
 
           localStorage.setItem('adminToken', loginResponse.token);
-          if(loginResponse.enumData) {
+          if (loginResponse.enumData) {
             localStorage.setItem('enumData', JSON.stringify(loginResponse.enumData));
           }
-          if(loginResponse.listPermission) {
+          if (loginResponse.listPermission) {
             localStorage.setItem('listPermission', JSON.stringify(loginResponse.listPermission));
           }
           const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
@@ -53,7 +56,6 @@ const AdminLogin: React.FC = () => {
 
             navigate('/author/dashboard');
           } else {
-            // Token has expired, handle accordingly (e.g., prompt user to log in again)
             console.log('Token has expired. Please log in again.');
           }
         }
@@ -61,7 +63,6 @@ const AdminLogin: React.FC = () => {
         // Handling error failed login here
         if ('error' in result) {
           if ('status' in result.error) {
-
             notification.error({
               message: 'Login failed',
               description: (result as adminLoginError).error.data.message
@@ -74,7 +75,6 @@ const AdminLogin: React.FC = () => {
         }
       })
       .catch((error: adminLoginError) => {
-
         notification.error({
           message: 'Login failed',
           description: error.error.data.message

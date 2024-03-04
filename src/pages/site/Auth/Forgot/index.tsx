@@ -31,14 +31,13 @@ const Forgot: React.FC<ForgotProps> = (props) => {
     resetPass(userCredentials)
       .unwrap()
       .then((result) => {
-
         if ('error' in result) {
           notification.error({ type: 'error', message: 'login failed', description: 'Email or password incorrect' });
-        }else {
-          notification.success({ type: 'success', message: result.message});
-          dispatch(setAuthState("changePassword"))
-          dispatch(setCurrentUserId(result.user._id))
-          props.onClick("");
+        } else {
+          notification.success({ type: 'success', message: result.message });
+          dispatch(setAuthState('changePassword'));
+          dispatch(setCurrentUserId(result.user._id));
+          props.onClick('');
         }
 
         if (!resetPassResult.isLoading) {
