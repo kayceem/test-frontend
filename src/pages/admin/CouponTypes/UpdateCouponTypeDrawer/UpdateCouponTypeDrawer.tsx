@@ -25,8 +25,6 @@ const UpdateCouponTypeDrawer: React.FC<UpdateCouponTypeDrawerProps> = ({ isOpen,
       .unwrap()
       .then(() => {
         void message.success('Coupon type updated successfully');
-        onClose();
-        form.resetFields();
       })
       .catch(() => {
         void message.error('Failed to update coupon type');
