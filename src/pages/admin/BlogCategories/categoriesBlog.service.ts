@@ -2,25 +2,37 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
 import { ICategoryBlogs } from '../../../types/categoryBlogs.type';
 import { IParams } from '../../../types/params.type';
+import { IActionLog } from '../../../types/actionLog.type';
 
-interface getCategoriesResponse {
+interface GetBlogCategoriesResponse {
   blogsCategories: ICategoryBlogs[];
-  message?: string;
+  message: string;
+  total: number;
+  page: number;
+  pages: number;
+  limit: number;
 }
 
-interface getCategoryResponse {
-  blogCategories: ICategoryBlogs;
-  message?: string;
+interface GetBlogCategoryResponse {
+  blogsCategories: ICategoryBlogs;
+  message: string;
 }
 
-const CATEGORIES = 'Categories';
+interface GetBlogCategoryHistoriesResponse {
+  message: string;
+  results: IActionLog[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
+}
 
-export const categoriesBlogApi = createApi({
-  reducerPath: 'categoriesBlogApi',
-  tagTypes: [CATEGORIES],
+export const blogCategoryApi = createApi({
+  reducerPath: 'blogCategoryApi',
+  tagTypes: ['Categories'],
   keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BACKEND_URL}/admin`,
+    baseUrl: `${BACKEND_URL}/admin/blogCategory`,
     prepareHeaders(headers) {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
@@ -29,65 +41,79 @@ export const categoriesBlogApi = createApi({
       return headers;
     }
   }),
-  endpoints: (build) => ({
-    getAllCategories: build.query<getCategoriesResponse, void>({
-      query: () => '/blogCategory',
-      providesTags: (result) =>
-        result && result.blogsCategories
-          ? [
-              ...result.blogsCategories.map((blog) => ({ type: CATEGORIES as 'Categories', id: blog._id })),
-              { type: CATEGORIES as 'Categories', id: 'LIST' }
-            ]
-          : [{ type: CATEGORIES as 'Categories', id: 'LIST' }]
-    }),
-    getCategories: build.query<getCategoriesResponse, IParams>({
+  endpoints: (builder) => ({
+    getBlogCategories: builder.query<GetBlogCategoriesResponse, IParams>({
       query: (params) => ({
-        url: '/blogCategory',
-        params
+        url: '/category-blogs',
+        params: params
       }),
-      providesTags: (result) =>
-        result && result.blogsCategories
-          ? [
-              ...result.blogsCategories.map((blog) => ({ type: CATEGORIES as 'Categories', id: blog._id })),
-              { type: CATEGORIES as 'Categories', id: 'LIST' }
-            ]
-          : [{ type: CATEGORIES as 'Categories', id: 'LIST' }]
+      providesTags(result) {
+        if (result && Array.isArray(result.blogsCategories)) {
+          return [
+            ...result.blogsCategories.map(({ _id }: { _id: string }) => ({ type: 'Categories' as const, _id })),
+            { type: 'Categories' as const, id: 'LIST' }
+          ];
+        }
+        return [{ type: 'Categories' as const, id: 'LIST' }];
+      }
     }),
-    addCategory: build.mutation<{ category: ICategoryBlogs; message: string }, ICategoryBlogs>({
-      query: (category) => ({
-        url: '/blogCategory',
-        method: 'POST',
-        body: category
-      }),
-      invalidatesTags: [{ type: CATEGORIES, id: 'LIST' }]
-    }),
-    getCategoryById: build.query<getCategoryResponse, string>({
-      query: (id) => `/blogCategory/${id}`,
-      providesTags: (result, error, id) => [{ type: CATEGORIES, id }]
-    }),
-    updateCategory: build.mutation<{ category: getCategoryResponse; message: string }, ICategoryBlogs>({
-      query: (category) => ({
-        url: `/blogCategory/update/${category._id}`,
-        method: 'PUT',
-        body: category
-      }),
-      invalidatesTags: (result, error, arg) => [{ type: CATEGORIES, id: arg._id }]
-    }),
-    deleteCategory: build.mutation<Record<string, never>, string>({
+    getBlogCategoryById: builder.query<GetBlogCategoryResponse, string>({
       query: (id) => ({
-        url: `/blogCategory/delete/${id}`,
-        method: 'DELETE'
+        url: `${id}`
       }),
-      invalidatesTags: [{ type: CATEGORIES, id: 'LIST' }]
+      providesTags: (result, error, id) => [{ type: 'Categories' as const, id }]
+    }),
+    loadHistoriesForBlogCategory: builder.query<
+      GetBlogCategoryHistoriesResponse,
+      { blogCategoryTypeId: string; params: IParams }
+    >({
+      query: ({ blogCategoryTypeId, params }) => ({
+        url: `/histories/${blogCategoryTypeId}`,
+        params: params
+      }),
+      providesTags: (result, error, { blogCategoryTypeId }) => [
+        { type: 'Categories' as const, id: 'LIST' },
+        { type: 'Categories' as const, id: blogCategoryTypeId }
+      ]
+    }),
+    createBlogCategory: builder.mutation<void, ICategoryBlogs>({
+      query: (blogCategory) => ({
+        url: 'create',
+        method: 'POST',
+        body: blogCategory
+      }),
+      invalidatesTags: [{ type: 'Categories' as const, id: 'LIST' }]
+    }),
+    updateBlogCategory: builder.mutation<void, ICategoryBlogs>({
+      query: (blogCategory) => ({
+        url: `update/${blogCategory._id}`,
+        method: 'PUT',
+        body: blogCategory
+      }),
+      invalidatesTags: (_, __, { _id }) => [
+        { type: 'Categories' as const, id: 'LIST' },
+        { type: 'Categories' as const, id: _id }
+      ]
+    }),
+    updateActiveStatusBlogCategory: builder.mutation<void, Partial<{ blogCategoryTypeId: string }>>({
+      query: (data) => ({
+        url: `update-active-status`,
+        method: 'PATCH',
+        body: data
+      }),
+      invalidatesTags: (_, __, { blogCategoryTypeId }) => [
+        { type: 'Categories' as const, blogCategoryTypeId: 'LIST' },
+        { type: 'Categories' as const, blogCategoryTypeId }
+      ]
     })
   })
 });
 
 export const {
-  useGetAllCategoriesQuery,
-  useGetCategoriesQuery,
-  useAddCategoryMutation,
-  useGetCategoryByIdQuery,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation
-} = categoriesBlogApi;
+  useGetBlogCategoriesQuery,
+  useGetBlogCategoryByIdQuery,
+  useLoadHistoriesForBlogCategoryQuery,
+  useCreateBlogCategoryMutation,
+  useUpdateBlogCategoryMutation,
+  useUpdateActiveStatusBlogCategoryMutation
+} = blogCategoryApi;

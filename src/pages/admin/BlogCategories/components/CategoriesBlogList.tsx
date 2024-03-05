@@ -1,83 +1,78 @@
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Button, Modal, Popover, Space, Table, notification } from 'antd';
-import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
+import { CheckCircleOutlined, EditOutlined, EyeOutlined, HistoryOutlined, StopOutlined } from '@ant-design/icons';
+import { Button, Input, Popconfirm, Select, Space, Table, message } from 'antd';
+import type { TablePaginationConfig, TableProps } from 'antd/es/table';
 import type { FilterValue } from 'antd/es/table/interface';
-import Link from 'antd/es/typography/Link';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ICategoryBlogs } from '../../../../types/categoryBlogs.type';
-import { useDeleteCategoryMutation } from '../categoriesBlog.service';
+import { useUpdateActiveStatusBlogCategoryMutation } from '../categoriesBlog.service';
 import { startEditCategory } from '../categoriesBlog.slice';
-
-interface DataCategoryType {
-  key: React.Key;
-  name: string;
-  description: string;
-  createdAt?: string;
-  cateImage?: string;
-  actions?: any;
-}
-
-interface TableParams {
-  pagination?: TablePaginationConfig;
-  sortField?: string;
-  sortOrder?: string;
-  filters?: Record<string, FilterValue>;
-}
+import ViewDetailCategoryBlog from './ViewDetailCategoryBlog';
+import ViewHistoryCategoryBlog from './ViewHistoryCategoryBlog';
+import { transformDate } from '../../../../utils/functions';
 
 interface CategoryListProps {
   data: ICategoryBlogs[];
   onCategoryEdit: (BlogcategoryId: string) => void;
 }
 
-const SettingContent = (BlogcategoryId: string) => {
-  const [softDeleteCategory] = useDeleteCategoryMutation();
-
-  const softDeleteCategoryHandler = (categoryId: string) => {
-    Modal.confirm({
-      title: 'Are you sure you want to delete this category?',
-      content: 'Deleting this category will remove it permanently. This action cannot be undone.',
-      okText: 'Yes, delete it',
-      okType: 'danger',
-      cancelText: 'No, cancel',
-      onOk() {
-        return new Promise((resolve, reject) => {
-          softDeleteCategory(categoryId)
-            .unwrap()
-            .then(() => {
-              notification.success({
-                message: 'Category deleted successfully'
-              });
-              resolve(undefined);
-            })
-            .catch((error: any) => {
-              console.error('error: ', error);
-              notification.error({
-                message: 'Failed to delete category'
-              });
-              reject(error);
-            });
-        });
-      }
-    });
-  };
-
-  return (
-    <div>
-      <p>Content</p>
-      <Link onClick={() => softDeleteCategoryHandler(BlogcategoryId)}>Delete</Link>{' '}
-    </div>
-  );
-};
-
 const CategoriesBlogList: React.FC<CategoryListProps> = ({ data, onCategoryEdit }) => {
   const dispatch = useDispatch();
+  const [updateActiveStatusBlogCategory] = useUpdateActiveStatusBlogCategoryMutation();
 
-  const columns: ColumnsType<DataCategoryType> = [
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [categories, setCategories] = useState<ICategoryBlogs[]>(data);
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [historyVisible, setHistoryVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const handleTableChange = (page: number, pageSize: number) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
+
+  const handleViewDetail = (blogCategoryId: string) => {
+    setDetailVisible(true);
+    setSelectedCategoryId(blogCategoryId);
+  };
+
+  const handleViewHistory = (blogCategoryId: string) => {
+    setHistoryVisible(true);
+    setSelectedCategoryId(blogCategoryId);
+  };
+
+  const handleUpdateStatus = (blogCategoryId: string) => {
+    updateActiveStatusBlogCategory({ blogCategoryTypeId: blogCategoryId })
+      .unwrap()
+      .then(() => {
+        void message.success('Blog category status updated successfully');
+        const updatedCategories = categories.map((category) => {
+          if (category._id === blogCategoryId) {
+            return {
+              ...category,
+              isDeleted: !category.isDeleted
+            };
+          }
+          return category;
+        });
+        setCategories(updatedCategories);
+      })
+      .catch(() => {
+        void message.error('Failed to update blog category status');
+      });
+  };
+
+  const categoryEditHandler = (blogCategoryId: string) => {
+    onCategoryEdit(blogCategoryId);
+    dispatch(startEditCategory(blogCategoryId));
+  };
+
+  const columns = [
     {
       title: 'Cate Image',
       dataIndex: 'cateImage',
-      render: (text: string, record: DataCategoryType) => (
+      render: (text: string, record: ICategoryBlogs) => (
         <img
           className='rounded-full'
           src={record.cateImage}
@@ -90,73 +85,89 @@ const CategoriesBlogList: React.FC<CategoryListProps> = ({ data, onCategoryEdit 
     {
       title: 'Name',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      render: (_: ICategoryBlogs, record: ICategoryBlogs) => <span>{record.name}</span>
     },
     {
       title: 'Description',
       dataIndex: 'description',
-      key: 'description'
+      key: 'description',
+      render: (_: ICategoryBlogs, record: ICategoryBlogs) => <span>{record.description}</span>
     },
 
     {
       title: 'Created at',
       dataIndex: 'createdAt',
-      key: 'createdAt'
+      key: 'createdAt',
+      render: (_: ICategoryBlogs, record: ICategoryBlogs) => (
+        <span>{record.createdAt ? transformDate(record.createdAt) : 'N/A'}</span>
+      )
     },
     {
-      title: 'Manage',
-      dataIndex: 'actions',
-      key: 'actions'
+      title: 'Status',
+      dataIndex: 'isDeleted',
+      key: 'isDeleted',
+      render: (_: ICategoryBlogs, record: ICategoryBlogs) => <span>{record.isDeleted ? 'Inactive' : 'Active'}</span>
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_: ICategoryBlogs, record: ICategoryBlogs) => (
+        <Space size='middle'>
+          <Button
+            icon={<EditOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => categoryEditHandler(record._id)}
+            className='btn-wrap'
+          ></Button>
+          <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetail(record._id)} />
+          <Button
+            icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => handleViewHistory(record._id)}
+          />
+          {record.isDeleted ? (
+            <Popconfirm
+              title='Are you sure you want to activate this blog category?'
+              placement='topRight'
+              onConfirm={() => handleUpdateStatus(record._id)}
+              okText='Yes'
+              cancelText='No'
+            >
+              <Button icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} />
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title='Are you sure you want to deactivate this blog category?'
+              placement='topRight'
+              onConfirm={() => handleUpdateStatus(record._id)}
+              okText='Yes'
+              cancelText='No'
+            >
+              <Button icon={<StopOutlined style={{ color: '#ff4d4f' }} />} danger />
+            </Popconfirm>
+          )}
+        </Space>
+      )
     }
   ];
 
-  const categoryEditHandler = (categoryId: string) => {
-    onCategoryEdit(categoryId);
-    dispatch(startEditCategory(categoryId));
-  };
-
-  const categoriesSource = data.map((categoryItem) => {
-    const { _id, cateImage, name, description, createdAt } = categoryItem;
-    const categoryTemplateItem: DataCategoryType = {
-      key: _id,
-      cateImage,
-      name,
-      description,
-      createdAt,
-      actions: (
-        <Space>
-          <Button onClick={() => categoryEditHandler(_id)} className='btn-wrap'>
-            <EditOutlined />
-          </Button>
-          <Popover placement='bottomRight' content={() => SettingContent(_id)} title='Actions'>
-            <Button className='btn-wrap'>
-              <EllipsisOutlined />
-            </Button>
-          </Popover>
-        </Space>
-      )
-    };
-    return categoryTemplateItem;
-  });
-
-  const [tableParams, setTableParams] = useState<TableParams>({
-    pagination: {
-      current: 1,
-      pageSize: 12
-    }
-  });
-
-  const onChange: TableProps<DataCategoryType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
-    setTableParams({
-      pagination,
-      ...filters
-    });
-  };
-
   return (
     <div className='categories-list'>
-      <Table columns={columns} dataSource={categoriesSource} onChange={onChange} pagination={tableParams.pagination} />
+      <Table
+        columns={columns}
+        dataSource={categories}
+        pagination={{ current: currentPage, pageSize, onChange: handleTableChange }}
+        scroll={{ x: 'max-content' }} // Add this line
+      />
+      <ViewDetailCategoryBlog
+        isVisible={detailVisible}
+        onClose={() => setDetailVisible(false)}
+        blogCategoryId={selectedCategoryId}
+      />
+      <ViewHistoryCategoryBlog
+        isVisible={historyVisible}
+        onClose={() => setHistoryVisible(false)}
+        blogCategoryId={selectedCategoryId}
+      />
     </div>
   );
 };

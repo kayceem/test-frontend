@@ -1,10 +1,10 @@
-export interface ICategoryBlogs {
+import { IBase } from './base.type';
+
+export interface ICategoryBlogs extends IBase {
+  _id: string;
+  code: string;
   name: string;
   cateImage: string;
   description: string;
-  _id: string;
-  isDeleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+  actions: JSX.Element;
 }

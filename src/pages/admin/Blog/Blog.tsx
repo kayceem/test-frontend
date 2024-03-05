@@ -6,7 +6,7 @@ import { startEditBlog } from './blog.slice';
 import { useGetAllBlogsQuery, useGetBlogsQuery } from './blog.service';
 import AddBlog from './Components/AddBlog/AddBlog';
 import BlogListDetail from './Components/BlogList/BlogList';
-import { useGetCategoriesQuery } from '../BlogCategories/categoriesBlog.service';
+import { useGetBlogCategoriesQuery } from '../BlogCategories/categoriesBlog.service';
 import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 const { Search } = Input;
@@ -28,7 +28,7 @@ const Blogs = () => {
 
   const { data, isFetching } = useGetBlogsQuery(params);
   const { data: allBlogsData, isFetching: isAllBlogsFetching } = useGetAllBlogsQuery();
-  const { data: categoriesResponse, isFetching: isFetchingCategories } = useGetCategoriesQuery(params);
+  const { data: categoriesResponse, isFetching: isFetchingCategories } = useGetBlogCategoriesQuery(params);
 
   const [open, setOpen] = useState(false);
 

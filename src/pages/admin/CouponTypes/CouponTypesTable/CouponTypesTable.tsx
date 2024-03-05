@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Input, Table, Pagination, Button, Space, message, Popconfirm, Select } from 'antd';
-import { EyeOutlined, HistoryOutlined, CheckCircleOutlined, StopOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  EyeOutlined,
+  HistoryOutlined,
+  CheckCircleOutlined,
+  StopOutlined,
+  EditOutlined,
+  PlusOutlined
+} from '@ant-design/icons';
 import { useGetCouponTypesQuery, useUpdateActiveStatusCouponTypeMutation } from '../couponType.service';
 import { ICouponType } from '../../../../types/couponType.type';
 import CouponTypeDetailsModal from '../CouponTypeDetailsModal/CouponTypeDetailsModal';
@@ -147,12 +154,7 @@ const CouponTypesTable: React.FC = () => {
     <div className='coupon-types-table'>
       <div className='search-bar-container'>
         <div className='add-coupon-type-button'>
-          <Button
-            type='primary'
-            shape='circle'
-            icon={<PlusOutlined />}
-            onClick={showCreateDrawer}
-          />
+          <Button type='primary' shape='circle' icon={<PlusOutlined />} onClick={showCreateDrawer} />
         </div>
         <div className='search-bar'>
           <Search placeholder='Search by name' onSearch={handleSearch} enterButton allowClear />

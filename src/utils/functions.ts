@@ -14,7 +14,7 @@ import 'dayjs/locale/en'; // Import the English locale (you can replace 'en' wit
 
 export const transformDate = (apiDate: string) => {
   const parsedDate = dayjs(apiDate);
-  const formattedDate = parsedDate.format('DD/MM/YYYY');
+  const formattedDate = parsedDate.format('DD/MM/YYYY HH:mm:ss');
   return formattedDate;
 };
 

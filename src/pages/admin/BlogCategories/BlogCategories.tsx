@@ -1,19 +1,21 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Input, Skeleton, Space } from 'antd';
+import { Breadcrumb, Button, Input, Pagination, Select, Skeleton, Space } from 'antd';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useGetBlogCategoriesQuery } from './categoriesBlog.service';
 import { startEditCategory } from './categoriesBlog.slice';
 import AddCategoriesBlog from './components/AddCategoriesBlog';
 import CategoriesBlogList from './components/CategoriesBlogList';
-import { useGetCategoriesQuery } from './categoriesBlog.service';
-import { Breadcrumb } from 'antd';
-import { Link } from 'react-router-dom';
+
 const { Search } = Input;
+const { Option } = Select;
 
 type ParamsType = {
-  _limit: number;
-  _page: number;
   _q: string;
+  _page: number;
+  _limit: number;
+  _status?: string;
 };
 
 const BlogCategories = () => {
@@ -23,18 +25,37 @@ const BlogCategories = () => {
     _q: ''
   });
 
-  const { data: categoriesResponse, isFetching: isFetchingCategories } = useGetCategoriesQuery(params);
-
-  const filteredCategories =
-    categoriesResponse?.blogsCategories.filter((category) =>
-      category.name.toLowerCase().includes(params._q.toLowerCase())
-    ) || [];
+  const { data: categoriesResponse, isFetching: isFetchingCategories } = useGetBlogCategoriesQuery(params);
 
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
   const onSearchHandler = (value: string) => {
-    setParams((prevParams) => ({ ...prevParams, _q: value.trim(), _page: 1 }));
+    setParams((prevParams) => {
+      const trimmedValue = value.trim();
+      if (trimmedValue) {
+        return {
+          ...prevParams,
+          _q: trimmedValue,
+          _page: 1
+        };
+      } else {
+        return {
+          ...prevParams,
+          _q: '',
+          _page: prevParams._page
+        };
+      }
+    });
+  };
+
+  const filterStatusHandler = (value: string) => {
+    setParams((prevParams) => {
+      return {
+        ...prevParams,
+        _status: value
+      };
+    });
   };
 
   const closeDrawerHandler = () => {
@@ -71,14 +92,25 @@ const BlogCategories = () => {
             <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New Category
             </Button>
-            <Search placeholder='Search categories' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
+            <Search
+              placeholder='Search categories'
+              onSearch={onSearchHandler}
+              style={{ width: 200 }}
+              className='search-wrap'
+            />
+            {/* Thêm Select để lọc theo trạng thái */}
+            <Select defaultValue='all' style={{ width: 120 }} onChange={filterStatusHandler}>
+              <Option value='all'>All</Option>
+              <Option value='active'>Active</Option>
+              <Option value='inactive'>Inactive</Option>
+            </Select>
           </Space>
         </div>
         <div className='blog-categories__content'>
           {isFetchingCategories ? (
             <Skeleton />
           ) : (
-            <CategoriesBlogList onCategoryEdit={categoryEditHandler} data={filteredCategories} />
+            <CategoriesBlogList onCategoryEdit={categoryEditHandler} data={categoriesResponse?.blogsCategories || []} />
           )}
         </div>
       </div>
