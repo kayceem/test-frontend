@@ -3,20 +3,21 @@ import { Button, Input, Select, Skeleton, Space } from 'antd';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { startEditBlog } from './blog.slice';
-import { useGetAllBlogsQuery, useGetBlogsQuery } from './blog.service';
 import AddBlog from './Components/AddBlog/AddBlog';
 import BlogListDetail from './Components/BlogList/BlogList';
-import { useGetBlogCategoriesQuery } from '../BlogCategories/categoriesBlog.service';
 import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
+import { useGetBlogsQuery } from './blog.service';
+import { useGetBlogCategoriesQuery } from '../BlogCategories/categoriesBlog.service';
+
 const { Search } = Input;
+const { Option } = Select;
 
 type ParamsType = {
-  _limit: number;
-  _page: number;
   _q: string;
-  _blogName?: string;
-  _author?: string;
+  _page: number;
+  _limit: number;
+  _status?: string;
 };
 
 const Blogs = () => {
@@ -26,45 +27,43 @@ const Blogs = () => {
     _q: ''
   });
 
-  const { data, isFetching } = useGetBlogsQuery(params);
-  const { data: allBlogsData, isFetching: isAllBlogsFetching } = useGetAllBlogsQuery();
+  const { data: blogsData, isFetching: isFetchingBlogs } = useGetBlogsQuery(params);
   const { data: categoriesResponse, isFetching: isFetchingCategories } = useGetBlogCategoriesQuery(params);
 
   const [open, setOpen] = useState(false);
-
-  const blogFilterList =
-    allBlogsData?.blogs.map((blog) => {
-      return {
-        value: blog.author,
-        label: blog.author
-      };
-    }) || [];
-
-  blogFilterList.unshift({
-    value: 'all',
-    label: 'All Blogs'
-  });
-
   const dispatch = useDispatch();
 
   const onSearchHandler = (value: string) => {
-    setParams({ ...params, _q: value, _page: 1 });
+    setParams((prevParams) => {
+      const trimmedValue = value.trim();
+      if (trimmedValue) {
+        return {
+          ...prevParams,
+          _q: trimmedValue,
+          _page: 1
+        };
+      } else {
+        return {
+          ...prevParams,
+          _q: '',
+          _page: prevParams._page
+        };
+      }
+    });
   };
 
-  const onSelectChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const onSelectSearch = (value: string) => {
-    console.log('search:', value);
+  const filterStatusHandler = (value: string) => {
+    setParams((prevParams) => {
+      return {
+        ...prevParams,
+        _status: value !== 'all' ? value : undefined // Gửi 'active' hoặc 'inactive', loại bỏ nếu chọn 'all'
+      };
+    });
   };
 
   const blogEditHandler = (blogId: string) => {
+    dispatch(startEditBlog(blogId));
     setOpen(true);
-  };
-
-  const closeDrawerHandler = () => {
-    setOpen(false);
   };
 
   const newBlogHandler = () => {
@@ -72,8 +71,8 @@ const Blogs = () => {
     setOpen(true);
   };
 
-  const blogFilterHandler = (value: string) => {
-    setParams({ ...params, _author: value });
+  const closeDrawerHandler = () => {
+    setOpen(false);
   };
 
   return (
@@ -96,25 +95,27 @@ const Blogs = () => {
             <Button onClick={newBlogHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
               New Blog
             </Button>
-            <Search placeholder='Search blogs' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
-            <Select
-              size='middle'
-              placeholder='Please select a authors'
-              defaultValue={'All authors'}
-              onChange={blogFilterHandler}
-              style={{ width: '240px' }}
-              options={blogFilterList}
+            <Search
+              placeholder='Search blog'
+              onSearch={onSearchHandler}
+              style={{ width: 200 }}
+              className='search-wrap'
             />
+            <Select defaultValue='all' style={{ width: 120 }} onChange={filterStatusHandler}>
+              <Option value='all'>All</Option>
+              <Option value='active'>Active</Option>
+              <Option value='inactive'>Inactive</Option>
+            </Select>
           </Space>
         </div>
         <div className='blogs__show-result'></div>
         <div className='blogs__content'>
-          {isFetching ? (
+          {isFetchingBlogs ? (
             <Skeleton />
           ) : (
             <BlogListDetail
               onBlogEdit={blogEditHandler}
-              data={data?.blogs || []}
+              data={blogsData?.blogs || []}
               categories={categoriesResponse?.blogsCategories || []}
             />
           )}

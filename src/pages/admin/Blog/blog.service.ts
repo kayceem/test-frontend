@@ -2,10 +2,15 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
 import { IBlog } from '../../../types/blog.type';
 import { IParams } from '../../../types/params.type';
+import { IActionLog } from '../../../types/actionLog.type';
 
 interface getBlogsResponse {
   blogs: IBlog[];
   message: string;
+  total: number;
+  page: number;
+  pages: number;
+  limit: number;
 }
 
 interface getBlogResponse {
@@ -13,7 +18,14 @@ interface getBlogResponse {
   message: string;
 }
 
-const BLOGS = 'Blogs';
+interface GetBlogHistoriesResponse {
+  message: string;
+  results: IActionLog[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
+}
 
 export const blogApi = createApi({
   reducerPath: 'blogApi',
@@ -30,28 +42,23 @@ export const blogApi = createApi({
     }
   }),
   endpoints: (build) => ({
-    getAllBlogs: build.query<getBlogsResponse, void>({
-      query: () => '/blogs',
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.blogs.map((blog) => ({ type: BLOGS as 'Blogs', id: blog._id })),
-              { type: BLOGS as 'Blogs', id: 'LIST' }
-            ]
-          : [{ type: BLOGS as 'Blogs', id: 'LIST' }]
+    getBlog: build.query<getBlogResponse, string>({
+      query: (id) => `/blogs/${id}`
     }),
     getBlogs: build.query<getBlogsResponse, IParams>({
       query: (params) => ({
-        url: '/blogs',
+        url: '/blogs/blogParams',
         params
       }),
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.blogs.map((blog) => ({ type: BLOGS as 'Blogs', id: blog._id })),
-              { type: BLOGS as 'Blogs', id: 'LIST' }
-            ]
-          : [{ type: BLOGS as 'Blogs', id: 'LIST' }]
+      providesTags(result) {
+        if (result && Array.isArray(result.blogs)) {
+          return [
+            ...result.blogs.map(({ _id }: { _id: string }) => ({ type: 'Blogs' as const, _id })),
+            { type: 'Blogs' as const, id: 'LIST' }
+          ];
+        }
+        return [{ type: 'Blogs' as const, id: 'LIST' }];
+      }
     }),
     addBlog: build.mutation<{ blog: IBlog; message: string }, Omit<IBlog, '_id'>>({
       query: (blog) => ({
@@ -61,9 +68,6 @@ export const blogApi = createApi({
       }),
       invalidatesTags: [{ type: 'Blogs', id: 'LIST' }]
     }),
-    getBlog: build.query<getBlogResponse, string>({
-      query: (id) => `/blogs/${id}`
-    }),
     updateBlog: build.mutation<IBlog, IBlog>({
       query: (blog) => ({
         url: `/blogs/update/${blog._id}`,
@@ -72,29 +76,35 @@ export const blogApi = createApi({
       }),
       invalidatesTags: (result, error, data) => [{ type: 'Blogs', id: 'LIST' }]
     }),
-    deleteBlog: build.mutation<Record<string, never>, string>({
-      query: (id) => ({
-        url: `/blogs/delete/${id}`,
-        method: 'DELETE'
+    loadHistoriesForBlog: build.query<GetBlogHistoriesResponse, { blogId: string; params: IParams }>({
+      query: ({ blogId, params }) => ({
+        url: `/blogs/histories/${blogId}`,
+        params
       }),
-      invalidatesTags: [{ type: 'Blogs', id: 'LIST' }]
+      providesTags: (result, error, { blogId }) => [
+        { type: 'Blogs' as const, id: 'LIST' },
+        { type: 'Blogs' as const, id: blogId }
+      ]
     }),
-    softDeleteBlog: build.mutation<IBlog, string>({
-      query: (blogId) => ({
-        url: `/blogs/${blogId}/soft-delete`,
-        method: 'PUT'
+    updateActiveStatusBlog: build.mutation<void, Partial<{ blogId: string }>>({
+      query: (data) => ({
+        url: `/blogs/update-active-status`,
+        method: 'PATCH',
+        body: data
       }),
-      invalidatesTags: [{ type: 'Blogs', id: 'LIST' }]
+      invalidatesTags: (_, __, { blogId }) => [
+        { type: 'Blogs' as const, blogId: 'LIST' },
+        { type: 'Blogs' as const, blogId }
+      ]
     })
   })
 });
 
 export const {
-  useGetBlogsQuery,
-  useGetAllBlogsQuery,
-  useAddBlogMutation,
   useGetBlogQuery,
+  useGetBlogsQuery,
+  useAddBlogMutation,
   useUpdateBlogMutation,
-  useDeleteBlogMutation,
-  useSoftDeleteBlogMutation
+  useLoadHistoriesForBlogQuery,
+  useUpdateActiveStatusBlogMutation
 } = blogApi;

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+import { Button, Col, Drawer, Form, Input, Row, Select, notification } from 'antd';
 import React, { useEffect } from 'react';
-import { Button, Col, Drawer, Form, Input, Row, Space, notification, Select } from 'antd';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { IBlog } from '../../../../../types/blog.type';
-import { BlogError } from '../../../../../utils/errorHelpers';
-import { useAddBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../blog.service';
 import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type';
+import { useAddBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../blog.service';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -89,11 +88,13 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
               rules={[{ required: true, message: 'Please select a category' }]}
             >
               <Select placeholder='Select a category'>
-                {categories.map((category) => (
-                  <Option key={category._id} value={category._id}>
-                    {category.name}
-                  </Option>
-                ))}
+                {categories
+                  .filter((category) => !category.isDeleted)
+                  .map((category) => (
+                    <Option key={category._id} value={category._id}>
+                      {category.name}
+                    </Option>
+                  ))}
               </Select>
             </Form.Item>
             <Form.Item

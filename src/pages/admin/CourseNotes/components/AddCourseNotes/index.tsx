@@ -35,7 +35,7 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
     if (noteResponse && !isFetching) {
       form.setFieldsValue({
         ...noteResponse,
-        lessonId: noteResponse.notes.lessonId
+        lessonId: noteResponse.notes?.lessonId?._id
       });
     } else {
       form.resetFields();
