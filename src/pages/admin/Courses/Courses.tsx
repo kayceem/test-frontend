@@ -176,7 +176,7 @@ const Courses = () => {
             </div>
           ),
           author: userId.name,
-          categories: categoryId.name,
+          categories: categoryId?.name,
           access: Access.FREE,
           finalPrice: finalPrice,
           price: price,
@@ -195,6 +195,7 @@ const Courses = () => {
                   <Button>
                     <EllipsisOutlined />
                   </Button>
+              
                 </Popover>
               </Space>
             </Fragment>
