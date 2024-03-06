@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button, Drawer, Form, Input, notification } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import { ICategoryBlogs } from '../../../../types/categoryBlogs.type';
-import { useAddCategoryMutation, useGetCategoryByIdQuery, useUpdateCategoryMutation } from '../categoriesBlog.service';
+import {
+  useCreateBlogCategoryMutation,
+  useGetBlogCategoryByIdQuery,
+  useUpdateBlogCategoryMutation
+} from '../categoriesBlog.service';
 
 interface CreateCategoryBlogProps {
   isOpen: boolean;
@@ -12,33 +17,32 @@ interface CreateCategoryBlogProps {
 }
 
 const AddCategoriesBlog: React.FC<CreateCategoryBlogProps> = ({ isOpen, onClose }) => {
-  const [addCategoryBlog] = useAddCategoryMutation();
-  const [updateCategoryBlog] = useUpdateCategoryMutation();
-  const categoryId = useSelector((state: RootState) => state.blogCategories.BlogcategoryId);
+  const [addCategoryBlog] = useCreateBlogCategoryMutation();
+  const [updateCategoryBlog] = useUpdateBlogCategoryMutation();
+  const BlogcategoryId = useSelector((state: RootState) => state.blogCategories.BlogcategoryId);
 
-  const { data: categoryResponse, isFetching } = useGetCategoryByIdQuery(categoryId, {
-    skip: !categoryId
+  const { data: categoryResponse, isFetching } = useGetBlogCategoryByIdQuery(BlogcategoryId, {
+    skip: !BlogcategoryId
   });
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (categoryId && categoryResponse) {
-      form.setFieldsValue(categoryResponse.blogCategories);
+    if (BlogcategoryId && categoryResponse) {
+      form.setFieldsValue(categoryResponse.blogsCategories);
+    } else {
+      form.resetFields();
     }
-  }, [categoryId, categoryResponse, form]);
+  }, [BlogcategoryId, categoryResponse, form]);
 
   const handleClose = () => {
-    form.resetFields();
     onClose();
   };
 
   const submitHandler = async (values: ICategoryBlogs) => {
     try {
-      const categoryToSubmit = categoryId ? { ...values, _id: categoryId } : values;
-      console.log(categoryToSubmit);
-
-      if (categoryId) {
+      const categoryToSubmit = BlogcategoryId ? { ...values, _id: BlogcategoryId } : values;
+      if (BlogcategoryId) {
         await updateCategoryBlog(categoryToSubmit).unwrap();
         notification.success({ message: 'Category updated successfully' });
       } else {
@@ -54,7 +58,7 @@ const AddCategoriesBlog: React.FC<CreateCategoryBlogProps> = ({ isOpen, onClose 
 
   return (
     <Drawer
-      title={categoryId ? 'Edit Category Blog' : 'Create a new Category Blog'}
+      title={BlogcategoryId ? 'Edit Category Blog' : 'Create a new Category Blog'}
       width={720}
       onClose={handleClose}
       open={isOpen}
@@ -84,7 +88,7 @@ const AddCategoriesBlog: React.FC<CreateCategoryBlogProps> = ({ isOpen, onClose 
         </Form.Item>
         <Form.Item>
           <Button type='primary' htmlType='submit'>
-            {categoryId ? 'Update Category Blog' : 'Add Category Blog'}
+            {BlogcategoryId ? 'Update Category Blog' : 'Add Category Blog'}
           </Button>
         </Form.Item>
       </Form>

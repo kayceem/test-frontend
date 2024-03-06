@@ -67,6 +67,7 @@ import Permission from './pages/admin/Users/components/Permission';
 import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
 import AdminAuthSignUp from './pages/admin/Auth/AuthSignup';
 import CourseNotes from './pages/admin/CourseNotes';
+import ResetPasswordPage from './pages/site/Auth/ResetPassword';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
@@ -268,7 +269,7 @@ const RouterHooks = () => {
           children: [
             {
               index: true,
-              element: <Categories />
+              element: adminRole === UserRole.ADMIN ? <Categories /> : <Navigate to='/error' />
             }
           ]
         },
@@ -278,7 +279,7 @@ const RouterHooks = () => {
             {
               index: true,
               path: 'list',
-              element: <Feedbacks />
+              element: adminRole === UserRole.ADMIN ? <Feedbacks /> : <Navigate to='/error' />
             }
           ]
         },
@@ -380,6 +381,10 @@ const RouterHooks = () => {
     {
       path: 'author-signup',
       element: <AdminAuthSignUp />
+    },
+    {
+      path: 'site/reset-password',
+      element: <ResetPasswordPage />
     },
     {
       path: 'cart/subscribe/course/',

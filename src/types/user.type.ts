@@ -1,4 +1,5 @@
 import { ICourse } from './course.type';
+import { IBase } from './base.type';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -7,7 +8,7 @@ export enum UserRole {
   USER = 'USER'
 }
 
-export interface IUser {
+export interface IUser extends IBase {
   _id: string;
   name: string;
   email: string;

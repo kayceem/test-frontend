@@ -1,13 +1,14 @@
-import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, notification } from 'antd';
+import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, message } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
 import type { FilterValue } from 'antd/es/table/interface';
 import React, { Fragment, useEffect, useState } from 'react';
 import './UsersList.scss';
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
-import { useDeleteUserMutation, useGetUsersQuery } from '../../user.service';
+import { useUpdateActiveStatusUserMutation, useGetUsersQuery } from '../../user.service';
 import { startEditUser } from '../../user.slice';
 import UserDetail from './components/UserDetail';
+import moment from 'moment';
 interface DataUserType {
   key: React.Key;
   name: JSX.Element;
@@ -66,30 +67,28 @@ const columns: ColumnsType<DataUserType> = [
   }
 ];
 
-const SettingContent = (props: { userId: string }) => {
-  const [deleteUser, deleteUserResult] = useDeleteUserMutation();
+const SettingContent = (props: { userId: string; isDeleted: boolean }) => {
+  const [updateActiveStatusUser, updateActiveStatusUserResult] = useUpdateActiveStatusUserMutation();
 
-  const deleteUserHandler = () => {
-
-    deleteUser(props.userId)
+  const updateActiveStatusUserHandler = () => {
+    updateActiveStatusUser({ userId: props.userId })
       .unwrap()
-      .then((result) => {
-
-        notification.success({
-          message: 'Delete User successfully',
-          description: 'Delete User successfully hihi',
-          duration: 2
-        });
+      .then(() => {
+        const successMessage = props.isDeleted ? 'User activated successfully' : 'User deactivated successfully';
+        void message.success(successMessage);
       })
-      .catch((error) => {
-        console.log('error: ', error);
+      .catch(() => {
+        const errorMessage = props.isDeleted ? 'Failed to activate user' : 'Failed to deactivate user';
+        void message.error(errorMessage);
       });
   };
+
+  const actionText = props.isDeleted ? 'Activate' : 'Deactivate';
 
   return (
     <div>
       <p>Content</p>
-      <a onClick={deleteUserHandler}>Delete</a>
+      <a onClick={updateActiveStatusUserHandler}>{`${actionText}`}</a>
     </div>
   );
 };
@@ -112,7 +111,6 @@ const UsersList: React.FC<UserListProps> = (props) => {
     });
   }, [props.searchValue]);
 
-
   const { data, isFetching } = useGetUsersQuery(usersParams);
   const dispatch = useDispatch();
   const showUserDetail = () => {
@@ -125,7 +123,6 @@ const UsersList: React.FC<UserListProps> = (props) => {
   };
 
   const onChange: TableProps<DataUserType>['onChange'] = (pagination, filters, sorter, extra) => {
-
     setTableParams({ pagination: pagination });
   };
 
@@ -147,8 +144,8 @@ const UsersList: React.FC<UserListProps> = (props) => {
             </a>
           </>
         ),
-        lastLogin:   <div className='txt-desc'>{user?.lastLogin || ''}</div>,
-        createdAt:  <div className='txt-desc'>{user?.createdAt}</div>,
+        lastLogin: <div className='txt-desc'>{moment(user?.lastLogin).format('YYYY-MM-DD HH:mm:ss') || ''}</div>,
+        createdAt: <div className='txt-desc'>{moment(user?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(user.courses || []).map((course) => (
@@ -173,7 +170,11 @@ const UsersList: React.FC<UserListProps> = (props) => {
               <EditOutlined />
             </Button>
 
-            <Popover placement='bottomRight' content={<SettingContent userId={user._id} />} title='Actions'>
+            <Popover
+              placement='bottomRight'
+              content={<SettingContent userId={user._id} isDeleted={user?.isDeleted || false} />}
+              title='Actions'
+            >
               <Button className='btn-wrap'>
                 <EllipsisOutlined />
               </Button>

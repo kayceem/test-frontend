@@ -18,7 +18,7 @@ import reportReducer from '../pages/admin/report.slice';
 import blogReducer from '../pages/admin/Blog/blog.slice';
 import { blogApi } from '../pages/admin/Blog/blog.service';
 import BlogcategoryReducer from '../pages/admin/BlogCategories/categoriesBlog.slice';
-import { categoriesBlogApi } from '../pages/admin/BlogCategories/categoriesBlog.service';
+import { blogCategoryApi } from '../pages/admin/BlogCategories/categoriesBlog.service';
 import { feedbackApi } from '../pages/admin/Feedbacks/feedback.service';
 import { transactionApi } from '../pages/admin/Transactions/transaction.service';
 import { reviewApi } from '../pages/admin/Reports/components/ReviewsCenter/review.service';
@@ -45,7 +45,7 @@ const rootReducer = combineReducers({
   blog: blogReducer,
   [blogApi.reducerPath]: blogApi.reducer,
   blogCategories: BlogcategoryReducer,
-  [categoriesBlogApi.reducerPath]: categoriesBlogApi.reducer,
+  [blogCategoryApi.reducerPath]: blogCategoryApi.reducer,
   [feedbackApi.reducerPath]: feedbackApi.reducer,
   [transactionApi.reducerPath]: transactionApi.reducer,
   [reviewApi.reducerPath]: reviewApi.reducer,
@@ -68,7 +68,7 @@ export const store = configureStore({
       authApi.middleware,
       reportApi.middleware,
       blogApi.middleware,
-      categoriesBlogApi.middleware,
+      blogCategoryApi.middleware,
       feedbackApi.middleware,
       transactionApi.middleware,
       reviewApi.middleware,

@@ -4,13 +4,12 @@ import { IUser } from '../types/user.type';
 import { CustomError } from '../utils/errorHelpers';
 import { EnumType } from '../types/enumData.type';
 
-
 interface loginResponse {
   token: string;
   userId: string;
   message: string;
-  enumData?: Record<string, Record<string, string>>
-  listPermission?: string[]
+  enumData?: Record<string, Record<string, string>>;
+  listPermission?: string[];
 }
 interface signupResponse {
   userId: string;
@@ -23,7 +22,7 @@ interface signUpRequestResponse {
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  tagTypes: ['Authentication'], 
+  tagTypes: ['Authentication'],
   keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/auth`,
@@ -42,7 +41,6 @@ export const authApi = createApi({
     }
   }),
   endpoints: (build) => ({
-    
     login: build.mutation<loginResponse, { email: string; password: string }>({
       query(body) {
         try {
@@ -55,14 +53,13 @@ export const authApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       },
-     
+
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
    
     logout: build.mutation<loginResponse, void>({
       query(body) {
         try {
-    
           return {
             url: 'logout',
             method: 'POST',
@@ -72,13 +69,12 @@ export const authApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       },
-     
+
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
     adminLogout: build.mutation<loginResponse, void>({
       query(body) {
         try {
-     
           return {
             url: 'admin/logout',
             method: 'POST',
@@ -159,16 +155,18 @@ export const authApi = createApi({
       },
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-    generateNewPassword: build.mutation<any, { password: string; userId: string; passwordToken: string }>({
-      query(data) {
-        return {
-          url: `new-password`,
-          method: 'POST',
-          body: data
-        };
-      },
-      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
-    }),
+    generateNewPassword: build.mutation<any, { password: string; userId: string | null; passwordToken: string | null }>(
+      {
+        query(data) {
+          return {
+            url: `new-password`,
+            method: 'POST',
+            body: data
+          };
+        },
+        invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+      }
+    ),
     googleLogin: build.mutation<loginResponse, { token: string }>({
       query(body) {
         return {

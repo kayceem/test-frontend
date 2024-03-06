@@ -48,6 +48,10 @@ interface getUserResponse {
   message: string;
 }
 
+interface UpdateActiveStatusUserResponse {
+  message: string;
+}
+
 export const userApi = createApi({
   reducerPath: 'userApi', // Tên field trong Redux state
   tagTypes: ['Users', 'Permissions'], // Những kiểu tag cho phép dùng trong userAPI, permissionAPI
@@ -218,10 +222,9 @@ export const userApi = createApi({
        */
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Users', id: 'LIST' }])
     }),
-    updatePermission: build.mutation<any, {userId: string, listPermission: TreeNode[][] | undefined} >({
+    updatePermission: build.mutation<any, { userId: string; listPermission: TreeNode[][] | undefined }>({
       query(body) {
         try {
-  
           return {
             url: '/permissions/update',
             method: 'PUT',
@@ -263,18 +266,27 @@ export const userApi = createApi({
       // Trong trường hợp này thì Users sẽ chạy lại
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Users', id: 'LIST' }])
     }),
-    deleteUser: build.mutation<Record<string, never>, string>({
-      query(id) {
-        return {
-          url: `/users/user/delete/${id}`,
-          method: 'DELETE'
-        };
-      },
-      // Trong trường hợp này thì Users sẽ chạy lại
-      invalidatesTags: (result, error, id) => [{ type: 'Users', id: 'LIST' }]
+    updateActiveStatusUser: build.mutation<UpdateActiveStatusUserResponse, Partial<{ userId: string }>>({
+      query: (data) => ({
+        url: 'users/user/update-active-status',
+        method: 'PATCH',
+        body: data
+      }),
+      invalidatesTags: (_, __, { userId }) => [
+        { type: 'Users', id: 'LIST' },
+        { type: 'Users', id: userId }
+      ]
     })
   })
 });
 
-export const { useGetUsersQuery, useGetUsersSelectQuery, useGetPermissionsQuery,  useAddUserMutation, useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation, useUpdatePermissionMutation } =
-  userApi;
+export const {
+  useGetUsersQuery,
+  useGetUsersSelectQuery,
+  useGetPermissionsQuery,
+  useAddUserMutation,
+  useGetUserQuery,
+  useUpdateUserMutation,
+  useUpdateActiveStatusUserMutation,
+  useUpdatePermissionMutation
+} = userApi;

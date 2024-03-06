@@ -3,7 +3,23 @@ import Button from '../../../components/Button';
 import './Auth.scss';
 import AdminLogin from './Login';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import './Auth.scss';
+import ChangePassword from './components/ChangePassWord';
+import ForgotPasswordModal from './components/FogotPassWord';
+
 const AdminAuth = () => {
+  const [isForgotPasswordVisible, setIsForgotPasswordVisible] = useState(false);
+  const [isChangePassVisible, setIsChangePassVisible] = useState(false);
+
+  const showForgotPasswordModal = () => setIsForgotPasswordVisible(true);
+  const handleCloseForgotPasswordModal = () => setIsForgotPasswordVisible(false);
+  const handleForgotPasswordSuccess = () => {
+    setIsForgotPasswordVisible(false);
+    setIsChangePassVisible(true);
+  };
+  const handleCloseChangePass = () => setIsChangePassVisible(false);
+
   return (
     <Row className='admin-auth'>
       <Col xs={0} sm={0} md={12} lg={12} xl={14} className='admin-auth__content'>
@@ -22,11 +38,19 @@ const AdminAuth = () => {
           <h2 className='admin-auth__welcome'>Hello Again!</h2>
           <p className='admin-auth__welcome-back'>Welcome Back</p>
           <AdminLogin />
-          <div className='admin-auth__forgot-password'>
-          <Space>
+          <div className='admin-auth__forgot-password' onClick={showForgotPasswordModal}>
             <a href='#'>Forgot Password</a>
             <Link to='/author-signup'>Sign up to become author!</Link>
-          </Space>
+          </div>
+          <div className='admin-auth__forgot-password'>
+            {isForgotPasswordVisible && (
+              <ForgotPasswordModal
+                isVisible={isForgotPasswordVisible}
+                onClose={handleCloseForgotPasswordModal}
+                onSuccess={handleForgotPasswordSuccess} // Add this prop to handle success
+              />
+            )}
+            {isChangePassVisible && <ChangePassword isVisible={isChangePassVisible} onClose={handleCloseChangePass} />}
           </div>
         </div>
       </Col>
