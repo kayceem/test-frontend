@@ -204,7 +204,7 @@ const RouterHooks = () => {
     },
     {
       path: '/author',
-      element: isAdminAuth ? <RootAdminLayout /> : <ErrorPage page='/author-login' />,
+      element: isAuth ? <RootAdminLayout /> : <ErrorPage page='/author-login' />,
       children: [
         {
           path: 'dashboard',
@@ -269,7 +269,7 @@ const RouterHooks = () => {
           children: [
             {
               index: true,
-              element: adminRole === UserRole.ADMIN ? <Categories /> : <Navigate to='/error' />
+              element:  <Categories /> 
             }
           ]
         },
@@ -288,11 +288,11 @@ const RouterHooks = () => {
           children: [
             {
               path: 'coupon-types',
-              element: adminRole === UserRole.ADMIN ? <CouponTypesPage /> : <Navigate to='/error' />
+              element: <CouponTypesPage />
             },
             {
               path: 'coupons',
-              element: adminRole === UserRole.ADMIN ? <CouponsPage /> : <Navigate to='/error' />
+              element: <CouponsPage />
             }
           ]
         },

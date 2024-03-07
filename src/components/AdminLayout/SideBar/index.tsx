@@ -70,13 +70,12 @@ const SideBar = () => {
         getItem('Order Manager', 'orders'),
         getItem('Transactions', 'transaction')
       ])) as MenuItem,
-    (adminRole === UserRole.ADMIN &&
       getItem('Users', 'users', <UserOutlined />, [
         getItem('All Users', 'users'),
         getItem('Admins', 'admins'),
         getItem('Intructors', 'intructors'),
         getItem('Permission', 'users/permission') // Permission for each user and function
-      ])) as MenuItem,
+      ]),
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
         getItem(
