@@ -1,4 +1,6 @@
-export interface IBlog {
+import { IBase } from "./base.type";
+
+export interface IBlog extends IBase {
   _id: string;
   title: string;
   author: string;
@@ -10,8 +12,4 @@ export interface IBlog {
   content: string;
   userId: string;
   categoryId: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  isDeleted: boolean;
 }

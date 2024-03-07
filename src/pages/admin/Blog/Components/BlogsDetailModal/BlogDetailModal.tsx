@@ -52,7 +52,10 @@ const BlogDetailModal: React.FC<BlogDetailModalProps> = ({ blog, isVisible, onCl
             Technology: <span className='opacity-70'>{blog.technology}</span>
           </p>
           <p>
-            Create At: <span className='opacity-70'>{transformDate(blog.createdAt)}</span>
+            Create At:{' '}
+            <span className='opacity-70'>
+              {transformDate(blog.createdAt ? blog.createdAt : new Date().toISOString())}
+            </span>
           </p>
           <div>
             Content:

@@ -1,15 +1,13 @@
 import { CheckCircleOutlined, EditOutlined, EyeOutlined, HistoryOutlined, StopOutlined } from '@ant-design/icons';
-import { Button, Input, Popconfirm, Select, Space, Table, message } from 'antd';
-import type { TablePaginationConfig, TableProps } from 'antd/es/table';
-import type { FilterValue } from 'antd/es/table/interface';
+import { Button, Popconfirm, Space, Table, message } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ICategoryBlogs } from '../../../../types/categoryBlogs.type';
+import { transformDate } from '../../../../utils/functions';
 import { useUpdateActiveStatusBlogCategoryMutation } from '../categoriesBlog.service';
 import { startEditCategory } from '../categoriesBlog.slice';
 import ViewDetailCategoryBlog from './ViewDetailCategoryBlog';
 import ViewHistoryCategoryBlog from './ViewHistoryCategoryBlog';
-import { transformDate } from '../../../../utils/functions';
 
 interface CategoryListProps {
   data: ICategoryBlogs[];

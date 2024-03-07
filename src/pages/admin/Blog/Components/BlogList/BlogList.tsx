@@ -1,35 +1,16 @@
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Button, Modal, Popover, Space, Table, notification } from 'antd';
-import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
-import type { FilterValue } from 'antd/es/table/interface';
-import Link from 'antd/es/typography/Link';
+import { CheckCircleOutlined, EditOutlined, EyeOutlined, HistoryOutlined, StopOutlined } from '@ant-design/icons';
+import { Button, Popconfirm, Space, Table, notification } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IBlog } from '../../../../../types/blog.type';
-import { BlogError } from '../../../../../utils/errorHelpers';
-import { useSoftDeleteBlogMutation } from '../../blog.service';
+import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type';
+import { transformDate } from '../../../../../utils/functions';
+import { useUpdateActiveStatusBlogMutation } from '../../blog.service';
 import { startEditBlog } from '../../blog.slice';
-import './BlogList.scss';
-import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type'; 
 import BlogDetailModal from '../BlogsDetailModal/BlogDetailModal';
-
-interface DataBlogType {
-  key: React.Key;
-  title: string;
-  author: string;
-  createdAt: string;
-  content: string;
-  blogImg?: string;
-  actions?: any;
-  category: string;
-}
-
-interface TableParams {
-  pagination?: TablePaginationConfig;
-  sortField?: string;
-  sortOrder?: string;
-  filters?: Record<string, FilterValue>;
-}
+import './BlogList.scss';
+import ViewHistoryBlog from '../ViewHistoryBLog';
 
 interface BlogListProps {
   data: IBlog[];
@@ -39,17 +20,29 @@ interface BlogListProps {
 
 const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) => {
   const dispatch = useDispatch();
+  const [blogs, setBlogs] = useState<IBlog[]>(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState<IBlog | null>(null);
+  const [historyVisible, setHistoryVisible] = useState(false);
+  const [updateActiveStatusBlog] = useUpdateActiveStatusBlogMutation();
+  const [currentBlogId, setCurrentBlogId] = useState(data.length > 0 ? data[0]._id : '');
 
-  const showModal = (blog: IBlog) => {
-    setSelectedBlog(blog);
-    setIsModalVisible(true);
+  const handleViewHistory = (blogId: string) => {
+    setCurrentBlogId(blogId);
+    setHistoryVisible(true);
+  };
+
+  const showModal = (blogId: string) => {
+    const blog = data.find((blog) => blog._id === blogId);
+    if (blog) {
+      setSelectedBlog(blog);
+      setIsModalVisible(true);
+    }
   };
 
   const getCategoryName = (categoryId: string) => {
     const category = categories.find((c) => c._id === categoryId);
-    return category ? category.name : 'Unknown Category';
+    return category ? category.name : 'Not available';
   };
 
   const blogEditHandler = (blogId: string) => {
@@ -57,94 +50,113 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
     dispatch(startEditBlog(blogId));
   };
 
-  const columns: ColumnsType<DataBlogType> = [
+  const handleUpdateStatus = (blogId: string) => {
+    updateActiveStatusBlog({ blogId })
+      .unwrap()
+      .then(() => {
+        notification.success({ message: 'Blog status updated successfully' });
+        const updatedBlog = blogs.map((blog) => {
+          if (blog._id === blogId) {
+            return {
+              ...blog,
+              isDeleted: !blog.isDeleted
+            };
+          }
+          return blog;
+        });
+        setBlogs(updatedBlog);
+      })
+      .catch(() => {
+        notification.error({ message: 'Blog status update failed' });
+      });
+  };
+
+  const columns: ColumnsType<IBlog> = [
     {
       title: 'Author Image',
       dataIndex: 'blogImg',
-      render: (text: string, record: DataBlogType) => (
+      key: 'blogImg',
+      render: (text: string, record: IBlog) => (
         <img className='rounded-full' src={record.blogImg} alt='Author' style={{ width: '50px', height: '50px' }} />
-      ),
-      key: 'blogImg'
+      )
     },
     {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
-      render: (_, record) => getCategoryName(record.category)
+      render: (_: IBlog, record: IBlog) => getCategoryName(record.categoryId)
     },
     {
       title: 'Title',
       dataIndex: 'title',
+      key: 'title',
       width: '20%',
-      key: 'title'
+      render: (_: IBlog, record: IBlog) => <span>{record.title}</span>
     },
     {
       title: 'Author',
       dataIndex: 'author',
-      key: 'author'
+      key: 'author',
+      render: (_: IBlog, record: IBlog) => <span>{record.author}</span>
     },
     {
       title: 'Content',
       dataIndex: 'content',
-      key: 'content'
+
+      render: (_: IBlog, record: IBlog) => <span>{record.content}</span>
     },
     {
       title: 'Created at',
       dataIndex: 'createdAt',
-      key: 'createdAt'
+      render: (_: IBlog, record: IBlog) => transformDate(record.createdAt ? record.createdAt : new Date().toISOString())
+    },
+    {
+      title: 'Status',
+      dataIndex: 'isDeleted',
+      key: 'isDeleted',
+      render: (_: IBlog, record: IBlog) => <span>{record.isDeleted ? 'Inactive' : 'Active'}</span>
     },
     {
       title: 'Manage',
       dataIndex: 'actions',
-      key: 'actions'
+      key: 'actions',
+      render: (_: IBlog, record: IBlog) => (
+        <Space size='middle'>
+          <Button icon={<EditOutlined style={{ color: '#1890ff' }} />} onClick={() => blogEditHandler(record._id)} />
+          <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => showModal(record._id)} />
+          <Button
+            icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => handleViewHistory(record._id)}
+          />
+          {record.isDeleted ? (
+            <Popconfirm
+              title='Are you sure you want to activate this blog?'
+              placement='topRight'
+              onConfirm={() => handleUpdateStatus(record._id)}
+              okText='Yes'
+              cancelText='No'
+            >
+              <Button icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} />
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title='Are you sure you want to deactivate this blog category?'
+              placement='topRight'
+              onConfirm={() => handleUpdateStatus(record._id)}
+              okText='Yes'
+              cancelText='No'
+            >
+              <Button icon={<StopOutlined style={{ color: '#ff4d4f' }} />} danger />
+            </Popconfirm>
+          )}
+        </Space>
+      )
     }
   ];
 
-  const blogsSource = data
-    .filter((blog) => !blog.isDeleted)
-    .map((blogItem) => {
-      const { _id, title, author, createdAt, content, blogImg, categoryId } = blogItem;
-      const blogTemplateItem: DataBlogType = {
-        key: _id,
-        title: title,
-        author: author,
-        createdAt: createdAt,
-        content: content,
-        blogImg: blogImg,
-        category: categoryId,
-        actions: (
-          <Space>
-            <Button onClick={() => blogEditHandler(_id)} className='btn-wrap'>
-              <EditOutlined />
-            </Button>
-            <Popover placement='bottomRight' content={() => SettingContent(_id, showModal, blogItem)} title='Actions'>
-              <Button className='btn-wrap'>
-                <EllipsisOutlined />
-              </Button>
-            </Popover>
-          </Space>
-        )
-      };
-      return blogTemplateItem;
-    });
-
-  const [tableParams, setTableParams] = useState<TableParams>({
-    pagination: {
-      current: 1,
-      pageSize: 12
-    }
-  });
-
-  const onChange: TableProps<DataBlogType>['onChange'] = (pagination, filters, sorter, extra) => {
-    setTableParams({
-      pagination,
-      ...filters
-    });
-  };
-
   return (
     <div className='users-list'>
-      <Table columns={columns} dataSource={blogsSource} onChange={onChange} pagination={tableParams.pagination} />
+      <Table columns={columns} dataSource={blogs} pagination={{ pageSize: 5 }} />
       {selectedBlog && (
         <BlogDetailModal
           blog={selectedBlog}
@@ -153,42 +165,7 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
           categories={categories}
         />
       )}
-    </div>
-  );
-};
-
-const SettingContent = (blogId: string, showModal: (blog: IBlog) => void, blog: IBlog) => {
-  const [softDeleteBlog] = useSoftDeleteBlogMutation();
-
-  const softDeleteBlogHandler = (blogId: string) => {
-    Modal.confirm({
-      title: 'Are you sure you want to delete this blog ?',
-      content: 'This action cannot be undone and will permanently delete the blog.',
-      okText: 'Yes, delete it',
-      okType: 'danger',
-      cancelText: 'No, cancel',
-      onOk: () => {
-        return softDeleteBlog(blogId)
-          .unwrap()
-          .then((result) => {
-            notification.success({
-              message: 'Blog deleted successfully'
-            });
-          })
-          .catch((error: BlogError) => {
-            notification.error({
-              message: 'Failed to delete blog'
-            });
-          });
-      }
-    });
-  };
-
-  return (
-    <div>
-      <Link onClick={() => showModal(blog)}>Show Modal</Link>
-      <br />
-      <Link onClick={() => softDeleteBlogHandler(blogId)}>Delete</Link>{' '}
+      <ViewHistoryBlog isVisible={historyVisible} onClose={() => setHistoryVisible(false)} blogId={currentBlogId} />
     </div>
   );
 };
