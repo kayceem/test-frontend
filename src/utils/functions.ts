@@ -47,6 +47,14 @@ export const formatVideoLengthToHours = (seconds: number): string => {
   return `${hours.toFixed(1)} hours`;
 };
 
+export const  isNotValidEmail = (email: string) => {
+  // Regular expression for a simple email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Test the provided email against the regex
+  return !emailRegex.test(email);
+}
+
 export function getHeaders() {
   const token = localStorage.getItem('token');
   if (token) {

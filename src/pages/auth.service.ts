@@ -104,7 +104,7 @@ export const authApi = createApi({
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
 
-    adminLogin: build.mutation<loginResponse, { email: string; password: string }>({
+    adminLogin: build.mutation<loginResponse, any>({
       query(body) {
         try {
           return {
@@ -118,7 +118,7 @@ export const authApi = createApi({
       },
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-    adminSignUpRequest: build.mutation<signUpRequestResponse, { email: string; password: string }>({
+    adminSignUpRequest: build.mutation<signUpRequestResponse, { email: string; name: string, phone: string }>({
       query(body) {
         try {
           return {
@@ -203,6 +203,7 @@ export const authApi = createApi({
 export const {
   useLoginMutation,
   useAdminLoginMutation,
+  useAdminSignUpRequestMutation,
   useSignupMutation,
   useResetPasswordMutation,
   useGenerateNewPasswordMutation,

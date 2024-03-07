@@ -238,7 +238,7 @@ const RouterHooks = () => {
           children: [
             {
               index: true,
-              element: adminRole === UserRole.ADMIN ? <Users /> : <Navigate to='/error' />
+              element:  <Users/>
             },
             {
               path: 'permission',

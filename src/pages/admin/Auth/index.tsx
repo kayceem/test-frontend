@@ -40,7 +40,7 @@ const AdminAuth = () => {
           <AdminLogin />
           <div className='admin-auth__forgot-password' onClick={showForgotPasswordModal}>
             <a href='#'>Forgot Password</a>
-            <Link to='/author-signup'>Sign up to become author!</Link>
+            <Link className="ml-4 fw-bold text-blue-500" to='/author-signup'>Sign up to become author!</Link>
           </div>
           <div className='admin-auth__forgot-password'>
             {isForgotPasswordVisible && (
