@@ -1,8 +1,10 @@
-import { Col, Row } from 'antd';
-import { useState } from 'react';
+import { Col, Row, Space } from 'antd';
 import Button from '../../../components/Button';
 import './Auth.scss';
 import AdminLogin from './Login';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import './Auth.scss';
 import ChangePassword from './components/ChangePassWord';
 import ForgotPasswordModal from './components/FogotPassWord';
 
@@ -38,6 +40,7 @@ const AdminAuth = () => {
           <AdminLogin />
           <div className='admin-auth__forgot-password' onClick={showForgotPasswordModal}>
             <a href='#'>Forgot Password</a>
+            <Link className="ml-4 fw-bold text-blue-500" to='/author-signup'>Sign up to become author!</Link>
           </div>
           <div className='admin-auth__forgot-password'>
             {isForgotPasswordVisible && (

@@ -159,7 +159,7 @@ export const courseApi = createApi({
       query(body) {
         try {
           return {
-            url: '/courses/course/create',
+            url: 'courses/course/create',
             method: 'POST',
             body
           };

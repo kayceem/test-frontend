@@ -1,5 +1,5 @@
 import { AppstoreOutlined, EditOutlined, EllipsisOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import { Button, Input, Popover, Select, Skeleton, Space, notification } from 'antd';
+import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, notification } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,6 @@ import { useGetCategoriesQuery } from '../Categories/category.service';
 import './Courses.scss';
 import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
-import { Breadcrumb } from 'antd';
 import { useDeleteCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
 
 enum Access {
@@ -177,7 +176,7 @@ const Courses = () => {
             </div>
           ),
           author: userId.name,
-          categories: categoryId.name,
+          categories: categoryId?.name,
           access: Access.FREE,
           finalPrice: finalPrice,
           price: price,
@@ -196,6 +195,7 @@ const Courses = () => {
                   <Button>
                     <EllipsisOutlined />
                   </Button>
+              
                 </Popover>
               </Space>
             </Fragment>

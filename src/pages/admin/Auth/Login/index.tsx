@@ -9,6 +9,7 @@ import { UserRole } from '../../../../types/user.type';
 import { adminLoginError } from '../../../../utils/errorHelpers';
 import { useAdminLoginMutation } from '../../../auth.service';
 import { setAdminAuthenticated } from '../../../auth.slice';
+import { isNotValidEmail } from '../../../../utils/functions';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const AdminLogin: React.FC = () => {
@@ -17,11 +18,22 @@ const AdminLogin: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const onFinish = (formValues: { email: string; password: string }) => {
-    const adminCredentials: { email: string; password: string } = {
-      email: formValues.email,
-      password: formValues.password
-    };
+  const onFinish = (formValues: { account: string; password: string }) => {
+    let adminCredentials: any = {}
+    if(isNotValidEmail(formValues.account)) {
+      adminCredentials = {
+        username: formValues.account,
+        password: formValues.password
+      };
+    }else {
+      adminCredentials = {
+        email: formValues.account,
+        password: formValues.password
+      };
+    }
+
+    // Incase go with username
+    
 
     setIsSubmitting(true);
 
@@ -45,6 +57,9 @@ const AdminLogin: React.FC = () => {
           if (loginResponse.listPermission) {
             localStorage.setItem('listPermission', JSON.stringify(loginResponse.listPermission));
           }
+          // if(loginResponse.adminRole) {
+          //   localStorage.setItem('adminRole', loginResponse.adminRole);
+          // }
           const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
 
           // Check if the token has not expired
@@ -98,10 +113,10 @@ const AdminLogin: React.FC = () => {
     >
       <Form.Item
         className='admin-auth__login-form__item'
-        name='email'
-        rules={[{ required: true, message: 'Please input your email!' }]}
+        name='account'
+        rules={[{ required: true, message: 'Please input your email or username!' }]}
       >
-        <Input prefix={<IconEmailAuthLogin />} placeholder='Email Address' className='admin-auth__login-form__input' />
+        <Input prefix={<IconEmailAuthLogin />} placeholder='Email Address or username' className='admin-auth__login-form__input' />
       </Form.Item>
 
       <Form.Item

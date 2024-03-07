@@ -65,6 +65,7 @@ import CouponsPage from './pages/admin/Coupons/Coupons';
 import CouponTypesPage from './pages/admin/CouponTypes/CouponTypes';
 import Permission from './pages/admin/Users/components/Permission';
 import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
+import AdminAuthSignUp from './pages/admin/Auth/AuthSignup';
 import CourseNotes from './pages/admin/CourseNotes';
 import ResetPasswordPage from './pages/site/Auth/ResetPassword';
 
@@ -237,7 +238,7 @@ const RouterHooks = () => {
           children: [
             {
               index: true,
-              element: adminRole === UserRole.ADMIN ? <Users /> : <Navigate to='/error' />
+              element:  <Users/>
             },
             {
               path: 'permission',
@@ -376,6 +377,10 @@ const RouterHooks = () => {
     {
       path: 'author-login',
       element: <AdminAuth />
+    },
+    {
+      path: 'author-signup',
+      element: <AdminAuthSignUp />
     },
     {
       path: 'site/reset-password',

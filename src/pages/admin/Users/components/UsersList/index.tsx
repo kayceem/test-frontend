@@ -1,14 +1,15 @@
-import { Avatar, Button, Popover, Skeleton, Space, Table, Tag, Tooltip, message } from 'antd';
+import { Avatar, Button, Popconfirm, Popover, Skeleton, Space, Table, Tag, Tooltip, message, notification } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
 import type { FilterValue } from 'antd/es/table/interface';
 import React, { Fragment, useEffect, useState } from 'react';
 import './UsersList.scss';
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { EditOutlined, EllipsisOutlined, CheckOutlined  } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
-import { useUpdateActiveStatusUserMutation, useGetUsersQuery } from '../../user.service';
+import { useUpdateActiveStatusUserMutation, useGetUsersQuery, useApproveUserMutation } from '../../user.service';
 import { startEditUser } from '../../user.slice';
 import UserDetail from './components/UserDetail';
 import moment from 'moment';
+import { Helper } from '../../../../../utils/helper';
 interface DataUserType {
   key: React.Key;
   name: JSX.Element;
@@ -19,6 +20,8 @@ interface DataUserType {
   createdAt: string | undefined; // Convert to date: Example: 18 jun 2023
   lastLogin: string;
   actions?: any;
+  statusName: string;
+  statusColor: string;
 }
 
 interface TableParams {
@@ -58,8 +61,8 @@ const columns: ColumnsType<DataUserType> = [
     dataIndex: 'courses'
   },
   {
-    title: 'Tags',
-    dataIndex: 'tags'
+    title: 'Status',
+    dataIndex: 'status'
   },
   {
     title: 'Manage',
@@ -104,7 +107,8 @@ const UsersList: React.FC<UserListProps> = (props) => {
   const [usersParams, setUsersParams] = useState({
     _q: props.searchValue
   });
-
+  const helper = new Helper();
+  const enumData = helper.getEnumData
   useEffect(() => {
     setUsersParams({
       _q: props.searchValue
@@ -112,6 +116,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
   }, [props.searchValue]);
 
   const { data, isFetching } = useGetUsersQuery(usersParams);
+  const [approveUser, _] = useApproveUserMutation();
   const dispatch = useDispatch();
   const showUserDetail = () => {
     setOpen(true);
@@ -120,6 +125,22 @@ const UsersList: React.FC<UserListProps> = (props) => {
   const editUserHandler = (userId: string) => {
     dispatch(startEditUser(userId));
     props.onEditUser();
+  };
+
+  const onApproveUser = (userId: string) => {
+    // dispatch(startEditUser(userId));
+    // props.onEditUser();
+
+    approveUser({userId}).unwrap().then(() => {
+      notification.success({
+        message: 'Approve user successfully',
+      });
+    }).catch(() => {
+      notification.error({
+        message: 'Failed to approve user',
+      });
+    })
+
   };
 
   const onChange: TableProps<DataUserType>['onChange'] = (pagination, filters, sorter, extra) => {
@@ -158,10 +179,9 @@ const UsersList: React.FC<UserListProps> = (props) => {
             </Tooltip>
           </Avatar.Group>
         ),
-        tags: (
+        status: (
           <>
-            <Tag color='magenta'>magenta</Tag>
-            <Tag color='red'>red</Tag>
+            <Tag color={user.statusColor}>{user.statusName}</Tag>
           </>
         ),
         manage: (
@@ -169,6 +189,20 @@ const UsersList: React.FC<UserListProps> = (props) => {
             <Button onClick={() => editUserHandler(user._id)} className='btn-wrap'>
               <EditOutlined />
             </Button>
+
+            {user.status == 'NEW' && ( // Check if user.status is not 'new'
+              <Popconfirm
+                title="Approve User"
+                description="Are you sure to approve this user to become an author?"
+                onConfirm={() => onApproveUser(user._id)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button className='btn-wrap'>
+                  <CheckOutlined />
+                </Button>
+              </Popconfirm>
+            )}
 
             <Popover
               placement='bottomRight'

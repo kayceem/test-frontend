@@ -20,7 +20,8 @@ import { useGetSummaryReportsQuery } from '../report.service';
 import { selectPreviousDays, showChart } from '../report.slice';
 import './Dashboard.scss';
 import Chart from './components/Chart';
-
+import { io } from 'socket.io-client';
+import { BACKEND_URL } from '../../../constant/backend-domain';
 const statisticItemStyle = {};
 
 const Dashboard: React.FC = () => {
@@ -47,6 +48,11 @@ const Dashboard: React.FC = () => {
   const showCourseSalesChart = () => {
     dispatch(showChart('course-sales'));
   };
+
+    // const socket = io(`${BACKEND_URL} ` );
+    //   socket.on("auth", (data) => {
+    //    console.log("Socket connect!", data)
+    //  })
 
   return (
     <div className='dashboard'>

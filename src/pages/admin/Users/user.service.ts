@@ -222,6 +222,29 @@ export const userApi = createApi({
        */
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Users', id: 'LIST' }])
     }),
+    approveUser: build.mutation<{
+      message: string
+    }, {userId: string}>({
+      query(body) {
+        try {
+          return {
+            url: '/users/user/approve',
+            method: 'PATCH',
+            body
+          };
+        } catch (error: any) {
+          console.log('error: ', error);
+
+          throw new CustomError((error as CustomError).message);
+        }
+      },
+      /**
+       * invalidatesTags cung cấp các tag để báo hiệu cho những method nào có providesTags
+       * match với nó sẽ bị gọi lại
+       * Trong trường hợp này Users sẽ chạy lại
+       */
+      invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Users', id: 'LIST' }])
+    }),
     updatePermission: build.mutation<any, { userId: string; listPermission: TreeNode[][] | undefined }>({
       query(body) {
         try {
@@ -288,5 +311,6 @@ export const {
   useGetUserQuery,
   useUpdateUserMutation,
   useUpdateActiveStatusUserMutation,
-  useUpdatePermissionMutation
+  useUpdatePermissionMutation,
+  useApproveUserMutation
 } = userApi;
