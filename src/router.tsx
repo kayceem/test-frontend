@@ -74,6 +74,9 @@ const RouterHooks = () => {
   const isAdminAuth = useSelector((state: RootState) => state.auth.isAdminAuth);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
 
+  console.log("is auth: ", isAuth)
+  console.log("is admin auth: ", isAdminAuth)
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -204,7 +207,7 @@ const RouterHooks = () => {
     },
     {
       path: '/author',
-      element: isAuth ? <RootAdminLayout /> : <ErrorPage page='/author-login' />,
+      element: isAdminAuth ? <RootAdminLayout /> : <ErrorPage page='/author-login' /> ,
       children: [
         {
           path: 'dashboard',
