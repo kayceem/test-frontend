@@ -1,27 +1,37 @@
+import {
+  CheckCircleOutlined,
+  CheckOutlined,
+  CloseCircleOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  HistoryOutlined
+} from '@ant-design/icons';
 import { Avatar, Button, Popconfirm, Popover, Skeleton, Space, Table, Tag, Tooltip, message, notification } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
 import type { FilterValue } from 'antd/es/table/interface';
-import React, { Fragment, useEffect, useState } from 'react';
-import './UsersList.scss';
-import { EditOutlined, EllipsisOutlined, CheckOutlined  } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { useUpdateActiveStatusUserMutation, useGetUsersQuery, useApproveUserMutation } from '../../user.service';
-import { startEditUser } from '../../user.slice';
-import UserDetail from './components/UserDetail';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useApproveUserMutation, useGetUsersQuery, useUpdateActiveStatusUserMutation } from '../../user.service';
+import { startEditUser } from '../../user.slice';
+import './UsersList.scss';
+import UserDetail from './components/UserDetail';
+import ViewHistoryUser from '../HistoryUser/HistoryUser';
 import { Helper } from '../../../../../utils/helper';
+
 interface DataUserType {
   key: React.Key;
   name: JSX.Element;
   avatar?: string;
   email?: string;
   courses: JSX.Element;
-  tags: JSX.Element;
-  createdAt: string | undefined; // Convert to date: Example: 18 jun 2023
-  lastLogin: string;
-  actions?: any;
-  statusName: string;
-  statusColor: string;
+  tags?: JSX.Element;
+  lastLogin: JSX.Element;
+  createdAt: JSX.Element;
+  statusName?: string;
+  statusColor?: string;
+  actions?: JSX.Element;
+  status: JSX.Element;
 }
 
 interface TableParams {
@@ -70,7 +80,7 @@ const columns: ColumnsType<DataUserType> = [
   }
 ];
 
-const SettingContent = (props: { userId: string; isDeleted: boolean }) => {
+const SettingContent = (props: { userId: string; isDeleted: boolean; onViewHistory: () => void }) => {
   const [updateActiveStatusUser, updateActiveStatusUserResult] = useUpdateActiveStatusUserMutation();
 
   const updateActiveStatusUserHandler = () => {
@@ -89,10 +99,17 @@ const SettingContent = (props: { userId: string; isDeleted: boolean }) => {
   const actionText = props.isDeleted ? 'Activate' : 'Deactivate';
 
   return (
-    <div>
-      <p>Content</p>
-      <a onClick={updateActiveStatusUserHandler}>{`${actionText}`}</a>
-    </div>
+    <Space>
+      <Button type='primary' icon={<HistoryOutlined />} onClick={props.onViewHistory} />
+      <Button
+        style={{
+          background: props.isDeleted ? '#5da3e5' : 'red'
+        }}
+        type='text'
+        icon={props.isDeleted ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
+        onClick={updateActiveStatusUserHandler}
+      />
+    </Space>
   );
 };
 
@@ -104,11 +121,24 @@ interface UserListProps {
 const UsersList: React.FC<UserListProps> = (props) => {
   const [open, setOpen] = useState(false);
 
+  const [isViewHistoryOpen, setIsViewHistoryOpen] = useState(false);
+  const [historyUserId, setHistoryUserId] = useState<string | null>(null);
+
+  const handleViewHistory = (userId: string) => {
+    setHistoryUserId(userId);
+    setIsViewHistoryOpen(true);
+  };
+
+  const closeViewHistoryModal = () => {
+    setIsViewHistoryOpen(false);
+    setHistoryUserId(null);
+  };
+
   const [usersParams, setUsersParams] = useState({
     _q: props.searchValue
   });
   const helper = new Helper();
-  const enumData = helper.getEnumData
+  const enumData = helper.getEnumData;
   useEffect(() => {
     setUsersParams({
       _q: props.searchValue
@@ -131,16 +161,18 @@ const UsersList: React.FC<UserListProps> = (props) => {
     // dispatch(startEditUser(userId));
     // props.onEditUser();
 
-    approveUser({userId}).unwrap().then(() => {
-      notification.success({
-        message: 'Approve user successfully',
+    approveUser({ userId })
+      .unwrap()
+      .then(() => {
+        notification.success({
+          message: 'Approve user successfully'
+        });
+      })
+      .catch(() => {
+        notification.error({
+          message: 'Failed to approve user'
+        });
       });
-    }).catch(() => {
-      notification.error({
-        message: 'Failed to approve user',
-      });
-    })
-
   };
 
   const onChange: TableProps<DataUserType>['onChange'] = (pagination, filters, sorter, extra) => {
@@ -156,7 +188,6 @@ const UsersList: React.FC<UserListProps> = (props) => {
             <a href='#' onClick={showUserDetail}>
               <div className='user-info'>
                 <img alt={user?.name} src={user?.avatar} className='user-info__avatar' />
-
                 <div className='user-info__content'>
                   <div className='user-info__name txt-tt'>{user?.name}</div>
                   <div className='user-info__email txt-desc'>{user?.email}</div>
@@ -181,7 +212,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
         ),
         status: (
           <>
-            <Tag color={user.statusColor}>{user.statusName}</Tag>
+            <Tag color={user?.statusColor}>{user.statusName}</Tag>{' '}
           </>
         ),
         manage: (
@@ -189,24 +220,28 @@ const UsersList: React.FC<UserListProps> = (props) => {
             <Button onClick={() => editUserHandler(user._id)} className='btn-wrap'>
               <EditOutlined />
             </Button>
-
             {user.status == 'NEW' && ( // Check if user.status is not 'new'
               <Popconfirm
-                title="Approve User"
-                description="Are you sure to approve this user to become an author?"
+                title='Approve User'
+                description='Are you sure to approve this user to become an author?'
                 onConfirm={() => onApproveUser(user._id)}
-                okText="Yes"
-                cancelText="No"
+                okText='Yes'
+                cancelText='No'
               >
                 <Button className='btn-wrap'>
                   <CheckOutlined />
                 </Button>
               </Popconfirm>
             )}
-
             <Popover
               placement='bottomRight'
-              content={<SettingContent userId={user._id} isDeleted={user?.isDeleted || false} />}
+              content={
+                <SettingContent
+                  userId={user._id}
+                  isDeleted={user?.isDeleted || false}
+                  onViewHistory={() => handleViewHistory(user._id)}
+                />
+              }
               title='Actions'
             >
               <Button className='btn-wrap'>
@@ -228,7 +263,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
   });
 
   return (
-    <Fragment>
+    <>
       {isFetching && <Skeleton />}
       {!isFetching && (
         <div className='users-list'>
@@ -236,7 +271,10 @@ const UsersList: React.FC<UserListProps> = (props) => {
           <UserDetail isOpen={open} onClose={() => setOpen(false)} />
         </div>
       )}
-    </Fragment>
+      {isViewHistoryOpen && historyUserId && (
+        <ViewHistoryUser isOpen={isViewHistoryOpen} onClose={closeViewHistoryModal} userId={historyUserId} />
+      )}
+    </>
   );
 };
 
