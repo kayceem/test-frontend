@@ -10,14 +10,17 @@ export class Helper {
   private adminRole: UserRole;
   constructor() {
     this.enumData = JSON.parse(localStorage.getItem("enumData") as string)
-    this.adminRole = JSON.parse(localStorage.getItem("AdminRole") as string)
+    this.adminRole = localStorage.getItem("adminRole") as UserRole
+
+    console.log("adminRole: ", this.adminRole)
+  
     this.Role = this.enumData?.Role 
     this.listPermission = JSON.parse(localStorage.getItem("listPermission") as string)
   }
 
   public checkPermission(role: string) {
       // FULL PERMISSSION WHEN YOU ARE ADMIN
-      if(this.adminRole === UserRole.ADMIN) return true
+      if(this.adminRole === UserRole.ADMIN || this.adminRole === UserRole.AUTHOR) return true
       return this.listPermission.some((str: string) => str === role)
   }
 

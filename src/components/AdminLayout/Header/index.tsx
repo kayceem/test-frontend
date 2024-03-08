@@ -19,6 +19,7 @@ import FeedbacksHeader from './components/Feedbacks/Feedbacks';
 import ReviewsHeader from './components/Reviews/Reviews';
 import TransactionsHeader from './components/Transactions/Transactions';
 import CoursesNotes from './components/CourseNotes';
+import WelcomeHeader from './components/WelcomeHeader';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -32,6 +33,7 @@ const AdminHeader = () => {
   return (
     <Header className='admin-header' style={{ padding: 0, background: colorBgContainer }}>
       {path === '/author/dashboard' && <DashboardHeader />}
+      {path === '/author/welcome' && <WelcomeHeader />}
       {path === '/author/categories' && <CategoriesHeader />}
       {path === '/author/courses' && <CoursesHeader />}
       {path === '/author/courses-notes' && <CoursesNotes />}

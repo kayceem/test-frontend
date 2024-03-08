@@ -40,12 +40,14 @@ const AdminLogin: React.FC = () => {
     adminLogin(adminCredentials)
       .then((result) => {
         if ('data' in result) {
+          console.log("result: ", result);
           const loginResponse: {
             token: string;
             message: string;
             userId: string;
             enumData?: Record<string, Record<string, string>>;
             listPermission?: string[];
+            adminRole: UserRole;
           } = result.data;
           const decodedToken: { exp: number; iat: number; userId: string; email: string; adminRole: UserRole } =
             jwtDecode(loginResponse.token);
@@ -57,9 +59,9 @@ const AdminLogin: React.FC = () => {
           if (loginResponse.listPermission) {
             localStorage.setItem('listPermission', JSON.stringify(loginResponse.listPermission));
           }
-          // if(loginResponse.adminRole) {
-          //   localStorage.setItem('adminRole', loginResponse.adminRole);
-          // }
+          if(loginResponse.adminRole) {
+            localStorage.setItem('adminRole', loginResponse.adminRole);
+          }
           const expirationTime = decodedToken.exp * 1000; // Expiration time in milliseconds
 
           // Check if the token has not expired
