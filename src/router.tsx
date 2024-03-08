@@ -68,6 +68,7 @@ import BlogCategories from './pages/admin/BlogCategories/BlogCategories';
 import AdminAuthSignUp from './pages/admin/Auth/AuthSignup';
 import CourseNotes from './pages/admin/CourseNotes';
 import ResetPasswordPage from './pages/site/Auth/ResetPassword';
+import Welcome from './pages/admin/Welcome/welcome';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
@@ -212,6 +213,10 @@ const RouterHooks = () => {
         {
           path: 'dashboard',
           element: <Dashboard />
+        },
+        {
+          path: 'welcome',
+          element: <Welcome />
         },
         {
           path: 'courses',

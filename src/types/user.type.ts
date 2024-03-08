@@ -2,11 +2,12 @@ import { ICourse } from './course.type';
 import { IBase } from './base.type';
 
 export enum UserRole {
-  ADMIN = 'ADMIN',
-  STUDENT = 'STUDENT',
-  TEACHER = 'TEACHER',
+  ADMIN = 'Admin',
+  STUDENT = 'Student',
+  TEACHER = 'Teacher',
   USER = 'USER',
-  AUTHOR = 'AUTHOR'
+  AUTHOR = 'Author',
+  OTHER = 'Other'
 }
 
 export interface IUser extends IBase {

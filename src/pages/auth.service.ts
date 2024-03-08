@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../constant/backend-domain';
-import { IUser } from '../types/user.type';
+import { IUser, UserRole } from '../types/user.type';
 import { CustomError } from '../utils/errorHelpers';
 import { EnumType } from '../types/enumData.type';
 
@@ -10,6 +10,7 @@ interface loginResponse {
   message: string;
   enumData?: Record<string, Record<string, string>>;
   listPermission?: string[];
+  adminRole: UserRole;
 }
 interface signupResponse {
   userId: string;

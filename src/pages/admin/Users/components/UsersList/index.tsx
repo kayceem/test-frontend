@@ -67,6 +67,10 @@ const columns: ColumnsType<DataUserType> = [
     filterSearch: true
   },
   {
+    title: 'Role',
+    dataIndex: 'role'
+  },
+  {
     title: 'Courses',
     dataIndex: 'courses'
   },
@@ -198,6 +202,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
         ),
         lastLogin: <div className='txt-desc'>{moment(user?.lastLogin).format('YYYY-MM-DD HH:mm:ss') || ''}</div>,
         createdAt: <div className='txt-desc'>{moment(user?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>,
+        role:<div>{user.role}</div>,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(user.courses || []).map((course) => (
@@ -267,7 +272,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
       {isFetching && <Skeleton />}
       {!isFetching && (
         <div className='users-list'>
-          <Table columns={columns} dataSource={usersData} onChange={onChange} pagination={tableParams.pagination} />
+          <Table columns={columns} dataSource={usersData} onChange={onChange} pagination={tableParams.pagination} scroll={{x: 1200, y: 400 }} />
           <UserDetail isOpen={open} onClose={() => setOpen(false)} />
         </div>
       )}

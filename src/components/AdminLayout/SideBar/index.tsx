@@ -47,18 +47,19 @@ const SideBar = () => {
 
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
-
+  
+  console.log("adminRole", adminRole)
   const navigateHandler: MenuProps['onClick'] = (e) => {
     navigate(e.key);
     setOpenDrawer(true);
   };
 
   const items: MenuItem[] = [
-    getItem('sangtrandev', 'myprofile', <BorderOuterOutlined />),
-    getItem('Dashboard', 'dashboard', <PieChartOutlined />),
+    getItem('Welcome', 'welcome', <BorderOuterOutlined />),
+    (adminRole === UserRole.ADMIN && getItem('Dashboard', 'dashboard', <PieChartOutlined />) ) as MenuItem,
     getItem('Categories', 'categories', <UnorderedListOutlined />, [
       getItem('Course Categories', 'categories'),
-      getItem('Lesson Type', 'lesson-type')
+      // getItem('Lesson Type', 'lesson-type')
     ]),
     getItem('Courses', 'courses', <DesktopOutlined />, [
       getItem('Course Manager', 'courses'),
@@ -72,9 +73,9 @@ const SideBar = () => {
       ])) as MenuItem,
       getItem('Users', 'users', <UserOutlined />, [
         getItem('All Users', 'users'),
-        getItem('Admins', 'admins'),
-        getItem('Intructors', 'intructors'),
-        getItem('Permission', 'users/permission') // Permission for each user and function
+        // getItem('Admins', 'admins'),
+        // getItem('Intructors', 'intructors'),
+       (adminRole === UserRole.ADMIN && getItem('Permission', 'users/permission')) as MenuItem // Permission for each user and function
       ]),
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
@@ -107,8 +108,8 @@ const SideBar = () => {
       ])) as MenuItem,
     getItem('Marketing', 'marketing', <TagsOutlined />, [
       getItem('Coupon Types', 'marketing/coupon-types'),
-      getItem('Bundles', 'marketing/bundles'),
-      getItem('Subscriptions', 'marketing/subscriptions'),
+      // getItem('Bundles', 'marketing/bundles'),
+      // getItem('Subscriptions', 'marketing/subscriptions'),
       getItem('Coupons', 'marketing/coupons')
     ]),
     getItem('Blog', 'blog', <BoldOutlined />, [
@@ -116,7 +117,7 @@ const SideBar = () => {
       getItem('Blog Category', 'blog-category'),
       getItem('Blog comments', 'blog/comments')
     ]),
-    getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')]),
+   ((adminRole === UserRole.ADMIN && getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')])) as MenuItem),
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
     getItem('My account', 'account', <UserAddOutlined />),
     getItem('Need Help ?', 'help', <FileOutlined />)
