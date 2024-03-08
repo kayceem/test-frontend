@@ -5,6 +5,7 @@ import { IUser } from '../../../types/user.type';
 import { CustomError } from '../../../utils/errorHelpers';
 import { TreeNode } from '../../../types/treeNode.type';
 import { ISelectBox } from '../../../types/selectBox.type';
+import { IActionLog } from '../../../types/actionLog.type';
 
 /**
  * Mô hình sync dữ liệu danh sách bài post dưới local sau khi thêm 1 bài post
@@ -50,6 +51,15 @@ interface getUserResponse {
 
 interface UpdateActiveStatusUserResponse {
   message: string;
+}
+
+interface GetUserHistoriesResponse {
+  message: string;
+  results: IActionLog[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
 }
 
 export const userApi = createApi({
@@ -222,9 +232,12 @@ export const userApi = createApi({
        */
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Users', id: 'LIST' }])
     }),
-    approveUser: build.mutation<{
-      message: string
-    }, {userId: string}>({
+    approveUser: build.mutation<
+      {
+        message: string;
+      },
+      { userId: string }
+    >({
       query(body) {
         try {
           return {
@@ -299,6 +312,16 @@ export const userApi = createApi({
         { type: 'Users', id: 'LIST' },
         { type: 'Users', id: userId }
       ]
+    }),
+    getUserHistories: build.query<GetUserHistoriesResponse, { userId: string; params: IParams }>({
+      query: ({ userId, params }) => ({
+        url: `users/user/histories/${userId}`,
+        params: params
+      }),
+      providesTags: (result, error, { userId }) => [
+        { type: 'Users' as const, id: 'LIST' },
+        { type: 'Users' as const, id: userId }
+      ]
     })
   })
 });
@@ -312,5 +335,6 @@ export const {
   useUpdateUserMutation,
   useUpdateActiveStatusUserMutation,
   useUpdatePermissionMutation,
-  useApproveUserMutation
+  useApproveUserMutation,
+  useGetUserHistoriesQuery
 } = userApi;
