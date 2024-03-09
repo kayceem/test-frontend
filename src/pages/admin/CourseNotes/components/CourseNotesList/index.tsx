@@ -160,7 +160,13 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
 
   return (
     <div className='course-notes-list'>
-      <Table columns={columns} dataSource={notesSource} onChange={onChange} pagination={tableParams.pagination} />
+      <Table
+        columns={columns}
+        scroll={{ x: 'min-content' }}
+        dataSource={notesSource}
+        onChange={onChange}
+        pagination={tableParams.pagination}
+      />
     </div>
   );
 };
