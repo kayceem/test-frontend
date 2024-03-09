@@ -10,6 +10,7 @@ import { adminLoginError } from '../../../../utils/errorHelpers';
 import { useAdminLoginMutation } from '../../../auth.service';
 import { setAdminAuthenticated } from '../../../auth.slice';
 import { isNotValidEmail } from '../../../../utils/functions';
+
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const AdminLogin: React.FC = () => {
