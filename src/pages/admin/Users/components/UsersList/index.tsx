@@ -124,6 +124,7 @@ interface UserListProps {
 
 const UsersList: React.FC<UserListProps> = (props) => {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isViewHistoryOpen, setIsViewHistoryOpen] = useState(false);
   const [historyUserId, setHistoryUserId] = useState<string | null>(null);
@@ -164,6 +165,19 @@ const UsersList: React.FC<UserListProps> = (props) => {
   const onApproveUser = (userId: string) => {
     // dispatch(startEditUser(userId));
     // props.onEditUser();
+    setIsLoading(true);
+    approveUser({userId}).unwrap().then(() => {
+      notification.success({
+        message: 'Approve user successfully',
+      });
+      setIsLoading(false);
+    }).catch(() => {
+      notification.error({
+        message: 'Failed to approve user',
+      });
+      setIsLoading(false);
+    })
+
 
     approveUser({ userId })
       .unwrap()
@@ -272,7 +286,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
       {isFetching && <Skeleton />}
       {!isFetching && (
         <div className='users-list'>
-          <Table columns={columns} dataSource={usersData} onChange={onChange} pagination={tableParams.pagination} scroll={{x: 1200, y: 400 }} />
+          <Table loading={isLoading} columns={columns} dataSource={usersData} onChange={onChange} pagination={tableParams.pagination} scroll={{x: 1200, y: 400 }} />
           <UserDetail isOpen={open} onClose={() => setOpen(false)} />
         </div>
       )}
