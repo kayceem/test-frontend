@@ -71,7 +71,7 @@ const AdminLogin: React.FC = () => {
             form.resetFields();
             notification.success({ type: 'success', message: loginResponse.message, duration: 2 });
 
-            navigate('/author/dashboard');
+            navigate('/author/welcome');
           } else {
             console.log('Token has expired. Please log in again.');
           }
