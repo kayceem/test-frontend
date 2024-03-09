@@ -156,7 +156,7 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
 
   return (
     <div className='users-list'>
-      <Table columns={columns} dataSource={blogs} pagination={{ pageSize: 5 }} />
+      <Table columns={columns} dataSource={blogs} pagination={{ pageSize: 5 }} scroll={{ x: 'min-content' }} />
       {selectedBlog && (
         <BlogDetailModal
           blog={selectedBlog}

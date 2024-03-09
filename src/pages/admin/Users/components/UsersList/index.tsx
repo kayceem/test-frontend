@@ -166,18 +166,20 @@ const UsersList: React.FC<UserListProps> = (props) => {
     // dispatch(startEditUser(userId));
     // props.onEditUser();
     setIsLoading(true);
-    approveUser({userId}).unwrap().then(() => {
-      notification.success({
-        message: 'Approve user successfully',
+    approveUser({ userId })
+      .unwrap()
+      .then(() => {
+        notification.success({
+          message: 'Approve user successfully'
+        });
+        setIsLoading(false);
+      })
+      .catch(() => {
+        notification.error({
+          message: 'Failed to approve user'
+        });
+        setIsLoading(false);
       });
-      setIsLoading(false);
-    }).catch(() => {
-      notification.error({
-        message: 'Failed to approve user',
-      });
-      setIsLoading(false);
-    })
-
 
     approveUser({ userId })
       .unwrap()
@@ -216,7 +218,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
         ),
         lastLogin: <div className='txt-desc'>{moment(user?.lastLogin).format('YYYY-MM-DD HH:mm:ss') || ''}</div>,
         createdAt: <div className='txt-desc'>{moment(user?.createdAt).format('YYYY-MM-DD HH:mm:ss')}</div>,
-        role:<div>{user.role}</div>,
+        role: <div>{user.role}</div>,
         courses: (
           <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(user.courses || []).map((course) => (
@@ -286,7 +288,14 @@ const UsersList: React.FC<UserListProps> = (props) => {
       {isFetching && <Skeleton />}
       {!isFetching && (
         <div className='users-list'>
-          <Table loading={isLoading} columns={columns} dataSource={usersData} onChange={onChange} pagination={tableParams.pagination} scroll={{x: 1200, y: 400 }} />
+          <Table
+            loading={isLoading}
+            columns={columns}
+            dataSource={usersData}
+            onChange={onChange}
+            pagination={tableParams.pagination}
+            scroll={{ x: 1200, y: 400 }}
+          />
           <UserDetail isOpen={open} onClose={() => setOpen(false)} />
         </div>
       )}

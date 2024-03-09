@@ -154,7 +154,7 @@ const CategoriesBlogList: React.FC<CategoryListProps> = ({ data, onCategoryEdit 
         columns={columns}
         dataSource={categories}
         pagination={{ current: currentPage, pageSize, onChange: handleTableChange }}
-        scroll={{ x: 'max-content' }} // Add this line
+        scroll={{ x: 'max-content' }}
       />
       <ViewDetailCategoryBlog
         isVisible={detailVisible}
