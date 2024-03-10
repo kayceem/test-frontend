@@ -27,6 +27,10 @@ interface getLessonsResponse {
   message: string;
 }
 
+interface UpdateActiveStatusCourseResponse {
+  message: string;
+}
+
 export const courseApi = createApi({
   reducerPath: 'courseApi',
   tagTypes: ['Courses'],
@@ -223,16 +227,16 @@ export const courseApi = createApi({
 
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Courses', id: data.id }])
     }),
-    deleteCourse: build.mutation<Record<string, never>, string>({
-      query(id) {
-        return {
-          url: `/courses/course/delete/${id}`,
-          method: 'DELETE'
-        };
-      },
-      invalidatesTags: (result, error, id) => {
-        return [{ type: 'Courses', id: 'LIST' }];
-      }
+    updateActiveStatusCourse: build.mutation<UpdateActiveStatusCourseResponse, Partial<{ courseId: string }>>({
+      query: (data) => ({
+        url: 'courses/course/update-active-status',
+        method: 'PATCH',
+        body: data
+      }),
+      invalidatesTags: (_, __, { courseId }) => [
+        { type: 'Courses', id: 'LIST' },
+        { type: 'Courses', id: courseId }
+      ]
     })
   })
 });
@@ -249,5 +253,5 @@ export const {
   useAddLessonMutation,
   useGetCourseQuery,
   useUpdateCourseMutation,
-  useDeleteCourseMutation
+  useUpdateActiveStatusCourseMutation
 } = courseApi;

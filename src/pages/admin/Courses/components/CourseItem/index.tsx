@@ -1,4 +1,4 @@
-import { Avatar, Badge, Card, Col, Divider, Popover, Row, Tag, notification } from 'antd';
+import { Avatar, Badge, Card, Col, Divider, Popover, Row, Tag, message } from 'antd';
 
 import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
 const { Meta } = Card;
@@ -13,13 +13,12 @@ type CourseItemProps = {
 import { Link } from 'react-router-dom';
 import { BACKEND_URL } from '../../../../../constant/backend-domain';
 import { ICourse } from '../../../../../types/course.type';
-import { useDeleteCourseMutation } from '../../course.service';
+import { useUpdateActiveStatusCourseMutation } from '../../course.service';
 import AuthorInfo from './AuthorInfo';
 import './CourseItem.scss';
 import CourseSettings from './CourseSettings';
 
 const CourseItem = (props: CourseItemProps) => {
-
   const {
     access,
     categoryId,
@@ -33,30 +32,27 @@ const CourseItem = (props: CourseItemProps) => {
     level,
     name,
     userId,
+    isDeleted,
     description
   } = props.course;
 
-  const [deleteCourse, deleteCourseResult] = useDeleteCourseMutation();
+  const [updateActiveStatusCourse, updateActiveStatusCourseResult] = useUpdateActiveStatusCourseMutation();
 
   const clickHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     const eventAction = (e.target as HTMLAnchorElement).dataset.action;
 
-
-    deleteCourse(_id)
+    updateActiveStatusCourse({ courseId: _id })
       .unwrap()
-      .then((res) => {
-
-        notification.success({
-          message: 'Success',
-          description: 'Course deleted successfully'
-        });
+      .then(() => {
+        const successMessage = isDeleted ? 'Course activated successfully' : 'Course deactivated successfully';
+        void message.success(successMessage);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        const errorMessage = isDeleted ? 'Failed to activate course' : 'Failed to deactivate course';
+        void message.error(errorMessage);
       });
-
   };
 
   let thumbnailUrl = '';
@@ -77,7 +73,7 @@ const CourseItem = (props: CourseItemProps) => {
               <div></div>,
               <EditOutlined key='edit' />,
               <Popover
-                content={<CourseSettings onClick={clickHandler} _id={_id} />}
+                content={<CourseSettings onClick={clickHandler} _id={_id} isDeleted={isDeleted} />}
                 title='Settings'
                 placement='topLeft'
               >

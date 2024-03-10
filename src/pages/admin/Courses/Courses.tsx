@@ -1,5 +1,12 @@
-import { AppstoreOutlined, EditOutlined, EllipsisOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, notification } from 'antd';
+import {
+  AppstoreOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  UnorderedListOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined
+} from '@ant-design/icons';
+import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, message } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,7 +19,7 @@ import { useGetCategoriesQuery } from '../Categories/category.service';
 import './Courses.scss';
 import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
-import { useDeleteCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
+import { useUpdateActiveStatusCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
 
 enum Access {
   PAID = 'PAID',
@@ -36,31 +43,35 @@ interface DataCourseType {
 }
 const { Search } = Input;
 
-const SettingContent = (props: { courseId: string }) => {
-  const [deleteCourse, deleteCourseResult] = useDeleteCourseMutation();
+const SettingContent = (props: { courseId: string; isDeleted: boolean }) => {
+  const [updateActiveStatusCourse, updateActiveStatusCourseResult] = useUpdateActiveStatusCourseMutation();
 
-  const deleteCourseHandler = () => {
-
-    deleteCourse(props.courseId)
+  const updateActiveStatusCourseHandler = () => {
+    updateActiveStatusCourse({ courseId: props.courseId })
       .unwrap()
-      .then((result) => {
-
-        notification.success({
-          message: 'Delete course ',
-          description: 'Delete course successfuly',
-          duration: 2
-        });
+      .then(() => {
+        const successMessage = props.isDeleted ? 'Course activated successfully' : 'Course deactivated successfully';
+        void message.success(successMessage);
       })
-      .catch((error) => {
-        console.log('error: ', error);
+      .catch(() => {
+        const errorMessage = props.isDeleted ? 'Failed to activate course' : 'Failed to deactivate course';
+        void message.error(errorMessage);
       });
   };
 
+  const actionText = props.isDeleted ? 'Activate' : 'Deactivate';
+
   return (
-    <div>
-      <p>Content</p>
-      <a onClick={deleteCourseHandler}>Delete</a>
-    </div>
+    <Space>
+      <Button
+        style={{
+          background: props.isDeleted ? '#5da3e5' : 'red'
+        }}
+        type='text'
+        icon={props.isDeleted ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
+        onClick={updateActiveStatusCourseHandler}
+      />
+    </Space>
   );
 };
 
@@ -78,7 +89,6 @@ const Courses = () => {
   };
 
   const changeTableToList = () => {
-
     setViewTable('list');
   };
 
@@ -156,7 +166,8 @@ const Courses = () => {
           categoryId,
           userId,
           createdAt,
-          updatedAt
+          updatedAt,
+          isDeleted
         } = courseItem;
 
         let thumbnailUrl = thumbnail;
@@ -195,7 +206,6 @@ const Courses = () => {
                   <Button>
                     <EllipsisOutlined />
                   </Button>
-              
                 </Popover>
               </Space>
             </Fragment>
@@ -226,7 +236,8 @@ const Courses = () => {
           categoryId,
           userId,
           createdAt,
-          updatedAt
+          updatedAt,
+          isDeleted
         } = courseItem;
 
         let thumbnailUrl = '';
@@ -261,8 +272,12 @@ const Courses = () => {
                     <EditOutlined />
                   </Link>
                 </Button>
-                <Popover placement='bottomRight' content={<SettingContent courseId={_id} />} title='Actions'>
-                  <Button>
+                <Popover
+                  placement='bottomRight'
+                  content={<SettingContent courseId={_id} isDeleted={isDeleted || false} />}
+                  title='Actions'
+                >
+                  <Button className='btn-wrap'>
                     <EllipsisOutlined />
                   </Button>
                 </Popover>
@@ -313,7 +328,6 @@ const Courses = () => {
     value: string,
     option: { _id: string; text: string; name: string } | { _id: string; text: string; name: string }[]
   ) => {
-
     if (!Array.isArray(option)) {
       setParams({
         ...params,
@@ -335,43 +349,45 @@ const Courses = () => {
             }
           ]}
         />
-      <Header className='sub-header'>
-        <Space className='sub-header__wrap'>
-          <Search placeholder='Search courses' onSearch={onSearchHandler} style={{ width: 200 }} className='search-wrap'/>
-        
-
-          {viewTable === 'grid' && (
-            <Select
-              size='middle'
-              placeholder='Please select your categories'
-              defaultValue={'All Categories'}
-              onChange={cateFilterHandler}
-              style={{ width: '240px' }}
-              options={cateFilterList as { _id: string; text: string; value: string; name: string }[]}
+        <Header className='sub-header'>
+          <Space className='sub-header__wrap'>
+            <Search
+              placeholder='Search courses'
+              onSearch={onSearchHandler}
+              style={{ width: 200 }}
+              className='search-wrap'
             />
-          )}
 
-          {viewTable === 'grid' && adminRole === UserRole.ADMIN && (
-            <Select
-              size='middle'
-              placeholder='Please select Your Authors'
-              onChange={authorsFitlerHandler}
-              style={{ width: '200px' }}
-              options={authorFilterList}
-            />
-          )}
+            {viewTable === 'grid' && (
+              <Select
+                size='middle'
+                placeholder='Please select your categories'
+                defaultValue={'All Categories'}
+                onChange={cateFilterHandler}
+                style={{ width: '240px' }}
+                options={cateFilterList as { _id: string; text: string; value: string; name: string }[]}
+              />
+            )}
 
-          <Button onClick={changeTableToGrid} className='btn-wrap'>
-            <AppstoreOutlined />
-          </Button>
-          <Button onClick={changeTableToList} className='btn-wrap'>
-            <UnorderedListOutlined />
-          </Button>
-        </Space>
-      </Header>
-      <div className='course-content'>
-      
-      </div>
+            {viewTable === 'grid' && adminRole === UserRole.ADMIN && (
+              <Select
+                size='middle'
+                placeholder='Please select Your Authors'
+                onChange={authorsFitlerHandler}
+                style={{ width: '200px' }}
+                options={authorFilterList}
+              />
+            )}
+
+            <Button onClick={changeTableToGrid} className='btn-wrap'>
+              <AppstoreOutlined />
+            </Button>
+            <Button onClick={changeTableToList} className='btn-wrap'>
+              <UnorderedListOutlined />
+            </Button>
+          </Space>
+        </Header>
+        <div className='course-content'></div>
         <div className='course-content__wrap'>
           <div className='course-content__show-result'>
             {viewTable === 'grid' && (
