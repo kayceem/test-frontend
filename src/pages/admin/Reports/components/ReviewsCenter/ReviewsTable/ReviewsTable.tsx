@@ -109,7 +109,7 @@ const ReviewsTable: React.FC = () => {
       title: 'Content',
       dataIndex: 'content',
       key: 'content',
-      width: '15%',
+      width: '25%',
       ellipsis: true
     },
     {
@@ -129,7 +129,7 @@ const ReviewsTable: React.FC = () => {
     {
       title: 'Actions',
       key: 'actions',
-      width: '25%',
+      width: '15%',
       render: (_: IReview, record: IReview) => (
         <Space size='small'>
           <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetails(record._id)} />
