@@ -61,11 +61,10 @@ export interface getAuthorsResponse {
 }
 export interface getAuthorsSelectResponse {
   message: string;
-  authors:
-    {
-      name: string;
-      label: string;
-    }[]
+  authors: {
+    name: string;
+    label: string;
+  }[];
 }
 
 export interface getSectionsResponse {
@@ -269,7 +268,7 @@ export const clientApi = createApi({
 
       if (token) {
         const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(token);
-
+        headers.set('authorization', `Bearer ${token}`);
         headers.set('UserId', decodedToken.userId);
       }
 
@@ -589,7 +588,7 @@ export const clientApi = createApi({
       { courseId: string; title: string; content: string; ratingStar: number; orderId: string; userId: string }
     >({
       query: ({ courseId, title, content, ratingStar, orderId, userId }) => ({
-        url: `courses/course/reviews/${courseId}`,
+        url: `reviews/review/create`,
         method: 'POST',
         body: { courseId, title, content, ratingStar, orderId, userId }
       }),

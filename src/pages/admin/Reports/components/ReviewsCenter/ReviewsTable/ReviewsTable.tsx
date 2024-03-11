@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { Input, Table, Pagination, Button, Space, message, Popconfirm, Select } from 'antd';
-import { useGetReviewsQuery, useDeleteReviewMutation, useUndeleteReviewMutation } from '../review.service';
+import {
+  EyeOutlined,
+  HistoryOutlined,
+  MessageOutlined,
+  CheckCircleOutlined,
+  StopOutlined,
+  SolutionOutlined
+} from '@ant-design/icons';
+import { useGetReviewsQuery, useUpdateActiveStatusReviewMutation } from '../review.service';
 import ReviewDetailsModal from '../ReviewDetailsModal/ReviewDetailsModal';
+import CreateReviewReplyDrawer from '../CreateReviewReplyDrawer/CreateReviewReplyDrawer';
+import ReviewHistoryModal from '../ReviewHistoryModal/ReviewHistoryModal';
+import ReviewRepliesModal from '../ReviewRepliesModal/ReviewRepliesModal';
 import { IReview } from '../../../../../../types/review.type';
 import './ReviewsTable.scss';
 
@@ -20,11 +31,17 @@ const ReviewsTable: React.FC = () => {
     _q: searchTerm,
     _status: statusFilter
   });
-  const [deleteReview] = useDeleteReviewMutation();
-  const [undeleteReview] = useUndeleteReviewMutation();
+
+  const [updateActiveStatusReview] = useUpdateActiveStatusReviewMutation();
 
   const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+
+  const [isReviewReplyDrawerVisible, setIsReviewReplyDrawerVisible] = useState(false);
+  const [selectedReviewIdForReply, setSelectedReviewIdForReply] = useState<string | null>(null);
+
+  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
+  const [isRepliesModalVisible, setIsRepliesModalVisible] = useState(false);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -33,28 +50,17 @@ const ReviewsTable: React.FC = () => {
 
   const handleViewDetails = (reviewId: string) => {
     setSelectedReviewId(reviewId);
-    setIsModalVisible(true);
+    setIsDetailModalVisible(true);
   };
 
-  const handleDelete = (reviewId: string) => {
-    deleteReview(reviewId)
+  const handleUpdateStatus = (reviewId: string) => {
+    updateActiveStatusReview({ reviewId })
       .unwrap()
       .then(() => {
-        void message.success('Review deleted successfully');
+        void message.success('Review status updated successfully');
       })
       .catch(() => {
-        void message.error('Failed to delete review');
-      });
-  };
-
-  const handleUndelete = (reviewId: string) => {
-    undeleteReview(reviewId)
-      .unwrap()
-      .then(() => {
-        void message.success('Review undeleted successfully');
-      })
-      .catch(() => {
-        void message.error('Failed to undelete review');
+        void message.error('Failed to update review status');
       });
   };
 
@@ -63,18 +69,47 @@ const ReviewsTable: React.FC = () => {
     setCurrentPage(1);
   };
 
+  const handlePageChange = (page: number, pageSize?: number) => {
+    setCurrentPage(page);
+    if (pageSize) setPageSize(pageSize);
+  };
+
+  const handleOpenReviewReplyDrawer = (reviewId: string) => {
+    setSelectedReviewIdForReply(reviewId);
+    setIsReviewReplyDrawerVisible(true);
+  };
+
+  const handleViewHistory = (reviewId: string) => {
+    setSelectedReviewId(reviewId);
+    setIsHistoryModalVisible(true);
+  };
+
+  const handleViewReplies = (reviewId: string) => {
+    setSelectedReviewIdForReply(reviewId);
+    setIsRepliesModalVisible(true);
+  };
+
   const columns = [
     {
       title: 'Course Name',
       dataIndex: 'courseId',
       key: 'courseId',
       ellipsis: true,
+      width: '20%',
       render: (_: IReview, record: IReview) => record.courseId?.name || 'N/A'
     },
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
+      width: '20%',
+      ellipsis: true
+    },
+    {
+      title: 'Content',
+      dataIndex: 'content',
+      key: 'content',
+      width: '15%',
       ellipsis: true
     },
     {
@@ -94,30 +129,41 @@ const ReviewsTable: React.FC = () => {
     {
       title: 'Actions',
       key: 'actions',
+      width: '25%',
       render: (_: IReview, record: IReview) => (
-        <Space size='middle'>
-          <Button onClick={() => handleViewDetails(record._id)}>View Details</Button>
+        <Space size='small'>
+          <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetails(record._id)} />
+          <Button
+            onClick={() => handleOpenReviewReplyDrawer(record._id)}
+            icon={<MessageOutlined style={{ color: '#1890ff' }} />}
+          ></Button>
+          <Button
+            icon={<SolutionOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => handleViewReplies(record._id)}
+          />
+          <Button
+            icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => handleViewHistory(record._id)}
+          />
           {record.isDeleted ? (
-            <>
-              <Popconfirm
-                title='Are you sure you want to activate this review?'
-                placement='topRight'
-                onConfirm={() => handleUndelete(record._id)}
-                okText='Yes'
-                cancelText='No'
-              >
-                <Button type='primary'>Activate</Button>
-              </Popconfirm>
-            </>
+            <Popconfirm
+              title='Are you sure you want to activate this review?'
+              placement='topRight'
+              onConfirm={() => handleUpdateStatus(record._id)}
+              okText='Yes'
+              cancelText='No'
+            >
+              <Button icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} />
+            </Popconfirm>
           ) : (
             <Popconfirm
               title='Are you sure you want to deactivate this review?'
               placement='topRight'
-              onConfirm={() => handleDelete(record._id)}
+              onConfirm={() => handleUpdateStatus(record._id)}
               okText='Yes'
               cancelText='No'
             >
-              <Button danger>Deactivate</Button>
+              <Button icon={<StopOutlined style={{ color: '#ff4d4f' }} />} danger />
             </Popconfirm>
           )}
         </Space>
@@ -125,16 +171,17 @@ const ReviewsTable: React.FC = () => {
     }
   ];
 
-  const handlePageChange = (page: number, pageSize?: number) => {
-    setCurrentPage(page);
-    if (pageSize) setPageSize(pageSize);
-  };
-
   return (
     <div className='reviews-table'>
       <div className='search-bar-container'>
         <div className='search-bar'>
-          <Search placeholder='Search by title' onSearch={handleSearch} enterButton allowClear className='search-wrap'/>
+          <Search
+            placeholder='Search by title'
+            onSearch={handleSearch}
+            enterButton
+            allowClear
+            className='search-wrap'
+          />
         </div>
         <div className='status-filter'>
           <Select defaultValue='all' style={{ width: 120 }} onChange={handleChangeStatusFilter}>
@@ -150,6 +197,7 @@ const ReviewsTable: React.FC = () => {
         rowKey='_id'
         pagination={false}
         loading={isFetching}
+        scroll={{ y: 400 }}
       />
       <Pagination
         className='pagination'
@@ -162,8 +210,32 @@ const ReviewsTable: React.FC = () => {
       {selectedReviewId && (
         <ReviewDetailsModal
           reviewId={selectedReviewId}
-          isOpen={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
+          isOpen={isDetailModalVisible}
+          onClose={() => setIsDetailModalVisible(false)}
+        />
+      )}
+      {selectedReviewId && (
+        <ReviewHistoryModal
+          reviewId={selectedReviewId}
+          isOpen={isHistoryModalVisible}
+          onClose={() => setIsHistoryModalVisible(false)}
+        />
+      )}
+      {selectedReviewIdForReply && (
+        <ReviewRepliesModal
+          reviewId={selectedReviewIdForReply}
+          isOpen={isRepliesModalVisible}
+          onClose={() => setIsRepliesModalVisible(false)}
+        />
+      )}
+      {selectedReviewIdForReply && (
+        <CreateReviewReplyDrawer
+          isOpen={isReviewReplyDrawerVisible}
+          onClose={() => {
+            setIsReviewReplyDrawerVisible(false);
+            setSelectedReviewIdForReply(null);
+          }}
+          reviewId={selectedReviewIdForReply}
         />
       )}
     </div>

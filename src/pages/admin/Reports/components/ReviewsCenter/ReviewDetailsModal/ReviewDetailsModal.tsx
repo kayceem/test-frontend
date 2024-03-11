@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal, Typography } from 'antd';
+import { Modal, Typography, Spin } from 'antd';
 import moment from 'moment';
-import { useGetReviewQuery } from '../review.service';
+import { useGetReviewByIdQuery } from '../review.service';
 import './ReviewDetailsModal.scss';
 
 const { Text } = Typography;
@@ -13,17 +13,17 @@ interface ReviewDetailsModalProps {
 }
 
 const ReviewDetailsModal: React.FC<ReviewDetailsModalProps> = ({ reviewId, isOpen, onClose }) => {
-  const { data, isFetching } = useGetReviewQuery(reviewId);
+  const { data, isFetching } = useGetReviewByIdQuery(reviewId);
 
   if (isFetching || !data) {
     return (
       <Modal className='review-details-modal' title='Review Details' open={isOpen} onCancel={onClose} footer={null}>
-        <Text className='review-details__empty'>Loading...</Text>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+          <Spin size='large' />
+        </div>
       </Modal>
     );
   }
-
-  const formattedCreatedAt = moment(data.review.createdAt).format("YYYY-MM-DD HH:mm:ss");
 
   return (
     <Modal className='review-details-modal' title='Review Details' open={isOpen} onCancel={onClose} footer={null}>
@@ -46,15 +46,37 @@ const ReviewDetailsModal: React.FC<ReviewDetailsModalProps> = ({ reviewId, isOpe
         </div>
         <div className='review-details__section'>
           <Text className='review-details__label'>Content:</Text>
-          <Text>{data.review.content}</Text>
+          <Text style={{maxWidth: "400px"}}>{data.review.content}</Text>
         </div>
         <div className='review-details__section'>
           <Text className='review-details__label'>Rating star:</Text>
           <Text>{data.review.ratingStar}</Text>
         </div>
         <div className='review-details__section'>
+          <Text className='review-details__label'>Status:</Text>
+          <Text>{data.review.isDeleted ? 'Inactive' : 'Active'}</Text>
+        </div>
+        <div className='review-details__section'>
+          <Text className='review-details__label'>Created By:</Text>
+          <Text>
+            {typeof data.review.createdBy === 'string' ? data.review.createdBy : data.review.createdBy?.name ?? 'N/A'}
+          </Text>
+        </div>
+        <div className='review-details__section'>
           <Text className='review-details__label'>Created At:</Text>
-          <Text>{formattedCreatedAt}</Text>
+          <Text>{moment(data.review.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
+        </div>
+        {data.review.updatedBy && (
+          <div className='review-details__section'>
+            <Text className='review-details__label'>Updated By:</Text>
+            <Text>
+              {typeof data.review.updatedBy === 'string' ? data.review.updatedBy : data.review.updatedBy?.name ?? 'N/A'}
+            </Text>
+          </div>
+        )}
+        <div className='review-details__section'>
+          <Text className='review-details__label'>Updated At:</Text>
+          <Text>{moment(data.review.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Text>
         </div>
       </div>
     </Modal>

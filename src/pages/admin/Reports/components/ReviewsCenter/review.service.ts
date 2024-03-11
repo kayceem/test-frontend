@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../../../constant/backend-domain';
-import { IReview } from '../../../../../types/review.type';
+import { IReview, IReviewReply } from '../../../../../types/review.type';
 import { IParams } from '../../../../../types/params.type';
+import { IActionLog } from '../../../../../types/actionLog.type';
 
 interface GetReviewsResponse {
   reviews: IReview[];
@@ -12,16 +13,37 @@ interface GetReviewsResponse {
   limit: number;
 }
 
-interface GetReviewResponse {
+interface GetReviewHistoriesResponse {
+  message: string;
+  results: IActionLog[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
+}
+
+interface GetReviewByIdResponse {
   review: IReview;
   message: string;
 }
-
-interface DeleteReviewResponse {
+interface UpdateActiveStatusReviewResponse {
   message: string;
 }
 
-interface UndeleteReviewResponse {
+interface CreateReviewReplyResponse {
+  message: string;
+}
+
+interface GetReviewRepliesByReviewIdResponse {
+  message: string;
+  reviewReplies: IReviewReply[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
+}
+
+interface UpdateActiveStatusReviewReplyResponse {
   message: string;
 }
 
@@ -55,27 +77,74 @@ export const reviewApi = createApi({
         return [{ type: 'Reviews', id: 'LIST' }];
       }
     }),
-    getReview: build.query<GetReviewResponse, string>({
+    getReviewById: build.query<GetReviewByIdResponse, string>({
       query: (id) => ({
         url: `review/${id}`
       }),
       providesTags: (result, error, id) => [{ type: 'Reviews', id }]
     }),
-    deleteReview: build.mutation<DeleteReviewResponse, string>({
-      query: (reviewId) => ({
-        url: `review/delete/${reviewId}`,
-        method: 'DELETE'
+    getReviewHistories: build.query<GetReviewHistoriesResponse, { reviewId: string; params: IParams }>({
+      query: ({ reviewId, params }) => ({
+        url: `review/histories/${reviewId}`,
+        params: params
       }),
-      invalidatesTags: [{ type: 'Reviews', id: 'LIST' }]
+      providesTags: (result, error, { reviewId }) => [
+        { type: 'Reviews', id: 'LIST' },
+        { type: 'Reviews', id: reviewId }
+      ]
     }),
-    undeleteReview: build.mutation<UndeleteReviewResponse, string>({
-      query: (reviewId) => ({
-        url: `review/undelete/${reviewId}`,
-        method: 'POST'
+    updateActiveStatusReview: build.mutation<UpdateActiveStatusReviewResponse, Partial<{ reviewId: string }>>({
+      query: (data) => ({
+        url: 'review/update-active-status',
+        method: 'PATCH',
+        body: data
       }),
-      invalidatesTags: [{ type: 'Reviews', id: 'LIST' }]
+      invalidatesTags: (_, __, { reviewId }) => [
+        { type: 'Reviews', id: 'LIST' },
+        { type: 'Reviews', id: reviewId }
+      ]
+    }),
+    createReviewReply: build.mutation<CreateReviewReplyResponse, { reviewId: string; contentReply: string }>({
+      query: ({ reviewId, contentReply }) => ({
+        url: 'review/reply/create',
+        method: 'POST',
+        body: { reviewId, contentReply }
+      }),
+      invalidatesTags: (_, __, { reviewId }) => [{ type: 'Reviews', id: reviewId }]
+    }),
+    getReviewRepliesByReviewId: build.query<GetReviewRepliesByReviewIdResponse, { reviewId: string; params: IParams }>({
+      query: ({ reviewId, params }) => ({
+        url: `review/replies/${reviewId}`,
+        params: params
+      }),
+      providesTags: (result, error, { reviewId }) => [
+        { type: 'Reviews', id: 'LIST' },
+        { type: 'Reviews', id: reviewId }
+      ]
+    }),
+    updateActiveStatusReviewReply: build.mutation<
+      UpdateActiveStatusReviewReplyResponse,
+      { reviewId: string; reviewReplyId: string }
+    >({
+      query: ({ reviewReplyId }) => ({
+        url: 'review/reply/update-active-status',
+        method: 'PATCH',
+        body: { reviewReplyId }
+      }),
+      invalidatesTags: (_, __, { reviewId }) => [
+        { type: 'Reviews', id: 'LIST' },
+        { type: 'Reviews', id: reviewId }
+      ]
     })
   })
 });
 
-export const { useGetReviewsQuery, useGetReviewQuery, useDeleteReviewMutation, useUndeleteReviewMutation } = reviewApi;
+export const {
+  useGetReviewsQuery,
+  useGetReviewByIdQuery,
+  useGetReviewHistoriesQuery,
+  useUpdateActiveStatusReviewMutation,
+  useCreateReviewReplyMutation,
+  useGetReviewRepliesByReviewIdQuery,
+  useUpdateActiveStatusReviewReplyMutation
+} = reviewApi;
