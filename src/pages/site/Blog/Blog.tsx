@@ -1,20 +1,30 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { BookOutlined, CommentOutlined, EllipsisOutlined, HeartOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card, Col, Row, Skeleton } from 'antd';
+import { Avatar, Button, Card, Col, Row, Skeleton, message } from 'antd';
 import BlogDetail from './components/BlogDetail';
 import { useGetBlogByIdQuery, useGetBlogCommentsQuery } from '../client.service';
 import { useParams } from 'react-router-dom';
 import SlidingModal from './components/SidingModal/SlidingModal';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 export default function Blog() {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetBlogByIdQuery(id || 'default-id');
   const [isModalOpen, setModalOpen] = useState(false);
   const loading = !data?.blog;
-
   const { data: DataCommentBlogs, error, isLoading } = useGetBlogCommentsQuery(id || 'default-id');
-
   const commentCount = DataCommentBlogs ? DataCommentBlogs.comments.length : 0;
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+
+  const handleCommentClick = () => {
+    if (isAuth) {
+      setModalOpen(true);
+    } else {
+      message.info('Please login in to comment.');
+    }
+  };
 
   return (
     <div className='mt-40'>
@@ -36,7 +46,7 @@ export default function Blog() {
                         isOpen={isModalOpen}
                         onClose={() => setModalOpen(false)}
                       />
-                      <button onClick={() => setModalOpen(true)}>
+                      <button onClick={handleCommentClick}>
                         <CommentOutlined className='text-3xl ml-4 mr-2' /> {commentCount}
                       </button>
                     </div>
