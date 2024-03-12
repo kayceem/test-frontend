@@ -4,7 +4,8 @@ import {
   CloseCircleOutlined,
   EditOutlined,
   EllipsisOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  ProfileOutlined
 } from '@ant-design/icons';
 import { Avatar, Button, Popconfirm, Popover, Skeleton, Space, Table, Tag, Tooltip, message, notification } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
@@ -15,9 +16,9 @@ import { useDispatch } from 'react-redux';
 import { useApproveUserMutation, useGetUsersQuery, useUpdateActiveStatusUserMutation } from '../../user.service';
 import { startEditUser } from '../../user.slice';
 import './UsersList.scss';
-import UserDetail from './components/UserDetail';
 import ViewHistoryUser from '../HistoryUser/HistoryUser';
 import { Helper } from '../../../../../utils/helper';
+import ViewDetailUser from '../ViewDetailUser';
 
 interface DataUserType {
   key: React.Key;
@@ -79,12 +80,21 @@ const columns: ColumnsType<DataUserType> = [
     dataIndex: 'status'
   },
   {
+    title: 'Active',
+    dataIndex: 'isDeleted'
+  },
+  {
     title: 'Manage',
     dataIndex: 'manage'
   }
 ];
 
-const SettingContent = (props: { userId: string; isDeleted: boolean; onViewHistory: () => void }) => {
+const SettingContent = (props: {
+  userId: string;
+  isDeleted: boolean;
+  onViewDetail: () => void;
+  onViewHistory: () => void;
+}) => {
   const [updateActiveStatusUser, updateActiveStatusUserResult] = useUpdateActiveStatusUserMutation();
 
   const updateActiveStatusUserHandler = () => {
@@ -100,17 +110,22 @@ const SettingContent = (props: { userId: string; isDeleted: boolean; onViewHisto
       });
   };
 
-  const actionText = props.isDeleted ? 'Activate' : 'Deactivate';
-
   return (
     <Space>
-      <Button type='primary' icon={<HistoryOutlined />} onClick={props.onViewHistory} />
+      <Button type='default' icon={<ProfileOutlined style={{ color: '#5da3e5' }} />} onClick={props.onViewDetail} />
+      <Button type='default' icon={<HistoryOutlined style={{ color: '#5da3e5' }} />} onClick={props.onViewHistory} />
       <Button
         style={{
-          background: props.isDeleted ? '#5da3e5' : 'red'
+          background: '#fff'
         }}
-        type='text'
-        icon={props.isDeleted ? <CheckCircleOutlined /> : <CloseCircleOutlined />}
+        type='default'
+        icon={
+          props.isDeleted ? (
+            <CheckCircleOutlined style={{ color: '#5da3e5' }} />
+          ) : (
+            <CloseCircleOutlined style={{ color: 'red' }} />
+          )
+        }
         onClick={updateActiveStatusUserHandler}
       />
     </Space>
@@ -128,6 +143,19 @@ const UsersList: React.FC<UserListProps> = (props) => {
 
   const [isViewHistoryOpen, setIsViewHistoryOpen] = useState(false);
   const [historyUserId, setHistoryUserId] = useState<string | null>(null);
+
+  const [isViewDetail, setIsisViewDetail] = useState(false);
+  const [DetailUserId, setDetailUserId] = useState<string | null>(null);
+
+  const handleViewDetail = (userId: string) => {
+    setIsisViewDetail(true);
+    setDetailUserId(userId);
+  };
+
+  const closeViewDetail = () => {
+    setIsisViewDetail(false);
+    setDetailUserId(null);
+  };
 
   const handleViewHistory = (userId: string) => {
     setHistoryUserId(userId);
@@ -236,6 +264,11 @@ const UsersList: React.FC<UserListProps> = (props) => {
             <Tag color={user?.statusColor}>{user.statusName}</Tag>{' '}
           </>
         ),
+        isDeleted: (
+          <>
+            <Tag color={user?.isDeleted ? 'red' : 'green'}>{user?.isDeleted ? 'Un Active' : 'Active'}</Tag>{' '}
+          </>
+        ),
         manage: (
           <Space>
             <Button onClick={() => editUserHandler(user._id)} className='btn-wrap'>
@@ -261,6 +294,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
                   userId={user._id}
                   isDeleted={user?.isDeleted || false}
                   onViewHistory={() => handleViewHistory(user._id)}
+                  onViewDetail={() => handleViewDetail(user._id)}
                 />
               }
               title='Actions'
@@ -296,11 +330,13 @@ const UsersList: React.FC<UserListProps> = (props) => {
             pagination={tableParams.pagination}
             scroll={{ x: 1200, y: 400 }}
           />
-          <UserDetail isOpen={open} onClose={() => setOpen(false)} />
         </div>
       )}
       {isViewHistoryOpen && historyUserId && (
         <ViewHistoryUser isOpen={isViewHistoryOpen} onClose={closeViewHistoryModal} userId={historyUserId} />
+      )}
+      {isViewDetail && DetailUserId && (
+        <ViewDetailUser isOpen={isViewDetail} onClose={closeViewDetail} userId={DetailUserId} />
       )}
     </>
   );
