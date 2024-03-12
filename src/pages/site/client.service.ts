@@ -12,7 +12,7 @@ import { IContact } from '../../types/contact.type';
 import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/errorHelpers';
 import { Blog } from '../../types/page.type';
-import { BlogComment } from '../../types/blogComments.type';
+import { IBlogComment } from '../../types/blogComments.type';
 import { INote } from '../../types/note.type';
 import { IDataSelect } from '../../types/dataSelect.type';
 
@@ -224,12 +224,12 @@ export interface CreateContactResponse {
 }
 
 export interface GetBlogCommentsResponse {
-  comments: BlogComment[];
+  comments: IBlogComment[];
   message: string;
 }
 
 export interface AddBlogCommentResponse {
-  comment: BlogComment;
+  comment: IBlogComment;
   message: string;
 }
 
