@@ -3,6 +3,7 @@ import {
   BoldOutlined,
   BorderOuterOutlined,
   DesktopOutlined,
+  DotChartOutlined,
   FileOutlined,
   IdcardOutlined,
   PieChartOutlined,
@@ -55,8 +56,9 @@ const SideBar = () => {
   };
 
   const items: MenuItem[] = [
-    getItem('Welcome', 'welcome', <BorderOuterOutlined />),
-    (adminRole === UserRole.ADMIN && getItem('Dashboard', 'dashboard', <PieChartOutlined />) ) as MenuItem,
+    getItem('Welcome', 'welcome', <DotChartOutlined />),
+    (adminRole === UserRole.AUTHOR && getItem('Report', 'author-report', <PieChartOutlined />)) as MenuItem,
+    (adminRole === UserRole.ADMIN && getItem('Dashboard', 'dashboard', <BorderOuterOutlined /> ) ) as MenuItem,
     getItem('Categories', 'categories', <UnorderedListOutlined />, [
       getItem('Course Categories', 'categories'),
       // getItem('Lesson Type', 'lesson-type')

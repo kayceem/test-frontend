@@ -15,7 +15,7 @@ interface DataType {
   completedCourses: number;
   inCompletedCourses: number;
   certificates: number;
-  avgScore: number;
+  avgScore?: number;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -70,11 +70,11 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'certificates',
     key: 'certificates'
   },
-  {
-    title: 'Avg Score',
-    dataIndex: 'avgScore',
-    key: 'avgScore'
-  }
+  // {
+  //   title: 'Avg Score',
+  //   dataIndex: 'avgScore',
+  //   key: 'avgScore'
+  // }
 ];
 
 const UsersProgressTable = () => {
@@ -96,7 +96,7 @@ const UsersProgressTable = () => {
       completedCourses: report.completedCourses,
       inCompletedCourses: report.inCompletedCourses,
       certificates: report.certificates,
-      avgScore: report.avgScore
+      // avgScore: report.avgScore
     };
     return reportTemplateItem;
   });
@@ -104,7 +104,7 @@ const UsersProgressTable = () => {
   return (
     <div className='users-progress__table-section'>
       {isFetching && <Skeleton />}
-      {!isFetching && <Table columns={columns} dataSource={reportData} />}
+      {!isFetching && <Table scroll={{ x: 'max-content' }} columns={columns} dataSource={reportData} />}
     </div>
   );
 };
