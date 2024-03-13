@@ -10,6 +10,7 @@ import { RootState } from '../../../../../../../store/store';
 import { ILesson } from '../../../../../../../types/lesson.type';
 import { formatTime } from '../../../../../../../utils/functions';
 import { useAddLessonMutation } from '../../../../course.service';
+import { useParams } from 'react-router-dom';
 
 type AddLessonProps = {
   // onSubmit: (formData: Omit<ILesson, '_id'>) => void;
@@ -24,6 +25,8 @@ interface UploadVideoResponse {
 
 
 const AddLesson: React.FC<AddLessonProps> = () => {
+  const { courseId } = useParams();
+
   const [open, setOpen] = useState(false);
   const playerRef = useRef<ReactPlayer | null>(null);
   const [contentLink, setContentLink] = useState('');
@@ -88,8 +91,6 @@ const AddLesson: React.FC<AddLessonProps> = () => {
     accept: '.pdf',
   };
 
-
-
   const sectionId = useSelector((state: RootState) => state.course.sectionId);
 
   const showDrawer = () => {
@@ -149,7 +150,8 @@ const AddLesson: React.FC<AddLessonProps> = () => {
       sectionId: sectionId,
       type: lessonType,
       description: formData.description,
-      videoLength: videoLength 
+      videoLength: videoLength ,
+      courseId: courseId
     };
 
     addLesson(lessonData)

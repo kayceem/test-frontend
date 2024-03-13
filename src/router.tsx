@@ -69,6 +69,7 @@ import AdminAuthSignUp from './pages/admin/Auth/AuthSignup';
 import CourseNotes from './pages/admin/CourseNotes';
 import ResetPasswordPage from './pages/site/Auth/ResetPassword';
 import Welcome from './pages/admin/Welcome/welcome';
+import AuthorReport from './pages/admin/AuthorReport/AuthorReport';
 import BlogComments from './pages/admin/BlogComments/BlogComments';
 
 const RouterHooks = () => {
@@ -218,6 +219,10 @@ const RouterHooks = () => {
         {
           path: 'welcome',
           element: <Welcome />
+        },
+        {
+          path: 'author-report',
+          element: <AuthorReport />
         },
         {
           path: 'courses',

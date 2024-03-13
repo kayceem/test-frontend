@@ -75,8 +75,10 @@ export const reportApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/admin`,
     prepareHeaders(headers) {
-      headers.set('authorization', 'Bearer ABCXYZ');
-      // Set some headers here !
+      const adminToken = localStorage.getItem('adminToken');
+      if (adminToken) {
+        headers.set('authorization', `Bearer ${adminToken}`);
+      }
       return headers;
     }
   }),
@@ -325,6 +327,46 @@ export const reportApi = createApi({
         // return final
         return [{ type: 'Reports', id: 'LIST' }];
       }
+    }),
+    getCoursesReportByAuthor: build.query<any, {dateStart?: string, dateEnd?: string}>({
+      query: () => ({
+        url: `/reports/courses-report-by-author`
+      }), // method không có argument
+      /**
+       * providesTags có thể là array hoặc callback return array
+       * Nếu có bất kỳ một invalidatesTag nào match với providesTags này
+       * thì sẽ làm cho categories method chạy lại
+       * và cập nhật lại danh sách các bài post cũng như các tags phía dưới
+       */
+      providesTags(result) {
+        /**
+         * Cái callback này sẽ chạy mỗi khi Categories chạy
+         * Mong muốn là sẽ return về một mảng kiểu
+         * ```ts
+         * interface Tags: {
+         *    type: "User";
+         *    id: string;
+         *  }[]
+         *```
+         * vì thế phải thêm as const vào để báo hiệu type là Read only, không thể mutate
+         */
+
+        if (Array.isArray(result) && result.map) {
+          if (result) {
+            const final = [
+              ...result.map(({ _id }: { _id: string }) => ({ type: 'Reports' as const, _id })),
+              { type: 'Reports' as const, id: 'LIST' }
+            ];
+            console.log('final: ', final);
+
+            return final;
+          }
+        }
+
+        // const final = [{ type: 'Categories' as const, id: 'LIST' }]
+        // return final
+        return [{ type: 'Reports', id: 'LIST' }];
+      }
     })
   })
 });
@@ -335,5 +377,6 @@ export const {
   useGetNewSignupsQuery,
   useGetRevenueQuery,
   useGetReportsUserProgressQuery,
-  useGetReportsCourseInsightsQuery
+  useGetReportsCourseInsightsQuery,
+  useGetCoursesReportByAuthorQuery
 } = reportApi;

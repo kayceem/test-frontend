@@ -26,12 +26,15 @@ import notesCourseReducer from '../pages/admin/CourseNotes/courseNotes.slice';
 import { courseNoteApi } from '../pages/admin/CourseNotes/courseNotes.service';
 import { couponApi } from '../pages/admin/Coupons/coupon.service';
 import { couponTypeApi } from '../pages/admin/CouponTypes/couponType.service';
+import { authorReportApi } from '../pages/admin/AuthorReport/authorReport.service';
 import BlogCommentsReducer from '../pages/admin/BlogComments/blogComments.slice';
 import { blogCommentsApi } from '../pages/admin/BlogComments/blogComments.service';
 
 const rootReducer = combineReducers({
   course: courseReducer,
   [courseApi.reducerPath]: courseApi.reducer,
+  // course: courseReducer,
+  [authorReportApi.reducerPath]: authorReportApi.reducer,
   order: orderReducer,
   [orderApi.reducerPath]: orderApi.reducer,
   category: categoryReducer,
@@ -66,6 +69,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       courseApi.middleware,
       orderApi.middleware,
+      authorReportApi.middleware,
       categoryApi.middleware,
       userApi.middleware,
       clientApi.middleware,
