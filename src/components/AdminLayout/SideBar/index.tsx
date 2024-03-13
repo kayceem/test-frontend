@@ -47,8 +47,8 @@ const SideBar = () => {
 
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
-  
-  console.log("adminRole", adminRole)
+
+  console.log('adminRole', adminRole);
   const navigateHandler: MenuProps['onClick'] = (e) => {
     navigate(e.key);
     setOpenDrawer(true);
@@ -56,9 +56,9 @@ const SideBar = () => {
 
   const items: MenuItem[] = [
     getItem('Welcome', 'welcome', <BorderOuterOutlined />),
-    (adminRole === UserRole.ADMIN && getItem('Dashboard', 'dashboard', <PieChartOutlined />) ) as MenuItem,
+    (adminRole === UserRole.ADMIN && getItem('Dashboard', 'dashboard', <PieChartOutlined />)) as MenuItem,
     getItem('Categories', 'categories', <UnorderedListOutlined />, [
-      getItem('Course Categories', 'categories'),
+      getItem('Course Categories', 'categories')
       // getItem('Lesson Type', 'lesson-type')
     ]),
     getItem('Courses', 'courses', <DesktopOutlined />, [
@@ -71,12 +71,12 @@ const SideBar = () => {
         getItem('Order Manager', 'orders'),
         getItem('Transactions', 'transaction')
       ])) as MenuItem,
-      getItem('Users', 'users', <UserOutlined />, [
-        getItem('All Users', 'users'),
-        // getItem('Admins', 'admins'),
-        // getItem('Intructors', 'intructors'),
-       (adminRole === UserRole.ADMIN && getItem('Permission', 'users/permission')) as MenuItem // Permission for each user and function
-      ]),
+    getItem('Users', 'users', <UserOutlined />, [
+      getItem('All Users', 'users'),
+      // getItem('Admins', 'admins'),
+      // getItem('Intructors', 'intructors'),
+      (adminRole === UserRole.ADMIN && getItem('Permission', 'users/permission')) as MenuItem // Permission for each user and function
+    ]),
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
         getItem(
@@ -115,9 +115,10 @@ const SideBar = () => {
     getItem('Blog', 'blog', <BoldOutlined />, [
       getItem('Blog List', 'blog'),
       getItem('Blog Category', 'blog-category'),
-      getItem('Blog comments', 'blog/comments')
+      getItem('Blog comments', 'blog-comments')
     ]),
-   ((adminRole === UserRole.ADMIN && getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')])) as MenuItem),
+    (adminRole === UserRole.ADMIN &&
+      getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')])) as MenuItem,
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
     getItem('My account', 'account', <UserAddOutlined />),
     getItem('Need Help ?', 'help', <FileOutlined />)
