@@ -70,14 +70,15 @@ import CourseNotes from './pages/admin/CourseNotes';
 import ResetPasswordPage from './pages/site/Auth/ResetPassword';
 import Welcome from './pages/admin/Welcome/welcome';
 import AuthorReport from './pages/admin/AuthorReport/AuthorReport';
+import BlogComments from './pages/admin/BlogComments/BlogComments';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
   const isAdminAuth = useSelector((state: RootState) => state.auth.isAdminAuth);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
 
-  console.log("is auth: ", isAuth)
-  console.log("is admin auth: ", isAdminAuth)
+  console.log('is auth: ', isAuth);
+  console.log('is admin auth: ', isAdminAuth);
 
   const router = createBrowserRouter([
     {
@@ -209,7 +210,7 @@ const RouterHooks = () => {
     },
     {
       path: '/author',
-      element: isAdminAuth ? <RootAdminLayout /> : <ErrorPage page='/author-login' /> ,
+      element: isAdminAuth ? <RootAdminLayout /> : <ErrorPage page='/author-login' />,
       children: [
         {
           path: 'dashboard',
@@ -251,7 +252,7 @@ const RouterHooks = () => {
           children: [
             {
               index: true,
-              element:  <Users/>
+              element: <Users />
             },
             {
               path: 'permission',
@@ -282,7 +283,7 @@ const RouterHooks = () => {
           children: [
             {
               index: true,
-              element:  <Categories /> 
+              element: <Categories />
             }
           ]
         },
@@ -377,6 +378,15 @@ const RouterHooks = () => {
             {
               index: true,
               element: <BlogCategories />
+            }
+          ]
+        },
+        {
+          path: 'blog-comments',
+          children: [
+            {
+              index: true,
+              element: <BlogComments />
             }
           ]
         }

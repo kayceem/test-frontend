@@ -27,6 +27,8 @@ import { courseNoteApi } from '../pages/admin/CourseNotes/courseNotes.service';
 import { couponApi } from '../pages/admin/Coupons/coupon.service';
 import { couponTypeApi } from '../pages/admin/CouponTypes/couponType.service';
 import { authorReportApi } from '../pages/admin/AuthorReport/authorReport.service';
+import BlogCommentsReducer from '../pages/admin/BlogComments/blogComments.slice';
+import { blogCommentsApi } from '../pages/admin/BlogComments/blogComments.service';
 
 const rootReducer = combineReducers({
   course: courseReducer,
@@ -55,7 +57,9 @@ const rootReducer = combineReducers({
   noteCourse: notesCourseReducer,
   [courseNoteApi.reducerPath]: courseNoteApi.reducer,
   [couponApi.reducerPath]: couponApi.reducer,
-  [couponTypeApi.reducerPath]: couponTypeApi.reducer
+  [couponTypeApi.reducerPath]: couponTypeApi.reducer,
+  blogComments: BlogCommentsReducer,
+  [blogCommentsApi.reducerPath]: blogCommentsApi.reducer
 });
 
 export const store = configureStore({
@@ -79,6 +83,7 @@ export const store = configureStore({
       courseNoteApi.middleware,
       couponApi.middleware,
       couponTypeApi.middleware,
+      blogCommentsApi.middleware,
       rtkQueryErrorLogger
     )
 });
