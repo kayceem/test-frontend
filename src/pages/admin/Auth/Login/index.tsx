@@ -33,8 +33,6 @@ const AdminLogin: React.FC = () => {
       };
     }
 
-    // Incase go with username
-    
 
     setIsSubmitting(true);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../constant/backend-domain';
 import { IUser, UserRole } from '../types/user.type';
@@ -57,7 +58,7 @@ export const authApi = createApi({
 
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-   
+
     logout: build.mutation<loginResponse, void>({
       query(body) {
         try {
@@ -119,7 +120,7 @@ export const authApi = createApi({
       },
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
-    adminSignUpRequest: build.mutation<signUpRequestResponse, { email: string; name: string, phone: string }>({
+    adminSignUpRequest: build.mutation<signUpRequestResponse, { email: string; name: string; phone: string }>({
       query(body) {
         try {
           return {
@@ -131,7 +132,7 @@ export const authApi = createApi({
           throw new CustomError((error as CustomError).message);
         }
       },
-     
+
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
     signup: build.mutation<signupResponse, Omit<IUser, '_id'>>({

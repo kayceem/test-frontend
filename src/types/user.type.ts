@@ -18,7 +18,7 @@ export interface IUser extends IBase {
   role: UserRole;
   phone: string;
   address?: string;
-  avatar?: string;
+  avatar?: File | string;
   courses?: ICourse[];
   createdAt?: string;
   updatedAt?: string;

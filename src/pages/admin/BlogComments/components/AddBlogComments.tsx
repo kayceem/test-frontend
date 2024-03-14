@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button, Drawer, Form, Input, Select, notification } from 'antd';
@@ -25,8 +29,6 @@ const AddBlogComments: React.FC<CreateBlogCommentsProps> = ({ isOpen, onClose, b
   const commentId = useSelector((state: RootState) => state.blogComments.commentId);
   const blogId = useSelector((state: RootState) => state.blogComments.blogId);
   const adminId = useSelector((state: RootState) => state.auth.adminId);
-
-  console.log('blogId', blogId);
 
   const { data: blogResponse, isFetching } = useGetBlogCommentsByIdQuery(blogId, {
     skip: !blogId
