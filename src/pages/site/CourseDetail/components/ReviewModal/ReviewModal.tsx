@@ -121,10 +121,20 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ courseId, visible, onCancel }
   }, [searchTerm, selectedRating]);
 
   useEffect(() => {
-    if (data && currentPage > 1) {
-      setReviews((prevReviews) => [...prevReviews, ...data.reviews]);
-    } else if (data) {
-      setReviews(data.reviews);
+    if (data) {
+      if (currentPage > 1) {
+        setReviews((prevReviews) => {
+          const uniqueReviews = [...prevReviews];
+          data.reviews.forEach((newReview) => {
+            if (!prevReviews.some((review) => review._id === newReview._id)) {
+              uniqueReviews.push(newReview);
+            }
+          });
+          return uniqueReviews;
+        });
+      } else {
+        setReviews(data.reviews);
+      }
     }
   }, [data, currentPage]);
 
