@@ -11,4 +11,5 @@ export interface IParams {
   _topic?: string[];
   _cateName?: string;
   _status?: string;
+  _rating?: number;
 }
