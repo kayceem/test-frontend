@@ -1,20 +1,24 @@
-export interface IDiscuss {
-  // thread
+import { IBase } from './base.type';
+
+export interface User {
+  _id: string;
+  name: string;
+  avatar: string;
+}
+
+export interface IDiscuss extends IBase {
   _id: string;
   lessonId: string;
   authorId: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
+  title: string;
+  userId: User;
+  comments: string;
   replies: IReply[];
 }
 
-export interface IReply {
-  userId: string; // Other user Id
-  name: string;
-  avatar: string;
-  contentReply: string;
-  isLiked: boolean; // true or false
-  createdAt: string;
-  updatedAt: string;
+export interface IReply extends IBase {
+  userId: User;
+  comments: string;
+  courseId: string;
+  lessonId: string;
 }
