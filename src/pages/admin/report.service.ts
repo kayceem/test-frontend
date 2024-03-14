@@ -62,9 +62,10 @@ export interface getReportsCourseInsightsResponse {
     learners: number;
     avgStudyTime: number;
     views: number;
-    socialInteractions: number;
+    socialInteractions?: number;
     totalVideosLength: number;
     lessons: number;
+    numberOfWishlist: number;
   }[];
 }
 

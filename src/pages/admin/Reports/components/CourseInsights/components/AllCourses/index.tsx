@@ -10,9 +10,10 @@ interface DataType {
   learners: number;
   avgStudyTime: string;
   views: number;
-  socialInteractions: number;
+  socialInteractions?: number;
   totalVideosLength: string;
   lessons: number;
+  numberOfWishlist: number;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -38,9 +39,9 @@ const columns: ColumnsType<DataType> = [
     key: 'views'
   },
   {
-    title: 'Social interactions',
-    dataIndex: 'socialInteractions',
-    key: 'socialInteractions'
+    title: 'Wishlist',
+    dataIndex: 'numberOfWishlist',
+    key: 'numberOfWishlist'
   },
   {
     title: 'Total durations',
@@ -66,9 +67,10 @@ const AllCourses = () => {
       learners: report.learners,
       avgStudyTime: formatVideoLengthToHours(+report.avgStudyTime),
       views: report.views,
-      socialInteractions: report.socialInteractions,
+      // socialInteractions: report.socialInteractions,
       totalVideosLength: formatVideoLengthToHours(+report.totalVideosLength),
-      lessons: report.lessons
+      lessons: report.lessons,
+      numberOfWishlist: report.numberOfWishlist
     };
     return reportTemplateItem;
   });
@@ -76,7 +78,7 @@ const AllCourses = () => {
   return (
     <div className='users-progress__table-section'>
       {isFetching && <Skeleton />}
-      {!isFetching && <Table columns={columns} dataSource={reportData} />}
+      {!isFetching && <Table scroll={{ x: 'max-content' }} columns={columns} dataSource={reportData} />}
     </div>
   );
 };
