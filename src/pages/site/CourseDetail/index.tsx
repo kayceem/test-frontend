@@ -1,6 +1,7 @@
 import { CheckOutlined, HeartOutlined, RightCircleFilled, StarFilled } from '@ant-design/icons';
 import { Breadcrumb, Button, Col, List, Row, Space, Typography, notification } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
 import { BACKEND_URL } from '../../../constant/backend-domain';
@@ -19,6 +20,7 @@ import {
 import { addToCart } from '../client.slice';
 import './CourseDetail.scss';
 import SectionList from './components/SectionList';
+import ReviewModal from './components/ReviewModal/ReviewModal';
 // type Props = {}
 const courseData = [
   'Will learning some things at this course -- task 1.',
@@ -69,6 +71,8 @@ const CourseDetail = () => {
   const { data: userData } = useGetUserQuery(userId);
 
   const { courseId } = params;
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const { data } = useGetCourseDetailQuery({ courseId, userId } as { courseId: string; userId: string });
   const [createOrder, createOrderResult] = useCreateOrderMutation();
@@ -189,6 +193,14 @@ const CourseDetail = () => {
     navigate(`/path-player?courseId=${courseId as string}`);
   };
 
+  const handleOpenModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <div className='course-detail'>
       <div className='course-detail__wrap'>
@@ -228,9 +240,12 @@ const CourseDetail = () => {
                         <StarFilled className='rating-icon' />
                         <StarFilled className='rating-icon' />
                       </span>
-                      <Link to='/'>({numOfReviews} ratings)</Link>
+                      <span onClick={handleOpenModal} style={{ cursor: 'pointer' }}>
+                        ({numOfReviews} ratings)
+                      </span>
                     </Space>
                   </div>
+                  <ReviewModal courseId={courseId} visible={isModalVisible} onCancel={handleCancel} />
                   <div className='course-detail__info-item course-detail__info-students'>
                     <Space>
                       <span>{students}</span>
@@ -384,31 +399,30 @@ const CourseDetail = () => {
           <div className='course-detail__related-courses container'>
             {courseId !== undefined && <RelatedCourses courseId={courseId} />}
           </div>
-          </div>
-          <div className='course-detail__author spacing-h-md'>
-            <div className='course-detail__author-wrap container'>
-              <div className='course-detail__author-list'>
-                <div className='course-detail__author-info'>
-                  <p className='course-detail__author-intro'>Meet the intructor</p>
-                  <h2 className='course-detail__author-name'>{author.name}</h2>
-                  <p className='course-detail__author-desc'>
-                    Patrick Jones is a content marketing professional since 2002. He has a Masters Degree in Digital
-                    Marketing and a Bachelors in Education and has been teaching marketing strategies for over 15 years
-                    in Chicago. Patrick enjoys teaching all levels and all ages. He looks forward to sharing his love of
-                    building meaningful and effective content with all students to develop their marketing abilities.
-                  </p>
-                </div>
-                <div className='course-detail__author-avatar'>
-                  <img
-                    className='course-detail__author-img'
-                    src={author.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
-                    alt={author.name}
-                  />
-                </div>
+        </div>
+        <div className='course-detail__author spacing-h-md'>
+          <div className='course-detail__author-wrap container'>
+            <div className='course-detail__author-list'>
+              <div className='course-detail__author-info'>
+                <p className='course-detail__author-intro'>Meet the intructor</p>
+                <h2 className='course-detail__author-name'>{author.name}</h2>
+                <p className='course-detail__author-desc'>
+                  Patrick Jones is a content marketing professional since 2002. He has a Masters Degree in Digital
+                  Marketing and a Bachelors in Education and has been teaching marketing strategies for over 15 years in
+                  Chicago. Patrick enjoys teaching all levels and all ages. He looks forward to sharing his love of
+                  building meaningful and effective content with all students to develop their marketing abilities.
+                </p>
+              </div>
+              <div className='course-detail__author-avatar'>
+                <img
+                  className='course-detail__author-img'
+                  src={author.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
+                  alt={author.name}
+                />
               </div>
             </div>
           </div>
-
+        </div>
       </div>
     </div>
   );

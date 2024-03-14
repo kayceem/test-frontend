@@ -1,3 +1,4 @@
+import { IReview, IReviewReply } from '../../types/review.type';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import jwtDecode from 'jwt-decode';
 import { BACKEND_URL } from '../../constant/backend-domain';
@@ -9,7 +10,6 @@ import { IOrder, IOrderHistory } from '../../types/order.type';
 import { IParams } from '../../types/params.type';
 import { IUser } from '../../types/user.type';
 import { IContact } from '../../types/contact.type';
-import { IReview } from '../../types/review.type';
 import { CustomError } from '../../utils/errorHelpers';
 import { Blog } from '../../types/page.type';
 import { IBlogComment } from '../../types/blogComments.type';
@@ -253,6 +253,38 @@ interface UpdateNoteRequest {
 interface NoteResponse {
   note: INote;
   message: string;
+}
+
+interface GetReviewsByCourseIdResponse {
+  message: string;
+  reviews: IReview[];
+  total: number;
+}
+
+export interface GetTotalReviewsByCourseIdResponse {
+  message: string;
+  totalReviews: number;
+}
+
+export interface GetAverageRatingByCourseIdResponse {
+  message: string;
+  averageRating: number;
+}
+
+export interface GetRatingPercentageByCourseIdResponse {
+  message: string;
+  ratingPercentages: {
+    '1': string;
+    '2': string;
+    '3': string;
+    '4': string;
+    '5': string;
+  };
+}
+
+export interface GetReviewRepliesByReviewIdResponse {
+  message: string;
+  replies: IReviewReply[];
 }
 
 export const clientApi = createApi({
@@ -766,6 +798,37 @@ export const clientApi = createApi({
         method: 'DELETE'
       }),
       invalidatesTags: (result, error, noteId) => [{ type: 'Note', id: noteId }]
+    }),
+    getReviewsByCourseId: build.query<GetReviewsByCourseIdResponse, { courseId: string; params?: IParams }>({
+      query: ({ courseId, params }) => ({
+        url: `reviews/course/${courseId}`,
+        params: params
+      }),
+      providesTags: (result, error, { courseId }) => [{ type: 'Reviews', id: courseId }]
+    }),
+    getTotalReviewsByCourseId: build.query<GetTotalReviewsByCourseIdResponse, string>({
+      query: (courseId) => ({
+        url: `reviews/course/count/${courseId}`
+      }),
+      providesTags: () => [{ type: 'Reviews', id: 'LIST' }]
+    }),
+    getAverageRatingByCourseId: build.query<GetAverageRatingByCourseIdResponse, string>({
+      query: (courseId) => ({
+        url: `reviews/course/average-rating/${courseId}`
+      }),
+      providesTags: () => [{ type: 'Reviews', id: 'LIST' }]
+    }),
+    getRatingPercentageByCourseId: build.query<GetRatingPercentageByCourseIdResponse, string>({
+      query: (courseId) => ({
+        url: `reviews/course/percentage-rating/${courseId}`
+      }),
+      providesTags: () => [{ type: 'Reviews', id: 'LIST' }]
+    }),
+    getReviewRepliesByReviewId: build.query<GetReviewRepliesByReviewIdResponse, string>({
+      query: (reviewId) => ({
+        url: `reviews/review/replies/${reviewId}`
+      }),
+      providesTags: () => [{ type: 'Reviews', id: 'LIST' }]
     })
   })
 });
@@ -815,5 +878,10 @@ export const {
   useCreateNoteMutation,
   useUpdateNoteMutation,
   useDeleteNoteMutation,
-  useGetNotesByLessonIdQuery
+  useGetNotesByLessonIdQuery,
+  useGetReviewsByCourseIdQuery,
+  useGetTotalReviewsByCourseIdQuery,
+  useGetAverageRatingByCourseIdQuery,
+  useGetRatingPercentageByCourseIdQuery,
+  useGetReviewRepliesByReviewIdQuery
 } = clientApi;
