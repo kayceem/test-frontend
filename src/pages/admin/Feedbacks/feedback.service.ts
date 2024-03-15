@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
 import { IContact } from '../../../types/contact.type';
 import { IParams } from '../../../types/params.type';
+import { IActionLog } from '../../../types/actionLog.type';
 
 interface GetFeedbacksResponse {
   feedbacks: IContact[];
@@ -17,7 +18,16 @@ interface GetFeedbackResponse {
   message: string;
 }
 
-interface DeleteFeedbackResponse {
+interface GetFeedbackHistoriesResponse {
+  message: string;
+  results: IActionLog[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
+}
+
+interface UpdateActiveStatusFeedbackResponse {
   message: string;
 }
 
@@ -52,20 +62,39 @@ export const feedbackApi = createApi({
         return [{ type: 'Feedbacks', id: 'LIST' }];
       }
     }),
-    getFeedback: build.query<GetFeedbackResponse, string>({
+    getFeedbackById: build.query<GetFeedbackResponse, string>({
       query: (id) => ({
         url: `feedback/${id}`
       }),
       providesTags: (result, error, id) => [{ type: 'Feedbacks', id }]
     }),
-    deleteFeedback: build.mutation<DeleteFeedbackResponse, string>({
-      query: (feedbackId) => ({
-        url: `feedback/delete/${feedbackId}`,
-        method: 'DELETE',
+    getFeedbackHistories: build.query<GetFeedbackHistoriesResponse, { feedbackId: string; params: IParams }>({
+      query: ({ feedbackId, params }) => ({
+        url: `feedback/histories/${feedbackId}`,
+        params: params
       }),
-      invalidatesTags: [{ type: 'Feedbacks', id: 'LIST' }],
+      providesTags: (result, error, { feedbackId }) => [
+        { type: 'Feedbacks', id: 'LIST' },
+        { type: 'Feedbacks', id: feedbackId }
+      ]
     }),
+    updateActiveStatusFeedback: build.mutation<UpdateActiveStatusFeedbackResponse, Partial<{ feedbackId: string }>>({
+      query: (data) => ({
+        url: 'feedback/update-active-status',
+        method: 'PATCH',
+        body: data
+      }),
+      invalidatesTags: (_, __, { feedbackId }) => [
+        { type: 'Feedbacks', id: 'LIST' },
+        { type: 'Feedbacks', id: feedbackId }
+      ]
+    })
   })
 });
 
-export const { useGetFeedbacksQuery, useGetFeedbackQuery, useDeleteFeedbackMutation } = feedbackApi;
+export const {
+  useGetFeedbacksQuery,
+  useGetFeedbackByIdQuery,
+  useGetFeedbackHistoriesQuery,
+  useUpdateActiveStatusFeedbackMutation
+} = feedbackApi;

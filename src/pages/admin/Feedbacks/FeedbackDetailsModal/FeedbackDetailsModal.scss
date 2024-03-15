@@ -1,15 +1,25 @@
-/* Modal */
 .feedback-details-modal {
-  max-width: 400px;
-  margin: 0 auto;
+  .ant-modal-content {
+    border-radius: 10px;
+  }
 
-  /* Content */
-  .feedback-details-content {
-    padding: 20px;
+  .feedback-details {
+    &__section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
 
-    /* Typography */
-    .ant-typography {
-      margin-bottom: 12px;
+      &__label {
+        font-weight: bold;
+        margin-right: 8px;
+      }
+    }
+
+    &__empty {
+      text-align: center;
+      color: #aaa;
+      padding: 20px 0;
     }
   }
 }
