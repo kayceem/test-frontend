@@ -4,6 +4,8 @@ import { Button, Col, Drawer, Form, Input, Radio, Row, Select, Space, notificati
 import React, { useState } from 'react';
 import { ISection } from '../../../../../../../types/lesson.type';
 import { useAddSectionMutation } from '../../../../course.service';
+import './addSection.scss';
+
 const { Option } = Select;
 
 type AddSectionProps = {
@@ -60,24 +62,24 @@ const AddSection: React.FC<AddSectionProps> = (props) => {
 
   return (
     <>
-      <Button type='primary' onClick={showDrawer} icon={<PlusOutlined />}>
+      <Button type='primary' onClick={showDrawer} icon={<PlusOutlined />} className='btn-wrap'>
         Add Section
       </Button>
       <Drawer
         title='Section Edit'
-        width={812}
+        // width={812}
         onClose={onClose}
         open={open}
         bodyStyle={{ paddingBottom: 80 }}
+        className='add-section'
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
           </Space>
         }
       >
-        <Row>
-          <Col md={8}></Col>
-          <Col md={16}>
+        <div className='add-section-list'>
+          <div className='form-wrap'>
             <Form form={form} layout='vertical' hideRequiredMark onFinish={submitHandler}>
               <Row gutter={16}>
                 <Col span={24}>
@@ -123,8 +125,8 @@ const AddSection: React.FC<AddSectionProps> = (props) => {
                 </Button>
               </Form.Item>
             </Form>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Drawer>
     </>
   );
