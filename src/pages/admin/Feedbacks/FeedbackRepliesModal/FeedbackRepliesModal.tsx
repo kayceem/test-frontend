@@ -57,7 +57,7 @@ const FeedbackRepliesModal: React.FC<FeedbackRepliesModalProps> = ({ feedbackId,
   };
 
   return (
-    <Modal title='Review Replies' open={isOpen} onCancel={onClose} footer={null} width={1500}>
+    <Modal title='Feedback Replies' open={isOpen} onCancel={onClose} footer={null} width={1500}>
       <Table
         dataSource={repliesData?.feedbackReplies as IFeedbackReply[]}
         columns={columns}

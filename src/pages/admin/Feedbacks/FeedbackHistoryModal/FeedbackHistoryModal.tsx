@@ -42,7 +42,7 @@ const FeedbackHistoryModal: React.FC<FeedbackHistoryModalProps> = ({ feedbackId,
   };
 
   return (
-    <Modal title='Review History' open={isOpen} onCancel={onClose} footer={null} width={1500}>
+    <Modal title='Feedback History' open={isOpen} onCancel={onClose} footer={null} width={1500}>
       <Table
         dataSource={historyData?.results as IActionLog[]}
         columns={columns}
