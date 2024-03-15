@@ -11,6 +11,8 @@ import {
 import { useGetFeedbacksQuery, useUpdateActiveStatusFeedbackMutation } from '../feedback.service';
 import FeedbackDetailsModal from '../FeedbackDetailsModal/FeedbackDetailsModal';
 import FeedbackHistoryModal from '../FeedbackHistoryModal/FeedbackHistoryModal';
+import CreateFeedbackReplyDrawer from '../CreateFeedbackReplyDrawer/CreateFeedbackReplyDrawer';
+import FeedbackRepliesModal from '../FeedbackRepliesModal/FeedbackRepliesModal';
 import { IContact } from '../../../../types/contact.type';
 import './FeedbacksTable.scss';
 
@@ -28,6 +30,8 @@ const FeedbacksTable: React.FC = () => {
   const [selectedFeedbackId, setSelectedFeedbackId] = useState<string | null>(null);
   const [isFeedbackDetailsModalVisible, setIsFeedbackDetailsModalVisible] = useState(false);
   const [isFeedbackHistoryModalVisible, setIsFeedbackHistoryModalVisible] = useState(false);
+  const [isFeedbackReplyDrawerVisible, setIsFeedbackReplyDrawerVisible] = useState(false);
+  const [isFeedbackRepliesModalVisible, setIsFeedbackRepliesModalVisible] = useState(false);
 
   const { data, isFetching } = useGetFeedbacksQuery({
     _page: currentPage,
@@ -67,9 +71,19 @@ const FeedbacksTable: React.FC = () => {
     setIsFeedbackDetailsModalVisible(true);
   };
 
-  const handleViewHistory = (reviewId: string) => {
-    setSelectedFeedbackId(reviewId);
+  const handleViewHistory = (feedbackId: string) => {
+    setSelectedFeedbackId(feedbackId);
     setIsFeedbackHistoryModalVisible(true);
+  };
+
+  const handleOpenFeedbackReplyDrawer = (feedbackId: string) => {
+    setSelectedFeedbackId(feedbackId);
+    setIsFeedbackReplyDrawerVisible(true);
+  };
+
+  const handleViewFeedbackRepliesModal = (feedbackId: string) => {
+    setSelectedFeedbackId(feedbackId);
+    setIsFeedbackRepliesModalVisible(true);
   };
 
   const columns = [
@@ -108,6 +122,14 @@ const FeedbacksTable: React.FC = () => {
       render: (_: IContact, record: IContact) => (
         <Space size='small'>
           <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetails(record._id)} />
+          <Button
+            onClick={() => handleOpenFeedbackReplyDrawer(record._id)}
+            icon={<MessageOutlined style={{ color: '#1890ff' }} />}
+          ></Button>
+          <Button
+            icon={<SolutionOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => handleViewFeedbackRepliesModal(record._id)}
+          />
           <Button
             icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
             onClick={() => handleViewHistory(record._id)}
@@ -180,6 +202,23 @@ const FeedbacksTable: React.FC = () => {
           feedbackId={selectedFeedbackId}
           isOpen={isFeedbackHistoryModalVisible}
           onClose={() => setIsFeedbackHistoryModalVisible(false)}
+        />
+      )}
+      {selectedFeedbackId && (
+        <CreateFeedbackReplyDrawer
+          isOpen={isFeedbackReplyDrawerVisible}
+          onClose={() => {
+            setIsFeedbackReplyDrawerVisible(false);
+            setSelectedFeedbackId(null);
+          }}
+          feedbackId={selectedFeedbackId}
+        />
+      )}
+      {selectedFeedbackId && (
+        <FeedbackRepliesModal
+          feedbackId={selectedFeedbackId}
+          isOpen={isFeedbackRepliesModalVisible}
+          onClose={() => setIsFeedbackRepliesModalVisible(false)}
         />
       )}
     </div>

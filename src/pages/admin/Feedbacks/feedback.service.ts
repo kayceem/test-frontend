@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
-import { IContact } from '../../../types/contact.type';
+import { IContact, IFeedbackReply } from '../../../types/contact.type';
 import { IParams } from '../../../types/params.type';
 import { IActionLog } from '../../../types/actionLog.type';
 
@@ -29,6 +29,19 @@ interface GetFeedbackHistoriesResponse {
 
 interface UpdateActiveStatusFeedbackResponse {
   message: string;
+}
+
+interface CreateFeedbackReplyResponse {
+  message: string;
+}
+
+interface GetFeedbackRepliesByFeedbackIdResponse {
+  message: string;
+  feedbackReplies: IFeedbackReply[];
+  count: number;
+  page: number;
+  pages: number;
+  limit: number;
 }
 
 export const feedbackApi = createApi({
@@ -88,6 +101,27 @@ export const feedbackApi = createApi({
         { type: 'Feedbacks', id: 'LIST' },
         { type: 'Feedbacks', id: feedbackId }
       ]
+    }),
+    CreateFeedbackReply: build.mutation<CreateFeedbackReplyResponse, { feedbackId: string; contentReply: string }>({
+      query: ({ feedbackId, contentReply }) => ({
+        url: 'feedback/reply/create',
+        method: 'POST',
+        body: { feedbackId, contentReply }
+      }),
+      invalidatesTags: (_, __, { feedbackId }) => [{ type: 'Feedbacks', id: feedbackId }]
+    }),
+    getFeedbackRepliesByFeedbackId: build.query<
+      GetFeedbackRepliesByFeedbackIdResponse,
+      { feedbackId: string; params: IParams }
+    >({
+      query: ({ feedbackId, params }) => ({
+        url: `feedback/replies/${feedbackId}`,
+        params: params
+      }),
+      providesTags: (result, error, { feedbackId }) => [
+        { type: 'Feedbacks', id: 'LIST' },
+        { type: 'Feedbacks', id: feedbackId }
+      ]
     })
   })
 });
@@ -96,5 +130,7 @@ export const {
   useGetFeedbacksQuery,
   useGetFeedbackByIdQuery,
   useGetFeedbackHistoriesQuery,
-  useUpdateActiveStatusFeedbackMutation
+  useUpdateActiveStatusFeedbackMutation,
+  useCreateFeedbackReplyMutation,
+  useGetFeedbackRepliesByFeedbackIdQuery
 } = feedbackApi;
