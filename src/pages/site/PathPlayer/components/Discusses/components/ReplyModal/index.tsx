@@ -1,58 +1,40 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState } from 'react';
-import { Modal, Form, Input, Button, notification } from 'antd';
+import { Button, Form, Input, Modal, notification } from 'antd';
 import { useAddReplyToDiscussMutation } from '../../../../../client.service';
 
-// Thêm interface cho props nếu cần
+// Add a new prop type for the callback
 interface ReplyModalProps {
   isReplyModalVisible: boolean;
   setIsReplyModalVisible: (isVisible: boolean) => void;
   parentDiscussId: string;
   userId: string;
-  lessonId: string;
-  courseId: string | null;
-}
-
-interface DiscussionFormValues {
-  comments: string;
-  title: string;
-  userId: string;
-  parentDiscussId: string;
-  lessonId: string;
-  sectionId: string;
-  courseId: string;
 }
 
 const ReplyModal: React.FC<ReplyModalProps> = ({
   isReplyModalVisible,
   setIsReplyModalVisible,
   parentDiscussId,
-  userId,
-  lessonId,
-  courseId
+  userId
 }) => {
   const [form] = Form.useForm();
   const [addReplyToDiscuss, { isLoading }] = useAddReplyToDiscussMutation();
-  const discussId = parentDiscussId;
 
-  const onFinish = async (values: DiscussionFormValues) => {
+  const onFinish = async (values: { comments: string }) => {
     try {
       await addReplyToDiscuss({
-        ...values,
         comments: values.comments,
-        parentDiscussId: discussId,
-        userId: userId,
-        lessonId: lessonId,
-        courseId: courseId as string
+        parentDiscussId: parentDiscussId,
+        userId: userId
       });
       notification.success({
-        message: 'Thảo luận đã được thêm!',
-        description: 'Cuộc thảo luận của bạn đã được tạo thành công.'
+        message: 'Reply added successfully',
+        description: 'Your reply has been added successfully'
       });
-    } catch (err) {
+      setIsReplyModalVisible(false);
+    } catch (error) {
       notification.error({
-        message: 'Lỗi!',
-        description: 'Không thể thêm cuộc thảo luận. Vui lòng thử lại.'
+        message: 'Error',
+        description: 'Failed to add reply'
       });
     }
   };

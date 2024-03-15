@@ -21,6 +21,7 @@ import TransactionsHeader from './components/Transactions/Transactions';
 import CoursesNotes from './components/CourseNotes';
 import WelcomeHeader from './components/WelcomeHeader';
 import BlogCommentsHeader from './components/BlogCommentsHeader';
+import DiscussHeader from './components/DiscussHeader';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -38,6 +39,7 @@ const AdminHeader = () => {
       {path === '/author/categories' && <CategoriesHeader />}
       {path === '/author/courses' && <CoursesHeader />}
       {path === '/author/courses-notes' && <CoursesNotes />}
+      {path === '/author/discuss' && <DiscussHeader />}
       {path === '/author/users' && <UsersHeader />}
       {path === '/author/orders' && <OrdersHeader />}
       {path === '/author/reports/users-progress' && <UsersProgressHeader />}
