@@ -15,6 +15,7 @@ import { Blog } from '../../types/page.type';
 import { IBlogComment } from '../../types/blogComments.type';
 import { INote } from '../../types/note.type';
 import { IDataSelect } from '../../types/dataSelect.type';
+import { IDiscuss } from '../../types/discuss.type';
 
 interface getCategoriesResponse {
   categories: ICategory[];
@@ -106,6 +107,11 @@ export interface ICourseDetail extends ICourse {
   isBought: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+interface UpdateDiscussionRequest {
+  discussId: string;
+  comments: string;
 }
 
 export interface getCourseDetailResponse {
@@ -287,9 +293,58 @@ export interface GetReviewRepliesByReviewIdResponse {
   replies: IReviewReply[];
 }
 
+export interface GetAllDiscussionsResponse {
+  message: string;
+  discuss: IDiscuss[];
+}
+
+export interface GetDiscussionsByLessonIdResponse {
+  message: string;
+  discuss: IDiscuss[];
+}
+
+export interface GetDiscussionsBySectionIdResponse {
+  message: string;
+  discuss: IDiscuss[];
+}
+
+export interface AddDiscussionResponse {
+  message: string;
+  discuss: IDiscuss;
+}
+
+interface AddDiscussionRequest {
+  comments: string;
+  userId: string;
+  parentDiscussId: string;
+  lessonId: string;
+  courseId: string;
+  title: string;
+}
+
+export interface UpdateDiscussionResponse {
+  message: string;
+  discuss: IDiscuss;
+}
+
+export interface DeleteDiscussionResponse {
+  message: string;
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi',
-  tagTypes: ['Clients', 'Users', 'Orders', 'Courses', 'Reviews', 'Wishlist', 'Feedbacks', 'BlogComment', 'Note'],
+  tagTypes: [
+    'Clients',
+    'Users',
+    'Orders',
+    'Courses',
+    'Reviews',
+    'Wishlist',
+    'Feedbacks',
+    'BlogComment',
+    'Note',
+    'Discussions'
+  ],
   keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
@@ -829,7 +884,73 @@ export const clientApi = createApi({
         url: `reviews/review/replies/${reviewId}`
       }),
       providesTags: () => [{ type: 'Reviews', id: 'LIST' }]
+    }),
+    // Discuss
+    getAllDiscussions: build.query<GetAllDiscussionsResponse, void>({
+      query: () => ({
+        url: `discuss/getAll`
+      }),
+      providesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    getDiscussionsByLessonId: build.query<GetDiscussionsByLessonIdResponse, string>({
+      query: (lessonId) => ({
+        url: `discuss/lesson/${lessonId}`
+      }),
+      providesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    getDiscussionsBySectionId: build.query<GetDiscussionsBySectionIdResponse, string>({
+      query: (sectionId) => ({
+        url: `discuss/section/${sectionId}`
+      }),
+      providesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    getDiscussionsById: build.query<GetDiscussionsBySectionIdResponse, string>({
+      query: (id) => ({
+        url: `discuss/discuss/${id}`
+      }),
+      providesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    addDiscussion: build.mutation<AddDiscussionResponse, AddDiscussionRequest>({
+      query: (newDiscussion) => ({
+        url: `discuss/add`,
+        method: 'POST',
+        body: newDiscussion
+      }),
+      invalidatesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    updateDiscussion: build.mutation<UpdateDiscussionResponse, { discussId: string; comments: string }>({
+      query: ({ discussId, comments }) => ({
+        url: `discuss/update/${discussId}`,
+        method: 'PUT',
+        body: { comments }
+      }),
+      invalidatesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    deleteDiscussion: build.mutation<DeleteDiscussionResponse, string>({
+      query: (discussId) => ({
+        url: `discuss/delete/${discussId}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: () => [{ type: 'Discussions', id: 'LIST' }]
+    }),
+    addReplyToDiscuss: build.mutation<
+      AddDiscussionResponse,
+      {
+        parentDiscussId: string;
+        comments: string;
+        userId: string;
+        lessonId: string;
+        courseId: string;
+      }
+    >({
+      query: (replyData) => ({
+        url: '/discuss/reply',
+        method: 'POST',
+        body: replyData
+      }),
+      invalidatesTags: () => [{ type: 'Discussions', id: 'LIST' }]
     })
+    // Discuss
   })
 });
 
@@ -883,5 +1004,14 @@ export const {
   useGetTotalReviewsByCourseIdQuery,
   useGetAverageRatingByCourseIdQuery,
   useGetRatingPercentageByCourseIdQuery,
-  useGetReviewRepliesByReviewIdQuery
+  useGetReviewRepliesByReviewIdQuery,
+  // Discuss
+  useGetAllDiscussionsQuery,
+  useGetDiscussionsByLessonIdQuery,
+  useGetDiscussionsBySectionIdQuery,
+  useGetDiscussionsByIdQuery,
+  useAddDiscussionMutation,
+  useUpdateDiscussionMutation,
+  useDeleteDiscussionMutation,
+  useAddReplyToDiscussMutation
 } = clientApi;
