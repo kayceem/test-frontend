@@ -83,14 +83,6 @@ const DashboardHeader = () => {
           <PlusCircleOutlined />
           Create Course
         </Button>
-        <Button className='btn-wrap'>
-          <PlusCircleOutlined />
-          Preview Hompage
-        </Button>
-        <Button className='btn-wrap'>
-          <PlusCircleOutlined />
-          Preview Hompage after login
-        </Button>
       </Space>
       <Space className='admin-header__notify'>
         <Button className='btn-wrap'>

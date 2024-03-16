@@ -42,19 +42,6 @@ const UsersProgressHeader = () => {
     <Fragment>
       <Space>
         <h3 className='admin-header__page-title'>User Progress</h3>
-
-        <Button onClick={openCreateCourseHandler} className='btn-wrap'>
-          <PlusCircleOutlined />
-          Save Segment
-        </Button>
-        <Button className='btn-wrap'>
-          <PlusCircleOutlined />
-          View segments
-        </Button>
-        <Button className='btn-wrap'>
-          <PlusCircleOutlined />
-          Shedule report
-        </Button>
         <Button className='btn-wrap'>
           <PlusCircleOutlined />
           Export user progress
