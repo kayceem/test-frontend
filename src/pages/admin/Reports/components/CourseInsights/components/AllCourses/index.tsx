@@ -14,6 +14,8 @@ interface DataType {
   totalVideosLength: string;
   lessons: number;
   numberOfWishlist: number;
+  numberOfRatings: number;
+  avgRatings: number;
 }
 
 const columns: ColumnsType<DataType> = [
@@ -27,6 +29,16 @@ const columns: ColumnsType<DataType> = [
     title: 'Learners',
     dataIndex: 'learners',
     key: 'learners'
+  },
+  {
+    title: 'Ratings',
+    dataIndex: 'numberOfRatings',
+    key: 'numberOfRatings'
+  },
+  {
+    title: 'Avg ratings',
+    dataIndex: 'avgRatings',
+    key: 'avgRatings'
   },
   {
     title: 'Avg. Study time',
@@ -70,7 +82,9 @@ const AllCourses = () => {
       // socialInteractions: report.socialInteractions,
       totalVideosLength: formatVideoLengthToHours(+report.totalVideosLength),
       lessons: report.lessons,
-      numberOfWishlist: report.numberOfWishlist
+      numberOfWishlist: report.numberOfWishlist,
+      numberOfRatings: report.numberOfRatings,
+      avgRatings: report.avgRatings
     };
     return reportTemplateItem;
   });

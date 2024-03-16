@@ -144,7 +144,7 @@ const Checkout = () => {
   );
 
   const cartItems = cartData?.cart.items || [];
-  const totalPrice = cartData?.cart.totalPrice || 0;
+  const totalPrice = cartData?.cart.totalPrice || 0; // VAT FEE APPLY here
 
   const userId = useSelector((state: RootState) => state.auth.userId);
 

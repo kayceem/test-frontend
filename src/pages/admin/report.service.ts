@@ -66,6 +66,8 @@ export interface getReportsCourseInsightsResponse {
     totalVideosLength: number;
     lessons: number;
     numberOfWishlist: number;
+    numberOfRatings: number;
+    avgRatings: number;
   }[];
 }
 
