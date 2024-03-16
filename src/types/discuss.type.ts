@@ -1,7 +1,6 @@
 import { IBase } from './base.type';
 import { User } from './note.type';
 
-
 export interface IDiscuss extends IBase {
   code: string;
   _id: string;
@@ -10,7 +9,7 @@ export interface IDiscuss extends IBase {
   userId: User;
   comments: string;
   parentDiscussId: string | null;
-  discussId?: string;
+  discussId: string;
   replies: IReply[];
 }
 

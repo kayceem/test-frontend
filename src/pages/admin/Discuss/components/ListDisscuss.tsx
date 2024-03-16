@@ -18,6 +18,11 @@ import { transformDate } from '../../../../utils/functions';
 import { IDiscuss } from '../../../../types/discuss.type';
 import { ICourse } from '../../../../types/course.type';
 import { ISection } from '../../../../types/lesson.type';
+import { useUpdateActiveStatusDiscussMutation, useUpdateDiscussMutation } from '../discuss.service';
+import { startEditDiscuss } from '../discuss.slice';
+import ViewDetailDiscuss from './ViewDetailDiscuss';
+import ViewHistoryDiscuss from './ViewHistoryDiscuss';
+import ViewMessDiscuss from './ViewMessReply';
 
 interface IDisCussProps {
   data: IDiscuss[];
@@ -28,8 +33,8 @@ interface IDisCussProps {
 
 const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, section }) => {
   const dispatch = useDispatch();
-  // const [updateActiveStatusBlogComments] = useUpdateActiveStatusBlogCommentsMutation();
-  const [blogCommentId, setSelectedCommentsId] = useState('');
+  const [updateActiveStatusDiscuss] = useUpdateActiveStatusDiscussMutation();
+  const [discussId, setSelectedCommentsId] = useState('');
   const [discusss, setDiscuss] = useState(data);
   const [detailVisible, setDetailVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false);
@@ -39,12 +44,12 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
 
   const getCourseName = (courseId: string) => {
     const courseObj = course.find((c) => c._id === courseId);
-    return courseObj ? courseObj.name : 'Unknown Course';
+    return courseObj ? courseObj.name : 'N/A';
   };
 
   const getSectionName = (sectionId: string) => {
     const sectionObj = section.find((c) => c._id === sectionId);
-    return sectionObj ? sectionObj.name : 'Unknown Course';
+    return sectionObj ? sectionObj.name : 'N/A';
   };
 
   const handleTableChange = (page: number, pageSize: number) => {
@@ -52,46 +57,43 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
     setPageSize(pageSize);
   };
 
-  const handleViewDetail = (commentId: string) => {
+  const handleViewDetail = (discussId: string) => {
     setDetailVisible(true);
-    setSelectedCommentsId(commentId);
+    setSelectedCommentsId(discussId);
   };
 
-  const handleViewHistory = (commentId: string) => {
+  const handleViewHistory = (discussId: string) => {
     setHistoryVisible(true);
-    setSelectedCommentsId(commentId);
+    setSelectedCommentsId(discussId);
   };
 
-  const handleViewMess = (commentId: string) => {
+  const handleViewMess = (discussId: string) => {
     setMessVisible(true);
-    setSelectedCommentsId(commentId);
+    setSelectedCommentsId(discussId);
   };
 
-  // const handleUpdateStatus = (commentId: string) => {
-  //   updateActiveStatusBlogComments({ commentId: commentId })
-  //     .unwrap()
-  //     .then(() => {
-  //       void message.success('Blog Comments status updated successfully');
-  //       const updatedComments = comments.map((comment) => {
-  //         if (comment._id === commentId) {
-  //           return {
-  //             ...comment,
-  //             isDeleted: !comment.isDeleted
-  //           };
-  //         }
-  //         return comment;
-  //       });
-  //       setComments(updatedComments);
-  //     })
-  //     .catch(() => {
-  //       void message.error('Failed to update blog category status');
-  //     });
-  // };
+  const handleUpdateStatus = (discussId: string) => {
+    updateActiveStatusDiscuss({ discussId: discussId })
+      .unwrap()
+      .then(() => {
+        void message.success('Discuss status updated successfully');
+        const updatedComments = discusss.map((comment) => {
+          if (comment._id === discussId) {
+            return { ...comment, isDeleted: !comment.isDeleted };
+          }
+          return comment;
+        });
+        setDiscuss(updatedComments);
+      })
+      .catch(() => {
+        void message.error('Failed to update discuss status');
+      });
+  };
 
-  // const BlogCommentsEditHandler = (blogId: string) => {
-  //   onBlogCommentsEdit(blogId);
-  //   dispatch(startEditBlogComments(blogId));
-  // };
+  const discussEditHandler = (discussId: string) => {
+    onDiscussEdit(discussId);
+    dispatch(startEditDiscuss(discussId));
+  };
 
   const columns = [
     {
@@ -141,7 +143,7 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
       title: 'Status',
       dataIndex: 'isDeleted',
       key: 'isDeleted',
-      render: (_: IDiscuss, record: IDiscuss) => <span>{record.isDeleted ? 'Active' : 'UnActive'}</span>
+      render: (_: IDiscuss, record: IDiscuss) => <span>{record.isDeleted ? 'Inactive' : 'Active'}</span>
     },
     {
       title: 'Actions',
@@ -156,7 +158,7 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
           ></Button>
           <Button
             icon={<EditOutlined style={{ color: '#1890ff' }} />}
-            // onClick={() => BlogCommentsEditHandler(record.blogId)}
+            onClick={() => discussEditHandler(record._id)}
             className='btn-wrap'
           ></Button>
           <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetail(record._id)} />
@@ -166,9 +168,9 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
           />
           {record.isDeleted ? (
             <Popconfirm
-              title='Are you sure you want to activate this blog category?'
+              title='Are you sure you want to activate this discuss?'
               placement='topRight'
-              // onConfirm={() => handleUpdateStatus(record._id)}
+              onConfirm={() => handleUpdateStatus(record._id)}
               okText='Yes'
               cancelText='No'
             >
@@ -176,9 +178,9 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
             </Popconfirm>
           ) : (
             <Popconfirm
-              title='Are you sure you want to deactivate this blog category?'
+              title='Are you sure you want to deactivate this discuss?'
               placement='topRight'
-              // onConfirm={() => handleUpdateStatus(record._id)}
+              onConfirm={() => handleUpdateStatus(record._id)}
               okText='Yes'
               cancelText='No'
             >
@@ -198,17 +200,9 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
         pagination={{ current: currentPage, pageSize, onChange: handleTableChange }}
         scroll={{ x: 'max-content' }}
       />
-      {/* <ViewDetailBlogComments
-          isVisible={detailVisible}
-          onClose={() => setDetailVisible(false)}
-          blogCommentId={blogCommentId}
-        />
-        <ViewHistoryBlogComments
-          isVisible={historyVisible}
-          onClose={() => setHistoryVisible(false)}
-          blogCommentId={blogCommentId}
-        />
-        <ViewMessReply isVisible={MessVisible} onClose={() => setMessVisible(false)} blogCommentId={blogCommentId} /> */}
+      <ViewDetailDiscuss isVisible={detailVisible} onClose={() => setDetailVisible(false)} discussId={discussId} />
+      <ViewHistoryDiscuss isVisible={historyVisible} onClose={() => setHistoryVisible(false)} discussId={discussId} />
+      <ViewMessDiscuss isVisible={MessVisible} onClose={() => setMessVisible(false)} discussId={discussId} /> 
     </div>
   );
 };
