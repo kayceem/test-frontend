@@ -172,6 +172,9 @@
     display: none;
  }
 }
+.btn-sm{
+  padding: 1rem 1.2rem;
+}
 .header__search-mobile{
   display: none;
   @media(max-width: 1920px){
