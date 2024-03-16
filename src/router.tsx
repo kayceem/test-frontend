@@ -71,6 +71,7 @@ import ResetPasswordPage from './pages/site/Auth/ResetPassword';
 import Welcome from './pages/admin/Welcome/welcome';
 import AuthorReport from './pages/admin/AuthorReport/AuthorReport';
 import BlogComments from './pages/admin/BlogComments/BlogComments';
+import Discuss from './pages/admin/Discuss/Discuss';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
@@ -244,6 +245,15 @@ const RouterHooks = () => {
             {
               index: true,
               element: <CourseNotes />
+            }
+          ]
+        },
+        {
+          path: 'discuss',
+          children: [
+            {
+              index: true,
+              element: <Discuss />
             }
           ]
         },

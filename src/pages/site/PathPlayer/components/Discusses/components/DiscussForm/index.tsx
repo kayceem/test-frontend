@@ -26,14 +26,13 @@ const DiscussForm: React.FC<DiscussFormProps> = ({ userId, lessonId, courseId })
   const onFinish = async (values: DiscussionFormValues) => {
     try {
       await addDiscussion({
-        ...values,
         comments: values.comments,
         title: values.title,
-        parentDiscussId: '',
-        userId: userId,
-        lessonId: lessonId,
-        courseId: courseId as string
-      });
+        userId,
+        parentDiscussId: values.parentDiscussId,
+        lessonId,
+        courseId: values.courseId
+      }).unwrap();
       notification.success({
         message: 'Thảo luận đã được thêm!',
         description: 'Cuộc thảo luận của bạn đã được tạo thành công.'

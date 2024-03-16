@@ -939,8 +939,6 @@ export const clientApi = createApi({
         parentDiscussId: string;
         comments: string;
         userId: string;
-        lessonId: string;
-        courseId: string;
       }
     >({
       query: (replyData) => ({
