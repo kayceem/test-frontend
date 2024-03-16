@@ -173,3 +173,47 @@
     //     }
     // }
 }
+.courses__filter-bar{
+    position: sticky;
+    top: 100px;
+    height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 200px;
+    &::-webkit-scrollbar{
+    width: .6rem;
+	background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #F5F5F5;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #194583;
+        border: 2px solid #555555;
+    }
+
+}
+.courses__list{
+}
+.search-results__sort{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-results__clear-filters{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.courses__filter-bar .authors-filter__list{
+    margin-bottom: 8px;
+}
+.course-header-list{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+}

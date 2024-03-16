@@ -11,7 +11,7 @@ const CourseContents = () => {
 
   return (
     <div className='course-contents'>
-      <div className="">
+      {/* <div className="">
         <Breadcrumb
             items={[
               {
@@ -25,7 +25,7 @@ const CourseContents = () => {
               },
             ]}
           />
-      </div>
+      </div> */}
       <div className='course-contents__wrap'>
         <h2 className='course-contents__create-title'>Start creating your course by adding the first section!</h2>
       </div>

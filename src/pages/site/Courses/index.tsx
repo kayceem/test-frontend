@@ -7,7 +7,12 @@ import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RootState } from '../../../store/store';
-import { useGetAuthorsQuery, useGetAuthorsSelectQuery, useGetCategoriesQuery, useGetCoursesQuery } from '../client.service';
+import {
+  useGetAuthorsQuery,
+  useGetAuthorsSelectQuery,
+  useGetCategoriesQuery,
+  useGetCoursesQuery
+} from '../client.service';
 import CourseList from '../components/CourseList';
 import './Courses.scss';
 
@@ -57,18 +62,18 @@ const Courses = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
 
   const { data, isFetching } = useGetCoursesQuery(params);
-  
+
   const isFiltered = authorValue || levelValue || priceValue;
-  
+
   const numberOfResult = data?.pagination?._totalRows || 0;
   // Get all categories at db
   const { data: categoriesData } = useGetCategoriesQuery();
-  
+
   // Get all authors at db
   const { data: authorsData } = useGetAuthorsQuery();
   const { data: listAuthorSelect } = useGetAuthorsSelectQuery();
 
-  console.log("list author: ", listAuthorSelect)
+  console.log('list author: ', listAuthorSelect);
 
   const categoriesList = categoriesData?.categories || [];
 
@@ -79,7 +84,6 @@ const Courses = () => {
   const navigate = useNavigate();
 
   const sortChangeHandler = (value: string) => {
-
     setSortParams({ _sort: value });
   };
 
@@ -131,20 +135,175 @@ const Courses = () => {
 
   // Filter author select
   const filterOption = (input: string, option?: { label: string; value: string }) =>
-  (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+    (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
   return (
     <div className='courses'>
       <div className='courses__wrap'>
         <div className='container'>
-        <h2 className='courses__heading'>Find your best courses</h2>
-        <div className='courses__search-results'>
-          <div className='courses__search-results-left'></div>
-          <div className='courses__search-results-right'>{numberOfResult} results</div>
-        </div>
+          <h2 className='courses__heading'>Find your best courses</h2>
+          
+          <div className='courses__content'>
+            <div className='courses__filter-bar'>
+              <div className='courses__filter-bar-item'></div>
+              <div className='courses__filter-bar-item'>
+                <div className='status-filter'>
+                  <ul className='status-filter__list'>
+                    <li className='status-filter__item'>
+                      <a href='' className='status-filter__item-link'>
+                        All
+                      </a>
+                    </li>
+                    {isAuth && (
+                      <>
+                        <li className='status-filter__item'>
+                          <a onChange={enrollFilterHandler} href='' className='status-filter__item-link'>
+                            Not Enrolled
+                          </a>
+                        </li>
+                        <li className='status-filter__item'>
+                          <a onChange={enrollFilterHandler} href='' className='status-filter__item-link'>
+                            Enrolled
+                          </a>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </div>
 
-        <div className='courses__content'>
-          <div className='courses__filter-bar'>
+              <div className='courses__filter-bar-item'>
+                <h3 className='courses__filter-bar-item-title'>Authors</h3>
+                <div className='authors-filter'>
+                  <ul className='authors-filter__list'>
+                    {authorsList.map((author) => {
+                      return (
+                        <li key={author[1]._id} className='authors-filter__item'>
+                          <Checkbox
+                            value={author[1]._id}
+                            checked={filterParams._author.includes(author[1]._id)}
+                            onChange={filterAuthorsHandler}
+                          >
+                            {author[1].name}
+                          </Checkbox>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <Select
+                    showSearch
+                    placeholder='Select a author to filter!'
+                    optionFilterProp='children'
+                    filterOption={filterOption}
+                    options={listAuthorSelect}
+                  />
+                </div>
+              </div>
+              <div className='courses__filter-bar-item'>
+                <h3 className='courses__filter-bar-item-title'>Level</h3>
+                <div className='course-level'>
+                  <ul className='course-level__list'>
+                    {levelList.map((level, index) => {
+                      return (
+                        <li key={index} className='course-level__item'>
+                          <Checkbox
+                            value={level}
+                            checked={filterParams._level.includes(level)}
+                            onChange={filterLevelHandler}
+                          >
+                            {level}
+                          </Checkbox>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+              <div className='courses__filter-bar-item'>
+                <h3 className='courses__filter-bar-item-title'>Price</h3>
+                <div className='course-by-price'>
+                  <ul className='course-by-price__list'>
+                    <li className='course-by-price__item'>
+                      <Checkbox
+                        value='Free'
+                        checked={filterParams._price.includes('Free')}
+                        onChange={filterPriceHandler}
+                      >
+                        Free
+                      </Checkbox>
+                    </li>
+                    <li className='course-by-price__item'>
+                      <Checkbox
+                        value='Paid'
+                        checked={filterParams._price.includes('Paid')}
+                        onChange={filterPriceHandler}
+                      >
+                        Paid
+                      </Checkbox>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className='courses__filter-bar-item'>
+                <h3 className='courses__filter-bar-item-title'>Topic course</h3>
+                <div className='course-topic'>
+                  <ul className='course-topic__list'>
+                    {categoriesList.map((cateItem) => {
+                      return (
+                        <li key={cateItem._id} className='course-topic__item'>
+                          <Checkbox
+                            checked={filterParams._topic.includes(cateItem._id)}
+                            value={cateItem._id}
+                            onChange={filterTopicHandler}
+                          >
+                            {cateItem.name}
+                          </Checkbox>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
+              {/* Ratings */}
+              <div className='courses__filter-bar-item'>
+                <h3 className='courses__filter-bar-item-title'>Course Ratings</h3>
+                <div className='course-ratings'>
+                  <ul className='course-ratings__list'>
+                    <Radio.Group>
+                      <Space direction='vertical'>
+                        <Radio value={1}>
+                          <Rate allowHalf defaultValue={4.5} />
+                          <span className='ml-2 font-normal'> 4.5 & up</span>
+                        </Radio>
+                        <Radio value={2}>
+                          <Rate allowHalf defaultValue={4.0} />
+                          <span className='ml-2 font-normal'> 4.0 & up</span>
+                        </Radio>
+                        <Radio value={3}>
+                          <Rate allowHalf defaultValue={3.5} />
+                          <span className='ml-2 font-normal'> 3.5 & up</span>
+                        </Radio>
+                        <Radio value={4}>
+                          <Rate allowHalf defaultValue={3} />
+                          <span className='ml-2 font-normal'> 3 & up</span>
+                        </Radio>
+                      </Space>
+                    </Radio.Group>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Video duration */}
+
+              {/* Filter by features (quizz, coding exercise, ...) */}
+            </div>
+
+            <div className='courses__list'>
+            <div className='course-header-list'>
+            <div className='courses__search-results'>
+              <div className='courses__search-results-left'></div>
+              <div className='courses__search-results-right'>{numberOfResult} results</div>
+            </div>
             <div className='search-results'>
               {searchValue && (
                 <h3 className='search-results__text'>
@@ -172,164 +331,17 @@ const Courses = () => {
                 )}
               </div>
             </div>
-            <div className='courses__filter-bar-item'>
-            </div>
-            <div className='courses__filter-bar-item'>
-              <div className='status-filter'>
-                <ul className='status-filter__list'>
-                  <li className='status-filter__item'>
-                    <a href='' className='status-filter__item-link'>
-                      All
-                    </a>
-                  </li>
-                  {isAuth && (
-                    <>
-                      <li className='status-filter__item'>
-                        <a onChange={enrollFilterHandler} href='' className='status-filter__item-link'>
-                          Not Enrolled
-                        </a>
-                      </li>
-                      <li className='status-filter__item'>
-                        <a onChange={enrollFilterHandler} href='' className='status-filter__item-link'>
-                          Enrolled
-                        </a>
-                      </li>
-                    </>
-                  )}
-                </ul>
-              </div>
-            </div>
-
-            <div className='courses__filter-bar-item'>
-              <h3 className='courses__filter-bar-item-title'>Authors</h3>
-              <div className='authors-filter'>
-                <ul className='authors-filter__list'>
-                  {authorsList.map((author) => {
-                    return (
-                      <li key={author[1]._id} className='authors-filter__item'>
-                        <Checkbox
-                          value={author[1]._id}
-                          checked={filterParams._author.includes(author[1]._id)}
-                          onChange={filterAuthorsHandler}
-                        >
-                          {author[1].name}
-                        </Checkbox>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <Select
-                showSearch
-                placeholder="Select a author to filter!"
-                optionFilterProp="children"
-                filterOption={filterOption}
-                options={listAuthorSelect}
+          </div>
+              {isFetching && <Skeleton />}
+              <CourseList
+                courseState='notOrdered'
+                courses={data?.courses}
+                pagination={data?.pagination}
+                className='courses__list-row'
+                onPaginate={paginateHandler}
               />
-              </div>
             </div>
-            <div className='courses__filter-bar-item'>
-              <h3 className='courses__filter-bar-item-title'>Level</h3>
-              <div className='course-level'>
-                <ul className='course-level__list'>
-                  {levelList.map((level, index) => {
-                    return (
-                      <li key={index} className='course-level__item'>
-                        <Checkbox
-                          value={level}
-                          checked={filterParams._level.includes(level)}
-                          onChange={filterLevelHandler}
-                        >
-                          {level}
-                        </Checkbox>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-            <div className='courses__filter-bar-item'>
-              <h3 className='courses__filter-bar-item-title'>Price</h3>
-              <div className='course-by-price'>
-                <ul className='course-by-price__list'>
-                  <li className='course-by-price__item'>
-                    <Checkbox value='Free' checked={filterParams._price.includes('Free')} onChange={filterPriceHandler}>
-                      Free
-                    </Checkbox>
-                  </li>
-                  <li className='course-by-price__item'>
-                    <Checkbox value='Paid' checked={filterParams._price.includes('Paid')} onChange={filterPriceHandler}>
-                      Paid
-                    </Checkbox>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className='courses__filter-bar-item'>
-              <h3 className='courses__filter-bar-item-title'>Topic course</h3>
-              <div className='course-topic'>
-                <ul className='course-topic__list'>
-                  {categoriesList.map((cateItem) => {
-                    return (
-                      <li key={cateItem._id} className='course-topic__item'>
-                        <Checkbox
-                          checked={filterParams._topic.includes(cateItem._id)}
-                          value={cateItem._id}
-                          onChange={filterTopicHandler}
-                        >
-                          {cateItem.name}
-                        </Checkbox>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-            {/* Ratings */}
-            <div className='courses__filter-bar-item'>
-              <h3 className='courses__filter-bar-item-title'>Course Ratings</h3>
-              <div className='course-ratings'>
-                <ul className='course-ratings__list'>
-                  
-                  <Radio.Group>
-                    <Space direction='vertical'>
-                      <Radio value={1}>
-                        <Rate allowHalf defaultValue={4.5} />
-                        <span className='ml-2 font-normal'> 4.5 & up</span>
-                      </Radio>
-                      <Radio value={2}>
-                        <Rate allowHalf defaultValue={4.0} />
-                        <span className='ml-2 font-normal'> 4.0 & up</span>
-                      </Radio>
-                      <Radio value={3}>
-                        <Rate allowHalf defaultValue={3.5} />
-                        <span className='ml-2 font-normal'> 3.5 & up</span>
-                      </Radio>
-                      <Radio value={4}>
-                        <Rate allowHalf defaultValue={3} />
-                        <span className='ml-2 font-normal'> 3 & up</span>
-                      </Radio>
-                    </Space>
-                  </Radio.Group>
-                </ul>
-              </div>
-            </div>
-
-            {/* Video duration */}
-
-            {/* Filter by features (quizz, coding exercise, ...) */}
           </div>
-
-          <div className='courses__list'>
-            {isFetching && <Skeleton />}
-            <CourseList
-              courseState='notOrdered'
-              courses={data?.courses}
-              pagination={data?.pagination}
-              className='courses__list-row'
-              onPaginate={paginateHandler}
-            />
-          </div>
-        </div>
         </div>
       </div>
     </div>

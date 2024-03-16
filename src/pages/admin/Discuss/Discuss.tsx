@@ -4,10 +4,14 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { startEditBlog } from '../Blog/blog.slice';
-import ListComments from './components/ListComments';
-import { useGetBlogCommentsQuery } from './blogComments.service';
-import { useGetBlogsQuery } from '../Blog/blog.service';
-import AddBlogComments from './components/AddBlogComments';
+// import ListComments from './components/ListComments';
+// import { useGetBlogCommentsQuery } from './blogComments.service';
+import ListDiscuss from './components/ListDisscuss';
+import { useGetDiscussQuery, useGetDiscussionsQuery } from './discuss.service';
+import { startEditDiscuss } from './discuss.slice';
+import AddDiscuss from './components/AddDiscuss';
+import { useGetCoursesQuery, useGetSectionsByCourseIdQuery, useGetSectionsQuery } from '../Courses/course.service';
+// import AddBlogComments from './components/AddBlogComments';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -19,16 +23,18 @@ type ParamsType = {
   _status?: string;
 };
 
-const BlogComments = () => {
+const DiscussCourse = () => {
   const [params, setParams] = useState<ParamsType>({
     _limit: 10,
     _page: 1,
     _q: ''
   });
 
-  const { data: blogCommentsResponse, isFetching: isFetchingblogComments } = useGetBlogCommentsQuery(params);
+  const { data: discussResponse, isFetching: isFetchingDiscuss } = useGetDiscussQuery(params);
+  const { data: CourseResponse, isFetching: isFetchingCourse } = useGetCoursesQuery(params);
+  const { data: SectionResponse, isFetching: isFetchingSection } = useGetSectionsQuery();
 
-  const { data: blog, isFetching: isFetchingblog } = useGetBlogsQuery(params);
+  console.log('CourseResponse', CourseResponse);
 
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
@@ -65,13 +71,13 @@ const BlogComments = () => {
     setOpen(false);
   };
 
-  const BlogCommentsEditHandler = (commentId: string) => {
-    dispatch(startEditBlog(commentId));
+  const onDiscussEdit = (discussId: string) => {
+    dispatch(startEditDiscuss(discussId));
     setOpen(true);
   };
 
-  const newCategoryHandler = () => {
-    dispatch(startEditBlog(''));
+  const newDiscussHandler = () => {
+    dispatch(startEditDiscuss(''));
     setOpen(true);
   };
 
@@ -81,10 +87,10 @@ const BlogComments = () => {
         <Breadcrumb
           items={[
             {
-              title: 'Blog'
+              title: 'Course'
             },
             {
-              title: <Link to='#'>Blog Comments</Link>
+              title: <Link to='#'>Discuss</Link>
             }
           ]}
         />
@@ -92,11 +98,11 @@ const BlogComments = () => {
       <div className='blog-categories__wrap'>
         <div className='blog-categories__filter'>
           <Space className='sub-header__wrap'>
-            <Button onClick={newCategoryHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
-              New Blog Comments
+            <Button onClick={newDiscussHandler} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
+              New discuss
             </Button>
             <Search
-              placeholder='Search categories'
+              placeholder='Search discuss'
               onSearch={onSearchHandler}
               style={{ width: 200 }}
               className='search-wrap'
@@ -110,20 +116,21 @@ const BlogComments = () => {
           </Space>
         </div>
         <div className='blog-categories__content'>
-          {isFetchingblogComments ? (
+          {isFetchingDiscuss ? (
             <Skeleton />
           ) : (
-            <ListComments
-              onBlogCommentsEdit={BlogCommentsEditHandler}
-              data={blogCommentsResponse?.comments || []}
-              blog={blog?.blogs || []}
+            <ListDiscuss
+              onDiscussEdit={newDiscussHandler}
+              data={discussResponse?.discuss || []}
+              course={CourseResponse?.courses || []}
+              section={SectionResponse?.sections || []}
             />
           )}
         </div>
       </div>
-      <AddBlogComments isOpen={open} onClose={closeDrawerHandler} blog={blog?.blogs || []} />
+      <AddDiscuss isOpen={open} onClose={closeDrawerHandler} course={CourseResponse?.courses || []} />
     </div>
   );
 };
 
-export default BlogComments;
+export default DiscussCourse;
