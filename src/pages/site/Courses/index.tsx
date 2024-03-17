@@ -190,13 +190,13 @@ const Courses = () => {
                       );
                     })}
                   </ul>
-                  <Select
+                  {/* <Select
                     showSearch
                     placeholder='Select a author to filter!'
                     optionFilterProp='children'
                     filterOption={filterOption}
                     options={listAuthorSelect}
-                  />
+                  /> */}
                 </div>
               </div>
               <div className='courses__filter-bar-item'>

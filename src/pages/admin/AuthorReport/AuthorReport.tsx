@@ -34,6 +34,8 @@ interface DataCourseType {
   learners: number;
   createdAt: string; // Convert to date: Example: 18 jun 2023
   totalRevenue: number;
+  numberOfRatings?: number;
+  avgRatings?: number;
   actions?: any;
   render: (_: IAuthorReport, record: IAuthorReport) => JSX.Element
 }
@@ -49,10 +51,8 @@ const AuthorReport = () => {
   const [form] = Form.useForm();
   const adminId = useSelector((state: RootState) => state.auth.adminId);
   const [currentParams, setCurrentParams] = useState({dateStart: '', dateEnd: ''});
-  const { data, isFetching, refetch } = useGetCoursesReportByAuthorQuery(currentParams, {
-    skip: !currentParams.dateStart || !currentParams.dateEnd
+  const { data: authorReportData, isFetching, refetch } = useGetCoursesReportByAuthorQuery(currentParams, {
   });
- 
 
   const dispatch = useDispatch();
 
@@ -105,45 +105,19 @@ const AuthorReport = () => {
       ellipsis: true
     },
     {
-      title: 'Status',
-      dataIndex: 'isDeleted',
-      key: 'isDeleted',
-      render: (_: IAuthorReport, record: IAuthorReport) => <span>{record.isDeleted ? 'Inactive' : 'Active'}</span>
+      title: 'Ratings',
+      dataIndex: 'numberOfRatings',
+      key: 'numberOfRatings',
+      // render: (_: IAuthorReport, record: IAuthorReport) => <span>{record.isDeleted ? 'Inactive' : 'Active'}</span>
     },
     {
-      title: 'Actions',
-      key: 'actions',
-      render: (_: IAuthorReport, record: IAuthorReport) => (
-        <Space size='middle'>
-          {/* <Button icon={<EditOutlined style={{ color: '#1890ff' }} />} onClick={() => handleUpdate(record._id)} />
-          <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetails(record._id)} />
-          <Button
-            icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
-            onClick={() => handleViewHistory(record._id)}
-          />
-          {record.isDeleted ? (
-            <Popconfirm
-              title='Are you sure you want to activate this coupon type?'
-              placement='topRight'
-              onConfirm={() => handleUpdateStatus(record._id)}
-              okText='Yes'
-              cancelText='No'
-            >
-              <Button icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} />
-            </Popconfirm>
-          ) : (
-            <Popconfirm
-              title='Are you sure you want to deactivate this coupon type?'
-              placement='topRight'
-              onConfirm={() => handleUpdateStatus(record._id)}
-              okText='Yes'
-              cancelText='No'
-            >
-              <Button icon={<StopOutlined style={{ color: '#ff4d4f' }} />} danger />
-            </Popconfirm>
-          )} */}
-        </Space>
-      )
+      title: 'Avg ratings',
+      dataIndex: 'avgRatings',
+      key: 'avgRatings',
+      // render: (_: IAuthorReport, record: IAuthorReport) => (
+      //   <Space size='middle'>
+      //   </Space>
+      // )
     }
   ];
 
@@ -218,137 +192,8 @@ const AuthorReport = () => {
 
       {/* Author report content */}
       <div className='author-report-content mt-8'>
-        <Table columns={columns} dataSource={data?.reports ?? []} onChange={onChange} pagination={tableParams.pagination} />
+        <Table columns={columns} dataSource={authorReportData?.reports ?? []} onChange={onChange} pagination={tableParams.pagination} />
         </div>
-      {/* Chart report! */}
-      <div className='dashboard'>
-      <div className='dashboard__summary'>
-        <Row className='dashboard__summary-row'>
-          <Col className='dashboard__summary-col' md={16}>
-            <div className='dashboard__chart'>
-              <div className='dashboard__chart-header'>
-                <div className='dashboard__chart-header-logo'>
-                  <CalendarOutlined className='dashboard__chart-header-logo-icon' />
-                  <span className='dashboard__chart-header-logo-text'>Your Academy</span>
-                </div>
-                <div className='dashboard__chart-header-nav'>
-                  <Button
-                    type={chartName === 'new-signups' ? 'primary' : 'default'}
-                    ghost={chartName === 'new-signups' ? true : false}
-                    className='dashboard__chart-header-nav-item'
-                    onClick={showNewUserSignupsChart}
-                  >
-                    New signups
-                  </Button>
-                  <Button
-                    type={chartName === 'revenues' ? 'primary' : 'default'}
-                    ghost={chartName === 'revenues' ? true : false}
-                    className='dashboard__chart-header-nav-item'
-                    onClick={showRevenuesChart}
-                  >
-                    Revenue
-                  </Button>
-                  <Button
-                    type={chartName === 'course-sales' ? 'primary' : 'default'}
-                    ghost={chartName === 'course-sales' ? true : false}
-                    className='dashboard__chart-header-nav-item'
-                    onClick={showCourseSalesChart}
-                  >
-                    Course sales
-                  </Button>
-                  <Select
-                    className='dashboard__chart-header-nav-item dashboard__chart-header-nav-item--select'
-                    defaultValue='7'
-                    style={{ width: 120, backgroundColor: '#EBEBEB' }}
-                    onChange={handleChange}
-                    options={[
-                      { value: '7', label: 'Last 7 days' },
-                      { value: '30', label: 'Last 30 days' },
-                      { value: '60', label: 'Last 60 days' },
-                      { value: 'all', label: 'All' }
-                    ]}
-                  />
-                </div>
-              </div>
-
-              <div className='dashboard__chart-body'>
-                <Chart />
-              </div>
-            </div>
-          </Col>
-          <Col className='dashboard__summary-col' md={8}>
-            <div className='dashboard__statistic'>
-              <Row className='dashboard__statistic-row'>
-                <Col md={8}>
-                  <Link to='/author/users'>
-                    <Statistic
-                      className='dashboard__statistic-item'
-                      valueStyle={statisticItemStyle}
-                      title='All Users'
-                      value={summaryReportsData?.reports.users}
-                      prefix={<UsergroupAddOutlined />}
-                    />
-                  </Link>
-                </Col>
-                <Col md={8}>
-                  <Statistic
-                    className='dashboard__statistic-item'
-                    valueStyle={statisticItemStyle}
-                    title='Conversation'
-                    value={`${summaryReportsData?.reports.conversions || 0}%`}
-                    prefix={<RetweetOutlined />}
-                  />
-                </Col>
-                <Col md={8}>
-                  <Link to='/author/orders?days=30'>
-                    <Statistic
-                      className='dashboard__statistic-item'
-                      valueStyle={statisticItemStyle}
-                      title='30 days sales'
-                      value={summaryReportsData?.reports.saleOf30days}
-                      prefix={<DollarOutlined />}
-                    />
-                  </Link>
-                </Col>
-                <Col md={8}>
-                  <Statistic
-                    className='dashboard__statistic-item'
-                    valueStyle={statisticItemStyle}
-                    title='Avg time'
-                    value={`${summaryReportsData?.reports.avgTimeLearningPerUser || 0} min`}
-                    prefix={<ClockCircleOutlined />}
-                  />
-                </Col>
-                <Col md={8}>
-                  <Link to='/author/courses'>
-                    <Statistic
-                      className='dashboard__statistic-item'
-                      valueStyle={statisticItemStyle}
-                      title='Courses'
-                      value={summaryReportsData?.reports.courses}
-                      prefix={<ReadOutlined />}
-                    />
-                  </Link>
-                </Col>
-                <Col md={8}>
-                  <Link to='/author/categories'>
-                    <Statistic
-                      className='dashboard__statistic-item'
-                      valueStyle={statisticItemStyle}
-                      title='Course categories'
-                      value={summaryReportsData?.reports.categories}
-                      prefix={<FolderOpenOutlined />}
-                    />
-                  </Link>
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </div>
-
- 
-    </div>
     </Fragment>
   );
 };
