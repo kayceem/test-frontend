@@ -16,7 +16,7 @@ interface DiscussionFormValues {
 interface DiscussFormProps {
   userId: string;
   lessonId: string;
-  courseId: string | null;
+  courseId: string;
 }
 
 const DiscussForm: React.FC<DiscussFormProps> = ({ userId, lessonId, courseId }) => {
@@ -31,7 +31,7 @@ const DiscussForm: React.FC<DiscussFormProps> = ({ userId, lessonId, courseId })
         userId,
         parentDiscussId: values.parentDiscussId,
         lessonId,
-        courseId: values.courseId
+        courseId
       }).unwrap();
       notification.success({
         message: 'Thảo luận đã được thêm!',

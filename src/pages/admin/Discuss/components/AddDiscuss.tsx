@@ -45,6 +45,7 @@ const AddDiscuss: React.FC<CreateDiscussProps> = ({ isOpen, onClose, course }) =
   useEffect(() => {
     if (discussId && discussResponse) {
       form.setFieldsValue(discussResponse.discuss);
+      form.setFieldsValue({ userId: adminId });
     } else {
       form.resetFields();
       form.setFieldsValue({ userId: adminId });
