@@ -22,6 +22,7 @@ import CoursesNotes from './components/CourseNotes';
 import WelcomeHeader from './components/WelcomeHeader';
 import BlogCommentsHeader from './components/BlogCommentsHeader';
 import DiscussHeader from './components/DiscussHeader';
+import UsersPermissionHeader from './components/UsersPermission';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -41,6 +42,7 @@ const AdminHeader = () => {
       {path === '/author/courses-notes' && <CoursesNotes />}
       {path === '/author/discuss' && <DiscussHeader />}
       {path === '/author/users' && <UsersHeader />}
+      {path === '/author/users/permission' && <UsersPermissionHeader />}
       {path === '/author/orders' && <OrdersHeader />}
       {path === '/author/reports/users-progress' && <UsersProgressHeader />}
       {path === '/author/reports/course-insights' && <CourseInsights />}
