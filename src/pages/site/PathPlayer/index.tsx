@@ -177,7 +177,7 @@ const PathPlayer = () => {
                 </div>
                 <h3 className='path-player__menu-header-title'>{data?.course.name}</h3>
                 <div className='path-player__menu-progress'>
-                  <Progress percent={currProgress as unknown as number} status='active' />
+                  <Progress percent={(currProgress as unknown as number).toFixed(1)} status='active' />
                 </div>
               </div>
               {/* Menu Content  */}

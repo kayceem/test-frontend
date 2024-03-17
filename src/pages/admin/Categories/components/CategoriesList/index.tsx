@@ -96,10 +96,6 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
       sorter: (a, b) => Number(a.courses) - Number(b.courses)
     },
     {
-      title: 'Tags',
-      dataIndex: 'tags'
-    },
-    {
       title: 'Manage',
       dataIndex: 'actions'
     }
@@ -129,7 +125,6 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
       description: <div className='txt-desc'>{description}</div>,
       createdAt: <div className='txt-desc'>{moment(createdAt).format('YYYY-MM-DD HH:mm:ss') || ''}</div>,
       courses:  <div className='txt-desc'>{courses || 0}</div>,
-      tags:  <div className='txt-desc'>{['23432k', 'dsfdjsk']}</div>,
       actions: (
         <Space>
           {props.permission.isEdit && (
@@ -164,7 +159,7 @@ const CategoriesList: React.FC<CategoryListProps> = (props) => {
 
   return (
     <div className='users-list'>
-      <Table columns={columns} dataSource={categoriesSource} onChange={onChange} pagination={tableParams.pagination} />
+      <Table scroll={{ x: 'max-content', y: 'calc(100vh - 300px)' }}  columns={columns} dataSource={categoriesSource} onChange={onChange} pagination={tableParams.pagination} />
     </div>
   );
 };

@@ -122,7 +122,7 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
         ),
         register: <div className='txt-desc'>{moment(order.createdAt).format('YYYY-MM-DD HH:mm:ss') || ''}</div>,
         courses: (
-          <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
+          <Avatar.Group maxCount={1} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
             {(items || []).map((course) => (
               <Avatar src={course?.thumbnail} />
             ))}
@@ -167,7 +167,7 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
   return (
     <Fragment>
       <div className='users-list'>
-        <Table columns={columns} dataSource={ordersData} onChange={onChange} pagination={tableParams.pagination} />
+        <Table scroll={{ x: 'max-content', y: 'calc(100vh - 400px)' }} columns={columns} dataSource={ordersData} onChange={onChange} pagination={tableParams.pagination} />
       </div>
       {isModalVisible && selectedOrderId && (
         <OrderDetailModal 

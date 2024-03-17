@@ -94,21 +94,21 @@ const Header = () => {
       key: 'mylearning',
       icon: <UserOutlined />
     },
-    {
-      label: 'Instructor Dashboard',
-      key: 'instructor',
-      icon: <UserOutlined />
-    },
+    // {
+    //   label: 'Instructor Dashboard',
+    //   key: 'instructor',
+    //   icon: <UserOutlined />
+    // },
     {
       label: 'Notifications',
       key: 'notifications',
       icon: <UserOutlined />
     },
-    {
-      label: 'Messages',
-      key: 'messages',
-      icon: <UserOutlined />
-    },
+    // {
+    //   label: 'Messages',
+    //   key: 'messages',
+    //   icon: <UserOutlined />
+    // },
     {
       label: (
         <Link to='/account-settings'>
@@ -116,11 +116,6 @@ const Header = () => {
         </Link>
       ),
       key: 'account-settings',
-      icon: <UserOutlined />
-    },
-    {
-      label: 'Payment method',
-      key: 'payment-method',
       icon: <UserOutlined />
     },
     {
@@ -137,11 +132,11 @@ const Header = () => {
       key: 'public-profile',
       icon: <UserOutlined />
     },
-    {
-      label: 'Edit Profile',
-      key: 'edit-profile',
-      icon: <UserOutlined />
-    },
+    // {
+    //   label: 'Edit Profile',
+    //   key: 'edit-profile',
+    //   icon: <UserOutlined />
+    // },
     {
       label: 'Help',
       key: 'help',
@@ -192,24 +187,6 @@ const Header = () => {
       key: 'wishlist',
       icon: <UserOutlined />
     },
-    {
-      label: 'Wishlist 2',
-      key: '2',
-      icon: <UserOutlined />
-    },
-    {
-      label: 'Wishlist 3',
-      key: '3',
-      icon: <UserOutlined />,
-      danger: true
-    },
-    {
-      label: 'Wishlist 4',
-      key: 'Note 5',
-      icon: <UserOutlined />,
-      danger: true
-      // disabled: true
-    }
   ];
 
   const dispatch = useDispatch();
