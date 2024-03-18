@@ -59,11 +59,8 @@ const SideBar = () => {
     getItem('Welcome', 'welcome', <DotChartOutlined />),
     (adminRole === UserRole.AUTHOR && getItem('Report', 'author-report', <PieChartOutlined />)) as MenuItem,
     (adminRole === UserRole.ADMIN && getItem('Dashboard', 'dashboard', <BorderOuterOutlined />)) as MenuItem,
-    getItem('Categories', 'categories', <UnorderedListOutlined />, [
-      getItem('Course Categories', 'categories')
-      // getItem('Lesson Type', 'lesson-type')
-    ]),
     getItem('Courses', 'courses', <DesktopOutlined />, [
+      getItem('Course Categories', 'categories'),
       getItem('Course Manager', 'courses'),
       getItem('Course Discuss', 'discuss'),
       getItem('Course Notes', 'courses-notes')

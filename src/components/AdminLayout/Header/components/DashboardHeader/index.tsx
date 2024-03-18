@@ -78,11 +78,6 @@ const DashboardHeader = () => {
     <Fragment>
       <Space>
         <h3 className='admin-header__page-title'>Dashboard</h3>
-
-        <Button onClick={openCreateCourseHandler} className='btn-wrap'>
-          <PlusCircleOutlined />
-          Create Course
-        </Button>
       </Space>
       <Space className='admin-header__notify'>
         <Button className='btn-wrap'>

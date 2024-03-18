@@ -7,18 +7,9 @@ const UsersHeader = () => {
     <Fragment>
       <Space>
         <h3 className='admin-header__page-title'>Users</h3>
-
         <Button className='btn-wrap'>
           <PlusCircleOutlined />
-          Add User
-        </Button>
-        <Button className='btn-wrap'>
-          <PlusCircleOutlined />
-          Bulk actions
-        </Button>
-        <Button className='btn-wrap'>
-          <PlusCircleOutlined />
-          Export users report
+          Export users
         </Button>
       </Space>
     </Fragment>

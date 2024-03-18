@@ -291,9 +291,10 @@ export const reportApi = createApi({
         return [{ type: 'Reports', id: 'LIST' }];
       }
     }),
-    getReportsCourseInsights: build.query<getReportsCourseInsightsResponse, void>({
-      query: () => ({
-        url: `/reports/course-insights`
+    getReportsCourseInsights: build.query<getReportsCourseInsightsResponse, {dateStart: string, dateEnd: string}>({
+      query: (params) => ({
+        url: `/reports/course-insights`,
+        params
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array
@@ -332,8 +333,9 @@ export const reportApi = createApi({
       }
     }),
     getCoursesReportByAuthor: build.query<any, {dateStart?: string, dateEnd?: string}>({
-      query: () => ({
-        url: `/reports/courses-report-by-author`
+      query: (params) => ({
+        url: `/reports/courses-report-by-author`,
+        params
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array

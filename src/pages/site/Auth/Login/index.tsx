@@ -107,7 +107,7 @@ const Login: React.FC<LoginProps> = (props) => {
             <GoogleLoginButton />
           </GoogleOAuthProvider>
           <Button className='auth__socials-btn'>
-            <FacebookLoginButton />
+            <FacebookFilled className='auth__socials-icon' />
           </Button>
           <Button className='auth__socials-btn'>
             <LinkedinFilled className='auth__socials-icon' />
