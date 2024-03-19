@@ -1,25 +1,81 @@
-import { Col, Divider, Input, Row, Skeleton, Space, notification } from 'antd';
+import { Col, Divider, Input, Row, Skeleton, Space, notification, Typography } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { TagOutlined, TagFilled } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { openAuthModal } from '../../auth.slice';
-import { useGetRetrieveCartQuery } from '../client.service';
-import { removeCart } from '../client.slice';
+import {
+  useGetRetrieveCartQuery,
+  useGetCouponsValidForCoursesQuery,
+  useGetTotalPriceQuery,
+  useGetValidCouponsForCoursesWithoutUserQuery,
+  useGetTotalPriceWithoutUserQuery
+} from '../client.service';
+import { removeCart, setSelectedCoupon } from '../client.slice';
 import './ViewCart.scss';
 import CartItem from './components/CartItem';
+
 const ViewCart = () => {
   const cart = useSelector((state: RootState) => state.client.cart);
+  const selectedCoupon = useSelector((state: RootState) => state.client.selectedCoupon);
+  const dispatch = useDispatch();
 
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
-  const courseIds = cart.items.map((item) => item.courseId);
 
-  const { data: cartData, isFetching: isCartFetching } = useGetRetrieveCartQuery({ courseIds });
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
-  const totalPrice = cartData?.cart.totalPrice || 0;
+  const [couponQuery, setCouponQuery] = useState(() =>
+    isAuth ? useGetCouponsValidForCoursesQuery : useGetValidCouponsForCoursesWithoutUserQuery
+  );
+  const [priceQuery, setPriceQuery] = useState(() =>
+    isAuth ? useGetTotalPriceQuery : useGetTotalPriceWithoutUserQuery
+  );
+
+  const [courseIds, setCourseIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setCouponQuery(() => (isAuth ? useGetCouponsValidForCoursesQuery : useGetValidCouponsForCoursesWithoutUserQuery));
+    setPriceQuery(() => (isAuth ? useGetTotalPriceQuery : useGetTotalPriceWithoutUserQuery));
+  }, [isAuth]);
+
+  useEffect(() => {
+    setCourseIds([]);
+    setTimeout(() => {
+      const newCourseIds = cart.items.map((item) => item.courseId);
+      setCourseIds(newCourseIds);
+    }, 0);
+  }, [isAuth, cart]);
+
+  const { data: couponsData, isFetching: isCouponsFetching } = couponQuery(courseIds.join(','));
+
+  const { data: cartData, isFetching: isCartFetching } = useGetRetrieveCartQuery({ courseIds, userId });
+
+  const { data: totalPriceData } = priceQuery({
+    courseIds: courseIds.join(','),
+    couponCode: selectedCoupon || undefined
+  });
+
+  useEffect(() => {
+    if (cartData && cartData.duplicatedIds && cartData.duplicatedIds.length > 0) {
+      cartData.duplicatedIds.forEach((id) => {
+        dispatch(removeCart(id));
+      });
+    }
+  }, [cartData, dispatch]);
+
+  useEffect(() => {
+    if (!isCouponsFetching && couponsData?.maxDiscountCoupon) {
+      dispatch(setSelectedCoupon(couponsData.maxDiscountCoupon.code));
+    } else {
+      dispatch(setSelectedCoupon(null));
+    }
+  }, [dispatch, isCouponsFetching, couponsData]);
+
+  const totalPrice = totalPriceData?.totalPrice || 0;
   const cartItems = cartData?.cart.items || [];
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const removeCartHandler = (courseId: string) => {
@@ -46,6 +102,14 @@ const ViewCart = () => {
       });
 
       dispatch(openAuthModal());
+    }
+  };
+
+  const selectCouponHandler = (couponCode: string) => {
+    if (selectedCoupon === couponCode) {
+      dispatch(setSelectedCoupon(null));
+    } else {
+      dispatch(setSelectedCoupon(couponCode));
     }
   };
 
@@ -85,13 +149,43 @@ const ViewCart = () => {
                   <Divider />
                   <div className='view-cart__summary-promo'>
                     <span className='view-cart__summary-promo-title'>Promo code</span>
+                    {courseIds.length > 0 && (
+                      <div className='view-cart__coupons-list' style={{ marginTop: '10px' }}>
+                        {couponsData?.coupons?.map((coupon) => (
+                          <div
+                            key={coupon._id}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              marginBottom: '10px',
+                              padding: '10px',
+                              border: `1px solid ${selectedCoupon === coupon.code ? '#1890ff' : '#ddd'}`,
+                              borderRadius: '5px',
+                              cursor: 'pointer',
+                              backgroundColor: selectedCoupon === coupon.code ? '#f0f0f0' : 'inherit'
+                            }}
+                            onClick={() => selectCouponHandler(coupon.code)}
+                          >
+                            {selectedCoupon === coupon.code ? (
+                              <TagOutlined style={{ marginRight: '5px' }} />
+                            ) : (
+                              <TagFilled style={{ marginRight: '5px' }} />
+                            )}
+                            <Typography.Text strong>{coupon.code}</Typography.Text>
+                            <span></span>
+                            <Typography.Text>{coupon.description}</Typography.Text>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     <div className='view-cart__summary-promo-input-group'>
                       <Space.Compact style={{ width: '100%' }}>
-                        <Input defaultValue='Enter Coupon' />
+                        <Input defaultValue='Enter Coupon' value={selectedCoupon ?? ''} />
                         <ButtonCmp className='btn btn-sm'>Apply</ButtonCmp>
                       </Space.Compact>
                     </div>
                   </div>
+                  <Divider />
                 </div>
               </Col>
             </Row>

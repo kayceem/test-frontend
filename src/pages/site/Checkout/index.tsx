@@ -7,7 +7,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import ButtonCmp from '../../../components/Button';
 import { RootState } from '../../../store/store';
 import { IOrder } from '../../../types/order.type';
-import { useCreateOrderMutation, useGetRetrieveCartQuery, useGetUserQuery, useCreateVnpayUrlMutation } from '../client.service';
+import {
+  useCreateOrderMutation,
+  useGetRetrieveCartQuery,
+  useGetUserQuery,
+  useCreateVnpayUrlMutation,
+  useGetTotalPriceQuery
+} from '../client.service';
 import { clearCart } from '../client.slice';
 import './Checkout.scss';
 import DetailItem from './components/DetailItem';
@@ -22,7 +28,6 @@ Expiry date
 5/2026
 `;
 
-
 const Checkout = () => {
   const { token } = theme.useToken();
   const [createOrder] = useCreateOrderMutation();
@@ -36,7 +41,7 @@ const Checkout = () => {
       label: (
         <div>
           <Radio
-            value="Visa"
+            value='Visa'
             checked={selectedPaymentMethod === 'Visa'}
             onChange={() => {
               if (expandedPanel.includes('1')) {
@@ -52,14 +57,14 @@ const Checkout = () => {
         </div>
       ),
       children: <p>{text}</p>,
-      style: panelStyle,
+      style: panelStyle
     },
     {
       key: '2',
       label: (
         <div>
           <Radio
-            value="Credit/Debit Card"
+            value='Credit/Debit Card'
             checked={selectedPaymentMethod === 'Credit/Debit Card'}
             onChange={() => {
               if (expandedPanel.includes('2')) {
@@ -75,14 +80,14 @@ const Checkout = () => {
         </div>
       ),
       children: <p>{text}</p>,
-      style: panelStyle,
+      style: panelStyle
     },
     {
       key: '3',
       label: (
         <div>
           <Radio
-            value="Paypal"
+            value='Paypal'
             checked={selectedPaymentMethod === 'Paypal'}
             onChange={() => {
               if (expandedPanel.includes('3')) {
@@ -98,14 +103,14 @@ const Checkout = () => {
         </div>
       ),
       children: <p>{text}</p>,
-      style: panelStyle,
+      style: panelStyle
     },
     {
       key: '4',
       label: (
         <div>
           <Radio
-            value="VN Pay"
+            value='VN Pay'
             checked={selectedPaymentMethod === 'VN Pay'}
             onChange={() => {
               if (expandedPanel.includes('4')) {
@@ -121,10 +126,9 @@ const Checkout = () => {
         </div>
       ),
       children: <p>{text}</p>,
-      style: panelStyle,
-    },
+      style: panelStyle
+    }
   ];
-
 
   const panelStyle = {
     marginBottom: 0,
@@ -134,19 +138,26 @@ const Checkout = () => {
   };
 
   const cart = useSelector((state: RootState) => state.client.cart);
+  const selectedCoupon = useSelector((state: RootState) => state.client.selectedCoupon);
   const courseIds = cart.items.map((item) => item.courseId);
 
+  const userId = useSelector((state: RootState) => state.auth.userId);
+
   const { data: cartData, isFetching: isCartFetching } = useGetRetrieveCartQuery(
-    { courseIds },
+    { courseIds, userId },
     {
       skip: !courseIds.length
     }
   );
 
-  const cartItems = cartData?.cart.items || [];
-  const totalPrice = cartData?.cart.totalPrice || 0; // VAT FEE APPLY here
+  const { data: totalPriceData } = useGetTotalPriceQuery({
+    courseIds: courseIds.join(','),
+    couponCode: selectedCoupon || undefined
+  });
 
-  const userId = useSelector((state: RootState) => state.auth.userId);
+  const cartItems = cartData?.cart.items || [];
+  const totalPrice = totalPriceData?.totalPrice || 0;
+  const discountPrice = totalPriceData?.discountPrice || 0;
 
   const { data: userData } = useGetUserQuery(userId, {
     skip: !userId
@@ -156,6 +167,8 @@ const Checkout = () => {
   const navigate = useNavigate();
 
   const checkoutHandler = () => {
+    const couponCode = selectedCoupon !== null && selectedCoupon !== undefined ? selectedCoupon : null;
+
     const newOrder = {
       items: cart?.items || [],
       user: {
@@ -167,6 +180,7 @@ const Checkout = () => {
       transaction: {
         method: selectedPaymentMethod
       },
+      couponCode: couponCode,
       totalPrice: totalPrice,
       note: 'No caption',
       vatFee: totalPrice * 0.1
@@ -204,12 +218,12 @@ const Checkout = () => {
     <div className='checkout'>
       <div className='checkout__wrap'>
         <div className='container'>
-        <Row className='row-wrap'>
-          <Col className='checkout__col checkout__col--left'>
-            <h2 className='checkout__title'>Checkout</h2>
-            <h3 className='checkout__billing-title'>Billing address</h3>
-            <div className='checkout__countries'>
-              <div className='checkout__countries-header'>
+          <Row className='row-wrap'>
+            <Col className='checkout__col checkout__col--left'>
+              <h2 className='checkout__title'>Checkout</h2>
+              <h3 className='checkout__billing-title'>Billing address</h3>
+              <div className='checkout__countries'>
+                <div className='checkout__countries-header'>
                   <span className='checkout__countries-header-item checkout__countries-title'>Country</span>
                   <span className='checkout__countries-header-item checkout__countries-required'>Required</span>
                 </div>
@@ -232,59 +246,65 @@ const Checkout = () => {
                   </div>
                 </div>
 
-              <div className='checkout__payment-methods'>
-                <div className='checkout__payment-header'>
-                  <h3 className='checkout__payment-title'>Payment method</h3>
-                  <span className='checkout__payment-secured'>Secured connection</span>
+                <div className='checkout__payment-methods'>
+                  <div className='checkout__payment-header'>
+                    <h3 className='checkout__payment-title'>Payment method</h3>
+                    <span className='checkout__payment-secured'>Secured connection</span>
+                  </div>
+                  <div className='checkout__payment-body'>
+                    <Collapse
+                      className='checkout__payment-content'
+                      accordion
+                      bordered={false}
+                      activeKey={expandedPanel}
+                      expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+                      style={{ background: token.colorBgContainer }}
+                      items={getItems(panelStyle)}
+                    />
+                  </div>
                 </div>
-                <div className='checkout__payment-body'>
-                  <Collapse
-                    className='checkout__payment-content'
-                    accordion
-                    bordered={false}
-                    activeKey={expandedPanel}
-                    expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-                    style={{ background: token.colorBgContainer }}
-                    items={getItems(panelStyle)}
-                  />
+                <div className='checkout__orders-detail'>
+                  <h3 className='checkout__orders-detail-title'>Order details</h3>
+                  {isCartFetching && <Skeleton />}
+                  {!isCartFetching &&
+                    cartItems.map((cartItem: { _id: string; name: string; thumbnail: string; finalPrice: number }) => {
+                      return <DetailItem key={cartItem._id} courseItem={cartItem} />;
+                    })}
                 </div>
               </div>
-              <div className='checkout__orders-detail'>
-                <h3 className='checkout__orders-detail-title'>Order details</h3>
-                {isCartFetching && <Skeleton />}
-                {!isCartFetching &&
-                  cartItems.map((cartItem: { _id: string; name: string; thumbnail: string; finalPrice: number }) => {
-                    return <DetailItem key={cartItem._id} courseItem={cartItem} />;
-                  })}
-              </div>
-            </div>
-          </Col>
-          <Col className='checkout__col checkout__col--right'>
-            <Row className='checkout__col--right-wrap'>
-              <Col className='col'>
-                <div className='checkout__summary'>
-                  <h3 className='checkout__summary-title'>Summary</h3>
-                  <div className='checkout__summary-row checkout__summary-price'>
-                    <span className='checkout__summary-col checkout__summary-price-label'>Original Price:</span>
-                    <span className='checkout__summary-col checkout__summary-price-text'>${totalPrice}</span>
-                  </div>
-                  <Divider className='checkout__summary-divider' />
-                  <div className='checkout__summary-row checkout__summary-total'>
-                    <span className='checkout__summary-col checkout__summary-total-label'>Total:</span>
-                    <span className='checkout__summary-col checkout__summary-total-text'>${totalPrice}</span>
-                  </div>
+            </Col>
+            <Col className='checkout__col checkout__col--right'>
+              <Row className='checkout__col--right-wrap'>
+                <Col className='col'>
+                  <div className='checkout__summary'>
+                    <h3 className='checkout__summary-title'>Summary</h3>
+                    <div className='checkout__summary-row checkout__summary-price'>
+                      <span className='checkout__summary-col checkout__summary-price-label'>Original Price:</span>
+                      <span className='checkout__summary-col checkout__summary-price-text'>
+                        ${discountPrice + totalPrice}
+                      </span>
+                    </div>
+                    <div className='checkout__summary-row checkout__summary-price'>
+                      <span className='checkout__summary-col checkout__summary-price-label'>Discount Price:</span>
+                      <span className='checkout__summary-col checkout__summary-price-text'>${discountPrice}</span>
+                    </div>
+                    <Divider className='checkout__summary-divider' />
+                    <div className='checkout__summary-row checkout__summary-total'>
+                      <span className='checkout__summary-col checkout__summary-total-label'>Total:</span>
+                      <span className='checkout__summary-col checkout__summary-total-text'>${totalPrice}</span>
+                    </div>
 
-                  <div className='checkout__summary-notify'>
-                    By completing your purchase you agree to these <Link to='/'> Terms of Service.</Link>
+                    <div className='checkout__summary-notify'>
+                      By completing your purchase you agree to these <Link to='/'> Terms of Service.</Link>
+                    </div>
+                    <ButtonCmp onClick={checkoutHandler} className='checkout__summary-btn btn btn-primary btn-md'>
+                      Complete Checkout
+                    </ButtonCmp>
                   </div>
-                  <ButtonCmp onClick={checkoutHandler} className='checkout__summary-btn btn btn-primary btn-md'>
-                    Complete Checkout
-                  </ButtonCmp>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </div>
       </div>
     </div>

@@ -72,10 +72,21 @@ const CreateCouponDrawer: React.FC<CreateCouponDrawerProps> = ({ isOpen, onClose
         <Form.Item
           name='discountAmount'
           label='Discount Amount'
-          rules={[{ required: true, message: 'Please enter the discount amount!' }]}
+          rules={[
+            { required: true, message: 'Please enter the discount amount!' },
+            {
+              validator: (_, value) => {
+                if (value < 0) {
+                  return Promise.reject('Discount amount cannot be negative');
+                }
+                return Promise.resolve();
+              }
+            }
+          ]}
         >
           <Input type='number' placeholder='Enter discount amount' />
         </Form.Item>
+
         <Form.Item
           name='couponTypeId'
           label='Coupon Type'
