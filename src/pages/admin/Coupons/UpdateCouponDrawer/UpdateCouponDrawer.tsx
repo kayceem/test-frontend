@@ -27,15 +27,24 @@ const UpdateCouponDrawer: React.FC<UpdateCouponDrawerProps> = ({ isOpen, onClose
 
   useEffect(() => {
     if (couponData) {
+      const { coupon, couponCourses } = couponData;
+      let couponTypeId: string;
+
+      if (typeof coupon.couponTypeId === 'string') {
+        couponTypeId = coupon.couponTypeId;
+      } else {
+        couponTypeId = coupon.couponTypeId?._id ?? '';
+      }
+
       form.setFieldsValue({
-        ...couponData.coupon,
-        _id: couponData.coupon._id,
-        couponTypeId: couponData.coupon.couponTypeId._id,
-        courseIds: couponData.couponCourses.map((course) => course.courseId._id),
+        ...coupon,
+        _id: coupon._id,
+        couponTypeId: couponTypeId,
+        courseIds: couponCourses.map((course) => course.courseId._id),
         dateRangeStart: {
           dateRangeEnd: [
-            dayjs(moment(couponData.coupon.dateStart).format('YYYY-MM-DD HH:mm:ss')),
-            dayjs(moment(couponData.coupon.dateEnd).format('YYYY-MM-DD HH:mm:ss'))
+            dayjs(moment(coupon.dateStart).format('YYYY-MM-DD HH:mm:ss')),
+            dayjs(moment(coupon.dateEnd).format('YYYY-MM-DD HH:mm:ss'))
           ]
         }
       });
@@ -103,10 +112,21 @@ const UpdateCouponDrawer: React.FC<UpdateCouponDrawerProps> = ({ isOpen, onClose
         <Form.Item
           name='discountAmount'
           label='Discount Amount'
-          rules={[{ required: true, message: 'Please enter the discount amount!' }]}
+          rules={[
+            { required: true, message: 'Please enter the discount amount!' },
+            {
+              validator: (_, value) => {
+                if (value < 0) {
+                  return Promise.reject('Discount amount cannot be negative');
+                }
+                return Promise.resolve();
+              }
+            }
+          ]}
         >
           <Input type='number' placeholder='Enter discount amount' />
         </Form.Item>
+
         <Form.Item
           name='couponTypeId'
           label='Coupon Type'

@@ -1,4 +1,5 @@
 import { IReview, IReviewReply } from '../../types/review.type';
+import { ICoupon } from '../../types/coupon.type';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import jwtDecode from 'jwt-decode';
 import { BACKEND_URL } from '../../constant/backend-domain';
@@ -47,6 +48,7 @@ export interface getRetrieveCartResponse {
     items: ICourseDetail[];
     totalPrice: number;
   };
+  duplicatedIds: string[];
   message: string;
 }
 
@@ -293,6 +295,18 @@ export interface GetReviewRepliesByReviewIdResponse {
   replies: IReviewReply[];
 }
 
+export interface GetCouponsValidForCoursesResponse {
+  message: string;
+  coupons: ICoupon[] | null;
+  maxDiscountCoupon: ICoupon | null;
+}
+
+export interface GetTotalPriceResponse {
+  message: string;
+  totalPrice: number;
+  discountPrice: number;
+}
+
 export interface GetAllDiscussionsResponse {
   message: string;
   discuss: IDiscuss[];
@@ -341,6 +355,7 @@ export const clientApi = createApi({
     'Reviews',
     'Wishlist',
     'Feedbacks',
+    'Coupons',
     'BlogComment',
     'Note',
     'Discussions'
@@ -488,11 +503,12 @@ export const clientApi = createApi({
         return [{ type: 'Users', id: 'LIST' }];
       }
     }),
-    getRetrieveCart: build.query<getRetrieveCartResponse, { courseIds: string[] }>({
+    getRetrieveCart: build.query<getRetrieveCartResponse, { courseIds: string[]; userId: string }>({
       query: (params) => ({
         url: `/carts/retrieve`,
         params: {
-          _courseIds: params.courseIds
+          _courseIds: params.courseIds,
+          _userId: params.userId
         }
       }),
       providesTags(result) {
@@ -885,6 +901,32 @@ export const clientApi = createApi({
       }),
       providesTags: () => [{ type: 'Reviews', id: 'LIST' }]
     }),
+    getCouponsValidForCourses: build.query<GetCouponsValidForCoursesResponse, string>({
+      query: (courseIds) => ({
+        url: `coupons/valid-for-courses?courseIds=${courseIds}`
+      }),
+      providesTags: () => [{ type: 'Coupons', id: 'LIST' }]
+    }),
+    getTotalPrice: build.query<GetTotalPriceResponse, { courseIds: string; couponCode?: string }>({
+      query: ({ courseIds, couponCode }) => ({
+        url: `carts/get-total-price`,
+        params: { courseIds, couponCode }
+      }),
+      providesTags: () => [{ type: 'Clients', id: 'LIST' }]
+    }),
+    getValidCouponsForCoursesWithoutUser: build.query<GetCouponsValidForCoursesResponse, string>({
+      query: (courseIds) => ({
+        url: `coupons/valid-for-courses-without-user?courseIds=${courseIds}`
+      }),
+      providesTags: () => [{ type: 'Coupons', id: 'LIST' }]
+    }),
+    getTotalPriceWithoutUser: build.query<GetTotalPriceResponse, { courseIds: string; couponCode?: string }>({
+      query: ({ courseIds, couponCode }) => ({
+        url: `carts/get-total-price-without-user`,
+        params: { courseIds, couponCode }
+      }),
+      providesTags: () => [{ type: 'Clients', id: 'LIST' }]
+    }),
     // Discuss
     getAllDiscussions: build.query<GetAllDiscussionsResponse, void>({
       query: () => ({
@@ -1003,6 +1045,10 @@ export const {
   useGetAverageRatingByCourseIdQuery,
   useGetRatingPercentageByCourseIdQuery,
   useGetReviewRepliesByReviewIdQuery,
+  useGetCouponsValidForCoursesQuery,
+  useGetTotalPriceQuery,
+  useGetValidCouponsForCoursesWithoutUserQuery,
+  useGetTotalPriceWithoutUserQuery,
   // Discuss
   useGetAllDiscussionsQuery,
   useGetDiscussionsByLessonIdQuery,
