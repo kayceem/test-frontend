@@ -23,6 +23,7 @@ import WelcomeHeader from './components/WelcomeHeader';
 import BlogCommentsHeader from './components/BlogCommentsHeader';
 import DiscussHeader from './components/DiscussHeader';
 import UsersPermissionHeader from './components/UsersPermission';
+import SettingHeader from './components/SettingHeader';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -57,6 +58,8 @@ const AdminHeader = () => {
       {path === '/author/feedbacks/list' && <FeedbacksHeader />}
       {path === '/author/reviews' && <ReviewsHeader />}
       {path === '/author/transaction' && <TransactionsHeader />}
+      {path === '/author/change-password' && <WelcomeHeader />}
+      {path === '/author/settings' && <SettingHeader />}
     </Header>
   );
 };

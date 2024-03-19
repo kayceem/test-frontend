@@ -53,6 +53,11 @@ interface UpdateActiveStatusUserResponse {
   message: string;
 }
 
+interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+}
+
 interface GetUserHistoriesResponse {
   message: string;
   results: IActionLog[];
@@ -322,6 +327,20 @@ export const userApi = createApi({
         { type: 'Users' as const, id: 'LIST' },
         { type: 'Users' as const, id: userId }
       ]
+    }),
+    ChangePassword: build.mutation<
+      ChangePasswordResponse,
+      { userId: string; oldPassword: string; newPassword: string }
+    >({
+      query: ({ userId, oldPassword, newPassword }) => ({
+        url: `users/user/change-password`,
+        method: 'POST',
+        body: { userId, oldPassword, newPassword }
+      }),
+      invalidatesTags: (_, __, { userId }) => [
+        { type: 'Users', id: 'LIST' },
+        { type: 'Users', id: userId }
+      ]
     })
   })
 });
@@ -336,5 +355,6 @@ export const {
   useUpdateActiveStatusUserMutation,
   useUpdatePermissionMutation,
   useApproveUserMutation,
-  useGetUserHistoriesQuery
+  useGetUserHistoriesQuery,
+  useChangePasswordMutation
 } = userApi;

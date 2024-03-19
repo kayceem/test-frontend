@@ -132,6 +132,15 @@ const Header = () => {
       key: 'public-profile',
       icon: <UserOutlined />
     },
+    {
+      label: (
+        <Link to='/change-password'>
+          <div>Change Password</div>
+        </Link>
+      ),
+      key: 'change-password',
+      icon: <UserOutlined />
+    },
     // {
     //   label: 'Edit Profile',
     //   key: 'edit-profile',
@@ -186,7 +195,7 @@ const Header = () => {
       ),
       key: 'wishlist',
       icon: <UserOutlined />
-    },
+    }
   ];
 
   const dispatch = useDispatch();

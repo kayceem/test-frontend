@@ -22,6 +22,11 @@ interface signUpRequestResponse {
   message: string;
 }
 
+interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+}
+
 export const authApi = createApi({
   reducerPath: 'authApi',
   tagTypes: ['Authentication'],
@@ -198,6 +203,20 @@ export const authApi = createApi({
         };
       },
       invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
+    }),
+    ChangePassword: build.mutation<
+      ChangePasswordResponse,
+      { userId: string; oldPassword: string; newPassword: string }
+    >({
+      query: ({ userId, oldPassword, newPassword }) => ({
+        url: `/change-password`,
+        method: 'POST',
+        body: { userId, oldPassword, newPassword }
+      }),
+      invalidatesTags: (_, __, { userId }) => [
+        { type: 'Authentication', id: 'LIST' },
+        { type: 'Authentication', id: userId }
+      ]
     })
   })
 });
@@ -214,5 +233,6 @@ export const {
   useAdminLogoutMutation,
   useGoogleLoginMutation,
   useGithubLoginMutation,
-  useFacebookLoginMutation
+  useFacebookLoginMutation,
+  useChangePasswordMutation
 } = authApi;

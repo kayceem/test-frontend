@@ -20,17 +20,17 @@ const ProfileForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
   useEffect(() => {
     if (isSuccess && userData) {
       const initialValues = {
-        name: userData.user.name,
-        email: userData.user.email,
-        phone: userData.user.phone,
-        headline: userData.user.headline,
-        biography: userData.user.biography,
-        website: userData.user.website,
-        twitter: userData.user.twitter,
-        facebook: userData.user.facebook,
-        linkedin: userData.user.linkedin,
-        youtube: userData.user.youtube,
-        language: userData.user.language
+          name: userData.user.name,
+          email: userData.user.email,
+          phone: userData.user.phone,
+          headline: userData.user.headline,
+          biography: userData.user.biography,
+          website: userData.user.website,
+          twitter: userData.user.twitter,
+          facebook: userData.user.facebook,
+          linkedin: userData.user.linkedin,
+          youtube: userData.user.youtube,
+          language: userData.user.language
       };
 
       form.setFieldsValue(initialValues);
