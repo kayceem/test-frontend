@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, Drawer, Form, Input, notification } from 'antd';
+import { Button, Drawer, Form, Input, Upload, notification } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
@@ -10,6 +10,8 @@ import {
   useGetBlogCategoryByIdQuery,
   useUpdateBlogCategoryMutation
 } from '../categoriesBlog.service';
+import { UploadOutlined } from '@ant-design/icons';
+import { UploadChangeParam } from 'antd/lib/upload/interface';
 
 interface CreateCategoryBlogProps {
   isOpen: boolean;
@@ -20,12 +22,16 @@ const AddCategoriesBlog: React.FC<CreateCategoryBlogProps> = ({ isOpen, onClose 
   const [addCategoryBlog] = useCreateBlogCategoryMutation();
   const [updateCategoryBlog] = useUpdateBlogCategoryMutation();
   const BlogcategoryId = useSelector((state: RootState) => state.blogCategories.BlogcategoryId);
-
+  const [fileList, setFileList] = React.useState<any[]>([]);
   const { data: categoryResponse, isFetching } = useGetBlogCategoryByIdQuery(BlogcategoryId, {
     skip: !BlogcategoryId
   });
 
   const [form] = Form.useForm();
+
+  const handleChange = (info: UploadChangeParam) => {
+    setFileList(info.fileList);
+  };
 
   useEffect(() => {
     if (BlogcategoryId && categoryResponse) {
@@ -65,12 +71,10 @@ const AddCategoriesBlog: React.FC<CreateCategoryBlogProps> = ({ isOpen, onClose 
       bodyStyle={{ paddingBottom: 80 }}
     >
       <Form form={form} layout='vertical' onFinish={submitHandler}>
-        <Form.Item
-          name='cateImage'
-          label='Category Image URL'
-          rules={[{ required: false, message: 'Please enter category image URL' }]}
-        >
-          <Input placeholder='Enter category image URL' />
+        <Form.Item name='cateImage' label='Cate Image' rules={[{ required: true, message: 'Please enter cate image' }]}>
+          <Upload beforeUpload={() => false} onChange={handleChange} multiple={false} fileList={fileList}>
+            <Button icon={<UploadOutlined style={{ color: '#000' }} />}>Select Image</Button>
+          </Upload>
         </Form.Item>
         <Form.Item
           name='name'
