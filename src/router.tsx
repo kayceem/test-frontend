@@ -72,6 +72,8 @@ import Welcome from './pages/admin/Welcome/welcome';
 import AuthorReport from './pages/admin/AuthorReport/AuthorReport';
 import BlogComments from './pages/admin/BlogComments/BlogComments';
 import Discuss from './pages/admin/Discuss/Discuss';
+import ChangePassword from './pages/admin/ChangePassword';
+import ChangePasswordUser from './pages/site/ChangePassword';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
@@ -182,6 +184,10 @@ const RouterHooks = () => {
           element: isAuth ? <WishlistPage /> : <ErrorPage page='/' />
         },
         {
+          path: 'change-password',
+          element: isAuth ? <ChangePasswordUser /> : <ErrorPage page='/' />
+        },
+        {
           path: 'payment-history',
           element: <PaymentHistory />
         },
@@ -247,6 +253,10 @@ const RouterHooks = () => {
               element: <CourseNotes />
             }
           ]
+        },
+        {
+          path: 'change-password',
+          element: <ChangePassword />
         },
         {
           path: 'discuss',

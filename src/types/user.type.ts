@@ -13,6 +13,7 @@ export enum UserRole {
 export interface IUser extends IBase {
   _id: string;
   name: string;
+  username: string;
   email: string;
   password?: string;
   role: UserRole;

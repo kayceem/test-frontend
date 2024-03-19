@@ -49,8 +49,6 @@ const PictureForm: React.FC<{ userData: getUserResponse | undefined, isSuccess: 
 
 
   const handleSubmit = () => {
-
-
     setLoading(true);
 
     const submitAsync = async () => {

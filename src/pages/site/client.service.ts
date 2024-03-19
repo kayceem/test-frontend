@@ -633,7 +633,7 @@ export const clientApi = createApi({
     }),
     updateUser: build.mutation<UpdateUserResponse, { userId: string; formData: FormData }>({
       query: ({ userId, formData }) => ({
-        url: `users//user/${userId}`,
+        url: `users/user/${userId}`,
         method: 'PUT',
         body: formData
       }),
