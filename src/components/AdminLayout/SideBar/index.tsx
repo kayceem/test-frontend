@@ -78,32 +78,9 @@ const SideBar = () => {
     ]),
     (adminRole === UserRole.ADMIN &&
       getItem('Reports Center', 'reports', <BarChartOutlined />, [
-        getItem(
-          'User Analytics',
-          'user-analytics',
-          null,
-          [getItem('User Progress', 'reports/users-progress'), getItem('Course Insights', 'reports/course-insights')],
-          'group'
-        ),
-        getItem(
-          'Exams',
-          'exams',
-          null,
-          [getItem('Certifications', 'reports/certifications'), getItem('Review center', 'reports/reviews-center')],
-          'group'
-        ),
-        getItem(
-          'Sales',
-          'sales',
-          null,
-          [
-            getItem('Orders', 'reports/orders'),
-            getItem('Courses revenues', 'reports/courses-revenue'),
-            getItem('Instructors Revenues', 'reports/instructors-revenue'),
-            getItem('Cancelled Sales', 'reports/cancelled-sales')
-          ],
-          'group'
-        )
+        getItem('User Progress', 'reports/users-progress'), 
+        getItem('Course Insights', 'reports/course-insights'),
+        getItem('Review center', 'reports/reviews-center'),
       ])) as MenuItem,
     getItem('Marketing', 'marketing', <TagsOutlined />, [
       getItem('Coupon Types', 'marketing/coupon-types'),
