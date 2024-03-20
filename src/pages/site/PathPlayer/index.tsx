@@ -7,7 +7,9 @@ import { RootState } from '../../../store/store';
 import {
   useCreateCertificateMutation,
   useGetCertificateQuery,
-  useGetCourseEnrolledByUserQuery
+  useGetCourseEnrolledByUserQuery,
+  useGetDiscussionsByLessonIdQuery,
+  useGetNotesByLessonIdQuery
 } from '../client.service';
 import {
   createCertificatePath,
@@ -28,7 +30,6 @@ const PathPlayer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const courseId = searchParams.get('courseId');
   const userId = useSelector<RootState, string>((state: RootState) => state.auth.userId);
-
   const { data, isFetching } = useGetCourseEnrolledByUserQuery(courseId as string);
   const dispatch = useDispatch();
   const [createCertificate, createCertificateResult] = useCreateCertificateMutation();
@@ -44,6 +45,13 @@ const PathPlayer = () => {
   const [currProgress, setCurrProgress] = useState(Number(progressPercent));
 
   const lessonIdsDone = useSelector((state: RootState) => state.client.lessonIdsDoneByCourseId);
+
+  const lessonId = useSelector((state: RootState) => state.client.lessonId);
+  const { data: discussData, isFetching: isFetchingDiscuss } = useGetDiscussionsByLessonIdQuery(lessonId);
+
+  const { data: NotesData, isFetching: isFetchingNotesData } = useGetNotesByLessonIdQuery(lessonId, {
+    skip: !lessonId
+  });
 
   // const isLessonDone = useSelector((state: RootState) => state.client.isLessonDone);
 
@@ -143,7 +151,7 @@ const PathPlayer = () => {
     },
     {
       key: 'discuss',
-      label: `Discuss`,
+      label: `Discuss (${discussData?.discuss?.length || 0})`,
       children: <Discusses className='path-player__menu-content' />
     },
     {
@@ -153,7 +161,7 @@ const PathPlayer = () => {
     },
     {
       key: 'note',
-      label: `Note`,
+      label: `Notes (${NotesData?.notes?.length || 0})`,
       children: <Notes className='path-player__menu-content' />
     }
   ];

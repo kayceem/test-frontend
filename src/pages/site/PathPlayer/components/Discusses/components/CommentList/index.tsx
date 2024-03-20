@@ -74,7 +74,7 @@ const CommentList: React.FC<CommentsProps> = ({ userId, lessonId, courseId }) =>
 
   return (
     <>
-      <Content style={{ height: '600px', overflow: 'auto' }}>
+      <Content>
         <List
           itemLayout='horizontal'
           dataSource={discuss}
@@ -87,6 +87,10 @@ const CommentList: React.FC<CommentsProps> = ({ userId, lessonId, courseId }) =>
                   <>
                     <div style={{ wordBreak: 'break-word' }} className='mb-3'>
                       {item.comments}
+                      <br />
+                      <Typography.Text type='secondary' className='mr-8 my-2'>
+                        {item.createdAt ? new Date(item.createdAt).toLocaleString() : 'N/A'}
+                      </Typography.Text>
                     </div>
                     <span className='mr-6'>
                       <Button onClick={() => handleOpenReplyModal(item._id)}>Reply</Button>
@@ -96,9 +100,6 @@ const CommentList: React.FC<CommentsProps> = ({ userId, lessonId, courseId }) =>
                         {visibleReplies[item._id] ? 'Hide' : 'Show'} Replies ({item.replies?.length || 0})
                       </Button>
                     </span>
-                    <Typography.Text type='secondary' className='mr-8'>
-                      {item.createdAt ? new Date(item.createdAt).toLocaleString() : 'N/A'}
-                    </Typography.Text>
                     {item.userId._id === userId && (
                       <Space className='mr-3'>
                         <Button
@@ -117,10 +118,13 @@ const CommentList: React.FC<CommentsProps> = ({ userId, lessonId, courseId }) =>
                           <div className='flex items-center'>
                             <Avatar src={reply.userId.avatar} />
                             <div className='ml-3 mr-6'>{reply.userId.name}</div>
-                            <div>{reply.createdAt ? new Date(reply.createdAt).toLocaleString() : 'N/A'}</div>
                           </div>
                           <div className='mt-2' style={{ wordBreak: 'break-word' }}>
                             {reply.comments}
+                            <br />
+                            <div className='mt-2'>
+                              {reply.createdAt ? new Date(reply.createdAt).toLocaleString() : 'N/A'}
+                            </div>
                           </div>
                         </div>
                       ))}
