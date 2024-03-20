@@ -12,7 +12,7 @@ type Props = {
   handleCancel: () => void;
 };
 
-const DiscussList = ({ isVisible, handleOk, handleCancel }: Props) => {
+const DiscussList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const lessonId = useSelector((state: RootState) => state.client.lessonId);
   const userId = useSelector<RootState, string>((state: RootState) => state.auth.userId);
@@ -24,10 +24,8 @@ const DiscussList = ({ isVisible, handleOk, handleCancel }: Props) => {
 
   return (
     <>
-      <Drawer visible={isVisible} onClose={handleCancel} width={800} title='Discuss List'>
-        <DiscussForm userId={userId} lessonId={lessonId} courseId={courseId} />
-        <CommentList userId={userId} lessonId={lessonId} courseId={courseId} />
-      </Drawer>
+      <DiscussForm userId={userId} lessonId={lessonId} courseId={courseId} />
+      <CommentList userId={userId} lessonId={lessonId} courseId={courseId} />
     </>
   );
 };

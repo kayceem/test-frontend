@@ -251,6 +251,7 @@ interface CreateNoteRequest {
   lessonId: string;
   content: string;
   videoMinute: number;
+  courseId: string;
 }
 
 interface UpdateNoteRequest {
@@ -633,6 +634,9 @@ export const clientApi = createApi({
         }
       })
     }),
+    getAllLessons: build.query<getLessonsResponse, void>({
+      query: () => 'lessons/getAllLesson'
+    }),
     getLessonsBySectionIdEnrolledCourse: build.query<getLessonsResponse, { sectionId: string; userId: string }>({
       query: (payload) => ({
         url: `lessons/section/course-enrolled/${payload.sectionId}`,
@@ -839,14 +843,15 @@ export const clientApi = createApi({
 
     // Create a note
     createNote: build.mutation<NoteResponse, CreateNoteRequest>({
-      query: ({ userId, lessonId, content, videoMinute }) => ({
-        url: `/note/createNote/${lessonId}`, // URL đã điều chỉnh để bao gồm lessonId
+      query: ({ userId, lessonId, content, videoMinute, courseId }) => ({
+        url: `/note/createNote/${lessonId}`,
         method: 'POST',
         body: {
           userId,
           lessonId,
           content,
-          videoMinute
+          videoMinute,
+          courseId
         }
       }),
       invalidatesTags: [{ type: 'Note', id: 'LIST' }]
@@ -1057,5 +1062,6 @@ export const {
   useAddDiscussionMutation,
   useUpdateDiscussionMutation,
   useDeleteDiscussionMutation,
-  useAddReplyToDiscussMutation
+  useAddReplyToDiscussMutation,
+  useGetAllLessonsQuery
 } = clientApi;

@@ -16,7 +16,7 @@ interface DiscussionFormValues {
 interface DiscussFormProps {
   userId: string;
   lessonId: string;
-  courseId: string;
+  courseId: string | null;
 }
 
 const DiscussForm: React.FC<DiscussFormProps> = ({ userId, lessonId, courseId }) => {

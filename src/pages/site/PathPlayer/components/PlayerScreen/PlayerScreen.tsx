@@ -7,6 +7,7 @@ import { formatTimeAndMinutes } from '../../../../../utils/functions';
 import { useCreateNoteMutation, useUpdateLessonDoneByUserMutation } from '../../../client.service';
 import { setPercentHavePlayed, updateLessonDoneAtBrowser } from '../../../client.slice';
 import AddNoteDrawer from './components/AddNotesDrawer';
+import { useSearchParams } from 'react-router-dom';
 
 const PlayerScreen = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,9 @@ const PlayerScreen = () => {
   const currUserId = useSelector((state: RootState) => state.auth.userId);
   const currLessonId = useSelector((state: RootState) => state.client.lessonId);
   const percentHavePlayed = useSelector((state: RootState) => state.client.percentHavePlayed);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const courseId = searchParams.get('courseId');
 
   const [noteContent, setNoteContent] = useState('');
   const [isPlaying, setIsPlaying] = useState(true);
@@ -50,6 +54,7 @@ const PlayerScreen = () => {
         userId: currUserId,
         lessonId: currLessonId,
         content: noteContent,
+        courseId: courseId,
         videoMinute: Math.floor(currentTimeInSeconds) // Lưu thời gian hiện tại của video dưới dạng số giây
       }).unwrap();
       notification.success({
