@@ -24,6 +24,7 @@ import BlogCommentsHeader from './components/BlogCommentsHeader';
 import DiscussHeader from './components/DiscussHeader';
 import UsersPermissionHeader from './components/UsersPermission';
 import SettingHeader from './components/SettingHeader';
+import AdminCommonHeader from './components/AdminHeader';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -38,28 +39,24 @@ const AdminHeader = () => {
     <Header className='admin-header' style={{ padding: 0, background: colorBgContainer }}>
       {path === '/author/dashboard' && <DashboardHeader />}
       {path === '/author/welcome' && <WelcomeHeader />}
-      {path === '/author/categories' && <CategoriesHeader />}
-      {path === '/author/courses' && <CoursesHeader />}
-      {path === '/author/courses-notes' && <CoursesNotes />}
-      {path === '/author/discuss' && <DiscussHeader />}
-      {path === '/author/users' && <UsersHeader />}
-      {path === '/author/users/permission' && <UsersPermissionHeader />}
-      {path === '/author/orders' && <OrdersHeader />}
-      {path === '/author/reports/users-progress' && <UsersProgressHeader />}
-      {path === '/author/reports/course-insights' && <CourseInsights />}
-      {path === '/author/reports/reviews-center' && <ReviewsCenter />}
-      {path === '/author/reports/certifications' && <Certifications />}
-      {path === '/author/reports/courses-revenue' && <Certifications />}
-      {path === '/author/reports/instructors-revenue' && <InstructorsRevenues />}
-      {path === '/author/reports/cancelled-sales' && <CancelledSales />}
-      {path === '/author/blog' && <BlogHeader />}
-      {path === '/author/blog-category' && <BlogCategoryHeader />}
-      {path === '/author/blog-comments' && <BlogCommentsHeader />}
-      {path === '/author/feedbacks/list' && <FeedbacksHeader />}
-      {path === '/author/reviews' && <ReviewsHeader />}
-      {path === '/author/transaction' && <TransactionsHeader />}
+      {path === '/author/categories' && <AdminCommonHeader title={'Categories'} />}
+      {path === '/author/courses' && <AdminCommonHeader title={'Courses'} />}
+      {path === '/author/courses-notes' && <AdminCommonHeader title={'Courses Notes'} />}
+      {path === '/author/discuss' && <AdminCommonHeader title={'Discuss'} />}
+      {path === '/author/users' && <AdminCommonHeader title={'Users'} />}
+      {path === '/author/users/permission' && <AdminCommonHeader title={'Users permission'} />}
+      {path === '/author/orders' && <AdminCommonHeader title={'Orders'} />}
+      {path === '/author/reports/users-progress' && <AdminCommonHeader title={'User Progress'} />}
+      {path === '/author/reports/course-insights' && <AdminCommonHeader title={'Course Insights'} />}
+      {path === '/author/reports/reviews-center' && <AdminCommonHeader title={'Reviews Center'} />}
+      {path === '/author/blog' && <AdminCommonHeader title={'Blog'} />}
+      {path === '/author/blog-category' && <AdminCommonHeader title={'Blog Category'} />}
+      {path === '/author/blog-comments' && <AdminCommonHeader title={'Blog Comments'} />}
+      {path === '/author/feedbacks/list' && <AdminCommonHeader title={'Feedbacks'} />}
+      {path === '/author/reviews' && <AdminCommonHeader title={'Reviews'} />}
+      {path === '/author/transaction' && <AdminCommonHeader title={'Transactions'} />}
       {path === '/author/change-password' && <WelcomeHeader />}
-      {path === '/author/settings' && <SettingHeader />}
+      {path === '/author/settings' && <AdminCommonHeader title={'Settings'} />}
     </Header>
   );
 };
