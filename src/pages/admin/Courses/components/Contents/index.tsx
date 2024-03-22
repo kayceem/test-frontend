@@ -8,7 +8,7 @@ import './contents.scss';
 const CourseContents = () => {
   const { courseId } = useParams();
   const { data, isFetching } = useGetSectionsByCourseIdQuery(courseId || '');
-
+  
   return (
     <div className='course-contents'>
       {/* <div className="">
@@ -40,7 +40,6 @@ const CourseContents = () => {
         {data?.sections.map((section, index) => {
           return <SectionItem key={section._id} section={section} index={index} />;
         })}
-
       </div>
     </div>
   );
