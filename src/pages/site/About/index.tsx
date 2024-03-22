@@ -21,7 +21,7 @@ const About = () => {
               <div className='profile-card js-profile-card'>
                 <div className='profile-card__img'>
                   <img
-                    src='https://i.pinimg.com/564x/c2/85/78/c28578d3c5d0333a7ec4b3e94f48f3e5.jpg'
+                    src='https://scontent.fsgn2-6.fna.fbcdn.net/v/t39.30808-1/286505800_1110985359479989_7958277310651194368_n.jpg?stp=dst-jpg_s320x320&_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFT1VfiIzsQTxSGt4f2nHNF2Tmrm56p3L_ZOaubnqncv_WeB-FOvSBYsRefRUjubeByWK53t7HsBrkiFdOtEP-5&_nc_ohc=O9xzAt9qRhQAX8y3UU1&_nc_oc=AdiHUzZFVl3exjalz96SheyUr8I26FINqNtON3068PUinOQ_-pwQWUEEXFU0evBRHSw6_KumiaeHpCLOmhcnaO3q&_nc_ht=scontent.fsgn2-6.fna&oh=00_AfC9gDWfTX3hjCwSXs-tA6jL9Cu6SFLiWpqxJA57indDxg&oe=66025285'
                     alt='profile card'
                   />
                 </div>
@@ -43,17 +43,17 @@ const About = () => {
 
                   <div className='profile-card-inf'>
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>1598</div>
+                      <div className='profile-card-inf__title'>15</div>
                       <div className='profile-card-inf__txt'>Followers</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>65</div>
+                      <div className='profile-card-inf__title'>5</div>
                       <div className='profile-card-inf__txt'>Following</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>123</div>
+                      <div className='profile-card-inf__title'>12</div>
                       <div className='profile-card-inf__txt'>Articles</div>
                     </div>
 
@@ -123,15 +123,15 @@ const About = () => {
               <div className='profile-card js-profile-card'>
                 <div className='profile-card__img'>
                   <img
-                    src='https://i.pinimg.com/564x/c2/85/78/c28578d3c5d0333a7ec4b3e94f48f3e5.jpg'
+                    src='https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-1/393312891_1002887400933831_4098445887915139729_n.jpg?stp=c0.64.320.320a_dst-jpg_p320x320&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFiUbzDDfAQwKzi_L25pEN870L3xEGeXyrvQvfEQZ5fKtXQbC2kVGXHoEZ30T0OuZIjmZg2NDsy2mHOcQZLSEuE&_nc_ohc=52-RP-r5nPAAX8Vx0V_&_nc_ht=scontent.fsgn2-9.fna&oh=00_AfBMVPDj1GzNWDzHNtg_B8xzK6a9umQ1mMjQUYHo5UWGdA&oe=660243EC'
                     alt='profile card'
                   />
                 </div>
 
                 <div className='profile-card__cnt js-profile-cnt'>
-                  <div className='profile-card__name'>Le Van Hieu</div>
+                  <div className='profile-card__name'>Tran Nhat Sang</div>
                   <div className='profile-card__txt'>
-                    Front-end Developer from <strong>Mona</strong>
+                    FullStack from <strong>FPT Software</strong>
                   </div>
                   <div className='profile-card-loc'>
                     <span className='profile-card-loc__icon'>
@@ -140,27 +140,27 @@ const About = () => {
                       </svg>
                     </span>
 
-                    <span className='profile-card-loc__txt'>Tan Phu, Viet Nam</span>
+                    <span className='profile-card-loc__txt'>Binh Duong, Viet Nam</span>
                   </div>
 
                   <div className='profile-card-inf'>
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>1598</div>
+                      <div className='profile-card-inf__title'>2593</div>
                       <div className='profile-card-inf__txt'>Followers</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>65</div>
+                      <div className='profile-card-inf__title'>110</div>
                       <div className='profile-card-inf__txt'>Following</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>123</div>
+                      <div className='profile-card-inf__title'>473</div>
                       <div className='profile-card-inf__txt'>Articles</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>85</div>
+                      <div className='profile-card-inf__title'>111</div>
                       <div className='profile-card-inf__txt'>Works</div>
                     </div>
                   </div>
@@ -225,15 +225,15 @@ const About = () => {
               <div className='profile-card js-profile-card'>
                 <div className='profile-card__img'>
                   <img
-                    src='https://i.pinimg.com/564x/c2/85/78/c28578d3c5d0333a7ec4b3e94f48f3e5.jpg'
+                    src='https://scontent.fsgn2-5.fna.fbcdn.net/v/t39.30808-1/241392872_1333066283778897_6363792053543946154_n.jpg?stp=dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHbI_tDtnV-LGstiAQitCGaTt9LY9sPL0NO30tj2w8vQ_g4F-DN7eB2wiChsJmg51PoVyUupU8cbCZcC9wj7hSw&_nc_ohc=KQMqNbxKqC4AX8H4Snp&_nc_ht=scontent.fsgn2-5.fna&oh=00_AfD4ln-z3pRfs_jKebgYpT7YPZushqDL6xGe4uaJkT1Y0A&oe=66032214'
                     alt='profile card'
                   />
                 </div>
 
                 <div className='profile-card__cnt js-profile-cnt'>
-                  <div className='profile-card__name'>Le Van Hieu</div>
+                  <div className='profile-card__name'>Hai Nguyen</div>
                   <div className='profile-card__txt'>
-                    Front-end Developer from <strong>Mona</strong>
+                    FullStack from <strong>FPT Telecom</strong>
                   </div>
                   <div className='profile-card-loc'>
                     <span className='profile-card-loc__icon'>
@@ -242,27 +242,27 @@ const About = () => {
                       </svg>
                     </span>
 
-                    <span className='profile-card-loc__txt'>Tan Phu, Viet Nam</span>
+                    <span className='profile-card-loc__txt'>Go Vap, Viet Nam</span>
                   </div>
 
                   <div className='profile-card-inf'>
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>1598</div>
+                      <div className='profile-card-inf__title'>43</div>
                       <div className='profile-card-inf__txt'>Followers</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>65</div>
+                      <div className='profile-card-inf__title'>14</div>
                       <div className='profile-card-inf__txt'>Following</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>123</div>
+                      <div className='profile-card-inf__title'>64</div>
                       <div className='profile-card-inf__txt'>Articles</div>
                     </div>
 
                     <div className='profile-card-inf__item'>
-                      <div className='profile-card-inf__title'>85</div>
+                      <div className='profile-card-inf__title'>65</div>
                       <div className='profile-card-inf__txt'>Works</div>
                     </div>
                   </div>
