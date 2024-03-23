@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button, Drawer, Form, Input, InputNumber, Select, notification } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { INote } from '../../../../../types/note.type';
+
 import {
   useCreateNoteMutation,
-  useGetAllNotesQuery,
+  useGetAllCoursesQuery,
   useGetLessonsQuery,
   useGetNoteByIdQuery,
-  useGetNotesQuery,
   useUpdateNoteMutation
 } from '../../courseNotes.service';
 
@@ -25,6 +26,8 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
   const adminId = useSelector((state: RootState) => state.auth.adminId);
   const { data: lessons, isFetching: isFetchingLession } = useGetLessonsQuery();
 
+  const { data: course, isFetching: isFetchingCourse } = useGetAllCoursesQuery();
+
   const { data: noteResponse, isFetching } = useGetNoteByIdQuery(noteId, {
     skip: !noteId
   });
@@ -35,7 +38,8 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
     if (noteResponse && !isFetching) {
       form.setFieldsValue({
         ...noteResponse,
-        lessonId: noteResponse.notes?.lessonId?._id
+        lessonId: noteResponse.notes?.lessonId?._id,
+        courseId: noteResponse.notes?.courseId?._id
       });
     } else {
       form.resetFields();
@@ -49,11 +53,12 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
 
   const submitHandler = async (values: Omit<INote, '_id'>) => {
     try {
-      const { lessonId, ...rest } = values;
+      const { courseId, lessonId, ...rest } = values;
       const payload = {
         ...rest,
         adminId: adminId,
-        lessonId: lessonId
+        lessonId: lessonId,
+        courseId: courseId
       };
       if (noteId) {
         await updateCourseNote({
@@ -84,11 +89,16 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
         <Form.Item name='content' label='Content' rules={[{ required: true, message: 'Please enter the content' }]}>
           <Input placeholder='Enter the content' />
         </Form.Item>
-        <Form.Item
-          name='lessonId'
-          label='Lesson Id'
-          rules={[{ required: true, message: 'Please enter the Lesson Id' }]}
-        >
+        <Form.Item name='course' label='Course Id' rules={[{ required: true, message: 'Please enter the Course Id' }]}>
+          <Select placeholder='Select a course'>
+            {course?.courses.map((course) => (
+              <Select.Option key={course._id} value={course._id}>
+                {course.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name='lesson' label='Lesson Id' rules={[{ required: true, message: 'Please enter the Lesson Id' }]}>
           <Select placeholder='Select a lesson'>
             {lessons?.lessons.map((lesson) => (
               <Select.Option key={lesson._id} value={lesson._id}>
@@ -97,6 +107,7 @@ const AddCourseNotes: React.FC<AddCourseNoteProps> = ({ isOpen, onClose }) => {
             ))}
           </Select>
         </Form.Item>
+
         <Form.Item
           name='videoMinute'
           label='Video Minute'

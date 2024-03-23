@@ -4,7 +4,6 @@ export interface User {
   avatar: string;
 }
 
-
 export interface INote {
   _id: string;
   title: string;

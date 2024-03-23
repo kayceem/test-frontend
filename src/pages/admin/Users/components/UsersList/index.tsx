@@ -5,7 +5,8 @@ import {
   EditOutlined,
   EllipsisOutlined,
   HistoryOutlined,
-  ProfileOutlined
+  ProfileOutlined,
+  StopOutlined
 } from '@ant-design/icons';
 import { Avatar, Button, Popconfirm, Popover, Skeleton, Space, Table, Tag, Tooltip, message, notification } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
@@ -19,21 +20,7 @@ import './UsersList.scss';
 import ViewHistoryUser from '../HistoryUser/HistoryUser';
 import { Helper } from '../../../../../utils/helper';
 import ViewDetailUser from '../ViewDetailUser';
-
-interface DataUserType {
-  key: React.Key;
-  name: JSX.Element;
-  avatar?: string;
-  email?: string;
-  courses: JSX.Element;
-  tags?: JSX.Element;
-  lastLogin: JSX.Element;
-  createdAt: JSX.Element;
-  statusName?: string;
-  statusColor?: string;
-  actions?: JSX.Element;
-  status: JSX.Element;
-}
+import { IUser } from '../../../../../types/user.type';
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -42,7 +29,7 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-const columns: ColumnsType<DataUserType> = [
+const columns: ColumnsType<IUser> = [
   {
     title: 'User',
     dataIndex: 'name',
@@ -89,52 +76,11 @@ const columns: ColumnsType<DataUserType> = [
   }
 ];
 
-const SettingContent = (props: {
-  userId: string;
-  isDeleted: boolean;
-  onViewDetail: () => void;
-  onViewHistory: () => void;
-}) => {
-  const [updateActiveStatusUser, updateActiveStatusUserResult] = useUpdateActiveStatusUserMutation();
-
-  const updateActiveStatusUserHandler = () => {
-    updateActiveStatusUser({ userId: props.userId })
-      .unwrap()
-      .then(() => {
-        const successMessage = props.isDeleted ? 'User activated successfully' : 'User deactivated successfully';
-        void message.success(successMessage);
-      })
-      .catch(() => {
-        const errorMessage = props.isDeleted ? 'Failed to activate user' : 'Failed to deactivate user';
-        void message.error(errorMessage);
-      });
-  };
-
-  return (
-    <Space>
-      <Button type='default' icon={<ProfileOutlined style={{ color: '#5da3e5' }} />} onClick={props.onViewDetail} />
-      <Button type='default' icon={<HistoryOutlined style={{ color: '#5da3e5' }} />} onClick={props.onViewHistory} />
-      <Button
-        style={{
-          background: '#fff'
-        }}
-        type='default'
-        icon={
-          props.isDeleted ? (
-            <CheckCircleOutlined style={{ color: '#5da3e5' }} />
-          ) : (
-            <CloseCircleOutlined style={{ color: 'red' }} />
-          )
-        }
-        onClick={updateActiveStatusUserHandler}
-      />
-    </Space>
-  );
-};
-
 interface UserListProps {
   onEditUser: () => void;
   searchValue: string;
+  userId: string;
+  isDeleted: boolean;
 }
 
 const UsersList: React.FC<UserListProps> = (props) => {
@@ -146,6 +92,21 @@ const UsersList: React.FC<UserListProps> = (props) => {
 
   const [isViewDetail, setIsisViewDetail] = useState(false);
   const [DetailUserId, setDetailUserId] = useState<string | null>(null);
+
+  const [updateActiveStatusUser, updateActiveStatusUserResult] = useUpdateActiveStatusUserMutation();
+
+  const updateActiveStatusUserHandler = (userId: string) => {
+    updateActiveStatusUser({ userId: userId })
+      .unwrap()
+      .then(() => {
+        const successMessage = props.isDeleted ? 'User activated successfully' : 'User deactivated successfully';
+        void message.success(successMessage);
+      })
+      .catch(() => {
+        const errorMessage = props.isDeleted ? 'Failed to activate user' : 'Failed to deactivate user';
+        void message.error(errorMessage);
+      });
+  };
 
   const handleViewDetail = (userId: string) => {
     setIsisViewDetail(true);
@@ -223,13 +184,13 @@ const UsersList: React.FC<UserListProps> = (props) => {
       });
   };
 
-  const onChange: TableProps<DataUserType>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<IUser>['onChange'] = (pagination, filters, sorter, extra) => {
     setTableParams({ pagination: pagination });
   };
 
-  const usersData: DataUserType[] =
+  const usersData: IUser[] =
     data?.users.map((user) => {
-      const userTemplateItem = {
+      return {
         key: user._id,
         name: (
           <>
@@ -271,9 +232,39 @@ const UsersList: React.FC<UserListProps> = (props) => {
         ),
         manage: (
           <Space>
-            <Button onClick={() => editUserHandler(user._id)} className='btn-wrap'>
+            <Button onClick={() => editUserHandler(user._id)} className='btn-wrap' style={{ color: '#38bdf8' }}>
               <EditOutlined />
             </Button>
+            <Button onClick={() => handleViewDetail(user._id)} className='btn-wrap' style={{ color: '#38bdf8' }}>
+              <ProfileOutlined />
+            </Button>
+
+            <Button onClick={() => handleViewHistory(user._id)} className='btn-wrap' style={{ color: '#38bdf8' }}>
+              <HistoryOutlined />
+            </Button>
+
+            {user.isDeleted ? (
+              <Popconfirm
+                title='Are you sure you want to activate this blog?'
+                placement='topRight'
+                onConfirm={() => updateActiveStatusUserHandler(user._id)}
+                okText='Yes'
+                cancelText='No'
+              >
+                <Button icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} />
+              </Popconfirm>
+            ) : (
+              <Popconfirm
+                title='Are you sure you want to deactivate this blog category?'
+                placement='topRight'
+                onConfirm={() => updateActiveStatusUserHandler(user._id)}
+                okText='Yes'
+                cancelText='No'
+              >
+                <Button icon={<StopOutlined style={{ color: '#ff4d4f' }} />} danger />
+              </Popconfirm>
+            )}
+
             {user.status == 'NEW' && ( // Check if user.status is not 'new'
               <Popconfirm
                 title='Approve User'
@@ -287,27 +278,9 @@ const UsersList: React.FC<UserListProps> = (props) => {
                 </Button>
               </Popconfirm>
             )}
-            <Popover
-              placement='bottomRight'
-              content={
-                <SettingContent
-                  userId={user._id}
-                  isDeleted={user?.isDeleted || false}
-                  onViewHistory={() => handleViewHistory(user._id)}
-                  onViewDetail={() => handleViewDetail(user._id)}
-                />
-              }
-              title='Actions'
-            >
-              <Button className='btn-wrap'>
-                <EllipsisOutlined />
-              </Button>
-            </Popover>
           </Space>
         )
       };
-
-      return userTemplateItem;
     }) || [];
 
   const [tableParams, setTableParams] = useState<TableParams>({

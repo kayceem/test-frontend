@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BACKEND_URL } from '../../../constant/backend-domain';
-import { INote, Lesson } from '../../../types/note.type';
+import { INote } from '../../../types/note.type';
 import { IParams } from '../../../types/params.type';
 import { ILesson } from '../../../types/lesson.type';
+import { ICourse } from '../../../types/course.type';
 // Sử dụng các type được định nghĩa trong file gốc
 
 interface GetNotesResponse {
@@ -20,9 +21,14 @@ interface getLessonsResponse {
   message: string;
 }
 
+interface getCoursesResponse {
+  courses: ICourse[];
+  message: string;
+}
+
 export const courseNoteApi = createApi({
   reducerPath: 'courseNoteApi',
-  tagTypes: ['Note', 'Lesson'],
+  tagTypes: ['Note', 'Lesson', 'Course'],
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/admin`, // Sử dụng baseUrl đã được định nghĩa
     prepareHeaders(headers) {
@@ -49,7 +55,7 @@ export const courseNoteApi = createApi({
       query: (id) => `/note/noteId/${id}`,
       providesTags: (result, error, id) => [{ type: 'Note', id }]
     }),
-    createNote: build.mutation<GetNoteResponse, Partial<INote> & { lessonId: Lesson }>({
+    createNote: build.mutation<GetNoteResponse, Partial<INote> & { lessonId: ILesson }>({
       query: (note) => ({
         url: '/note/createNote',
         method: 'POST',
@@ -83,6 +89,12 @@ export const courseNoteApi = createApi({
     getLessons: build.query<getLessonsResponse, void>({
       query: () => '/lessons',
       providesTags: (result) => (result ? [{ type: 'Lesson', id: 'LIST' }] : [])
+    }),
+    getAllCourses: build.query<getCoursesResponse, void>({
+      query: () => ({
+        url: '/courses'
+      }),
+      providesTags: (result) => (result ? [{ type: 'Course', id: 'LIST' }] : [])
     })
   })
 });
@@ -96,5 +108,6 @@ export const {
   useGetNotesByLessonIdQuery,
   useGetNotesByUserIdQuery,
   useGetNotesQuery,
-  useGetLessonsQuery
+  useGetLessonsQuery,
+  useGetAllCoursesQuery
 } = courseNoteApi;

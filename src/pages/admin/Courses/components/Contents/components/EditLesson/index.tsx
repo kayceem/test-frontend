@@ -114,16 +114,33 @@ const EditLesson: React.FC<EditLessonProps> = ({ isVisible, onClose, lesson, sec
   };
 
   useEffect(() => {
-    form.setFieldsValue({
-      name: lesson.name,
-      access: lesson.access,
-      description: lesson.description
-    });
-  }, [lesson]);
+    if (lesson && lesson._id) {
+      form.setFieldsValue({
+        name: lesson.name,
+        access: lesson.access,
+        content : lesson.content,
+        description: lesson.description,
+        userId: lesson.videoLength,
+        sectionId: lesson.sectionId
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [lesson, form]);
 
   const onFinish = async (values: ILesson) => {
     try {
-      const updatedLesson = await updateLesson({ _id: lesson._id, body: values }).unwrap();
+      const updatedLesson = await updateLesson({
+        id: lesson._id,
+        courseId: courseId,
+        body: {
+          ...values,
+          content: uploadMethod === 'linkYoutube' ? contentLink : uploadedVideoPath,
+          videoLength: videoDuration
+        }
+      }).unwrap();
+      console.log(updatedLesson);
+
       setCurrentLesson(updatedLesson);
       notification.success({ message: 'Lesson updated successfully' });
       onClose();

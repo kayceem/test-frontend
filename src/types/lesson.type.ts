@@ -18,7 +18,7 @@ export interface ILesson {
   description: string;
   videoLength: number;
   isDone?: boolean;
-  courseId?: string;
+  courseId: string;
 }
 
 export interface IsLessonDone {
