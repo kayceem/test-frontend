@@ -59,6 +59,7 @@ export interface getReportsCourseInsightsResponse {
   reports: {
     _id: string;
     name: string;
+    author: string;
     learners: number;
     avgStudyTime: number;
     views: number;
@@ -251,9 +252,10 @@ export const reportApi = createApi({
         return [{ type: 'Reports', id: 'LIST' }];
       }
     }),
-    getReportsUserProgress: build.query<getReportsUserProgressResponse, void>({
-      query: () => ({
-        url: `/reports/users-progress`
+    getReportsUserProgress: build.query<getReportsUserProgressResponse, {dateStart: string, dateEnd: string, authorId: string}>({
+      query: (params) => ({
+        url: `/reports/users-progress`,
+        params
       }), // method không có argument
       /**
        * providesTags có thể là array hoặc callback return array
@@ -291,7 +293,7 @@ export const reportApi = createApi({
         return [{ type: 'Reports', id: 'LIST' }];
       }
     }),
-    getReportsCourseInsights: build.query<getReportsCourseInsightsResponse, {dateStart: string, dateEnd: string}>({
+    getReportsCourseInsights: build.query<getReportsCourseInsightsResponse, {dateStart: string, dateEnd: string, authorId: string}>({
       query: (params) => ({
         url: `/reports/course-insights`,
         params
