@@ -225,3 +225,20 @@
     color: #6c7179;
 }
 }
+
+.form-setting{
+  width: 50%;
+}
+.setting-group{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1.8rem;
+}
+.setting-group-item{
+  width: 50%;
+    .ant-form-item-label{
+      width: auto;
+    }
+}
