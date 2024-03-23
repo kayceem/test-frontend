@@ -1,6 +1,10 @@
 .welcome{
     position: relative;
     margin-top: 2.4rem;
+    box-shadow: 0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08);
+    background: #fff;
+    border-radius: .8rem;
+    padding-bottom: 2.4rem;
 }
 
 .welcome-header{
@@ -8,9 +12,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: .8rem;
-    box-shadow: 0px 8px 8px -4px rgba(16, 24, 40, 0.03), 0px 20px 24px -4px rgba(16, 24, 40, 0.08);
-    background: #fff;
     margin-top: 2.4rem;
 
 }
