@@ -68,7 +68,8 @@ const GoogleLoginButton: React.FC = () => {
 
   return (
     <Button className='auth__socials-btn' onClick={() => login()}>
-      <GoogleOutlined className='auth__socials-icon' />
+      {/* <GoogleOutlined className='auth__socials-icon' /> */}
+      <img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-google-icon-PNG.png" alt="" />
     </Button>
   );
 };

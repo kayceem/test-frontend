@@ -30,8 +30,8 @@ export default function FeedbackStudent() {
                 </div>
                 <div className='inline text-3xl txt-desc txt-black'>
                   "Taking online classes here at eSchoolM has been a major benefit to me. The courses are well laid out
-                  and the instructors are supportive and responsible in returning emails. Thanks eSchoolM for allowing
-                  me to have a flexible schedule while developing my business."
+                  and the instructors are supportive and responsible in returning emails eSchoolM. Thanks eSchoolM for allowing
+                  me to have a flexible schedule responsible while developing my business."
                 </div>
                 <div className='inline text-3xl txt-name txt-black'>NAYA SCHWARTZ</div>
               </div>

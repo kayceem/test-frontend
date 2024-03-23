@@ -48,11 +48,11 @@ const Contact: React.FC = () => {
               <Form.Item name='message' rules={[{ required: true, message: 'Please input your message!' }]}>
                 <TextArea placeholder='Your message' />
               </Form.Item>
-              <Form.Item>
+              <Form.Item className='remember'>
                 <Checkbox>Remember</Checkbox>
               </Form.Item>
-              <Form.Item>
-                <Button type='primary' htmlType='submit' style={{ width: '100%' }}>
+              <Form.Item >
+                <Button className='contact-btn' type='primary' htmlType='submit' style={{ width: '100%' }}>
                   Send
                 </Button>
               </Form.Item>

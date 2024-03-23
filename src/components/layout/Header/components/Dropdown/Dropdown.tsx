@@ -2,7 +2,7 @@
 import { DownOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import './Dropdown.scss';
+import './Dropdown.scss';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ const Dropdown = () => {
       </span>
       {isOpen && (
         <div
-          className={`absolute mt-3 transition-all duration-500 py-4 px-10 rounded-xl shadow-lg shadow-gray-50${
+          className={`dropdown-other absolute mt-3 transition-all duration-500 py-4 px-10 rounded-xl shadow-lg shadow-gray-50${
             isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
           }`}
           style={{ backgroundColor: '#f8f5f5' }}

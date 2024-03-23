@@ -23,6 +23,12 @@
             width: 100%;
         }
     }
+    .txt-desc{
+        color: #ffffff;
+    }
+    .txt-black{
+        color: #112236;
+    }
 }
 .fb-item {
     position: relative;
@@ -74,7 +80,4 @@
     @media (max-width: 1200px) {
         font-size: 1.2rem;
     }
-}
-.txt-black{
-    color: #112236;
 }

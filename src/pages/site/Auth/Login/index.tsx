@@ -106,12 +106,12 @@ const Login: React.FC<LoginProps> = (props) => {
           <GoogleOAuthProvider clientId='654961818615-ml2bg2915ljl8sntvmlnbb896o15csa7.apps.googleusercontent.com'>
             <GoogleLoginButton />
           </GoogleOAuthProvider>
-          <Button className='auth__socials-btn'>
+          {/* <Button className='auth__socials-btn'>
             <FacebookFilled className='auth__socials-icon' />
-          </Button>
-          <Button className='auth__socials-btn'>
+          </Button> */}
+          {/* <Button className='auth__socials-btn'>
             <LinkedinFilled className='auth__socials-icon' />
-          </Button>
+          </Button> */}
           <Button className='auth__socials-btn'>
             <GithubLoginButton/>
           </Button>

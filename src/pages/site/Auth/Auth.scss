@@ -19,11 +19,17 @@
         margin: 2rem 0rem;
         &-btn {
             border-radius: 50%;
-            height: 5rem;
-            width: 5rem;
+            height: 4rem;
+            width: 4rem;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            padding: 0.8rem;
+            img{
+                width: 100%;
+                
+            }
         }
 
         &-icon {
@@ -36,3 +42,7 @@
         justify-content: space-between;
     }
 }
+.github-login-button {
+    /* Add your CSS properties here */
+    // margin-top: -.6rem;
+  }
