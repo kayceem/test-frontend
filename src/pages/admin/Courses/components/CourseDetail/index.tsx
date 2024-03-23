@@ -15,21 +15,21 @@ const onChange = (key: string) => {
 };
 
 const items: TabsProps['items'] = [
-  {
-    key: 'layout',
-    label: `Layout`,
-    children: <CourseDetailLayout />
-  },
+  // {
+  //   key: 'layout',
+  //   label: `Layout`,
+  //   children: <CourseDetailLayout />
+  // },
   {
     key: 'contents',
     label: `Contents`,
     children: <CourseContents />
   },
-  {
-    key: 'access',
-    label: `Access`,
-    children: <Access />
-  },
+  // {
+  //   key: 'access',
+  //   label: `Access`,
+  //   children: <Access />
+  // },
   {
     key: 'pricing',
     label: `Pricing`,
@@ -40,11 +40,11 @@ const items: TabsProps['items'] = [
     label: `Settings`,
     children: <Settings />
   },
-  {
-    key: 'dashboard',
-    label: `Dashboard`,
-    children: <Dashboard />
-  }
+  // {
+  //   key: 'dashboard',
+  //   label: `Dashboard`,
+  //   children: <Dashboard />
+  // }
 ];
 
 const CourseDetail: React.FC = () => (
