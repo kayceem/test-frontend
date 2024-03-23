@@ -2,6 +2,7 @@ import { Button, Divider, Space } from 'antd';
 import { ISection } from '../../../../../../../types/lesson.type';
 import { useGetLessonsBySectionIdQuery } from '../../../../course.service';
 import LessonItem from '../LessonItem';
+import AddLesson from '../AddLesson';
 import AddActivities from './AddActivities';
 import './SectionItem.scss';
 import { EditOutlined } from '@ant-design/icons';
@@ -48,9 +49,10 @@ const SectionItem = (props: SectionItemProps) => {
           </div>
           <div className='section-item__btns'>
             <Space>
-              <AddActivities sectionId={props.section._id} />
-              or
-              <Button>Import activity</Button>
+              {/* <AddActivities sectionId={props.section._id} /> */}
+              {/* or
+              <Button>Import activity</Button> */}
+              <AddLesson/>
             </Space>
           </div>
         </div>

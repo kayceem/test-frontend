@@ -38,7 +38,9 @@ const AddLesson: React.FC<AddLessonProps> = () => {
   const [fileList, setFileList] = useState<UploadFile<UploadVideoResponse>[]>([]);
   const [uploadedPDFPath, setUploadedPDFPath] = useState('');
   const [pdfFileList, setPdfFileList] = useState<UploadFile[]>([]);
-
+  const widthInPixels = 30;
+  const containerWidth = 100;
+  const widthInPercentage = (widthInPixels / containerWidth) * 100;
   const uploadVideoProps: UploadProps = {
     name: 'videoFile',
     action: `${BACKEND_URL}/uploads/video`,
@@ -173,24 +175,25 @@ const AddLesson: React.FC<AddLessonProps> = () => {
 
   return (
     <>
-      <Button type='primary' onClick={showDrawer} icon={<PlusOutlined />}>
+      <Button className='btn-wrap' type='primary' onClick={showDrawer} icon={<PlusOutlined />}>
         Add New Lesson
       </Button>
       <Drawer
         title='Lesson Edit'
-        width={812}
+        width={`${(30 / containerWidth) * 100}%`}
         onClose={onClose}
         open={open}
         bodyStyle={{ paddingBottom: 80 }}
+        className='add-section'
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
           </Space>
         }
       >
-        <Row>
-          <Col md={8}></Col>
-          <Col md={16}>
+        <div className='add-section-list'>
+          {/* <Col md={8}></Col> */}
+          <div className='form-wrap'>
             <Form form={form} layout='vertical' hideRequiredMark onFinish={onFinish}>
               <Row gutter={16}>
                 <Col span={24}>
@@ -291,8 +294,8 @@ const AddLesson: React.FC<AddLessonProps> = () => {
                 </Button>
               </Form.Item>
             </Form>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Drawer>
     </>
   );

@@ -32,8 +32,8 @@ const CourseContents = () => {
       <div className='course-contents__add-section'>
         <Space>
           <AddSection courseId={courseId as string} />
-          or
-          <Button type='primary'>Import section</Button>
+          {/* or
+          <Button type='primary'>Import section</Button> */}
         </Space>
       </div>
       <div className='course-contents__list'>
