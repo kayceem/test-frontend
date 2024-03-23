@@ -155,12 +155,9 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
             icon={<MessageOutlined style={{ color: '#1890ff' }} />}
             onClick={() => handleViewMess(record._id)}
             className='btn-wrap'
-          ></Button>
-          <Button
-            icon={<EditOutlined style={{ color: '#1890ff' }} />}
-            onClick={() => discussEditHandler(record._id)}
-            className='btn-wrap'
-          ></Button>
+          >
+            <span style={{ color: '#1890ff' }}>{record.replies.length}</span>
+          </Button>
           <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetail(record._id)} />
           <Button
             icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
@@ -202,7 +199,7 @@ const ListDiscuss: React.FC<IDisCussProps> = ({ data, onDiscussEdit, course, sec
       />
       <ViewDetailDiscuss isVisible={detailVisible} onClose={() => setDetailVisible(false)} discussId={discussId} />
       <ViewHistoryDiscuss isVisible={historyVisible} onClose={() => setHistoryVisible(false)} discussId={discussId} />
-      <ViewMessDiscuss isVisible={MessVisible} onClose={() => setMessVisible(false)} discussId={discussId} /> 
+      <ViewMessDiscuss isVisible={MessVisible} onClose={() => setMessVisible(false)} discussId={discussId} />
     </div>
   );
 };

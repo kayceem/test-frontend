@@ -1,18 +1,19 @@
-import { EditOutlined, EllipsisOutlined } from '@ant-design/icons';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { CheckCircleOutlined, EditOutlined, EllipsisOutlined, StopOutlined } from '@ant-design/icons';
 import { Button, Modal, Popover, Space, Table, notification } from 'antd';
 import type { ColumnsType, TablePaginationConfig, TableProps } from 'antd/es/table';
 import type { FilterValue } from 'antd/es/table/interface';
 import Link from 'antd/es/typography/Link';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { INote, Lesson } from '../../../../../types/note.type';
+import { INote } from '../../../../../types/note.type';
 import { formatTimeRounded, transformDate } from '../../../../../utils/functions';
 import { useDeleteNoteMutation } from '../../courseNotes.service'; // Update the import path as needed
 import { startEditNotesCourse } from '../../courseNotes.slice'; // Update the import path as needed
 
 interface DataNoteType {
   key: React.Key;
-  name?: string;
+  name: string;
   avatar?: string;
   content: string;
   videoMinute?: string;
@@ -20,6 +21,7 @@ interface DataNoteType {
   actions?: any;
   userId?: string;
   lessonName?: string; // Add lesson name
+  courseName?: string;
 }
 
 interface TableParams {
@@ -34,7 +36,8 @@ interface CourseNotesListProps {
   onNoteEdit: (noteId: string) => void;
 }
 
-const SettingContent = (noteId: string) => {
+const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) => {
+  const dispatch = useDispatch();
   const [softDeleteNote] = useDeleteNoteMutation();
 
   const softDeleteNoteHandler = (noteId: string) => {
@@ -66,17 +69,6 @@ const SettingContent = (noteId: string) => {
     });
   };
 
-  return (
-    <div>
-      <p>Content</p>
-      <Link onClick={() => softDeleteNoteHandler(noteId)}>Delete</Link>{' '}
-    </div>
-  );
-};
-
-const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) => {
-  const dispatch = useDispatch();
-
   const columns: ColumnsType<DataNoteType> = [
     {
       title: 'Avatar',
@@ -88,6 +80,11 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
       title: 'Name',
       key: 'user',
       render: (_, record) => <Space>{record.name}</Space>
+    },
+    {
+      title: 'Course Name',
+      dataIndex: 'courseName',
+      key: 'courseName'
     },
     {
       title: 'Lesson Name',
@@ -117,13 +114,14 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
   };
 
   const notesSource = data.map((noteItem) => {
-    const { _id, videoMinute, content, createdAt, userId, lessonId } = noteItem;
+    const { _id, videoMinute, content, createdAt, userId, lessonId, courseId } = noteItem;
 
     const noteTemplateItem: DataNoteType = {
       key: _id,
       name: userId?.name,
       avatar: userId?.avatar,
       lessonName: lessonId?.name,
+      courseName: courseId?.name,
       content,
       videoMinute: formatTimeRounded(videoMinute),
       createdAt: transformDate(createdAt),
@@ -132,11 +130,9 @@ const CourseNotesList: React.FC<CourseNotesListProps> = ({ data, onNoteEdit }) =
           <Button onClick={() => noteEditHandler(_id)}>
             <EditOutlined />
           </Button>
-          <Popover placement='bottomRight' content={() => SettingContent(_id)} title='Actions'>
-            <Button>
-              <EllipsisOutlined />
-            </Button>
-          </Popover>
+          <Button onClick={() => softDeleteNoteHandler(_id)} danger>
+            <StopOutlined />
+          </Button>
         </Space>
       )
     };
