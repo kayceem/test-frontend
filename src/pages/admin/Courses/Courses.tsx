@@ -120,7 +120,7 @@ const Courses = () => {
 
   const { data: authorData, isFetching: isAuthorsFetching } = useGetAuthorsQuery();
 
-  const authorFilterList = authorData?.authors.map((author) => {
+  const authorFilterList = authorData?.authors.map((author ) => {
     return {
       text: author[0],
       value: author[0],

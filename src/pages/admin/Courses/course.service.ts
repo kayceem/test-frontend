@@ -33,7 +33,7 @@ interface UpdateActiveStatusCourseResponse {
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
-  tagTypes: ['Courses'],
+  tagTypes: ['Courses', 'Sections', 'Lessons'],
   keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}/admin`,
@@ -224,7 +224,6 @@ export const courseApi = createApi({
           body: data.body
         };
       },
-
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Courses', id: data.id }])
     }),
     updateActiveStatusCourse: build.mutation<UpdateActiveStatusCourseResponse, Partial<{ courseId: string }>>({
@@ -237,6 +236,26 @@ export const courseApi = createApi({
         { type: 'Courses', id: 'LIST' },
         { type: 'Courses', id: courseId }
       ]
+    }),
+    updateSection: build.mutation<ISection, { id: string; body: ISection }>({
+      query(data) {
+        return {
+          url: `sections/section/update/${data.id}`,
+          method: 'PUT',
+          body: data.body
+        };
+      },
+      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Courses', id: 'LIST' }])
+    }),
+    updateLesson: build.mutation<ILesson, { _id: string; body: ILesson }>({
+      query(data) {
+        return {
+          url: `lessons/lesson/update/${data._id}`,
+          method: 'PUT',
+          body: data.body
+        };
+      },
+      invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Courses', id: 'LIST' }])
     })
   })
 });
@@ -253,5 +272,7 @@ export const {
   useAddLessonMutation,
   useGetCourseQuery,
   useUpdateCourseMutation,
-  useUpdateActiveStatusCourseMutation
+  useUpdateActiveStatusCourseMutation,
+  useUpdateSectionMutation,
+  useUpdateLessonMutation
 } = courseApi;
