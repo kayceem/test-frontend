@@ -11,8 +11,8 @@ import { ColumnsType } from 'antd/es/table';
 import { useGetReportsCourseInsightsQuery } from '../../../report.service';
 import { formatVideoLengthToHours } from '../../../../../utils/functions';
 import moment from 'moment';
-// import { read, utils, writeFileXLSX } from 'xlsx';
-// import * as XLSX from 'xlsx';
+import { read, utils, writeFileXLSX } from 'xlsx';
+import * as XLSX from 'xlsx';
 const { RangePicker } = DatePicker;
 
 interface DataType {

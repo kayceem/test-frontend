@@ -1,6 +1,6 @@
 import { Button, Col, DatePicker, Form, Input, InputNumber, Row, Select, Skeleton, Table } from 'antd';
 import './UsersProgress.scss';
-// import UsersProgressTable from './components/UserProgressTable';
+import UsersProgressTable from './components/UserProgressTable';
 import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { DownloadOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icon
 import dayjs, { Dayjs } from 'dayjs';
 import moment from 'moment';
 const { RangePicker } = DatePicker;
-// import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx'
 import { ColumnsType } from 'antd/es/table';
 import { useGetReportsUserProgressQuery } from '../../../report.service';
 import { formatVideoLengthToHours } from '../../../../../utils/functions';
