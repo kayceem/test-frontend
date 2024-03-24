@@ -3,7 +3,7 @@ import type { MenuProps } from 'antd';
 import { Avatar, Button, Dropdown, Space, notification } from 'antd';
 import { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BACKEND_URL } from '../../../../../constant/backend-domain';
 import { openCreateCourse } from '../../../../../pages/admin/Courses/course.slice';
 import { useGetUserQuery } from '../../../../../pages/admin/Users/user.service';
@@ -20,12 +20,12 @@ const DashboardHeader = () => {
   });
 
   let avatarThumnailUrl = '';
-
   if (data?.user.avatar) {
-    if (data?.user.avatar.startsWith('http')) {
-      avatarThumnailUrl = data?.user.avatar;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    if ((data?.user.avatar as string ).startsWith('http')) {
+      avatarThumnailUrl = data?.user.avatar as string;
     } else {
-      avatarThumnailUrl = `${BACKEND_URL}/${data?.user.avatar}`;
+      avatarThumnailUrl = `${BACKEND_URL}/${data?.user.avatar as string}`;
     }
   }
 
@@ -59,9 +59,13 @@ const DashboardHeader = () => {
     {
       key: '2',
       label: (
-        <a target='_blank' rel='noopener noreferrer' href='https://www.aliyun.com'>
-          2nd menu item
-        </a>
+        <Link to='change-password'>Change Password</Link>
+      )
+    },
+    {
+      key: '3',
+      label: (
+        <Link to='settings'>Settings</Link>
       )
     },
     {

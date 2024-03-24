@@ -1,15 +1,38 @@
-import { Breadcrumb, Button, Col, Form, Input, Row, Select, Statistic, Table, TablePaginationConfig, TableProps } from 'antd';
+import {
+  Breadcrumb,
+  Button,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Statistic,
+  Table,
+  TablePaginationConfig,
+  TableProps
+} from 'antd';
 import { ColumnsType, FilterValue } from 'antd/es/table/interface';
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../../store/store';
-import { CalendarOutlined, ClockCircleOutlined, DollarOutlined, FolderOpenOutlined, ReadOutlined, RedoOutlined, RetweetOutlined, SearchOutlined, UserOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  ClockCircleOutlined,
+  DollarOutlined,
+  FolderOpenOutlined,
+  ReadOutlined,
+  RedoOutlined,
+  RetweetOutlined,
+  SearchOutlined,
+  UserOutlined,
+  UsergroupAddOutlined
+} from '@ant-design/icons';
 import { useGetSummaryReportsQuery, useGetCoursesReportByAuthorQuery } from '../report.service';
 import { selectPreviousDays, showChart } from '../report.slice';
 import Chart from '../Dashboard/components/Chart';
 import { DatePicker, Space } from 'antd';
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 const { RangePicker } = DatePicker;
 const statisticItemStyle = {};
 enum Access {
@@ -37,7 +60,7 @@ interface DataCourseType {
   numberOfRatings?: number;
   avgRatings?: number;
   actions?: any;
-  render: (_: IAuthorReport, record: IAuthorReport) => JSX.Element
+  render: (_: IAuthorReport, record: IAuthorReport) => JSX.Element;
 }
 
 interface TableParams {
@@ -50,9 +73,8 @@ interface TableParams {
 const AuthorReport = () => {
   const [form] = Form.useForm();
   const adminId = useSelector((state: RootState) => state.auth.adminId);
-  const [currentParams, setCurrentParams] = useState({dateStart: '', dateEnd: ''});
-  const { data: authorReportData, isFetching, refetch } = useGetCoursesReportByAuthorQuery(currentParams, {
-  });
+  const [currentParams, setCurrentParams] = useState({ dateStart: '', dateEnd: '' });
+  const { data: authorReportData, isFetching, refetch } = useGetCoursesReportByAuthorQuery(currentParams, {});
 
   const dispatch = useDispatch();
 
@@ -61,12 +83,10 @@ const AuthorReport = () => {
   const chartName = useSelector((state: RootState) => state.report.chartName);
 
   const handleChange = (value: string) => {
-
     dispatch(selectPreviousDays(Number(value)));
   };
 
   const showNewUserSignupsChart = () => {
-
     dispatch(showChart('new-signups'));
   };
 
@@ -77,7 +97,6 @@ const AuthorReport = () => {
   const showCourseSalesChart = () => {
     dispatch(showChart('course-sales'));
   };
-
 
   const columns: ColumnsType<DataCourseType> = [
     {
@@ -96,7 +115,8 @@ const AuthorReport = () => {
       title: 'Created At',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      ellipsis: true
+      ellipsis: true,
+      width: 300
     },
     {
       title: 'Total Earning ($)',
@@ -107,13 +127,13 @@ const AuthorReport = () => {
     {
       title: 'Ratings',
       dataIndex: 'numberOfRatings',
-      key: 'numberOfRatings',
+      key: 'numberOfRatings'
       // render: (_: IAuthorReport, record: IAuthorReport) => <span>{record.isDeleted ? 'Inactive' : 'Active'}</span>
     },
     {
       title: 'Avg ratings',
       dataIndex: 'avgRatings',
-      key: 'avgRatings',
+      key: 'avgRatings'
       // render: (_: IAuthorReport, record: IAuthorReport) => (
       //   <Space size='middle'>
       //   </Space>
@@ -129,34 +149,31 @@ const AuthorReport = () => {
   });
 
   const onChange: TableProps<DataCourseType>['onChange'] = (pagination, filters, sorter, extra) => {
-
     setTableParams({
       pagination
     });
   };
 
   const hangeChangeRangeDate = (dates: [Dayjs, Dayjs], dateStrings: [string, string]) => {
-    console.log('From: ', dates[0].format('DD/MM/YYYY'), 'To: ', dates[1].format('DD/MM/YYYY'));
     setCurrentParams({
       dateStart: dateStrings[0],
       dateEnd: dateStrings[1]
-    })
-  }
+    });
+  };
 
   const searchData = () => {
-    console.log('search data', currentParams);
-    console.log("form", form.getFieldsValue())
-    refetch().then(() => {
-      console.log('data', data);
-    
-    }).catch((err) => {
-      console.log('err', err);
-    })
-  }
+    refetch()
+      .then((res: any) => {
+        console.log('data', res);
+      })
+      .catch((err: any) => {
+        console.log('err', err);
+      });
+  };
 
   const resetData = () => {
     form.resetFields();
-  }
+  };
 
   return (
     <Fragment>
@@ -174,26 +191,36 @@ const AuthorReport = () => {
         />
       </div>
       {/* Filter section */}
-          <div className="filter-section">
-          <Form layout="inline" form={form}>
-            <Form.Item name="rangeDate" label="Select Range of Date">
-        <RangePicker onChange={hangeChangeRangeDate} />
-        </Form.Item  >
-          <Form.Item label="Filter">
-          <Button type="primary" icon={<SearchOutlined />} onClick={searchData}>
-            Search
-          </Button>
-          <Button className="ml-2" type="primary" icon={<RedoOutlined />} onClick={resetData}>
-            Reset
-          </Button>
-          </Form.Item>
-      </Form>
-          </div>
+      <div className='filter-section'>
+        <Form layout='inline' form={form} className='bg-white p-4'>
+          <Col span='12' className='mb-4'>
+            <Form.Item className='mb-2' name='rangeDate' label='Select Range of Date'>
+              <RangePicker onChange={hangeChangeRangeDate} />
+            </Form.Item>
+          </Col>
+          <Col span='24' className='mb-4'>
+            <Form.Item label='Filter'>
+              <Button type='primary' icon={<SearchOutlined />} onClick={searchData}>
+                Search
+              </Button>
+              <Button className='ml-2' type='primary' icon={<RedoOutlined />} onClick={resetData}>
+                Reset
+              </Button>
+            </Form.Item>
+          </Col>
+        </Form>
+      </div>
 
       {/* Author report content */}
       <div className='author-report-content mt-8'>
-        <Table columns={columns} dataSource={authorReportData?.reports ?? []} onChange={onChange} pagination={tableParams.pagination} />
-        </div>
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+        <Table
+          columns={columns}
+          dataSource={authorReportData?.reports ?? []}
+          onChange={onChange}
+          pagination={tableParams.pagination}
+        />
+      </div>
     </Fragment>
   );
 };

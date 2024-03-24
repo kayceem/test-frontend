@@ -91,7 +91,12 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
       dataIndex: 'title',
       key: 'title',
       width: '20%',
-      render: (_: IBlog, record: IBlog) => <span>{record.title}</span>
+      render: (_: IBlog, record: IBlog) => (
+        <span>
+          {record.title.substring(0, 30)}
+          {record.title.length > 30 ? '...' : ''}
+        </span>
+      )
     },
     {
       title: 'Author',
@@ -102,8 +107,12 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
     {
       title: 'Content',
       dataIndex: 'content',
-
-      render: (_: IBlog, record: IBlog) => <span>{record.content}</span>
+      render: (_: IBlog, record: IBlog) => (
+        <span>
+          {record.content.substring(0, 80)}
+          {record.content.length > 60 ? '...' : ''}
+        </span>
+      )
     },
     {
       title: 'Created at',

@@ -13,16 +13,18 @@ import { formatVideoLengthToHours } from '../../../../../utils/functions';
 import moment from 'moment';
 import { read, utils, writeFileXLSX } from 'xlsx';
 import * as XLSX from 'xlsx';
+import { useGetAuthorsSelectQuery } from '../../../../site/client.service';
 const { RangePicker } = DatePicker;
 
 interface DataType {
   key: string;
   name: string;
+  author: string;
   learners: number;
-  avgStudyTime: string;
+  avgStudyTime: number;
   views: number;
   socialInteractions?: number;
-  totalVideosLength: string;
+  totalVideosLength: number;
   lessons: number;
   numberOfWishlist: number;
   numberOfRatings: number;
@@ -34,59 +36,13 @@ interface Params {
   dateEnd: string;
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'All Courses',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <Link to={`?tab=123`}>{text}</Link>
-  },
-  {
-    title: 'Learners',
-    dataIndex: 'learners',
-    key: 'learners'
-  },
-  {
-    title: 'Ratings',
-    dataIndex: 'numberOfRatings',
-    key: 'numberOfRatings'
-  },
-  {
-    title: 'Avg ratings',
-    dataIndex: 'avgRatings',
-    key: 'avgRatings'
-  },
-  {
-    title: 'Avg. Study time',
-    dataIndex: 'avgStudyTime',
-    key: 'avgStudyTime'
-  },
-  {
-    title: 'Views',
-    dataIndex: 'views',
-    key: 'views'
-  },
-  {
-    title: 'Wishlist',
-    dataIndex: 'numberOfWishlist',
-    key: 'numberOfWishlist'
-  },
-  {
-    title: 'Total durations',
-    dataIndex: 'totalVideosLength',
-    key: 'totalVideosLength'
-  },
-  {
-    title: 'Lessons',
-    dataIndex: 'lessons',
-    key: 'lessons'
-  }
-];
+
 
 const CourseInsights = () => {
   const [form] = Form.useForm();
   const [isSearch, setIsSearch] = useState(true);
-  const [currentParams, setCurrentParams] = useState({ dateStart: '', dateEnd: '' });
+  const [currentParams, setCurrentParams] = useState({ dateStart: '', dateEnd: '', authorId: '' });
+  const {data: dataAuthorSelect} = useGetAuthorsSelectQuery();
 
   const {
     data: courseInsightsData,
@@ -95,7 +51,8 @@ const CourseInsights = () => {
   } = useGetReportsCourseInsightsQuery(
     {
       dateStart: currentParams.dateStart,
-      dateEnd: currentParams.dateEnd
+      dateEnd: currentParams.dateEnd,
+      authorId: currentParams.authorId
     },
     {
       skip: !isSearch
@@ -108,11 +65,12 @@ const CourseInsights = () => {
     const reportTemplateItem = {
       key: report._id,
       name: report.name,
+      author: report.author,
       learners: report.learners,
-      avgStudyTime: formatVideoLengthToHours(+report.avgStudyTime),
+      avgStudyTime: report.avgStudyTime,
       views: report.views,
       // socialInteractions: report.socialInteractions,
-      totalVideosLength: formatVideoLengthToHours(+report.totalVideosLength),
+      totalVideosLength: report.totalVideosLength,
       lessons: report.lessons,
       numberOfWishlist: report.numberOfWishlist,
       numberOfRatings: report.numberOfRatings,
@@ -192,12 +150,21 @@ const CourseInsights = () => {
     }
   };
 
+  const handleFilterByAuthor = (value: string) => {
+    setCurrentParams({
+      dateStart: '',
+      dateEnd: '',
+      authorId: value
+    });
+  }
+
   const searchData = () => {
     setIsSearch(true);
   };
 
   const resetData = () => {
     form.resetFields();
+    setCurrentParams({ dateStart: '', dateEnd: '', authorId: ''});
     refetch()
       .then((res) => {
         console.log('res', res);
@@ -228,6 +195,73 @@ const CourseInsights = () => {
     link.download = 'CourseInsights.xlsx';
     link.click();
   };
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'All Courses',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text) => <Link to={`?tab=123`}>{text}</Link>,
+      width: 400
+    },
+    {
+      title: 'Author',
+      dataIndex: 'author',
+      key: 'author',
+      width: 200
+    },
+    {
+      title: 'Learners',
+      dataIndex: 'learners',
+      key: 'learners',
+      sorter: (a, b) => a.learners - b.learners
+    },
+    {
+      title: 'Ratings',
+      dataIndex: 'numberOfRatings',
+      key: 'numberOfRatings',
+      sorter: (a, b) => a.numberOfRatings - b.numberOfRatings
+    },
+    {
+      title: 'Avg ratings',
+      dataIndex: 'avgRatings',
+      key: 'avgRatings',
+      sorter: (a, b) => a.avgRatings - b.avgRatings
+    },
+    {
+      title: 'Avg. Study time',
+      dataIndex: 'avgStudyTime',
+      key: 'avgStudyTime',
+      sorter: (a, b) => a.avgStudyTime - b.avgStudyTime,
+      render: (avgStudyTime) => `${formatVideoLengthToHours(+avgStudyTime)}`
+    },
+    {
+      title: 'Views',
+      dataIndex: 'views',
+      key: 'views',
+      sorter: (a, b) => a.learners - b.learners
+    },
+    {
+      title: 'Wishlist',
+      dataIndex: 'numberOfWishlist',
+      key: 'numberOfWishlist',
+      sorter: (a, b) => a.numberOfWishlist - b.numberOfWishlist
+    },
+    {
+      title: 'Total durations',
+      dataIndex: 'totalVideosLength',
+      key: 'totalVideosLength',
+      sorter: (a, b) => a.totalVideosLength - b.totalVideosLength,
+      render: (totalVideosLength) => `${formatVideoLengthToHours(+totalVideosLength)}`
+    },
+    {
+      title: 'Lessons',
+      dataIndex: 'lessons',
+      key: 'lessons',
+      sorter: (a, b) => a.lessons - b.lessons
+    }
+  ];
+
 
   return (
     <div className='course-insights'>
@@ -279,13 +313,8 @@ const CourseInsights = () => {
                   <Select
                     style={{ width: 240 }}
                     allowClear
-                    onChange={handleFilterByQuarterOfYear}
-                    options={[
-                      { value: '1', label: 'The first quarter' },
-                      { value: '2', label: 'Second quarter' },
-                      { value: '3', label: 'Third quarter' },
-                      { value: '4', label: 'Fourth quarter' }
-                    ]}
+                    onChange={handleFilterByAuthor}
+                    options={dataAuthorSelect ?? []}
                   />
                 </Form.Item>
               </Col>

@@ -23,10 +23,11 @@ const AdminCommonHeader = (props: {title: string}) => {
   let avatarThumnailUrl = '';
 
   if (data?.user.avatar) {
-    if (data?.user.avatar.startsWith('http')) {
-      avatarThumnailUrl = data?.user.avatar;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    if ((data?.user.avatar as string ).startsWith('http')) {
+      avatarThumnailUrl = data?.user.avatar as string;
     } else {
-      avatarThumnailUrl = `${BACKEND_URL}/${data?.user.avatar}`;
+      avatarThumnailUrl = `${BACKEND_URL}/${data?.user.avatar as string}`;
     }
   }
 
@@ -68,7 +69,7 @@ const AdminCommonHeader = (props: {title: string}) => {
     {
       key: 'change-password',
       label: (
-        <Link to="/author/settings">
+        <Link to="/author/change-password">
          Change password
         </Link>
       )

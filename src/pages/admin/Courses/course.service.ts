@@ -247,10 +247,10 @@ export const courseApi = createApi({
       },
       invalidatesTags: (result, error, data) => (error ? [] : [{ type: 'Courses', id: 'LIST' }])
     }),
-    updateLesson: build.mutation<ILesson, { _id: string; body: ILesson }>({
+    updateLesson: build.mutation<ILesson, { id: string; courseId?: string; body: ILesson }>({
       query(data) {
         return {
-          url: `lessons/lesson/update/${data._id}`,
+          url: `lessons/lesson/update/${data.id}`,
           method: 'PUT',
           body: data.body
         };

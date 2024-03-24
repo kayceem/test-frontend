@@ -350,6 +350,11 @@ export interface DeleteDiscussionResponse {
   message: string;
 }
 
+export interface GetFreeLessonsByCourseIdResponse {
+  message: string;
+  lessons: ILesson[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi',
   tagTypes: [
@@ -944,6 +949,12 @@ export const clientApi = createApi({
       }),
       providesTags: () => [{ type: 'Clients', id: 'LIST' }]
     }),
+    getFreeLessonsByCourseId: build.query<GetFreeLessonsByCourseIdResponse, string>({
+      query: (courseId) => ({
+        url: `lessons/course/${courseId}/free-lessons`
+      }),
+      providesTags: () => [{ type: 'Courses', id: 'LIST' }]
+    }),
     // Discuss
     getAllDiscussions: build.query<GetAllDiscussionsResponse, void>({
       query: () => ({
@@ -1066,6 +1077,7 @@ export const {
   useGetTotalPriceQuery,
   useGetValidCouponsForCoursesWithoutUserQuery,
   useGetTotalPriceWithoutUserQuery,
+  useGetFreeLessonsByCourseIdQuery,
   // Discuss
   useGetAllDiscussionsQuery,
   useGetDiscussionsByLessonIdQuery,
