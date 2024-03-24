@@ -289,18 +289,21 @@ const SideBar = () => {
       (isViewCoupon && getItem('Coupon Types', 'marketing/coupon-types')),
       // getItem('Bundles', 'marketing/bundles'),
       // getItem('Subscriptions', 'marketing/subscriptions'),
-      getItem('Coupons', 'marketing/coupons')
-    ]),
-    getItem('Blog', 'blog', <BoldOutlined />, [
-      getItem('Blog List', 'blog'),
-      getItem('Blog Category', 'blog-category'),
-      getItem('Blog comments', 'blog-comments')
-    ]),
-    (adminRole === UserRole.ADMIN &&
-      getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')])) as MenuItem,
-    getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
-    getItem('My account', 'account', <UserAddOutlined />),
-    getItem('Need Help ?', 'help', <FileOutlined />)
+      (isViewCoupon && getItem('Coupons', 'marketing/coupons'))
+    ])) as MenuItem,
+    (isViewBlogModule && getItem('Blog', 'blog', <BoldOutlined />, [
+      (isViewBlog && getItem('Blog List', 'blog')) as MenuItem,
+      (isViewBlogCategory && getItem('Blog Category', 'blog-category')),
+      (isViewBlogComments && getItem('Blog comments', 'blog-comments'))
+    ])) as MenuItem,
+    (isViewFeedback && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) &&
+      getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [
+        (isViewFeedback && getItem('Feedbacks', 'feedbacks/list')),
+        getItem('Subscribe', 'subscribe')
+      ])) as MenuItem,
+    getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings' ) ]),
+    // getItem('My account', 'account', <UserAddOutlined />),
+    // getItem('Need Help ?', 'help', <FileOutlined />)
   ];
 
   return (
