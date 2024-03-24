@@ -94,8 +94,9 @@ const SideBar = () => {
       getItem('Blog comments', 'blog-comments')
     ]),
     (adminRole === UserRole.ADMIN &&
-      getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list')])) as MenuItem,
-    getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
+      getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [getItem('Feedbacks', 'feedbacks/list'), getItem('Subscribe', 'subscribe'),])) as MenuItem,
+      
+      getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings')]),
     getItem('My account', 'account', <UserAddOutlined />),
     getItem('Need Help ?', 'help', <FileOutlined />)
   ];

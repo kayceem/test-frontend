@@ -25,6 +25,7 @@ import DiscussHeader from './components/DiscussHeader';
 import UsersPermissionHeader from './components/UsersPermission';
 import SettingHeader from './components/SettingHeader';
 import AdminCommonHeader from './components/AdminHeader';
+import SubscribeHeader from './components/SubscribeHeader';
 
 const { Header } = Layout;
 const AdminHeader = () => {
@@ -57,6 +58,7 @@ const AdminHeader = () => {
       {path === '/author/transaction' && <AdminCommonHeader title={'Transactions'} />}
       {path === '/author/change-password' && <WelcomeHeader />}
       {path === '/author/settings' && <AdminCommonHeader title={'Settings'} />}
+      {path === '/author/subscribe' && <AdminCommonHeader title={'Subscribe'} />}
     </Header>
   );
 };
