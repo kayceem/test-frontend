@@ -106,8 +106,10 @@ const UsersProgress = () => {
           const { dateStart, dateEnd } = getQuarterDates(1);
 
           setCurrentParams({
+            ...currentParams,
             dateStart: moment(dateStart).format('DD/MM/YYYY'),
-            dateEnd: moment(dateEnd).format('DD/MM/YYYY')
+            dateEnd: moment(dateEnd).format('DD/MM/YYYY'),
+            
           });
         }
         break;
@@ -115,8 +117,10 @@ const UsersProgress = () => {
         {
           const { dateStart, dateEnd } = getQuarterDates(2);
           setCurrentParams({
+            ...currentParams,
             dateStart: moment(dateStart).format('DD/MM/YYYY'),
-            dateEnd: moment(dateEnd).format('DD/MM/YYYY')
+            dateEnd: moment(dateEnd).format('DD/MM/YYYY'),
+            
           });
         }
         break;
@@ -124,6 +128,7 @@ const UsersProgress = () => {
         {
           const { dateStart, dateEnd } = getQuarterDates(3);
           setCurrentParams({
+            ...currentParams,
             dateStart: moment(dateStart).format('DD/MM/YYYY'),
             dateEnd: moment(dateEnd).format('DD/MM/YYYY')
           });
@@ -133,6 +138,7 @@ const UsersProgress = () => {
         {
           const { dateStart, dateEnd } = getQuarterDates(4);
           setCurrentParams({
+            ...currentParams,
             dateStart: moment(dateStart).format('DD/MM/YYYY'),
             dateEnd: moment(dateEnd).format('DD/MM/YYYY')
           });
