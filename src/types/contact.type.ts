@@ -6,6 +6,8 @@ export interface IContact extends IBase {
   name: string;
   email: string;
   message: string;
+  hasReplies: boolean;
+  replyCount: number;
 }
 
 export interface IFeedbackReply extends IBase {
