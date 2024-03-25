@@ -17,6 +17,7 @@ import { IBlogComment } from '../../types/blogComments.type';
 import { INote } from '../../types/note.type';
 import { IDataSelect } from '../../types/dataSelect.type';
 import { IDiscuss } from '../../types/discuss.type';
+import { ISubscribe } from '../../types/subscribe.type';
 
 interface getCategoriesResponse {
   categories: ICategory[];
@@ -193,7 +194,10 @@ export interface CreateReviewResponse {
   message: string;
   review: IReview;
 }
-
+export interface CreateSubscribeResponse {
+  message: string;
+  subscribe: ISubscribe;
+}
 export interface CreateVnpayUrlResponse {
   redirectUrl: string;
 }
@@ -364,7 +368,8 @@ export const clientApi = createApi({
     'Coupons',
     'BlogComment',
     'Note',
-    'Discussions'
+    'Discussions',
+    'Subscribe'
   ],
   keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
@@ -714,6 +719,13 @@ export const clientApi = createApi({
         url: `payments/vnpay/create_vnpayment_url`,
         method: 'POST',
         body: { orderId, amount, bankCode }
+      })
+    }),
+    createSubscribe: build.mutation<CreateSubscribeResponse, { email: string; }>({
+      query: ({ email }) => ({
+        url: `subscribe/create`,
+        method: 'POST',
+        body: { email }
       })
     }),
     getSuggestedCourses: build.query<SuggestedCoursesResponse, { userId: string; limit?: number }>({
@@ -1075,5 +1087,6 @@ export const {
   useUpdateDiscussionMutation,
   useDeleteDiscussionMutation,
   useAddReplyToDiscussMutation,
-  useGetAllLessonsQuery
+  useGetAllLessonsQuery,
+  useCreateSubscribeMutation,
 } = clientApi;

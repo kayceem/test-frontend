@@ -298,7 +298,8 @@ const SideBar = () => {
     ])) as MenuItem,
     (isViewFeedback && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) &&
       getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [
-        (isViewFeedback && getItem('Feedbacks', 'feedbacks/list'))
+        (isViewFeedback && getItem('Feedbacks', 'feedbacks/list')),
+        getItem('Subscribe', 'subscribe')
       ])) as MenuItem,
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings' ) ]),
     // getItem('My account', 'account', <UserAddOutlined />),
