@@ -17,6 +17,7 @@ import { IBlogComment } from '../../types/blogComments.type';
 import { INote } from '../../types/note.type';
 import { IDataSelect } from '../../types/dataSelect.type';
 import { IDiscuss } from '../../types/discuss.type';
+import { ISubscribe } from '../../types/subscribe.type';
 
 interface getCategoriesResponse {
   categories: ICategory[];
@@ -193,7 +194,10 @@ export interface CreateReviewResponse {
   message: string;
   review: IReview;
 }
-
+export interface CreateSubscribeResponse {
+  message: string;
+  subscribe: ISubscribe;
+}
 export interface CreateVnpayUrlResponse {
   redirectUrl: string;
 }
@@ -346,6 +350,11 @@ export interface DeleteDiscussionResponse {
   message: string;
 }
 
+export interface GetFreeLessonsByCourseIdResponse {
+  message: string;
+  lessons: ILesson[];
+}
+
 export const clientApi = createApi({
   reducerPath: 'clientApi',
   tagTypes: [
@@ -359,7 +368,8 @@ export const clientApi = createApi({
     'Coupons',
     'BlogComment',
     'Note',
-    'Discussions'
+    'Discussions',
+    'Subscribe'
   ],
   keepUnusedDataFor: 10,
   baseQuery: fetchBaseQuery({
@@ -711,6 +721,13 @@ export const clientApi = createApi({
         body: { orderId, amount, bankCode }
       })
     }),
+    createSubscribe: build.mutation<CreateSubscribeResponse, { email: string; }>({
+      query: ({ email }) => ({
+        url: `subscribe/create`,
+        method: 'POST',
+        body: { email }
+      })
+    }),
     getSuggestedCourses: build.query<SuggestedCoursesResponse, { userId: string; limit?: number }>({
       query: ({ userId, limit = 5 }) => ({
         url: `courses/suggested/${userId}`,
@@ -932,6 +949,12 @@ export const clientApi = createApi({
       }),
       providesTags: () => [{ type: 'Clients', id: 'LIST' }]
     }),
+    getFreeLessonsByCourseId: build.query<GetFreeLessonsByCourseIdResponse, string>({
+      query: (courseId) => ({
+        url: `lessons/course/${courseId}/free-lessons`
+      }),
+      providesTags: () => [{ type: 'Courses', id: 'LIST' }]
+    }),
     // Discuss
     getAllDiscussions: build.query<GetAllDiscussionsResponse, void>({
       query: () => ({
@@ -1054,6 +1077,7 @@ export const {
   useGetTotalPriceQuery,
   useGetValidCouponsForCoursesWithoutUserQuery,
   useGetTotalPriceWithoutUserQuery,
+  useGetFreeLessonsByCourseIdQuery,
   // Discuss
   useGetAllDiscussionsQuery,
   useGetDiscussionsByLessonIdQuery,
@@ -1063,5 +1087,6 @@ export const {
   useUpdateDiscussionMutation,
   useDeleteDiscussionMutation,
   useAddReplyToDiscussMutation,
-  useGetAllLessonsQuery
+  useGetAllLessonsQuery,
+  useCreateSubscribeMutation,
 } = clientApi;

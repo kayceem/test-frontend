@@ -12,6 +12,11 @@ interface getCoursesResponse {
   message: string;
 }
 
+interface getCourseResponse {
+  course: ICourse;
+  message: string;
+}
+
 interface getAllActiveCoursesResponse {
   courses: ICourse[];
   message: string;
@@ -204,7 +209,7 @@ export const courseApi = createApi({
 
       invalidatesTags: (result, error, body) => (error ? [] : [{ type: 'Courses', id: 'LIST' }])
     }),
-    getCourse: build.query<ICourse, string>({
+    getCourse: build.query<getCourseResponse, string>({
       query: (id) => ({
         url: `/courses/course/${id}`,
         headers: {
@@ -214,7 +219,11 @@ export const courseApi = createApi({
           first_name: 'du',
           'last-name': 'duoc'
         }
-      })
+      }),
+      providesTags: (result, error, id) => [
+        { type: 'Courses', id: id },
+        { type: 'Courses', id: 'LIST' }
+      ]
     }),
     updateCourse: build.mutation<ICourse, { id: string; body: ICourse }>({
       query(data) {
