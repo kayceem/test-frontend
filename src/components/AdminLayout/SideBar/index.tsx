@@ -286,7 +286,7 @@ const SideBar = () => {
         (isViewReviewCenter && getItem('Review center', 'reports/reviews-center'))
       ])) as MenuItem,
     (isViewMarketingModule && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) && getItem('Marketing', 'marketing', <TagsOutlined />, [
-      (isViewCoupon && getItem('Coupon Types', 'marketing/coupon-types')),
+      // (isViewCoupon && getItem('Coupon Types', 'marketing/coupon-types')),
       // getItem('Bundles', 'marketing/bundles'),
       // getItem('Subscriptions', 'marketing/subscriptions'),
       (isViewCoupon && getItem('Coupons', 'marketing/coupons'))

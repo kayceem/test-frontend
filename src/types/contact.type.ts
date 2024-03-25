@@ -8,6 +8,8 @@ export interface IContact extends IBase {
   email: string;
   message: string;
   dateSendMail: string | IUser;
+  hasReplies: boolean;
+  replyCount: number;
 }
 
 export interface IFeedbackReply extends IBase {
