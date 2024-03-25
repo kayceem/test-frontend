@@ -146,7 +146,6 @@ const CoursesList: React.FC<CoursesListProps> = (props) => {
   });
 
   const onChange: TableProps<DataCourseType>['onChange'] = (pagination, filters, sorter, extra) => {
-
     setTableParams({
       pagination
     });
@@ -154,7 +153,13 @@ const CoursesList: React.FC<CoursesListProps> = (props) => {
 
   return (
     <div className='course-list'>
-      <Table columns={columns} dataSource={props.courseData} onChange={onChange} pagination={tableParams.pagination} />
+      <Table
+        columns={columns}
+        dataSource={props.courseData}
+        onChange={onChange}
+        pagination={tableParams.pagination}
+        scroll={{ y: 400 }}
+      />
     </div>
   );
 };

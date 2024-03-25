@@ -9,9 +9,11 @@ import {
   EllipsisOutlined,
   UnorderedListOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined
+  CloseCircleOutlined,
+  EyeOutlined,
+  StopOutlined
 } from '@ant-design/icons';
-import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, message } from 'antd';
+import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, message, Popconfirm } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -24,6 +26,7 @@ import { useGetCategoriesQuery } from '../Categories/category.service';
 import './Courses.scss';
 import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
+import CourseDetailsModal from './components/CourseDetailsModal/CourseDetailsModal';
 import { useUpdateActiveStatusCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
 import { Helper } from '../../../utils/helper';
 enum Access {
@@ -82,6 +85,11 @@ const SettingContent = (props: { courseId: string; isDeleted: boolean }) => {
 
 const Courses = () => {
   const [viewTable, setViewTable] = useState<string>('grid');
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [updateActiveStatusCourse] = useUpdateActiveStatusCourseMutation();
+
   const adminId = useSelector((state: RootState) => state.auth.adminId);
   const adminRole = useSelector((state: RootState) => state.auth.adminRole);
 
@@ -99,6 +107,22 @@ const Courses = () => {
 
   const changeTableToGrid = () => {
     setViewTable('grid');
+  };
+
+  const handleViewDetails = (courseId: string) => {
+    setSelectedCourseId(courseId);
+    setIsModalVisible(true);
+  };
+
+  const handleUpdateStatus = (courseId: string) => {
+    updateActiveStatusCourse({ courseId })
+      .unwrap()
+      .then(() => {
+        void message.success('Course status updated successfully');
+      })
+      .catch(() => {
+        void message.error('Failed to update course status');
+      });
   };
 
   const [params, setParams] = useState({
@@ -125,7 +149,7 @@ const Courses = () => {
 
   const { data: authorData, isFetching: isAuthorsFetching } = useGetAuthorsQuery();
 
-  const authorFilterList = authorData?.authors.map((author ) => {
+  const authorFilterList = authorData?.authors.map((author) => {
     return {
       text: author[0],
       value: author[0],
@@ -270,24 +294,30 @@ const Courses = () => {
           createdAt: '18 jun 2023',
           updatedAt: '18 jun 2023',
           actions: (
-            <Fragment>
-              <Space>
-                <Button>
-                  <Link to={`/author/courses/${_id}`}>
-                    <EditOutlined />
-                  </Link>
-                </Button>
-                <Popover
-                  placement='bottomRight'
-                  content={<SettingContent courseId={_id} isDeleted={isDeleted || false} />}
-                  title='Actions'
+            <Space size='small'>
+              <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetails(_id)} />
+              {isDeleted ? (
+                <Popconfirm
+                  title='Are you sure you want to activate this course?'
+                  placement='topRight'
+                  onConfirm={() => handleUpdateStatus(_id)}
+                  okText='Yes'
+                  cancelText='No'
                 >
-                  <Button className='btn-wrap'>
-                    <EllipsisOutlined />
-                  </Button>
-                </Popover>
-              </Space>
-            </Fragment>
+                  <Button icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />} />
+                </Popconfirm>
+              ) : (
+                <Popconfirm
+                  title='Are you sure you want to deactivate this course?'
+                  placement='topRight'
+                  onConfirm={() => handleUpdateStatus(_id)}
+                  okText='Yes'
+                  cancelText='No'
+                >
+                  <Button icon={<StopOutlined style={{ color: '#ff4d4f' }} />} danger />
+                </Popconfirm>
+              )}
+            </Space>
           )
         };
         return courseTemplateItem;
@@ -341,7 +371,6 @@ const Courses = () => {
     }
   };
 
-
   // Create permission section
   const helper = new Helper();
   const CourseCategory = helper.getRole.CourseCategory;
@@ -353,65 +382,64 @@ const Courses = () => {
   const isViewDetail = helper.checkPermission(CourseCategory?.Detail?.code);
   const isDelete = helper.checkPermission(CourseCategory?.Delete?.code);
 
-  if(!isView) {
+  if (!isView) {
     return (
       <Fragment>
-      <div className='breakcrumb'>
-        <Breadcrumb
-          items={[
-            {
-              title: 'Courses'
-            },
-            {
-              title: <Link to='#'>Course Manager</Link>
-            }
-          ]}
-        />
-        <Header className='sub-header'>
-          <Space className='sub-header__wrap'>
-            <Search
-              placeholder='Search courses'
-              onSearch={onSearchHandler}
-              style={{ width: 200 }}
-              className='search-wrap'
-            />
-
-            {viewTable === 'grid' && (
-              <Select
-                size='middle'
-                placeholder='Please select your categories'
-                defaultValue={'All Categories'}
-                onChange={cateFilterHandler}
-                style={{ width: '240px' }}
-                options={cateFilterList as { _id: string; text: string; value: string; name: string }[]}
+        <div className='breakcrumb'>
+          <Breadcrumb
+            items={[
+              {
+                title: 'Courses'
+              },
+              {
+                title: <Link to='#'>Course Manager</Link>
+              }
+            ]}
+          />
+          <Header className='sub-header'>
+            <Space className='sub-header__wrap'>
+              <Search
+                placeholder='Search courses'
+                onSearch={onSearchHandler}
+                style={{ width: 200 }}
+                className='search-wrap'
               />
-            )}
 
-            {viewTable === 'grid' && adminRole === UserRole.ADMIN && (
-              <Select
-                size='middle'
-                placeholder='Please select Your Authors'
-                onChange={authorsFitlerHandler}
-                style={{ width: '200px' }}
-                options={authorFilterList}
-              />
-            )}
+              {viewTable === 'grid' && (
+                <Select
+                  size='middle'
+                  placeholder='Please select your categories'
+                  defaultValue={'All Categories'}
+                  onChange={cateFilterHandler}
+                  style={{ width: '240px' }}
+                  options={cateFilterList as { _id: string; text: string; value: string; name: string }[]}
+                />
+              )}
 
-            <Button onClick={changeTableToGrid} className='btn-wrap'>
-              <AppstoreOutlined />
-            </Button>
-            <Button onClick={changeTableToList} className='btn-wrap'>
-              <UnorderedListOutlined />
-            </Button>
-          </Space>
-        </Header>
-        <div className='course-content'>
-          <h2> You don't have permission</h2>
+              {viewTable === 'grid' && adminRole === UserRole.ADMIN && (
+                <Select
+                  size='middle'
+                  placeholder='Please select Your Authors'
+                  onChange={authorsFitlerHandler}
+                  style={{ width: '200px' }}
+                  options={authorFilterList}
+                />
+              )}
+
+              <Button onClick={changeTableToGrid} className='btn-wrap'>
+                <AppstoreOutlined />
+              </Button>
+              <Button onClick={changeTableToList} className='btn-wrap'>
+                <UnorderedListOutlined />
+              </Button>
+            </Space>
+          </Header>
+          <div className='course-content'>
+            <h2> You don't have permission</h2>
+          </div>
         </div>
-              
-      </div>
-    </Fragment>
-    )
+      </Fragment>
+    );
   }
 
   return (
@@ -487,6 +515,13 @@ const Courses = () => {
           </div>
         </div>
       </div>
+      {selectedCourseId && (
+        <CourseDetailsModal
+          courseId={selectedCourseId}
+          isOpen={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+        />
+      )}
     </Fragment>
   );
 };
