@@ -1,41 +1,72 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useGetSubscribesQuery } from './SubscribeEmail.service';
-import { List } from 'antd';
-import { Space, Table, Tag } from 'antd';
+import { Table, Input } from 'antd';
 import { ISubscribe } from '../../../types/subscribe.type';
 import { transformDate } from '../../../utils/functions';
+import { Breadcrumb } from 'antd';
+import { Link } from 'react-router-dom';
 
-const { Column, ColumnGroup } = Table;
+const SubscribeEmail = () => {
+  const { Search } = Input;
+  const [searchText, setSearchText] = useState('');
+  const { data: subscribeResponse, isFetching: isFetchingSubscribe } = useGetSubscribesQuery();
 
-interface SubscribeEmail {
-  email: string;
-  firstName: string;
-  createdAt: string;
-}
-const columns: ColumnsType<ISubscribe> = [
+  const filteredData = useMemo(() => {
+    if (!searchText) return subscribeResponse?.subscribe;
+    return subscribeResponse?.subscribe.filter(item =>
+      item.email.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }, [searchText, subscribeResponse]);
+
+  const columns = [
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (_: ISubscribe, record: ISubscribe) => (record.email)
     },
     {
       title: 'Created at',
       dataIndex: 'createdAt',
-      render: (_: ISubscribe, record: ISubscribe) => transformDate(record.createdAt ? record.createdAt : new Date().toISOString())
+      key: 'createdAt',
+      render: createdAt => transformDate(createdAt ? createdAt : new Date().toISOString()),
+    },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      // render: createdAt => transformDate(createdAt ? createdAt : new Date().toISOString()),
     },
   ];
-const SubscribeEmail = () => {
-  const { data: subscribeResponse, isFetching: isFetchingSubscribe } = useGetSubscribesQuery();
 
   return (
     <div>
+      <div className='breakcrumb'>
+        <Breadcrumb
+          items={[
+            {
+              title: 'Subscribe Email'
+            },
+            {
+              title: <Link to='#'>Subscribe Email</Link>
+            }
+          ]}
+        />
+      </div>
+      <Search
+        placeholder="Search by email"
+        allowClear
+        enterButton="Search"
+        size="large"
+        onSearch={value => setSearchText(value)}
+        style={{ marginBottom: 16 }}
+      />
       <Table
-      dataSource={subscribeResponse?.subscribe}
-      columns={columns}
-      pagination={{ pageSize: 5 }}
-      scroll={{ x: 'min-content' }}
-    />
+        dataSource={filteredData}
+        columns={columns}
+        pagination={{ pageSize: 5 }}
+        scroll={{ x: 'min-content' }}
+        loading={isFetchingSubscribe}
+      />
     </div>
   );
 };

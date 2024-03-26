@@ -38,6 +38,7 @@ export default function SubscribeEmail() {
             </form> */}
             <Form onFinish={submitHandler} className='subscribeemail-box'>
               <Form.Item
+              className='subscribeemail-input'
                 name='email'
                 rules={[
                   {
@@ -50,9 +51,9 @@ export default function SubscribeEmail() {
                   },
                 ]}
               >
-                <Input placeholder='Email address' />
+                <Input className='input' placeholder='Email address' />
               </Form.Item>
-              <Form.Item>
+              <Form.Item className='subscribeemail-submit'>
                 <Button type='primary' htmlType='submit' className='subscribeemail-submit-btn'>
                   Join us now!
                 </Button>
