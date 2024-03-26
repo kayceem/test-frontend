@@ -13,12 +13,11 @@ export interface ICourse {
   name: string;
 }
 
-
 export interface INote {
   _id: string;
   title: string;
-  userId: User;
-  lessonId: ILesson;
+  userId: User | string;
+  lessonId: ILesson | string;
   courseId: ICourse;
   content: string;
   createdAt: string;

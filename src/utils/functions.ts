@@ -11,6 +11,17 @@
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/en'; // Import the English locale (you can replace 'en' with your desired locale)
+import DOMPurify from 'dompurify';
+
+interface SanitizedHtml {
+  __html: string;
+}
+
+// Function to sanitize HTML content and prepare it for safe rendering
+export const sanitizeAndReturnHtml = (htmlContent: string): SanitizedHtml => {
+  const sanitizedContent = DOMPurify.sanitize(htmlContent);
+  return { __html: sanitizedContent };
+};
 
 export const transformDate = (apiDate: string) => {
   const parsedDate = dayjs(apiDate);
@@ -47,13 +58,12 @@ export const formatVideoLengthToHours = (seconds: number): string => {
   return `${hours.toFixed(1)} hours`;
 };
 
-export const  isNotValidEmail = (email: string) => {
+export const isNotValidEmail = (email: string) => {
   // Regular expression for a simple email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
   // Test the provided email against the regex
   return !emailRegex.test(email);
-}
+};
 
 export function getHeaders() {
   const token = localStorage.getItem('token');

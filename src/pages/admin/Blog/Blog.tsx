@@ -117,6 +117,7 @@ const Blogs = () => {
               onBlogEdit={blogEditHandler}
               data={blogsData?.blogs || []}
               categories={categoriesResponse?.blogsCategories || []}
+              htmlContent={''}
             />
           )}
         </div>
