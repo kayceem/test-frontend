@@ -187,6 +187,7 @@ const CouponsTable: React.FC = () => {
         scroll={{ y: 400 }}
       />
       <Pagination
+        style={{ float: 'right', marginRight: '0px' }}
         className='pagination'
         current={currentPage}
         pageSize={pageSize}
