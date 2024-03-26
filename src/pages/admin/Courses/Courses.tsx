@@ -11,7 +11,8 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   EyeOutlined,
-  StopOutlined
+  StopOutlined,
+  PlusOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, message, Popconfirm } from 'antd';
 import { Header } from 'antd/es/layout/layout';
@@ -27,6 +28,7 @@ import './Courses.scss';
 import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
 import CourseDetailsModal from './components/CourseDetailsModal/CourseDetailsModal';
+import CreateCourseDrawer from './components/CreateCourseDrawer/CreateCourseDrawer';
 import { useUpdateActiveStatusCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
 import { Helper } from '../../../utils/helper';
 enum Access {
@@ -87,6 +89,7 @@ const Courses = () => {
   const [viewTable, setViewTable] = useState<string>('grid');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isCreateDrawerVisible, setIsCreateDrawerVisible] = useState(false);
 
   const [updateActiveStatusCourse] = useUpdateActiveStatusCourseMutation();
 
@@ -123,6 +126,14 @@ const Courses = () => {
       .catch(() => {
         void message.error('Failed to update course status');
       });
+  };
+
+  const showCreateDrawer = () => {
+    setIsCreateDrawerVisible(true);
+  };
+
+  const closeCreateDrawer = () => {
+    setIsCreateDrawerVisible(false);
   };
 
   const [params, setParams] = useState({
@@ -457,6 +468,10 @@ const Courses = () => {
         />
         <Header className='sub-header'>
           <Space className='sub-header__wrap'>
+            <div className='add-course-button'>
+              <Button type='primary' shape='circle' icon={<PlusOutlined />} onClick={showCreateDrawer} />
+            </div>
+            <CreateCourseDrawer isOpen={isCreateDrawerVisible} onClose={closeCreateDrawer} />
             <Search
               placeholder='Search courses'
               onSearch={onSearchHandler}
