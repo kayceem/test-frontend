@@ -822,9 +822,9 @@ export const clientApi = createApi({
       invalidatesTags: (result, error, replyData) => [{ type: 'BlogComment', id: replyData.blogId }]
     }),
 
-    getAllNotes: build.query<GetNotesResponse, void>({
+    getAllNotes: build.query<GetNotesResponse, string>({
       query: () => ({
-        url: '/note'
+        url: '/note/getAll'
       }),
       providesTags: (result) =>
         result
@@ -892,6 +892,14 @@ export const clientApi = createApi({
       }),
       invalidatesTags: (result, error, noteId) => [{ type: 'Note', id: noteId }]
     }),
+
+    filterNotes: build.query<GetNotesResponse, string>({
+      query: (filters) => {
+        const queryString = new URLSearchParams(filters).toString();
+        return `/note/filter/?${queryString}`;
+      }
+    }),
+
     getReviewsByCourseId: build.query<GetReviewsByCourseIdResponse, { courseId: string; params?: IParams }>({
       query: ({ courseId, params }) => ({
         url: `reviews/course/${courseId}`,
@@ -1068,6 +1076,7 @@ export const {
   useUpdateNoteMutation,
   useDeleteNoteMutation,
   useGetNotesByLessonIdQuery,
+  useFilterNotesQuery,
   useGetReviewsByCourseIdQuery,
   useGetTotalReviewsByCourseIdQuery,
   useGetAverageRatingByCourseIdQuery,

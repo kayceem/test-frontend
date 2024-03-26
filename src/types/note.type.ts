@@ -4,12 +4,22 @@ export interface User {
   avatar: string;
 }
 
+export interface ILesson {
+  _id: string;
+  name: string;
+}
+export interface ICourse {
+  _id: string;
+  name: string;
+}
+
+
 export interface INote {
   _id: string;
   title: string;
   userId: User;
-  lessonId: string;
-  courseId: string;
+  lessonId: ILesson;
+  courseId: ICourse;
   content: string;
   createdAt: string;
   updatedAt: string;
