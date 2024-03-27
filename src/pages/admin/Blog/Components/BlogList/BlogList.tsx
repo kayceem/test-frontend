@@ -5,17 +5,18 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { IBlog } from '../../../../../types/blog.type';
 import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type';
-import { transformDate } from '../../../../../utils/functions';
+import { sanitizeAndReturnHtml, transformDate } from '../../../../../utils/functions';
 import { useUpdateActiveStatusBlogMutation } from '../../blog.service';
 import { startEditBlog } from '../../blog.slice';
 import BlogDetailModal from '../BlogsDetailModal/BlogDetailModal';
-import './BlogList.scss';
 import ViewHistoryBlog from '../ViewHistoryBLog';
+import './BlogList.scss';
 
 interface BlogListProps {
   data: IBlog[];
   onBlogEdit: (blogId: string) => void;
   categories: ICategoryBlogs[];
+  htmlContent: string;
 }
 
 const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) => {
@@ -109,7 +110,13 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
       dataIndex: 'content',
       render: (_: IBlog, record: IBlog) => (
         <span>
-          {record.content.substring(0, 80)}
+          {
+            <div
+              dangerouslySetInnerHTML={sanitizeAndReturnHtml(
+                record.content.length > 60 ? record.content.substring(0, 60) : record.content
+              )}
+            ></div>
+          }
           {record.content.length > 60 ? '...' : ''}
         </span>
       )
@@ -131,17 +138,20 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
       key: 'actions',
       render: (_: IBlog, record: IBlog) => (
         <Space size='middle'>
-          <Button icon={<EditOutlined style={{ color: '#1890ff' }} />} onClick={() => blogEditHandler(record._id)} />
-          <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => showModal(record._id)} />
+          <Button
+            icon={<EditOutlined style={{ color: '#1890ff' }} />}
+            onClick={() => blogEditHandler(record._id || '')}
+          />
+          <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => showModal(record._id || '')} />
           <Button
             icon={<HistoryOutlined style={{ color: '#1890ff' }} />}
-            onClick={() => handleViewHistory(record._id)}
+            onClick={() => handleViewHistory(record._id || '')}
           />
           {record.isDeleted ? (
             <Popconfirm
               title='Are you sure you want to activate this blog?'
               placement='topRight'
-              onConfirm={() => handleUpdateStatus(record._id)}
+              onConfirm={() => handleUpdateStatus(record._id || '')}
               okText='Yes'
               cancelText='No'
             >
@@ -151,7 +161,7 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
             <Popconfirm
               title='Are you sure you want to deactivate this blog category?'
               placement='topRight'
-              onConfirm={() => handleUpdateStatus(record._id)}
+              onConfirm={() => handleUpdateStatus(record._id || '')}
               okText='Yes'
               cancelText='No'
             >
@@ -174,7 +184,11 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
           categories={categories}
         />
       )}
-      <ViewHistoryBlog isVisible={historyVisible} onClose={() => setHistoryVisible(false)} blogId={currentBlogId} />
+      <ViewHistoryBlog
+        isVisible={historyVisible}
+        onClose={() => setHistoryVisible(false)}
+        blogId={currentBlogId || ''}
+      />
     </div>
   );
 };

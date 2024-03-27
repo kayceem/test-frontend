@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Button, Col, Drawer, Form, Input, Row, Select, notification } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
 import { IBlog } from '../../../../../types/blog.type';
 import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type';
 import { useAddBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../blog.service';
+import ReactQuill from 'react-quill';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -22,12 +23,14 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
   const blogId = useSelector((state: RootState) => state.blog.blogId);
   const adminId = useSelector((state: RootState) => state.auth.adminId);
   const { data: blogData } = useGetBlogQuery(blogId, { skip: !blogId });
+  const [content, setContent] = useState('');
 
   const [form] = Form.useForm();
 
   useEffect(() => {
     form.setFieldsValue({ userId: adminId });
-  }, [adminId, form]);
+    setContent(blogData?.blog.content || '');
+  }, [adminId, blogId, blogData, form]);
 
   useEffect(() => {
     if (blogId && blogData) {
@@ -38,9 +41,9 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
     }
   }, [blogId, blogData, form, adminId]);
 
-  const submitHandler = async (values: IBlog) => {
+  const submitHandler = async (values: Omit<IBlog, 'content'>) => {
     try {
-      const blogToSubmit = blogId ? { ...values, _id: blogId } : values;
+      const blogToSubmit = { ...values, content, _id: blogId ? blogId : undefined };
       if (blogId) {
         await updateBlog(blogToSubmit).unwrap();
         notification.success({ message: 'Blog updated successfully' });
@@ -49,6 +52,7 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
         notification.success({ message: 'Blog added successfully' });
       }
       form.resetFields();
+      setContent('');
       onClose();
     } catch (error) {
       notification.error({ message: 'Operation failed', description: 'An error occurred' });
@@ -118,12 +122,8 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
         </Row>
         <Row>
           <Col span={24}>
-            <Form.Item
-              name='content'
-              label='Content'
-              rules={[{ required: true, message: 'Please enter blog content' }]}
-            >
-              <Input.TextArea rows={4} placeholder='Enter blog content' />
+            <Form.Item label='Content' required>
+              <ReactQuill theme='snow' value={content} onChange={setContent} />
             </Form.Item>
           </Col>
         </Row>

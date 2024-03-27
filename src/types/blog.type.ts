@@ -1,7 +1,7 @@
-import { IBase } from "./base.type";
+import { IBase } from './base.type';
 
 export interface IBlog extends IBase {
-  _id: string;
+  _id: string | undefined;
   title: string;
   author: string;
   blogImg: string;

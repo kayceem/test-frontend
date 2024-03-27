@@ -30,6 +30,7 @@ const Notes = (props: Props) => {
   const [newContent, setNewContent] = useState('');
   const [filter, setFilter] = useState(currLessonId || 'all');
   const [notes, setNotes] = useState<INote[]>([]);
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
   const [updateNote, { isLoading: isUpdating }] = useUpdateNoteMutation();
   const [deleteNote, { isLoading: isDeleting }] = useDeleteNoteMutation();
@@ -64,13 +65,13 @@ const Notes = (props: Props) => {
   useEffect(() => {
     if (filter === 'all') {
       if (allNotesData && allNotesData.notes) {
-        setNotes(allNotesData.notes);
+        setNotes(allNotesData.notes.filter((note) => note.userId === userId));
       } else {
         setNotes([]);
       }
     } else {
       if (lessonNotesData && lessonNotesData.notes) {
-        setNotes(lessonNotesData.notes);
+        setNotes(lessonNotesData.notes.filter((note) => note.userId === userId));
       } else {
         setNotes([]);
       }
@@ -136,7 +137,7 @@ const Notes = (props: Props) => {
                     </span>
                     <span>
                       <p className='opacity-70'>
-                        {lessonsData?.lessons.find((lesson) => lesson._id === note.lessonId).name}
+                        {lessonsData?.lessons.find((lesson) => lesson._id === note.lessonId)?.name}
                       </p>
                     </span>
                     <div className='mb-4'>

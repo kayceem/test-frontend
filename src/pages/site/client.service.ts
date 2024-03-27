@@ -81,6 +81,11 @@ export interface getLessonsResponse {
   message: string;
 }
 
+export interface getUserByLessonResponse {
+  users: IUser[];
+  message: string;
+}
+
 export interface getCourseResponse {
   course: ICourse;
   message: string;
@@ -644,6 +649,11 @@ export const clientApi = createApi({
         }
       })
     }),
+    getAllUserByLesson: build.query<getUserByLessonResponse, { lessonId: string }>({
+      query: (payload) => ({
+        url: `lessons/lesson/${payload.lessonId}/users`
+      })
+    }),
     getAllLessons: build.query<getLessonsResponse, void>({
       query: () => 'lessons/getAllLesson'
     }),
@@ -721,7 +731,7 @@ export const clientApi = createApi({
         body: { orderId, amount, bankCode }
       })
     }),
-    createSubscribe: build.mutation<CreateSubscribeResponse, { email: string; }>({
+    createSubscribe: build.mutation<CreateSubscribeResponse, { email: string }>({
       query: ({ email }) => ({
         url: `subscribe/create`,
         method: 'POST',
@@ -1087,6 +1097,7 @@ export const {
   useGetValidCouponsForCoursesWithoutUserQuery,
   useGetTotalPriceWithoutUserQuery,
   useGetFreeLessonsByCourseIdQuery,
+  useGetAllUserByLessonQuery,
   // Discuss
   useGetAllDiscussionsQuery,
   useGetDiscussionsByLessonIdQuery,
@@ -1097,5 +1108,5 @@ export const {
   useDeleteDiscussionMutation,
   useAddReplyToDiscussMutation,
   useGetAllLessonsQuery,
-  useCreateSubscribeMutation,
+  useCreateSubscribeMutation
 } = clientApi;
