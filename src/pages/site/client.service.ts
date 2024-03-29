@@ -70,6 +70,13 @@ export interface getAuthorsSelectResponse {
     label: string;
   }[];
 }
+export interface getCategoriesSelectResponse {
+  message: string;
+  categories: {
+    name: string;
+    label: string;
+  }[];
+}
 
 export interface getSectionsResponse {
   sections: ISection[];
@@ -476,6 +483,15 @@ export const clientApi = createApi({
         return [{ type: 'Clients', id: 'LIST' }];
       }
     }),
+    getCategoriesSelect: build.query<IDataSelect[], void>({
+      query: () => ({
+        url: '/categories/select'
+      }),
+      providesTags() {
+        return [{ type: 'Clients', id: 'LIST' }];
+      }
+    }),
+
     getCoursesOrderedByUser: build.query<getCoursesResponse, IParams>({
       query: (params) => ({
         url: `/courses/ordered/${params._userId as string}`,
@@ -1042,6 +1058,7 @@ export const clientApi = createApi({
 
 export const {
   useGetCategoriesQuery,
+  useGetCategoriesSelectQuery,
   useGetCoursesQuery,
   useGetPopularCoursesQuery,
   useGetAuthorsQuery,
