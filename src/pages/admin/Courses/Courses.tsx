@@ -12,7 +12,8 @@ import {
   CloseCircleOutlined,
   EyeOutlined,
   StopOutlined,
-  PlusOutlined
+  PlusOutlined,
+  HistoryOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Button, Input, Popover, Select, Skeleton, Space, message, Popconfirm } from 'antd';
 import { Header } from 'antd/es/layout/layout';
@@ -29,6 +30,9 @@ import CoursesGrid from './components/CoursesGrid';
 import CoursesList from './components/CoursesList';
 import CourseDetailsModal from './components/CourseDetailsModal/CourseDetailsModal';
 import CreateCourseDrawer from './components/CreateCourseDrawer/CreateCourseDrawer';
+import UpdateCourseDrawer from './components/UpdateCourseDrawer/UpdateCourseDrawer';
+import CourseHistoryModal from './components/CourseHistoryModal/CourseHistoryModal';
+import moment from 'moment';
 import { useUpdateActiveStatusCourseMutation, useGetAllCoursesQuery, useGetCoursesQuery } from './course.service';
 import { Helper } from '../../../utils/helper';
 enum Access {
@@ -90,6 +94,8 @@ const Courses = () => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isCreateDrawerVisible, setIsCreateDrawerVisible] = useState(false);
+  const [isUpdateDrawerVisible, setIsUpdateDrawerVisible] = useState(false);
+  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false);
 
   const [updateActiveStatusCourse] = useUpdateActiveStatusCourseMutation();
 
@@ -134,6 +140,16 @@ const Courses = () => {
 
   const closeCreateDrawer = () => {
     setIsCreateDrawerVisible(false);
+  };
+
+  const handleUpdate = (courseId: string) => {
+    setSelectedCourseId(courseId);
+    setIsUpdateDrawerVisible(true);
+  };
+
+  const handleViewHistory = (courseId: string) => {
+    setSelectedCourseId(courseId);
+    setIsHistoryModalVisible(true);
   };
 
   const [params, setParams] = useState({
@@ -302,11 +318,13 @@ const Courses = () => {
           finalPrice: finalPrice,
           price: price,
           learners: 10,
-          createdAt: '18 jun 2023',
-          updatedAt: '18 jun 2023',
+          createdAt: moment(createdAt).format('YYYY-MM-DD HH:mm:ss'),
+          updatedAt: moment(updatedAt).format('YYYY-MM-DD HH:mm:ss'),
           actions: (
             <Space size='small'>
+              <Button icon={<EditOutlined style={{ color: '#1890ff' }} />} onClick={() => handleUpdate(_id)} />
               <Button icon={<EyeOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewDetails(_id)} />
+              <Button icon={<HistoryOutlined style={{ color: '#1890ff' }} />} onClick={() => handleViewHistory(_id)} />
               {isDeleted ? (
                 <Popconfirm
                   title='Are you sure you want to activate this course?'
@@ -466,11 +484,11 @@ const Courses = () => {
             }
           ]}
         />
-        <Header className='sub-header'>
+        <Header style={{ paddingLeft: '20px' }} className='sub-header'>
           <Space className='sub-header__wrap'>
-            <div className='add-course-button'>
-              <Button type='primary' shape='circle' icon={<PlusOutlined />} onClick={showCreateDrawer} />
-            </div>
+            <Button onClick={showCreateDrawer} type='primary' icon={<PlusOutlined />} className='btn-wrap'>
+              New Course
+            </Button>
             <CreateCourseDrawer isOpen={isCreateDrawerVisible} onClose={closeCreateDrawer} />
             <Search
               placeholder='Search courses'
@@ -535,6 +553,20 @@ const Courses = () => {
           courseId={selectedCourseId}
           isOpen={isModalVisible}
           onClose={() => setIsModalVisible(false)}
+        />
+      )}
+      {selectedCourseId && (
+        <UpdateCourseDrawer
+          courseId={selectedCourseId}
+          isOpen={isUpdateDrawerVisible}
+          onClose={() => setIsUpdateDrawerVisible(false)}
+        />
+      )}
+      {selectedCourseId && (
+        <CourseHistoryModal
+          courseId={selectedCourseId}
+          isOpen={isHistoryModalVisible}
+          onClose={() => setIsHistoryModalVisible(false)}
         />
       )}
     </Fragment>

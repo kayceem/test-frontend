@@ -60,6 +60,7 @@ const AdminHeader = () => {
       {path === '/author/change-password' && <AdminCommonHeader title={'Change Password'} />}
       {path === '/author/settings' && <AdminCommonHeader title={'Settings'} />}
       {path === '/author/subscribe' && <AdminCommonHeader title={'Subscribe'} />}
+      {path === '/author/marketing/coupons' && <AdminCommonHeader title={'Coupons'} />}
     </Header>
   );
 };

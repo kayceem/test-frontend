@@ -1,38 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Drawer, Form, Button, Input, Select, message } from 'antd';
-import { useAddCourseMutation } from '../../course.service';
+import { useUpdateCourseMutation, useGetCourseQuery } from '../../course.service';
 import { useGetAllCategoriesQuery } from '../../../Categories/category.service';
 import { ICourse } from '../../../../../types/course.type';
 
 const { Option } = Select;
 
-interface CreateCourseDrawerProps {
+interface UpdateCourseDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  courseId: string;
 }
 
-const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose }) => {
+const UpdateCourseDrawer: React.FC<UpdateCourseDrawerProps> = ({ isOpen, onClose, courseId }) => {
   const [form] = Form.useForm();
-  const [postCourse] = useAddCourseMutation();
+  const [updateCourse] = useUpdateCourseMutation();
 
+  const { data: courseData } = useGetCourseQuery(courseId);
   const { data: categoriesData, isLoading: isCategoriesLoading } = useGetAllCategoriesQuery();
 
+  useEffect(() => {
+    if (courseData) {
+      const { course } = courseData;
+
+      form.setFieldsValue({
+        ...course,
+        categoryId: course.categoryId._id
+      });
+    }
+  }, [courseData, form]);
+
   const handleSubmit = (values: ICourse) => {
-    postCourse(values)
+    updateCourse(values)
       .unwrap()
       .then(() => {
-        void message.success('Course created successfully');
+        void message.success('Course updated successfully');
         onClose();
         form.resetFields();
       })
       .catch(() => {
-        void message.error('Failed to create course');
+        void message.error('Failed to update course');
       });
   };
 
   return (
     <Drawer
-      title='Create New Course'
+      title='Update Course'
       width={720}
       onClose={onClose}
       open={isOpen}
@@ -43,12 +56,15 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
             Cancel
           </Button>
           <Button onClick={() => form.submit()} type='primary'>
-            Submit
+            Update
           </Button>
         </div>
       }
     >
       <Form form={form} layout='vertical' onFinish={handleSubmit}>
+        <Form.Item name='_id' label='Course ID' rules={[{ required: true, message: 'Please enter the course ID!' }]}>
+          <Input disabled placeholder='Course ID' />
+        </Form.Item>
         <Form.Item
           name='name'
           label='Course Name'
@@ -149,11 +165,10 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
         </Form.Item>
         <Form.Item name='level' label='Level' rules={[{ required: true, message: 'Please select the level!' }]}>
           <Select placeholder='Select level'>
-            <Option value='ALL'>ALL</Option>
             <Option value='BEGINNER'>BEGINNER</Option>
             <Option value='INTERMEDIATE'>INTERMEDIATE</Option>
             <Option value='ADVANCED'>ADVANCED</Option>
-            {/* <Option value='EXPERT'>EXPERT</Option> */}
+            <Option value='EXPERT'>EXPERT</Option>
           </Select>
         </Form.Item>
         <Form.Item
@@ -280,4 +295,4 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
   );
 };
 
-export default CreateCourseDrawer;
+export default UpdateCourseDrawer;
