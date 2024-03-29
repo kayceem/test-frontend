@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useSelector } from 'react-redux';
 import { useGetAllUserByLessonQuery } from '../../../client.service';
 import { RootState } from '../../../../../store/store';

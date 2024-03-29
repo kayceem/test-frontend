@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 import { IBase } from './base.type';
 
 export interface IBlog extends IBase {
@@ -7,7 +8,7 @@ export interface IBlog extends IBase {
   blogImg: string;
   technology: string;
   tags: string[];
-  readTime: string;
+  readTime: any;
   datePublished: string;
   content: string;
   userId: string;

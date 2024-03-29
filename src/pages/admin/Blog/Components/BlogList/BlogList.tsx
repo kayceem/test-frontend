@@ -1,5 +1,5 @@
 import { CheckCircleOutlined, EditOutlined, EyeOutlined, HistoryOutlined, StopOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Space, Table, notification } from 'antd';
+import { Button, Dropdown, Menu, Popconfirm, Space, Table, notification } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -17,9 +17,10 @@ interface BlogListProps {
   onBlogEdit: (blogId: string) => void;
   categories: ICategoryBlogs[];
   htmlContent: string;
+  onTagClick: (tag: string) => void;
 }
 
-const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) => {
+const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories, onTagClick }) => {
   const dispatch = useDispatch();
   const [blogs, setBlogs] = useState<IBlog[]>(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -87,11 +88,13 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
       key: 'category',
       render: (_: IBlog, record: IBlog) => getCategoryName(record.categoryId)
     },
+
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
       width: '20%',
+      sorter: (a, b) => a.title.localeCompare(b.title),
       render: (_: IBlog, record: IBlog) => (
         <span>
           {record.title.substring(0, 30)}
@@ -103,6 +106,7 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
       title: 'Author',
       dataIndex: 'author',
       key: 'author',
+      sorter: (a, b) => a.author.localeCompare(b.author),
       render: (_: IBlog, record: IBlog) => <span>{record.author}</span>
     },
     {
@@ -122,8 +126,36 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories }) =>
       )
     },
     {
+      title: 'Tags',
+      dataIndex: 'Tags',
+      key: 'Tags',
+      render: (_: IBlog, record: IBlog) => (
+        <Space>
+          {record.tags.map((tag) => (
+            <Dropdown
+              overlay={
+                <Menu onClick={({ key }) => onTagClick(key)}>
+                  <Menu.Item key=''>All Tags</Menu.Item>
+                  {record.tags.map((tag) => (
+                    <Menu.Item key={tag}>{tag}</Menu.Item>
+                  ))}
+                </Menu>
+              }
+            >
+              <Button type='dashed'>Tags</Button>
+            </Dropdown>
+          ))}
+        </Space>
+      )
+    },
+    {
       title: 'Created at',
       dataIndex: 'createdAt',
+      sorter: (a: IBlog, b: IBlog) => {
+        const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return aTime - bTime;
+      },
       render: (_: IBlog, record: IBlog) => transformDate(record.createdAt ? record.createdAt : new Date().toISOString())
     },
     {
