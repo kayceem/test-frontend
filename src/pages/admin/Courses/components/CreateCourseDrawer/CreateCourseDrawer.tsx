@@ -149,10 +149,11 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
         </Form.Item>
         <Form.Item name='level' label='Level' rules={[{ required: true, message: 'Please select the level!' }]}>
           <Select placeholder='Select level'>
+            <Option value='ALL'>ALL</Option>
             <Option value='BEGINNER'>BEGINNER</Option>
             <Option value='INTERMEDIATE'>INTERMEDIATE</Option>
             <Option value='ADVANCED'>ADVANCED</Option>
-            <Option value='EXPERT'>EXPERT</Option>
+            {/* <Option value='EXPERT'>EXPERT</Option> */}
           </Select>
         </Form.Item>
         <Form.Item

@@ -204,11 +204,11 @@ const ReviewsTable: React.FC = () => {
         dataSource={data?.reviews as IReview[]}
         columns={columns}
         rowKey='_id'
-        pagination={false}
+        // pagination={false}
         loading={isFetching}
         scroll={{ y: 400 }}
       />
-      <Pagination
+      {/* <Pagination
         style={{ float: 'right', marginRight: '0px' }}
         className='pagination'
         current={currentPage}
@@ -216,7 +216,7 @@ const ReviewsTable: React.FC = () => {
         total={data?.total}
         onChange={handlePageChange}
         showSizeChanger
-      />
+      /> */}
       {selectedReviewId && (
         <ReviewDetailsModal
           reviewId={selectedReviewId}
