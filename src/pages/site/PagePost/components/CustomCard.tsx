@@ -36,13 +36,13 @@ const CustomCard = ({ author, content, technology, readTime, title, blogImg }: C
             <div
               className='blog_Name text-4xl font-bold mb-12'
               dangerouslySetInnerHTML={sanitizeAndReturnHtml(
-                content.length > 60 ? content.substring(0, 60) + '...' : content
+                title.length > 60 ? title.substring(0, 60) + '...' : title
               )}
             ></div>
             <div className='blog_Detail'>
               <div className='blog_Detail-content'>
                 <p className='title my-10 text-2xl opacity-90'>
-                  {title.length > 60 ? title.substring(0, 60) + '...' : title}
+                  {content.length > 60 ? content.substring(0, 60) + '...' : content}
                 </p>
                 <div className='text-gray-500 text-1xl mb-4'>
                   <span className='bg-slate-200 p-3 rounded-3xl text-black hover:opacity-75 cursor-pointer mr-6'>

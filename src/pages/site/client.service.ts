@@ -707,8 +707,9 @@ export const clientApi = createApi({
     }),
 
     getAllBlogs: build.query<GetAllBlogReponse, IParams>({
-      query: ({ _page = 1, _limit = 5 }) => ({
-        url: `blog/?page=${_page}&limit=${_limit}`
+      query: (params) => ({
+        url: `blog`,
+        params
       })
     }),
 
