@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, Col, Drawer, Form, Input, Row, Select, notification } from 'antd';
+import { Button, Col, Drawer, Form, Input, Row, Select, TimePicker, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store/store';
@@ -7,6 +11,7 @@ import { IBlog } from '../../../../../types/blog.type';
 import { ICategoryBlogs } from '../../../../../types/categoryBlogs.type';
 import { useAddBlogMutation, useGetBlogQuery, useUpdateBlogMutation } from '../../blog.service';
 import ReactQuill from 'react-quill';
+import moment from 'moment';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -21,29 +26,38 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
   const [addBlog] = useAddBlogMutation();
   const [updateBlog] = useUpdateBlogMutation();
   const blogId = useSelector((state: RootState) => state.blog.blogId);
-  const adminId = useSelector((state: RootState) => state.auth.adminId);
+  const userID = useSelector((state: RootState) => state.auth.adminId);
   const { data: blogData } = useGetBlogQuery(blogId, { skip: !blogId });
   const [content, setContent] = useState('');
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue({ userId: adminId });
     setContent(blogData?.blog.content || '');
-  }, [adminId, blogId, blogData, form]);
+  }, [blogId, blogData, form]);
 
   useEffect(() => {
     if (blogId && blogData) {
-      form.setFieldsValue({ ...blogData.blog, tags: blogData.blog.tags.join(', ') });
+      const initialValues = {
+        ...blogData.blog,
+        tags: blogData.blog.tags.join(', '),
+        readTime: blogData.blog.readTime ? moment(blogData.blog.readTime, 'HH:mm') : undefined
+      };
+      form.setFieldsValue(initialValues);
     } else {
       form.resetFields();
-      form.setFieldsValue({ userId: adminId });
     }
-  }, [blogId, blogData, form, adminId]);
+  }, [blogId, blogData, form]);
 
   const submitHandler = async (values: Omit<IBlog, 'content'>) => {
     try {
-      const blogToSubmit = { ...values, content, _id: blogId ? blogId : undefined };
+      const blogToSubmit = {
+        ...values,
+        readTime: values.readTime ? values.readTime.format('HH:mm') : undefined,
+        content,
+        userId: userID,
+        _id: blogId ? blogId : undefined
+      };
       if (blogId) {
         await updateBlog(blogToSubmit).unwrap();
         notification.success({ message: 'Blog updated successfully' });
@@ -113,10 +127,7 @@ const AddBlog: React.FC<CreateBlogProps> = ({ isOpen, onClose, categories }) => 
               label='Read Time'
               rules={[{ required: true, message: 'Please enter read time' }]}
             >
-              <Input placeholder='Enter read time' />
-            </Form.Item>
-            <Form.Item name='userId' label='Admin ID' rules={[{ required: true, message: 'Please enter user ID' }]}>
-              <Input placeholder='Enter user ID' />
+              <TimePicker placeholder='Enter read time' format='HH:mm' />
             </Form.Item>
           </Col>
         </Row>
