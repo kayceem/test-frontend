@@ -18,8 +18,11 @@ import CourseList from '../components/CourseList';
 import './Courses.scss';
 
 import { SearchParamsStateType, useSearchParamsState } from 'react-use-search-params-state';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { IDataSelect } from '../../../types/dataSelect.type';
+type StateType = {
+  [key: string]: string[];
+};
 const { Search } = Input;
 const Courses = () => {
   const filtersDefaults: SearchParamsStateType = {
@@ -31,6 +34,19 @@ const Courses = () => {
     _topic: { type: 'string', default: [], multiple: true },
     _page: { type: 'number', default: 1 },
     _avgRatings: { type: 'number', default: 0 }
+  };
+
+  const defaultParams = {
+    _limit: 12,
+    _page: 1,
+    _q: "",
+    _author: [],
+    _level: [],
+    _price: [],
+    _sort: "",
+    _topic: [],
+    _avgRatings: 0,
+    userId: ""
   };
 
   const sortDefaults: SearchParamsStateType = {
@@ -67,7 +83,7 @@ const Courses = () => {
 
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
 
-  const { data, isFetching } = useGetCoursesQuery(searchFilterParams);
+  const { data, isFetching, refetch } = useGetCoursesQuery(searchFilterParams);
 
   const isFiltered = authorValue || levelValue || priceValue;
 
@@ -79,6 +95,20 @@ const Courses = () => {
   const { data: authorsData } = useGetAuthorsQuery();
   const { data: listAuthorSelect } = useGetAuthorsSelectQuery();
   const { data: listCategorySelect } = useGetCategoriesSelectQuery();
+
+  const [selectedInput, setSelectedInput] = useState<StateType>({
+    listAuthorSelect: [],
+    listCategorySelect: []
+  })
+
+  useEffect(() => {
+    setSearchFilterParams(searchFilterParams)
+    refetch().then((res) => {
+      console.log("res", res);
+    }).catch((err) => {
+      console.log("error", err)
+    })
+  },[refetch, searchFilterParams])
 
 
   const categoriesList = categoriesData?.categories || [];
@@ -103,6 +133,7 @@ const Courses = () => {
 
   const sortChangeHandler = (value: string) => {
     setSortParams({ _sort: value });
+    setSearchFilterParams({ ...searchFilterParams, _sort: value })
   };
 
   const filterAuthorsHandler = (e: CheckboxChangeEvent) => {
@@ -114,15 +145,19 @@ const Courses = () => {
   };
 
   const filterSelectedAuthorsHandler = (value: string[]) => {
-    // const { checked, value } = e.target;
-    // const newValues = checked
-    //   ? [...filterParams._author, value]
-    //   : filterParams._author.filter((item: string) => item !== value);
+    setSelectedInput({
+      ...selectedInput,
+      listAuthorSelect: value
+    });
     setFilterParams({ _author: value });
     setSearchFilterParams({ ...searchFilterParams, _author: value })
   };
 
   const filterSelectedCategoriesHandler = (value: string[]) => {
+    setSelectedInput({
+      ...selectedInput,
+      listCategorySelect: value
+    });
     setFilterParams({ _topic: value });
     setSearchFilterParams({ ...searchFilterParams, _topic: value })
   };
@@ -154,35 +189,26 @@ const Courses = () => {
     setSearchFilterParams({ ...params, _avgRatings: value })
   }
 
-  // const filterTopicHandler = (e: CheckboxChangeEvent) => {
-  //   const { checked, value } = e.target;
-
-  //   const newValues = checked
-  //     ? [...filterParams._topic, value]
-  //     : filterParams._topic.filter((item: string) => item !== value);
-
-  //   setFilterParams({ _topic: newValues });
-  // };
-
   const clearFilterHandler = () => {
-    // setSearchParams({});
-    setFilterParams({newValues: {
-      _q: '',
-      _author: [],
-      _level: [],
-      _price: [],
-      _topic: [],
-      _avgRatings: 0
-    }})
-    // setSearchFilterParams({
-    //   _q: '',
-    //   _author: [],
-    //   _level: [],
-    //   _price: [],
-    //   _topic: [],
-    //   _avgRatings: 0
-    // })
+   // Reset your filtering state
+   setFilterParams(filtersDefaults); 
+  //  searchFilterParams(defaultParams)
+   // Clear the URL query parameters
+   setSearchParams({});
+
+   setSelectedInput({
+    listAuthorSelect: [], // Reset to original data
+    listCategorySelect: []  // Reset to original data
+  });
+  setSearchFilterParams(defaultParams)
+  // Call again api
+    refetch().then((res) => {
+      console.log("res", res)
+    }).catch((err) => {
+      console.log("error", err)
+    })
   };
+
 
   const enrollFilterHandler = () => {
     console.log('object');
@@ -190,6 +216,7 @@ const Courses = () => {
 
   const paginateHandler = (page: number) => {
     setFilterParams({ _p: page });
+    setSearchFilterParams({ ...searchFilterParams, _page: page })
   };
 
   // Filter author select
@@ -261,6 +288,7 @@ const Courses = () => {
                     filterOption={filterAuthorsOption}
                     options={listAuthorSelect}
                     onChange={filterSelectedAuthorsHandler}
+                    value={selectedInput.listAuthorSelect}
                   />
                 </div>
               </div>
@@ -337,6 +365,7 @@ const Courses = () => {
                     filterOption={filterCategoriesOption}
                     options={listCategorySelect}
                     onChange={filterSelectedCategoriesHandler}
+                    value={selectedInput.listCategorySelect}
                   />
 
                 </div>

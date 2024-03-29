@@ -180,9 +180,14 @@ const CourseItem = (props: CourseItemProps) => {
               <Progress className='course-item__process' percent={progressPercent as number} />
             )}
             {/* Số lượt đánh giá! */}
+            {props.courseState !== "ordered" && (
               <div className="mt-4">
-                <Rate disabled value={props.courseItem.avgRatings}/> ({props.courseItem.numberUsersOfCourse})
+              <span className="text-2xl mr-2">{props.courseItem.avgRatings } </span><Rate className="text-3xl mr-2" disabled value={props.courseItem.avgRatings}/>
+              <span>
+              ({props.courseItem.numberUsersOfCourse})
+              </span>
               </div>
+            )}
             {/* Mô tả khoá học */}
             <div className='course-item__desc'>{props.courseItem.description}</div>
             {/* Tên tác giả */}
