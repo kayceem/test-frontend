@@ -164,9 +164,9 @@ const CouponsTable: React.FC = () => {
   return (
     <div className='coupons-table'>
       <div className='search-bar-container'>
-        <div className='add-coupon-type-button'>
-          <Button type='primary' shape='circle' icon={<PlusOutlined />} onClick={showCreateDrawer} />
-        </div>
+        <Button onClick={showCreateDrawer} type='primary' icon={<PlusOutlined />} className='add-coupon-type-button'>
+          New Coupon
+        </Button>
         <div className='search-bar'>
           <Search placeholder='Search by description' onSearch={handleSearch} enterButton allowClear />
         </div>
