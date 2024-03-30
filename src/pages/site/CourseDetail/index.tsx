@@ -42,6 +42,11 @@ const initCourseDetail = {
     name: 'Nguyen Van A',
     avatar: ''
   },
+  authorId: {
+    _id: '6468a145401d3810494f4797',
+    name: 'Nguyen Van A',
+    avatar: ''
+  },
   numOfReviews: 0,
   totalVideosLength: 0,
   sections: 0,
@@ -94,6 +99,7 @@ const CourseDetail = () => {
     finalPrice,
     thumbnail,
     userId: author,
+    authorId,
     numOfReviews,
     totalVideosLength,
     sections,
@@ -424,9 +430,9 @@ const CourseDetail = () => {
             <div className='course-detail__author-list'>
               <div className='course-detail__author-info'>
                 <p className='course-detail__author-intro'>Meet the intructor</p>
-                <h2 className='course-detail__author-name'>{author.name}</h2>
+                <h2 className='course-detail__author-name'>{authorId?.name}</h2>
                 <p className='course-detail__author-desc'>
-                  Patrick Jones is a content marketing professional since 2002. He has a Masters Degree in Digital
+                  {authorId?.name} is a content marketing professional since 2002. He has a Masters Degree in Digital
                   Marketing and a Bachelors in Education and has been teaching marketing strategies for over 15 years in
                   Chicago. Patrick enjoys teaching all levels and all ages. He looks forward to sharing his love of
                   building meaningful and effective content with all students to develop their marketing abilities.
@@ -435,8 +441,8 @@ const CourseDetail = () => {
               <div className='course-detail__author-avatar'>
                 <img
                   className='course-detail__author-img'
-                  src={author.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
-                  alt={author.name}
+                  src={authorId?.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
+                  alt={authorId?.name}
                 />
               </div>
             </div>
