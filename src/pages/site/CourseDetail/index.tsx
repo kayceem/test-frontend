@@ -22,14 +22,6 @@ import './CourseDetail.scss';
 import SectionList from './components/SectionList';
 import ReviewModal from './components/ReviewModal/ReviewModal';
 import PreviewModal from './components/PreviewModal/PreviewModal';
-// type Props = {}
-const courseData = [
-  'Will learning some things at this course -- task 1.',
-  'Will learning some things at this course -- task 2',
-  'Will learning some things at this course -- task 3',
-  'Will learning some things at this course -- task 4.',
-  'Will learning some things at this course -- task 5.'
-];
 
 const initCourseDetail = {
   _id: '',
@@ -77,7 +69,12 @@ const CourseDetail = () => {
 
   const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
 
+  const [visibleCourseData, setVisibleCourseData] = useState<number>(10);
+
   const { data } = useGetCourseDetailQuery({ courseId, userId } as { courseId: string; userId: string });
+
+  const courseData = data?.course.willLearns || [];
+
   const [createOrder, createOrderResult] = useCreateOrderMutation();
   const navigate = useNavigate();
 
@@ -212,6 +209,14 @@ const CourseDetail = () => {
     setIsPreviewModalVisible(false);
   };
 
+  const loadMoreCourseData = () => {
+    setVisibleCourseData((prevVisibleCourseData) => prevVisibleCourseData + 5);
+  };
+
+  const truncatedCourseData = courseData.slice(0, visibleCourseData);
+
+  const showLoadMoreButton = courseData.length > visibleCourseData;
+
   return (
     <div className='course-detail'>
       <div className='course-detail__wrap'>
@@ -224,7 +229,7 @@ const CourseDetail = () => {
                   items={[
                     {
                       title: 'Home'
-                    },
+                    }
                   ]}
                 />
 
@@ -364,12 +369,11 @@ const CourseDetail = () => {
         <div className='container'>
           <div className='course-detail__includes'>
             <div className='course-detail__includes-list'>
-              <div className='course-detail__includes-item'>
-                <div className='container course-detail__includes-wrap'>
+              <div className='course-detail__includes-item spacing-h-sm'>
+                <div className='container course-detail__includes-wrap '>
                   <List
                     header={<div className='course-detail__includes-header'>What you'll learn</div>}
-                    footer={<div className='course-detail__includes-footer'>Show more</div>}
-                    dataSource={courseData}
+                    dataSource={truncatedCourseData}
                     renderItem={(item) => (
                       <List.Item>
                         <Space>
@@ -381,11 +385,16 @@ const CourseDetail = () => {
                       </List.Item>
                     )}
                   />
+                  {showLoadMoreButton && (
+                    <Button className='course-detail__includes-footer' onClick={loadMoreCourseData}>
+                      Show more
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          <div className='course-detail__content'>
+          <div className='course-detail__content spacing-h-sm'>
             <div className='course-detail__content-list'>
               <div className='course-detail__content-item'>
                 <h3 className='course-detail__content-title'>Course content</h3>
@@ -406,7 +415,7 @@ const CourseDetail = () => {
               </div>
             </div>
           </div>
-          <div className='course-detail__related-courses container'>
+          <div className='course-detail__related-courses'>
             {courseId !== undefined && <RelatedCourses courseId={courseId} />}
           </div>
         </div>
