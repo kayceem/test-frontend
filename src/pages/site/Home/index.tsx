@@ -83,7 +83,11 @@ const HomePage = () => {
     _page: 1
   };
 
-  const [popularParams, setPopularParams] = useState(params);
+  const [popularParams, setPopularParams] = useState({
+    _limit: 4,
+    _page: 1,
+    _sort: "mostReviews"
+  });
 
   const [userCoursesParams, setUserCoursesParams] = useState({
     _limit: 4,
@@ -118,7 +122,7 @@ const HomePage = () => {
   const { data: frontendData, isFetching: isFrontendFetching } = useGetCoursesQuery(frontendParams);
   const { data: backendData, isFetching: isBackendFetching } = useGetCoursesQuery(backendParams);
   const { data: devopsData, isFetching: isDevopsFetching } = useGetCoursesQuery(devopsParams);
-  const { data: popularCoursesData, isFetching: isPoppularCoursesFetching } = useGetPopularCoursesQuery(popularParams);
+  const { data: popularCoursesData, isFetching: isPoppularCoursesFetching } = useGetCoursesQuery(popularParams);
 
   const isPopularLoadMore =
     (popularCoursesData?.pagination?._totalRows || 0) > (popularCoursesData?.courses?.length || 0);
