@@ -438,7 +438,7 @@
 .course-detail__intro-wrap {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: baseline;
     width: 100%;
     gap: 4rem;
     @media (max-width: 992px) {
@@ -529,12 +529,11 @@
     .course-detail__thumbnail {
         position: relative;
         width: 100%;
-        height: 26rem;
+        height: auto;
     }
     .course-detail__thumbnail-img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
     }
     .course-detail__thumbnail-overlay{
         width: 100%;
