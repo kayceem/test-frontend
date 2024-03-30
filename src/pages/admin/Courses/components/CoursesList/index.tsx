@@ -99,6 +99,7 @@ const CoursesList: React.FC<CoursesListProps> = (props) => {
       title: 'Categories',
       dataIndex: 'categories',
       filters: cateFilterList,
+      width: '10%',
       onFilter: (value: string | number | boolean, record: DataCourseType) =>
         record.categories.startsWith(value.toString()),
       filterSearch: true
