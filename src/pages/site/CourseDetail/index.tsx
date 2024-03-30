@@ -268,8 +268,8 @@ const CourseDetail = () => {
                 </div>
                 <div className='course-detail__intro-author'>
                   <span className=''>Author</span>
-                  <Link to={`/user/${author._id}`} className='course-detail__intro-author-name'>
-                    {author.name}
+                  <Link to={`/user/${authorId?._id}`} className='course-detail__intro-author-name'>
+                    {authorId?.name}
                   </Link>
                 </div>
                 <div className='course-detail__intro-updated-at'>Last updated {transformDate(updatedAt)}</div>
