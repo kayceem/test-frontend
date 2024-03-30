@@ -447,6 +447,28 @@
     }
 
 }
+.course-detail__content{
+  // margin-top: 4%;
+}.course-detail__includes{
+  max-height: 47.5rem;
+  height: 47.5rem;
+  &-list{
+      height: 100%;
+  }
+  &-item{
+      height: 100%;
+  }
+}
+.course-detail__includes-wrap{
+  padding-top: 4rem !important;
+  .ant-list-item{
+      padding: 1.6rem 0 !important;
+  }
+  .ant-list-footer{
+      padding-top: 4rem !important;
+  }
+}
+
 .course-detail__intro-wrap-content {
   width: 70%;
   @media (max-width: 992px) {
@@ -454,7 +476,7 @@
   }
 }
 .course-detail__content{
-    margin-top: 4%;
+    // margin-top: 4%;
 }.course-detail__includes{
     max-height: 47.5rem;
     height: 47.5rem;
