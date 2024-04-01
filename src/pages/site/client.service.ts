@@ -395,6 +395,8 @@ export const clientApi = createApi({
         const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(token);
         headers.set('authorization', `Bearer ${token}`);
         headers.set('UserId', decodedToken.userId);
+      }else {
+        headers.set("role", "client");
       }
 
       return headers;
