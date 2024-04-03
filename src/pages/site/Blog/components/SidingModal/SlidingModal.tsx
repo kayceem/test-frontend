@@ -5,6 +5,8 @@ import CommentList from '../CommentList/CommentList';
 import { IBlogComment } from '../../../../../types/blogComments.type';
 import { useGetBlogCommentsQuery } from '../../../client.service';
 import { CloseOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { RootState } from '../../../../../store/store';
+import { useSelector } from 'react-redux';
 
 interface SlidingModalProps {
   isOpen: boolean;
@@ -12,21 +14,16 @@ interface SlidingModalProps {
   blogId: string;
 }
 
-const SlidingModal: React.FC<SlidingModalProps> = ({ isOpen, onClose, blogId }) => {
+const SlidingModal: React.FC<SlidingModalProps> = ({ blogId }) => {
   const [commentsData, setCommentsData] = useState<IBlogComment[]>([]);
   const { data, error, isLoading } = useGetBlogCommentsQuery(blogId);
   const [commentLength, setCommentLength] = useState(0);
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
 
-  const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
-
-  const toggleCommentForm = () => {
-    setIsCommentFormOpen(!isCommentFormOpen);
-  };
-
-  // Cập nhật state khi dữ liệu bình luận thay đổi
   useEffect(() => {
     if (data && data) {
       setCommentsData(data.comments);
+      setCommentLength(data.comments.length);
     }
   }, [data]);
 
@@ -37,22 +34,22 @@ const SlidingModal: React.FC<SlidingModalProps> = ({ isOpen, onClose, blogId }) 
   }, [commentsData]);
 
   return (
-    <Drawer
-      title={commentsData.length > 0 ? 'Bình luận' : 'Chưa có bình luận'}
-      placement='right'
-      onClose={onClose}
-      visible={isOpen}
-      width={720}
-    >
+    <div title={commentsData.length > 0 ? 'Bình luận' : 'Chưa có bình luận'}>
       <div className='comment-input-form' style={{ marginBottom: 16 }}>
-        <div className='text-2xl mb-4'>{commentLength} commetns</div>
-        <Button onClick={toggleCommentForm} type='default' className='mb-4'>  
-          {isCommentFormOpen ? <CloseOutlined /> : 'Click here if you want to comment'}
-        </Button>
-        {isCommentFormOpen && <CommentForm blogId={blogId} commentLength={commentLength} comments={commentsData} />}
+        <div className='text-3xl mb-8'>{commentLength} commetns</div>
+        {isAuth ? (
+          <>
+            <CommentForm blogId={blogId} commentLength={commentLength} comments={commentsData} />
+            <CommentList comments={commentsData} blogId={blogId} />
+          </>
+        ) : (
+          <div style={{ textAlign: 'center', margin: '20px 0' }}>
+            <p className='text-2xl'>Please login in to comment.</p>
+          </div>
+        )}
         <CommentList comments={commentsData} blogId={blogId} />
       </div>
-    </Drawer>
+    </div>
   );
 };
 

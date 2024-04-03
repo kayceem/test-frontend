@@ -68,7 +68,7 @@ const CommentForm: React.FC<CommentListProps> = ({ blogId, commentLength, commen
       <div className='div flex mb-20'>
         <ReactQuill
           className='comment-input'
-          placeholder='Thêm bình luận...'
+          placeholder='Comments...'
           value={comment}
           onChange={handleContentChange}
         />
