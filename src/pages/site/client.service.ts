@@ -395,8 +395,8 @@ export const clientApi = createApi({
         const decodedToken: { exp: number; iat: number; userId: string; email: string } = jwtDecode(token);
         headers.set('authorization', `Bearer ${token}`);
         headers.set('UserId', decodedToken.userId);
-      }else {
-        headers.set("role", "client");
+      } else {
+        headers.set('role', 'client');
       }
 
       return headers;
@@ -992,6 +992,12 @@ export const clientApi = createApi({
       }),
       providesTags: () => [{ type: 'Courses', id: 'LIST' }]
     }),
+    increaseCourseView: build.mutation<void, string>({
+      query: (courseId) => ({
+        url: `courses/course/increase-view/${courseId}`,
+        method: 'POST'
+      })
+    }),
     // Discuss
     getAllDiscussions: build.query<GetAllDiscussionsResponse, void>({
       query: () => ({
@@ -1118,6 +1124,7 @@ export const {
   useGetTotalPriceWithoutUserQuery,
   useGetFreeLessonsByCourseIdQuery,
   useGetAllUserByLessonQuery,
+  useIncreaseCourseViewMutation,
   // Discuss
   useGetAllDiscussionsQuery,
   useGetDiscussionsByLessonIdQuery,
