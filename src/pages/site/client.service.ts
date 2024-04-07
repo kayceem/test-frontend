@@ -88,7 +88,7 @@ export interface getLessonsResponse {
   message: string;
 }
 
-export interface getUserByLessonResponse {
+export interface getUserByCourseResponse {
   users: IUser[];
   message: string;
 }
@@ -248,6 +248,7 @@ export interface CreateContactResponse {
 }
 
 export interface GetBlogCommentsResponse {
+  length: number;
   comments: IBlogComment[];
   message: string;
 }
@@ -667,9 +668,9 @@ export const clientApi = createApi({
         }
       })
     }),
-    getAllUserByLesson: build.query<getUserByLessonResponse, { lessonId: string }>({
+    getAllUserByCourse: build.query<getUserByCourseResponse, { courseId: string }>({
       query: (payload) => ({
-        url: `lessons/lesson/${payload.lessonId}/users`
+        url: `/courses/course/getUserByCourse/${payload.courseId}`
       })
     }),
     getAllLessons: build.query<getLessonsResponse, void>({
@@ -828,7 +829,7 @@ export const clientApi = createApi({
         url: `/comments/${commentId}`,
         method: 'DELETE'
       }),
-      invalidatesTags: (result, error, { commentId }) => [{ type: 'BlogComment', id: commentId }]
+      invalidatesTags: () => [{ type: 'BlogComment', id: 'LIST' }]
     }),
     toggleLikeComment: build.mutation<{ message: string }, { commentId: string; userId: string }>({
       query: (likeData) => ({
@@ -1123,7 +1124,7 @@ export const {
   useGetValidCouponsForCoursesWithoutUserQuery,
   useGetTotalPriceWithoutUserQuery,
   useGetFreeLessonsByCourseIdQuery,
-  useGetAllUserByLessonQuery,
+  useGetAllUserByCourseQuery,
   useIncreaseCourseViewMutation,
   // Discuss
   useGetAllDiscussionsQuery,
