@@ -12,4 +12,5 @@ export interface IParams {
   _cateName?: string;
   _status?: string;
   _rating?: number;
+  _date?: string;
 }

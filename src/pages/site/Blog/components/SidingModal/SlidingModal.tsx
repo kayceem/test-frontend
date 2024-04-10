@@ -16,38 +16,30 @@ interface SlidingModalProps {
 
 const SlidingModal: React.FC<SlidingModalProps> = ({ blogId }) => {
   const [commentsData, setCommentsData] = useState<IBlogComment[]>([]);
-  const { data, error, isLoading } = useGetBlogCommentsQuery(blogId);
-  const [commentLength, setCommentLength] = useState(0);
+  const { data, error, isLoading, refetch } = useGetBlogCommentsQuery(blogId);
+  const length = commentsData.length;
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
 
   useEffect(() => {
-    if (data && data) {
+    if (data) {
       setCommentsData(data.comments);
-      setCommentLength(data.comments.length);
     }
   }, [data]);
-
-  useEffect(() => {
-    if (commentsData.length > 0) {
-      setCommentLength(commentsData.length);
-    }
-  }, [commentsData]);
 
   return (
     <div title={commentsData.length > 0 ? 'Bình luận' : 'Chưa có bình luận'}>
       <div className='comment-input-form' style={{ marginBottom: 16 }}>
-        <div className='text-3xl mb-8'>{commentLength} commetns</div>
+        <div className='text-3xl mb-8'>{length} comments</div>
         {isAuth ? (
           <>
-            <CommentForm blogId={blogId} commentLength={commentLength} comments={commentsData} />
-            <CommentList comments={commentsData} blogId={blogId} />
+            <CommentForm blogId={blogId} comments={commentsData} />
+            <CommentList comments={commentsData} blogId={blogId} onCommentDelete={refetch} />
           </>
         ) : (
           <div style={{ textAlign: 'center', margin: '20px 0' }}>
             <p className='text-2xl'>Please login in to comment.</p>
           </div>
         )}
-        <CommentList comments={commentsData} blogId={blogId} />
       </div>
     </div>
   );
