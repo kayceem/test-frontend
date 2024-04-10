@@ -146,6 +146,7 @@ export interface getUserResponse {
 
 export interface IUserDetail extends IUser {
   courses: ICourseEnrolledByUser[];
+  achievement: string;
 }
 
 export interface getUserDetailResponse {
