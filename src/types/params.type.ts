@@ -13,4 +13,7 @@ export interface IParams {
   _status?: string;
   _rating?: number;
   _date?: string;
+  _tags?: string;
+  _title?: string;
+  categoryId?: string;
 }
