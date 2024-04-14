@@ -22,7 +22,7 @@ const Blogs = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [authorSearch, setAuthorSearch] = useState('');
   const [tagsSearch, setTagsSearch] = useState('');
-  const [categorySearch, setCategorySearch] = useState('');
+  const [categorySearch, setCategorySearch] = useState(''); 
 
   const {
     data: blogsData,
