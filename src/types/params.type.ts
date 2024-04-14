@@ -16,4 +16,6 @@ export interface IParams {
   _tags?: string;
   _title?: string;
   categoryId?: string;
+  _courses?: string;
+  _role?: string;
 }
