@@ -389,8 +389,6 @@ export const clientApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${BACKEND_URL}`,
     prepareHeaders(headers) {
-      headers.set('authorization', 'Bearer ABCXYZ');
-
       const token = localStorage.getItem('token');
 
       if (token) {
