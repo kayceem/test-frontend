@@ -202,8 +202,8 @@ const Dashboard: React.FC = () => {
                     <div className='latest-users__item' key={user._id}>
                       <img alt='' src={user.avatar} className='latest-users__item-avatar' />
                       <div className='latest-users__item-info'>
-                        <div className='latest-users__item-name'>{user.name}</div>
-                        <div className='latest-users__item-time'>{user.joinTime}</div>
+                        <div className='latest-users__item-name'>{user.name }</div>
+                        <div className='latest-users__item-time'>{user.joinTime }</div>
                       </div>
                     </div>
                   ))}
