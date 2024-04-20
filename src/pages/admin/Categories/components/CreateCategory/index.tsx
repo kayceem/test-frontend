@@ -61,7 +61,6 @@ const CreateCategory: React.FC<CreateCategoryProps> = (props) => {
 
     return () => {
       // form.resetFields();
-      // console.log('Unmount data: ');
     };
   }, [categoryId, data, form]);
 

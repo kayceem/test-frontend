@@ -182,7 +182,7 @@ const CourseItem = (props: CourseItemProps) => {
             {/* Số lượt đánh giá! */}
             {props.courseItem.avgRatings != null && props.courseState !== "ordered" && (
               <div className="mt-4">
-              <span className="text-2xl mr-2">{props.courseItem.avgRatings } </span><Rate className="text-3xl mr-2" disabled value={props.courseItem.avgRatings}/>
+              <span className="text-2xl mr-2">{props.courseItem.avgRatings.toFixed(2) } </span><Rate className="text-3xl mr-2" disabled value={props.courseItem.avgRatings}/>
               <span>
               ({props.courseItem.numberUsersOfCourse})
               </span>
