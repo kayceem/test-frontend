@@ -27,18 +27,18 @@ const profileItems: TabsProps['items'] = [
     ),
     children: ``
   },
-  {
-    key: 'activity',
-    label: (
-      <div className='tab-item'>
-        <p className='tab-item__text'>
-          <StockOutlined className='tab-item__icon' />
-        </p>
-        <p>Activities</p>
-      </div>
-    ),
-    children: `Some activies of users`
-  }
+  // {
+  //   key: 'activity',
+  //   label: (
+  //     <div className='tab-item'>
+  //       <p className='tab-item__text'>
+  //         <StockOutlined className='tab-item__icon' />
+  //       </p>
+  //       <p>Activities</p>
+  //     </div>
+  //   ),
+  //   children: `Some activies of users`
+  // }
 ];
 
 const tabBarStyleCss = {
