@@ -58,11 +58,16 @@ const CourseItem = (props: CourseItemProps) => {
     const btnEl = e.target as HTMLButtonElement;
     const dataAction = btnEl.dataset.action;
 
+    const saveCourseToSessionStorage = (courseId: string) => {
+      sessionStorage.removeItem('selectedCourse');
+      sessionStorage.setItem('selectedCourse', courseId);
+  };
+
     // If already logined
 
     if (isAuth) {
       if (dataAction === 'buynow') {
-        dispatch(addToCart(props.courseItem._id));
+        saveCourseToSessionStorage(props.courseItem._id);
 
         navigate('/checkout');
       } else if (dataAction === 'enroll') {
