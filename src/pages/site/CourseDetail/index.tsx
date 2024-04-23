@@ -100,7 +100,24 @@ const CourseDetail = () => {
   };
 
   useEffect(() => {
-    increaseView().catch((error) => console.error('Error in increaseView:', error));
+    const increaseViewIfNeeded = async () => {
+      try {
+        if (!courseId) {
+          console.error('Course ID is undefined');
+          return;
+        }
+
+        const viewedCourses = sessionStorage.getItem('viewedCourses');
+        if (!viewedCourses || !viewedCourses.includes(courseId)) {
+          await increaseCourseView(courseId);
+          sessionStorage.setItem('viewedCourses', viewedCourses ? `${viewedCourses},${courseId}` : courseId);
+        }
+      } catch (error) {
+        console.error('Error increasing course view:', error);
+      }
+    };
+
+    increaseViewIfNeeded().catch((error) => console.error('Error in increaseView:', error));
   }, [courseId, increaseCourseView]);
 
   const [createOrder, createOrderResult] = useCreateOrderMutation();
@@ -207,8 +224,13 @@ const CourseDetail = () => {
   };
 
   const buyNowHandler = () => {
-    if (isAuth) {
-      dispatch(addToCart(courseId as string));
+    const saveCourseToSessionStorage = (courseId: string) => {
+      sessionStorage.removeItem('selectedCourse');
+      sessionStorage.setItem('selectedCourse', courseId);
+    };
+
+    if (isAuth && courseId) {
+      saveCourseToSessionStorage(courseId);
       navigate(`/checkout`);
     } else {
       notification.error({
