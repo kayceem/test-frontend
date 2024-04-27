@@ -331,7 +331,7 @@ const Header = () => {
                     type='search'
                     name=''
                     id=''
-                    placeholder='Tìm kiếm khóa học...'
+                    placeholder='Search to find your suitable courses...'
                     onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
                       if (event.key === 'Enter') {
                         onSearch(event.currentTarget.value);
