@@ -114,10 +114,9 @@ const BlogsList: React.FC<BlogListProps> = ({ data, onBlogEdit, categories, onTa
       title: 'Author',
       dataIndex: 'author',
       key: 'author',
-      sorter: (a, b) => a.author.localeCompare(b.author),
-      render: (_: IBlog, record: IBlog) => <span>{record.author}</span>
+      sorter: (a, b) => a?.userId?.name.localeCompare(b?.userId.name),
+      render: (_: IBlog, record: IBlog) => <span>{record?.userId?.name}</span>
     },
-
     {
       title: 'Content',
       dataIndex: 'content',
