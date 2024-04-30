@@ -20,7 +20,7 @@ type ParamsType = {
 
 const BlogCategories = () => {
   const [params, setParams] = useState<ParamsType>({
-    _limit: 10,
+    _limit: 99999,
     _page: 1,
     _q: ''
   });
