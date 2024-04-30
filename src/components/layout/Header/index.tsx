@@ -168,13 +168,11 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const handleOk = () => {
-    setAuthState("")
     dispatch(resetAuthState())
     dispatch(closeAuthModal());
   };
 
   const handleCancel = () => {
-    setAuthState("")
     dispatch(resetAuthState())
     dispatch(closeAuthModal());
   };
