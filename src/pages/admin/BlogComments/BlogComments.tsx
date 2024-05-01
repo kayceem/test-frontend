@@ -109,7 +109,7 @@ const BlogComments = () => {
             </Select>
           </Space>
         </div>
-        <div className='blog-categories__content'>
+        <div className='blog-categories__content mt-8'>
           {isFetchingblogComments ? (
             <Skeleton />
           ) : (
