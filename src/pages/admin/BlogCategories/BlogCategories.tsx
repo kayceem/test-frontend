@@ -106,7 +106,7 @@ const BlogCategories = () => {
             </Select>
           </Space>
         </div>
-        <div className='blog-categories__content'>
+        <div className='blog-categories__content mt-4'>
           {isFetchingCategories ? (
             <Skeleton />
           ) : (
