@@ -28,7 +28,6 @@ import UsersProgress from './pages/admin/Reports/components/UsersProgress';
 import UsersSegment from './pages/admin/Reports/components/UsersSegments';
 import Settings from './pages/admin/Settings';
 import Users from './pages/admin/Users';
-import About from './pages/site/About';
 import AuthorProfile from './pages/site/AuthorProfile';
 import Checkout from './pages/site/Checkout';
 import Contact from './pages/site/Contact';
@@ -43,8 +42,6 @@ import StartLearning from './pages/site/StartLearning';
 import SubsribeCourse from './pages/site/SubscribeCourse';
 import ViewCart from './pages/site/ViewCart';
 import Privacy from './pages/site/Policy/Privacy';
-import Terms from './pages/site/Policy/Terms';
-import Cookie from './pages/site/Policy/Cookie';
 import AccountSettings from './pages/site/AccountSettings/AccountSettings';
 import PurchaseHistory from './pages/site/PurchaseHistory/PurchaseHistory';
 import ReceiptPage from './pages/site/PurchaseHistory/ReceiptPage/ReceiptPage';
@@ -57,8 +54,6 @@ import Inbox from './pages/site/Inbox/Inbox';
 import WishlistPage from './pages/site/Wishlist/Wishlist';
 import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
 import PublicProfile from './pages/site/PublicProfile/PublicProfile';
-import PaymentMethod from './pages/site/PaymentMethod/PaymentMethod';
-import Social from './pages/site/Social';
 import BlogList from './pages/admin/Blog/Blog';
 import TransactionsPage from './pages/admin/Transactions/Transactions';
 import CouponsPage from './pages/admin/Coupons/Coupons';
@@ -141,14 +136,6 @@ const RouterHooks = () => {
           element: <Inbox />
         },
         {
-          path: 'about-us',
-          element: <About />
-        },
-        {
-          path: 'social',
-          element: <Social />
-        },
-        {
           path: 'user',
           children: [
             {
@@ -156,18 +143,6 @@ const RouterHooks = () => {
               element: <AuthorProfile />
             }
           ]
-        },
-        {
-          path: 'privacy',
-          element: <Privacy />
-        },
-        {
-          path: 'terms',
-          element: <Terms />
-        },
-        {
-          path: 'cookies',
-          element: <Cookie />
         },
         {
           path: 'account-settings',
@@ -205,10 +180,6 @@ const RouterHooks = () => {
         {
           path: 'publicprofile',
           element: <PublicProfile />
-        },
-        {
-          path: 'paymentmethod',
-          element: <PaymentMethod />
         }
       ],
       errorElement: <ErrorPage page='/author' />

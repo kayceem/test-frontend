@@ -40,27 +40,8 @@ const Footer = () => {
                       </Link>
                     </li>
                     <li className='featured-list__item'>
-                      <Link className='featured-list__item-link' to='/about-us'>
-                        About Us
-                      </Link>
-                    </li>
-                  </ul>
-                </Col>
-                <Col sm={12} md={12}>
-                  <ul className='featured-list'>
-                    <li className='featured-list__item'>
                       <Link className='featured-list__item-link' to='/contact'>
                         Contact Us
-                      </Link>
-                    </li>
-                    <li className='featured-list__item'>
-                      <Link className='featured-list__item-link' to='/terms'>
-                        Term & Conditions
-                      </Link>
-                    </li>
-                    <li className='featured-list__item'>
-                      <Link className='featured-list__item-link' to='/cookies'>
-                        Cookie Policy
                       </Link>
                     </li>
                   </ul>
@@ -73,17 +54,17 @@ const Footer = () => {
             <div className='footer__col'>
               <h3 className='footer__title'>Connect with us</h3>
               <div className='social-list'>
-                <a href='https://www.facebook.com/fplelearning.official' title='facebook' className='social-btn'>
+                <a href='https://www.facebook.com/' title='facebook' className='social-btn'>
                   <FacebookFilled className='social-icon' />
                 </a>
-                <a href='https://twitter.com/fplelearning' title='twitter' className='social-btn'>
+                <a href='https://twitter.com/' title='twitter' className='social-btn'>
                   <TwitterOutlined className='social-icon' />
                 </a>
-                <a href='https://www.linkedin.com/in/e-learning-8462772a3/' title='linkedin' className='social-btn'>
+                <a href='https://www.linkedin.com/' title='linkedin' className='social-btn'>
                   <LinkedinFilled className='social-icon' />
                 </a>
                 <a
-                  href='https://www.youtube.com/channel/UCNnShd591nbMQifsvpv_NZQ'
+                  href='https://www.youtube.com/'
                   title='youtube'
                   className='social-btn'
                 >

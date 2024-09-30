@@ -36,7 +36,7 @@
   &__nav-list {
     @include list-reset;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -50,7 +50,7 @@
 &-icon{
   width: 50%;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   gap: 2.4rem;
   @media(max-width: 1920px){
@@ -64,7 +64,7 @@
     display: flex;
     position: relative;
     z-index: 11;
-    // align-items: center;
+    align-items: center;
     &--cart {
     }
     &-user-icon {
@@ -169,9 +169,9 @@
   // }
 }
 .header__search{
-  // display: none;
+  display: flex;
   @media(max-width: 1920px){
-    display: none;
+    display: flex;
  }
 }
 .btn-sm{
@@ -328,6 +328,7 @@
     padding: 1.2rem 1.6rem;
     box-shadow: 3px 4px 24px 0px rgba(0, 0, 0, 0.12);
     height: max-content;
+
     @media (max-width: 576px) {
       width: 98%;
       right: 0;

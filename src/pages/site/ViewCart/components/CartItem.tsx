@@ -85,7 +85,7 @@ const CartItem = (props: CartItemProps) => {
           </Col>
           <Col md={4}>
             <div className='view-cart__list-item-price'>
-              <span className='view-cart__list-item-price-text'>${finalPrice}</span>
+              <span className='view-cart__list-item-price-text'>Rs. {finalPrice}</span>
               <TagOutlined className='view-cart__list-item-price-icon' />
             </div>
           </Col>

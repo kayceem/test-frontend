@@ -185,25 +185,6 @@ export const authApi = createApi({
       invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
     }),
 
-    githubLogin: build.mutation<loginResponse, { code: string }>({
-      query(body) {
-        return {
-          url: 'github-login',
-          method: 'POST',
-          body
-        };
-      }
-    }),
-    facebookLogin: build.mutation<loginResponse, { token: string }>({
-      query(body) {
-        return {
-          url: 'facebook-login',
-          method: 'POST',
-          body
-        };
-      },
-      invalidatesTags: (_, error) => (error ? [] : [{ type: 'Authentication', id: 'LIST' }])
-    }),
     ChangePassword: build.mutation<
       ChangePasswordResponse,
       { userId: string; oldPassword: string; newPassword: string }
@@ -232,7 +213,5 @@ export const {
   useLogoutMutation,
   useAdminLogoutMutation,
   useGoogleLoginMutation,
-  useGithubLoginMutation,
-  useFacebookLoginMutation,
   useChangePasswordMutation
 } = authApi;

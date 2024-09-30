@@ -54,7 +54,7 @@ const CourseDetailsModal: React.FC<CourseDetailsModalProps> = ({ courseId, isOpe
         </div>
         <div className='course-details__section'>
           <Text className='course-details__label'>Final Price:</Text>
-          <Text>{data.course.finalPrice}$</Text>
+          <Text>Rs. {data.course.finalPrice}</Text>
         </div>
         <div className='course-details__section'>
           <Text className='course-details__label'>Access:</Text>

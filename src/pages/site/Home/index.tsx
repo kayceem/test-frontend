@@ -27,8 +27,6 @@ import {
 } from '../client.service';
 
 import CourseList from '../components/CourseList';
-import SubscribeEmail from './components/SubscribeEmail';
-import FeedbackStudent from './components/FeedbackStudent';
 import './Home.scss';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -448,77 +446,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Devops */}
 
-      <div className='our-courses'>
-        <div className='container'>
-          <h2 className='our-courses__title'>Devops</h2>
-          {isDevopsFetching ? (
-            <Skeleton />
-          ) : (
-            <CourseList
-              courseState='notOrdered'
-              isLoadMore={isDevopsLoadMore}
-              onLoadMore={devopsLoadMoreHandler}
-              courses={devopsCourses}
-              className='our-courses__wrapper'
-            />
-          )}
-        </div>
-      </div>
-      {/* Blogs */}
-
-      {/* Subscribe Email */}
-      <SubscribeEmail />
-
-      {/* FeedbackStudent */}
-      <FeedbackStudent />
-
-      <div className='blogs mb-8'>
-        <div className='container'>
-          <h2 className='blogs__title text-6xl font-bold mb-16'>Blogs</h2>
-          <Slider {...settings} className='mb-6'>
-            {isLoading ? (
-              <Skeleton />
-            ) : (
-              data?.blogs?.map((blog) => (
-                <div key={blog._id} className='px-1 inline-block '>
-                  <Link to={`/blog-detail/${blog._id}`}>
-                    <Card
-                      className='mx-4'
-                      key={blog._id}
-                      hoverable
-                      style={{ width: 280, height: 400 }}
-                      cover={
-                        <img
-                          style={{ height: 400 }}
-                          alt={blog.title}
-                          src={blog.thumbnail}
-                          className='w-full object-cover'
-                        />
-                      } // Đảm bảo hình ảnh phủ đầy thẻ Card
-                    >
-                      <Card.Meta
-                        title={blog.title.length > 60 ? blog.title.substring(0, 60) + '...' : blog.title}
-                        description={
-                          <div
-                            className='title my-10 text-2xl opacity-90'
-                            dangerouslySetInnerHTML={sanitizeAndReturnHtml(
-                              blog.content.length > 160 ? blog.content.substring(0, 160) + '...' : blog.content
-                            )}
-                          ></div>
-                        }
-                      />
-                    </Card>
-                  </Link>
-                </div>
-              ))
-            )}
-          </Slider>
-
-          <div className='mb-4 opacity-0'></div>
-        </div>
-      </div>
     </div>
   );
 };

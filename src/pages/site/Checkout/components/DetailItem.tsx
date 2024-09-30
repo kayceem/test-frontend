@@ -28,7 +28,7 @@ const DetailItem = (props: DetailItemProps) => {
         <div className='detail-item'>
           <img src={thumbnailUrl} alt={name} className='detail-item__img' />
           <div className='detail-item__name'>{name}</div>
-          <div className='detail-item__price'>${finalPrice}</div>
+          <div className='detail-item__price'>Rs. {finalPrice}</div>
         </div>
       </div>
     </Fragment>

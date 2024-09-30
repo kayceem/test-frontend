@@ -407,7 +407,7 @@ const CourseDetail = () => {
                     {finalPrice !== 0 && !isBought && (
                       <div className='course-detail__overview-price'>
                         <div>
-                          <s className='font-light mr-4'>${price}</s> ${finalPrice}
+                          <s className='font-light mr-4'>Rs. {price}</s>Rs. {finalPrice}
                         </div>
                       </div>
                     )}

@@ -443,7 +443,7 @@ const Courses = () => {
                 />
                 {isFiltered && (
                   <span onClick={clearFilterHandler} className='search-results__clear-filters'>
-                    Clear Filters <CloseOutlined />
+                    Clear Filters
                   </span>
                 )}
               </div>

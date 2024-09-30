@@ -1,4 +1,4 @@
-import { FacebookFilled, GithubOutlined, GoogleOutlined, LinkedinFilled, LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, Space, notification } from 'antd';
 import React, { Fragment, useState } from 'react';
 import ButtonCmp from '../../../../components/Button';
@@ -66,15 +66,6 @@ const Signup: React.FC<SignupProps> = (props) => {
         <Space>
           <Button className='auth__socials-btn'>
           <img src="https://image.similarpng.com/very-thumbnail/2020/06/Logo-google-icon-PNG.png" alt="" />
-          </Button>
-          {/* <Button className='auth__socials-btn'>
-            <FacebookFilled className='auth__socials-icon' />
-          </Button>
-          <Button className='auth__socials-btn'>
-            <LinkedinFilled className='auth__socials-icon' />
-          </Button> */}
-          <Button className='auth__socials-btn'>
-            <GithubOutlined className='auth__socials-icon' />
           </Button>
         </Space>
       </div>

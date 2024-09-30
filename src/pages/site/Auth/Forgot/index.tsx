@@ -1,4 +1,4 @@
-import { FacebookFilled, GithubOutlined, GoogleOutlined, LinkedinFilled, LoadingOutlined } from '@ant-design/icons';
+import {LoadingOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Input, Space, Spin, notification } from 'antd';
 import jwtDecode from 'jwt-decode';
 import React, { Fragment, useState } from 'react';

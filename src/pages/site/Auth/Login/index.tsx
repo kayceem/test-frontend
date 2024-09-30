@@ -1,4 +1,4 @@
-import { FacebookFilled, GithubOutlined, GoogleOutlined, LinkedinFilled, LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Button, Divider, Form, Input, Space, Spin, notification } from 'antd';
 import jwtDecode from 'jwt-decode';
@@ -8,8 +8,6 @@ import ButtonCmp from '../../../../components/Button';
 import { useLoginMutation, useUpdateLastLoginMutation } from '../../../auth.service';
 import { closeAuthModal, setAuthenticated } from '../../../auth.slice';
 import '../Auth.scss';
-import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton';
-import GithubLoginButton from './GithubLoginButton/GithubLoginButton';
 import GoogleLoginButton from './GoogleLoginButton/GoogleLoginButton';
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 interface LoginProps {
@@ -106,15 +104,6 @@ const Login: React.FC<LoginProps> = (props) => {
           <GoogleOAuthProvider clientId='654961818615-ml2bg2915ljl8sntvmlnbb896o15csa7.apps.googleusercontent.com'>
             <GoogleLoginButton />
           </GoogleOAuthProvider>
-          {/* <Button className='auth__socials-btn'>
-            <FacebookFilled className='auth__socials-icon' />
-          </Button> */}
-          {/* <Button className='auth__socials-btn'>
-            <LinkedinFilled className='auth__socials-icon' />
-          </Button> */}
-          <Button className='auth__socials-btn'>
-            <GithubLoginButton/>
-          </Button>
         </Space>
       </div>
 
