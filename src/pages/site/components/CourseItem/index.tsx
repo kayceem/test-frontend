@@ -198,11 +198,20 @@ const CourseItem = (props: CourseItemProps) => {
             {/* Tên tác giả */}
             <div className='course-item__author'>
             <div className="course-item__author-details">
-              <img
-                  src={props.courseItem.userId.avatar || 'https://via.placeholder.com/150'}
-                  alt=''
-                  className='course-item__author-img'
-                />
+            <img
+                src={props.courseItem.userId.avatar || ''}
+                alt='Author Avatar'
+                className='course-item__author-img'
+                style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    display: 'block',
+                }}
+            />
               <div className='course-item__author-name'>{props.courseItem.userId.name}</div>
               </div>
               <Button 

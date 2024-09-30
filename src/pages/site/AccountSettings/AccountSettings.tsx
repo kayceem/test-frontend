@@ -25,11 +25,11 @@ const AccountSetting: React.FC = () => {
       key: '2',
       children: <PictureForm userData={userData} userId={userId} isSuccess={isSuccess} />
     },
-    {
-      label: 'Privacy settings',
-      key: '3',
-      children: <PrivacyForm userData={userData} userId={userId} isSuccess={isSuccess} />
-    }
+    // {
+    //   label: 'Privacy settings',
+    //   key: '3',
+    //   children: <PrivacyForm userData={userData} userId={userId} isSuccess={isSuccess} />
+    // }
   ];
 
   return (

@@ -547,7 +547,7 @@ const CourseDetail = () => {
               <div className='course-detail__author-avatar'>
                 <img
                   className='course-detail__author-img'
-                  src={authorId?.avatar || 'https://www.w3schools.com/howto/img_avatar.png'}
+                  src={authorId?.avatar || ''}
                   alt={authorId?.name}
                 />
               </div>

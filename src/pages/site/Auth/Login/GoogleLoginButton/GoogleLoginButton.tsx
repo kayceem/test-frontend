@@ -32,7 +32,7 @@ const GoogleLoginButton: React.FC = () => {
           })
             .unwrap()
             .then(() => {
-              notification.success({ type: 'success', message: 'update last login successully!', duration: 2 });
+              console.log('message: update last login successully');
             })
             .catch(() => {
               notification.error({ type: 'error', message: 'Failed to update your login information.', duration: 2 });

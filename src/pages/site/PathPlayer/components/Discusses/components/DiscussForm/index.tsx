@@ -34,14 +34,14 @@ const DiscussForm: React.FC<DiscussFormProps> = ({ userId, lessonId, courseId })
         courseId
       }).unwrap();
       notification.success({
-        message: 'Thảo luận đã được thêm!',
-        description: 'Cuộc thảo luận của bạn đã được tạo thành công.'
+        message: 'The discussion has been added!',
+        description: 'Your discussion has been successfully created.'
       });
       setIsVisible(false);
     } catch (err) {
       notification.error({
-        message: 'Lỗi!',
-        description: 'Không thể thêm cuộc thảo luận. Vui lòng thử lại.'
+        message: 'Error!',
+        description:'Cant add a discussion.Please try again.'
       });
     }
   };
@@ -49,17 +49,17 @@ const DiscussForm: React.FC<DiscussFormProps> = ({ userId, lessonId, courseId })
   return (
     <div style={{ maxWidth: '800px', margin: 'auto' }}>
       <Button type='link' onClick={() => setIsVisible(!isVisible)} className='mb-2'>
-        {isVisible ? 'Close Discuss' : 'Create Discuss'}
+        {isVisible ? 'Close' : 'Ask a question'}
       </Button>
       {isVisible && (
         <Card className='mb-2'>
           <Form name='discussForm' onFinish={onFinish} layout='vertical'>
             <Form.Item
-              label='Comment'
+              label='Question '
               name='comments'
-              rules={[{ required: true, message: 'Vui lòng nhập nội dung của cuộc thảo luận!' }]}
+              rules={[{ required: true, message: 'Please enter the content of the discussion!' }]}
             >
-              <Input.TextArea rows={4} placeholder='Nhập nội dung của cuộc thảo luận' />
+              <Input.TextArea rows={4} placeholder='Enter the content of the discussion' />
             </Form.Item>
             <Form.Item>
               <Button type='primary' htmlType='submit'>

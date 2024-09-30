@@ -58,7 +58,7 @@ const StartLearning = () => {
               <Col className='learning__col--right'>
                 <div className='start-learning__header-summary'>
                   <Row className='start-learning__header-summary-row'>
-                    <Col md={8} xs={24} sm={24} className='col'>
+                    <Col md={12} xs={28} sm={28} className='col'>
                       <div className='start-learning__header-summary-item start-learning__header-summary-item--courses'>
                         <div className='start-learning__header-summary-item-icon'>
                           <ReadOutlined />
@@ -69,16 +69,7 @@ const StartLearning = () => {
                         <div className='start-learning__header-summary-item-text'>Courses</div>
                       </div>
                     </Col>
-                    <Col md={8} xs={24} sm={24} className='col'>
-                      <div className='start-learning__header-summary-item start-learning__header-summary-item--messages'>
-                        <div className='start-learning__header-summary-item-icon'>
-                          <ReadOutlined />
-                        </div>
-                        <div className='start-learning__header-summary-item-number'>0</div>
-                        <div className='start-learning__header-summary-item-text'>Messages</div>
-                      </div>
-                    </Col>
-                    <Col md={8} xs={24} sm={24} className='col'>
+                    <Col md={12} xs={28} sm={28} className='col'>
                       <div className='start-learning__header-summary-item start-learning__header-summary-item--hours'>
                         <div className='start-learning__header-summary-item-icon'>
                           <ReadOutlined />

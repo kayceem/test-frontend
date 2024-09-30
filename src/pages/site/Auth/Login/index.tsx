@@ -49,7 +49,7 @@ const Login: React.FC<LoginProps> = (props) => {
           })
             .unwrap()
             .then(() => {
-              notification.success({ type: 'success', message: 'update last login successully!', duration: 2 });
+              console.log('message: update last login successully');
             })
             .catch((error) => {
               console.log('error: ', error);

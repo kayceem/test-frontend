@@ -26,20 +26,8 @@ const profileItems: TabsProps['items'] = [
         <p>About</p>
       </div>
     ),
-    children: ``
-  }
-  // {
-  //   key: 'activity',
-  //   label: (
-  //     <div className='tab-item'>
-  //       <p className='tab-item__text'>
-  //         <StockOutlined className='tab-item__icon' />
-  //       </p>
-  //       <p>Activities</p>
-  //     </div>
-  //   ),
-  //   children: `Some activies of users`
-  // }
+    children: ''
+  },
 ];
 
 const tabBarStyleCss = {
@@ -120,24 +108,17 @@ const Profile = () => {
                     <div className='profile__header-item-text'>Courses</div>
                   </div>
                 </Col>
-                <Col className='col'>
-                  <div className='profile__header-item'>
-                    <div className='profile__header-item-icon'>
-                      <ReadOutlined />
-                    </div>
-                    <div className='profile__header-item-number'>
-                      {formatVideoLengthToHours(sumTotalVideosLengthDone || 0)}
-                    </div>
-                    <div className='profile__header-item-text'>Hours</div>
-                  </div>
-                </Col>
+                
                 <Col className='col col-wrap'>
                   <div className='profile__header-item'>
                     <div className='profile__header-item-icon'>
-                      <img
-                        src='https://lwfiles.mycourse.app/648eaf1c0c0c35ee7db7e0a2-public/avatars/648eaf1c0c0c35ee7db7e0a3.jpg?version=2023-07-16%2010%3A02%3A03'
+                    <img
+                        src={data?.user.avatar}
                         alt=''
                         className='profile__header-item-img'
+                        style={{
+                          objectFit: 'contain',
+                      }}
                       />
                     </div>
                     <div className='profile__header-item-name'>
@@ -158,17 +139,10 @@ const Profile = () => {
                     <div className='profile__header-item-icon'>
                       <ReadOutlined />
                     </div>
-                    <div className='profile__header-item-number'>0</div>
-                    <div className='profile__header-item-text'>POSTS</div>
-                  </div>
-                </Col>
-                <Col className='col'>
-                  <div className='profile__header-item'>
-                    <div className='profile__header-item-icon'>
-                      <ReadOutlined />
+                    <div className='profile__header-item-number'>
+                      {formatVideoLengthToHours(sumTotalVideosLengthDone || 0)}
                     </div>
-                    <div className='profile__header-item-number'>{data?.user.numCourses}</div>
-                    <div className='profile__header-item-text'>Achievement</div>
+                    <div className='profile__header-item-text'>Hours</div>
                   </div>
                 </Col>
               </Row>
@@ -212,29 +186,6 @@ const Profile = () => {
                     <div className='level-text'>{achievement.text}</div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-          <div className='profile-network'>
-            <div className='profile-network-tt'>NETWORK</div>
-            <div className='profile-network-list'>
-              <div className='profile-network-item'>
-                <div className='content'>
-                  <div className='number'>0</div>
-                  <div className='text'>followers</div>
-                </div>
-                <div className='img'>
-                  <img src='https://cdn.mycourse.app/v3.0.4/images/initial-avatar.jpg' alt='' />
-                </div>
-              </div>
-              <div className='profile-network-item'>
-                <div className='content'>
-                  <div className='number'>0</div>
-                  <div className='text'>following</div>
-                </div>
-                <div className='img'>
-                  <img src='https://cdn.mycourse.app/v3.0.4/images/initial-avatar.jpg' alt='' />
-                </div>
               </div>
             </div>
           </div>

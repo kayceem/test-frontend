@@ -18,7 +18,7 @@ const Learners = (props: Props) => {
   const { data: usersData, isLoading: isLoadingUsers } = useGetAllUserByCourseQuery({ courseId });
 
   const userAvatars = usersData?.users;
-
+  console.log(userAvatars);
   return (
     <div className={`${props.className} learners p-4`}>
       <Card>
@@ -32,7 +32,7 @@ const Learners = (props: Props) => {
           ) : (
             userAvatars?.map((user) => (
               <Tooltip title={user.name} key={user._id}>
-                <Avatar src={`https://loremflickr.com/320/240?random=${user._id}`} className='cursor-pointer' />
+                <Avatar className='cursor-pointer ml-2' />
               </Tooltip>
             ))
           )}
