@@ -15,9 +15,8 @@ const OrderCompleted: React.FC = () => {
       subTitle={`Order number: ${orderId as string} Cloud server configuration takes 1-5 minutes, please wait.`}
       extra={[
         <Button type='primary' key='console'>
-          <Link to='/start'>Go To My Learning</Link>
+          <Link to='/start'>Go To My Courses</Link>
         </Button>,
-        <Button key='buy'>Buy Again</Button>
       ]}
     />
   );

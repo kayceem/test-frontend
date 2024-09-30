@@ -166,7 +166,7 @@ const ViewCart = () => {
               <Col md={6} className='col view-cart__right'>
                 <div className='view-cart__summary'>
                   <h4 className='view-cart__summary-title'>Total: </h4>
-                  <h3 className='view-cart__summary-price'>${totalPrice}</h3>
+                  <h3 className='view-cart__summary-price'>Rs. {totalPrice}</h3>
                   <div onClick={checkoutHandler}>
                     <div className='view-cart__summary-btn btn btn-md'>Checkout</div>
                   </div>

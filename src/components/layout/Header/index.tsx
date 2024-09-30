@@ -95,13 +95,8 @@ const Header = () => {
       icon: <Avatar src={userData?.avatar as string} />
     },
     {
-      label: <Link to='/start'>My Learning</Link>,
+      label: <Link to='/start'>My Courses</Link>,
       key: 'mylearning',
-      icon: <UserOutlined />
-    },
-    {
-      label: 'Notifications',
-      key: 'notifications',
       icon: <UserOutlined />
     },
     {
@@ -123,22 +118,12 @@ const Header = () => {
       icon: <UserOutlined />
     },
     {
-      label: 'Public Profile',
-      key: 'public-profile',
-      icon: <UserOutlined />
-    },
-    {
       label: (
         <Link to='/change-password'>
           <div>Change Password</div>
         </Link>
       ),
       key: 'change-password',
-      icon: <UserOutlined />
-    },
-    {
-      label: 'Help',
-      key: 'help',
       icon: <UserOutlined />
     },
     {
@@ -151,18 +136,6 @@ const Header = () => {
   ];
 
   const notificationItems: MenuProps['items'] = [];
-
-  const wishlistItems: MenuProps['items'] = [
-    {
-      label: (
-        <Link to='/wishlist'>
-          <div>Wishlist</div>
-        </Link>
-      ),
-      key: 'wishlist',
-      icon: <UserOutlined />
-    }
-  ];
 
   const dispatch = useDispatch();
 
@@ -214,10 +187,6 @@ const Header = () => {
     items: notificationItems,
     onClick: handleMenuClick
   };
-  const menuWishlistProps = {
-    items: wishlistItems,
-    onClick: handleMenuClick
-  };
 
   const onSearch = (value: string) => {
     dispatch(setSearchQuery(value));
@@ -266,7 +235,7 @@ const Header = () => {
               {isAuth && (
                 <li className='header__nav-item'>
                   <Link to='/start' className='header__nav-link'>
-                    My Learning
+                    My Courses
                   </Link>
                 </li>
               )}
@@ -279,21 +248,6 @@ const Header = () => {
                 <Link to='/courses' className='header__nav-link'>
                   Courses
                 </Link>
-              </li>
-              <li className='header__nav-item'>
-                <Link to='/blog' className='block hover:opacity-50'>
-                  Blog
-                </Link>
-              </li>
-              <li>
-              <div className='header__nav-item header__search'>
-                <Search
-                  style={{ width: '30rem' }}
-                  placeholder='Search to find your suitable courses'
-                  onSearch={onSearch}
-                  enterButton
-                />
-              </div>
               </li>
               <div className='header__auth header__auth-mobile'>
                 {!isAuth && (
@@ -310,7 +264,14 @@ const Header = () => {
             </ul>
 
             <div className='header-icon'>
-
+            <div className='header__search'>
+                <Search
+                  style={{ width: '30rem' }}
+                  placeholder='Search to find your suitable courses'
+                  onSearch={onSearch}
+                  enterButton
+                />
+              </div>
               <div className='header__nav-item header__nav-item--cart'>
                 <Link className='header__nav-link' to='/view-cart'>
                   <Badge count={cart?.items?.length || 0}>
@@ -320,21 +281,21 @@ const Header = () => {
               </div>
               {isAuth && (
                 <li className='header__nav-item'>
-                  <Dropdown menu={menuWishlistProps} placement='bottomRight'>
-                    <Badge dot={true}>
+                  <Link className='header__nav-link' to='/wishlist'>
+                    <Badge>
                       <HeartOutlined
                         className='header__nav-item-user-icon header__nav-link-icon'
                         style={{ cursor: 'pointer' }}
-                      />
+                        />
                     </Badge>
-                  </Dropdown>
+                  </Link>
                 </li>
               )}
 
               {isAuth && (
                 <li className='header__nav-item'>
                   <Dropdown menu={menuNotificationsProps} placement='bottomRight'>
-                    <Badge dot={true}>
+                    <Badge>
                       <BellOutlined
                         className='header__nav-item-notify-icon header__nav-link-icon'
                         style={{ cursor: 'pointer' }}
@@ -346,7 +307,7 @@ const Header = () => {
               {isAuth && (
                 <div className='header__nav-item header__nav-item--user'>
                   <Dropdown menu={menuUserProps} placement='bottomRight'>
-                    <Badge dot={true}>
+                    <Badge>
                       <Avatar className='header__nav-item-user-icon' src={userData?.avatar as string} />
                     </Badge>
                   </Dropdown>
@@ -395,7 +356,6 @@ const Header = () => {
           </Space>
         }
       >
-        <div>Content in here</div>
       </Drawer>
     </div>
   );
