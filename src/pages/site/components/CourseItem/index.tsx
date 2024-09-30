@@ -234,7 +234,7 @@ const CourseItem = (props: CourseItemProps) => {
                       className='btn btn-secondary btn-sm course-item__enrolls-btn--free'
                       action='goto-course'
                     >
-                      Goto Course
+                      Go to Course
                     </Button>
                   )}
                 </Col>
@@ -245,8 +245,8 @@ const CourseItem = (props: CourseItemProps) => {
                         <div className='course-item__prices-free'>FREE</div>
                       ) : (
                         <>
-                          <span className='course-item__prices-old'>${props.courseItem.price.toFixed(1)}</span>
-                          <span className='course-item__prices-new'>${props.courseItem.finalPrice.toFixed(1)}</span>
+                          <span className='course-item__prices-old'>Rs. {props.courseItem.price.toFixed(1)}</span>
+                          <span className='course-item__prices-new'>Rs. {props.courseItem.finalPrice.toFixed(1)}</span>
                         </>
                       )}
                     </div>

@@ -428,7 +428,6 @@ const Courses = () => {
                 </h3>
               )}
               <div className='search-results__sort'>
-                <Button>Sort</Button>
                 <Select
                   defaultValue={sortValue === 'mostReviews' ? 'mostReviews' : 'newest'}
                   value={sortValue}

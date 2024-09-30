@@ -17,21 +17,11 @@ import {
 import { clearCart } from '../client.slice';
 import './Checkout.scss';
 import DetailItem from './components/DetailItem';
-const text = `
-Name on card
-TRAN NHAT SANG
-
-Card number
-**** 0124
-
-Expiry date
-5/2026
-`;
 
 const Checkout = () => {
   const { token } = theme.useToken();
   const [createOrder] = useCreateOrderMutation();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Visa');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Khalti');
   const [expandedPanel, setExpandedPanel] = useState(['1']);
   const [createVnpayUrl] = useCreateVnpayUrlMutation();
 
@@ -41,93 +31,24 @@ const Checkout = () => {
       label: (
         <div>
           <Radio
-            value='Visa'
-            checked={selectedPaymentMethod === 'Visa'}
+            value='Khalti'
+            checked={selectedPaymentMethod === 'Khalti'}
             onChange={() => {
               if (expandedPanel.includes('1')) {
                 setExpandedPanel([]);
               } else {
                 setExpandedPanel(['1']);
               }
-              setSelectedPaymentMethod('Visa');
+              setSelectedPaymentMethod('Khalti');
             }}
           >
-            Visa **** 0124
+            Khalti
           </Radio>
         </div>
       ),
-      children: <p>{text}</p>,
+      children: <p>Khalti Digital Wallet and Payment Gateway</p>,
       style: panelStyle
     },
-    // {
-    //   key: '2',
-    //   label: (
-    //     <div>
-    //       <Radio
-    //         value='Credit/Debit Card'
-    //         checked={selectedPaymentMethod === 'Credit/Debit Card'}
-    //         onChange={() => {
-    //           if (expandedPanel.includes('2')) {
-    //             setExpandedPanel([]);
-    //           } else {
-    //             setExpandedPanel(['2']);
-    //           }
-    //           setSelectedPaymentMethod('Credit/Debit Card');
-    //         }}
-    //       >
-    //         Credit/Debit Card
-    //       </Radio>
-    //     </div>
-    //   ),
-    //   children: <p>{text}</p>,
-    //   style: panelStyle
-    // },
-    // {
-    //   key: '3',
-    //   label: (
-    //     <div>
-    //       <Radio
-    //         value='Paypal'
-    //         checked={selectedPaymentMethod === 'Paypal'}
-    //         onChange={() => {
-    //           if (expandedPanel.includes('3')) {
-    //             setExpandedPanel([]);
-    //           } else {
-    //             setExpandedPanel(['3']);
-    //           }
-    //           setSelectedPaymentMethod('Paypal');
-    //         }}
-    //       >
-    //         Paypal
-    //       </Radio>
-    //     </div>
-    //   ),
-    //   children: <p>{text}</p>,
-    //   style: panelStyle
-    // },
-    {
-      key: '4',
-      label: (
-        <div>
-          <Radio
-            value='VN Pay'
-            checked={selectedPaymentMethod === 'VN Pay'}
-            onChange={() => {
-              if (expandedPanel.includes('4')) {
-                setExpandedPanel([]);
-              } else {
-                setExpandedPanel(['4']);
-              }
-              setSelectedPaymentMethod('VN Pay');
-            }}
-          >
-            VN Pay
-          </Radio>
-        </div>
-      ),
-      children: <p>{text}</p>,
-      style: panelStyle
-    }
   ];
 
   const panelStyle = {
@@ -201,10 +122,10 @@ const Checkout = () => {
       .unwrap()
       .then((result) => {
         if (result.order._id) {
-          if (selectedPaymentMethod === 'VN Pay') {
+          if (selectedPaymentMethod === 'Khalti') {
             createVnpayUrl({
               orderId: result.order._id,
-              amount: totalPrice * 23000
+              amount: totalPrice
             })
               .unwrap()
               .then((paymentResponse) => {
@@ -232,31 +153,6 @@ const Checkout = () => {
           <Row className='row-wrap'>
             <Col className='checkout__col checkout__col--left'>
               <h2 className='checkout__title'>Checkout</h2>
-              <h3 className='checkout__billing-title'>Billing address</h3>
-              <div className='checkout__countries'>
-                <div className='checkout__countries-header'>
-                  <span className='checkout__countries-header-item checkout__countries-title'>Country</span>
-                  <span className='checkout__countries-header-item checkout__countries-required'>Required</span>
-                </div>
-                <div className='checkout__countries-body'>
-                  <Select
-                    className='checkout__countries-select'
-                    defaultValue='Viet Nam'
-                    style={{ width: '50%' }}
-                    options={[
-                      { value: 'Viet Nam', label: 'Viet Nam' },
-                      { value: 'Singapore', label: 'Singapore' },
-                      { value: 'Indo', label: 'Indo' },
-                      { value: 'Malay', label: 'Malay' }
-                    ]}
-                  />
-
-                  <div className='checkout__countries-condition-term'>
-                    Udemy is required by law to collect applicable transaction taxes for purchases made in certain tax
-                    jurisdictions.
-                  </div>
-                </div>
-
                 <div className='checkout__payment-methods'>
                   <div className='checkout__payment-header'>
                     <h3 className='checkout__payment-title'>Payment method</h3>
@@ -267,13 +163,12 @@ const Checkout = () => {
                       className='checkout__payment-content'
                       accordion
                       bordered={false}
-                      activeKey={expandedPanel}
+                      // activeKey={expandedPanel}
                       expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
                       style={{ background: token.colorBgContainer }}
                       items={getItems(panelStyle)}
                     />
                   </div>
-                </div>
                 <div className='checkout__orders-detail'>
                   <h3 className='checkout__orders-detail-title'>Order details</h3>
                   {isCartFetching && <Skeleton />}
@@ -292,17 +187,17 @@ const Checkout = () => {
                     <div className='checkout__summary-row checkout__summary-price'>
                       <span className='checkout__summary-col checkout__summary-price-label'>Original Price:</span>
                       <span className='checkout__summary-col checkout__summary-price-text'>
-                        ${discountPrice + totalPrice}
+                        Rs. {discountPrice + totalPrice}
                       </span>
                     </div>
                     <div className='checkout__summary-row checkout__summary-price'>
                       <span className='checkout__summary-col checkout__summary-price-label'>Discount Price:</span>
-                      <span className='checkout__summary-col checkout__summary-price-text'>${discountPrice}</span>
+                      <span className='checkout__summary-col checkout__summary-price-text'>Rs. {discountPrice}</span>
                     </div>
                     <Divider className='checkout__summary-divider' />
                     <div className='checkout__summary-row checkout__summary-total'>
                       <span className='checkout__summary-col checkout__summary-total-label'>Total:</span>
-                      <span className='checkout__summary-col checkout__summary-total-text'>${totalPrice}</span>
+                      <span className='checkout__summary-col checkout__summary-total-text'>Rs. {totalPrice}</span>
                     </div>
 
                     <div className='checkout__summary-notify'>

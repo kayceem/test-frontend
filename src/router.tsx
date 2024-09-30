@@ -53,7 +53,6 @@ import PagePost from './pages/site/PagePost/PagePost';
 import Inbox from './pages/site/Inbox/Inbox';
 import WishlistPage from './pages/site/Wishlist/Wishlist';
 import PaymentHistory from './pages/site/PaymentHistory/PaymentHistory';
-import PublicProfile from './pages/site/PublicProfile/PublicProfile';
 import BlogList from './pages/admin/Blog/Blog';
 import TransactionsPage from './pages/admin/Transactions/Transactions';
 import CouponsPage from './pages/admin/Coupons/Coupons';
@@ -176,10 +175,6 @@ const RouterHooks = () => {
         {
           path: 'cart-invoice/:orderId',
           element: <InvoicePage />
-        },
-        {
-          path: 'publicprofile',
-          element: <PublicProfile />
         }
       ],
       errorElement: <ErrorPage page='/author' />
