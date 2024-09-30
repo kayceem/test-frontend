@@ -96,12 +96,6 @@ const SideBar = () => {
   // Coupon
   const Coupon = helper.getRole.Coupon;
 
-  // --- 6. MODULE BLOG
-  // Blog
-  const BlogCategory = helper.getRole.BlogCategory;
-  // Blog list
-  const Blog = helper.getRole.Blog;
-  const BlogComments = helper.getRole.BlogComments;
 
   // --- 7. MODULE FEDDBACK
   // feedback
@@ -212,29 +206,6 @@ const SideBar = () => {
 
   const isViewReportModule = isViewUserProgress && isViewCourseInsight && isViewReviewCenter
 
-  // User blog screen
-  const isViewBlog = helper.checkPermission(Blog?.View?.code);
-  const isCreateBlog = helper.checkPermission(Blog?.Create?.code);
-  const isEditBlog = helper.checkPermission(Blog?.Edit?.code);
-  const isViewDetailBlog = helper.checkPermission(Blog?.Detail?.code);
-  const isDeleteBlog = helper.checkPermission(Blog?.Delete?.code);
-
-  // User blog category screen
-  const isViewBlogCategory = helper.checkPermission(BlogCategory?.View?.code);
-  const isCreateBlogCategory = helper.checkPermission(BlogCategory?.Create?.code);
-  const isEditBlogCategory = helper.checkPermission(BlogCategory?.Edit?.code);
-  const isViewDetailBlogCategory = helper.checkPermission(BlogCategory?.Detail?.code);
-  const isDeleteBlogCategory = helper.checkPermission(BlogCategory?.Delete?.code);
-
-  // User blog comments screen
-  const isViewBlogComments = helper.checkPermission(BlogComments?.View?.code);
-  const isCreateBlogComments = helper.checkPermission(BlogComments?.Create?.code);
-  const isEditBlogComments = helper.checkPermission(BlogComments?.Edit?.code);
-  const isViewDetailBlogComments = helper.checkPermission(BlogComments?.Detail?.code);
-  const isDeleteBlogComments = helper.checkPermission(BlogComments?.Delete?.code);
-
-  const isViewBlogModule = isViewBlogComments && isViewDetailBlogComments && isViewBlogCategory
-
   // User feedback screen
   const isViewFeedback = helper.checkPermission(Feedback?.View?.code);
   const isCreateFeedback = helper.checkPermission(Feedback?.Create?.code);
@@ -290,11 +261,6 @@ const SideBar = () => {
       // getItem('Bundles', 'marketing/bundles'),
       // getItem('Subscriptions', 'marketing/subscriptions'),
       (isViewCoupon && getItem('Coupons', 'marketing/coupons'))
-    ])) as MenuItem,
-    (isViewBlogModule && getItem('Blog', 'blog', <BoldOutlined />, [
-      (isViewBlog && getItem('Blog List', 'blog')) as MenuItem,
-      (isViewBlogCategory && getItem('Blog Category', 'blog-category')),
-      (isViewBlogComments && getItem('Blog comments', 'blog-comments'))
     ])) as MenuItem,
     (isViewFeedback && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) &&
       getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [

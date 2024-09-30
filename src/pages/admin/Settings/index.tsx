@@ -29,17 +29,22 @@ const Settings = () => {
   };
 
   const onFinish = async (formData: Omit<IUser, '_id'>) => {
-    fileList.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        formData = { ...formData, avatar: event.target?.result };
-      };
-      reader.readAsDataURL(file.originFileObj);
-    });
+    const data = new FormData();
 
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && key !== 'avatar') {
+        data.append(key, value as string | Blob); // Convert value to string or Blob
+      }
+    });
+    
+    if (fileList.length > 0) {
+      const file = fileList[0].originFileObj;
+      data.append("avatar", file);
+    }
+  
     const updatedUser = {
       _id: userId,
-      body: formData
+      body: data
     };
 
     updateUser(updatedUser)
@@ -92,7 +97,6 @@ const Settings = () => {
       <Card className='mt-2'>
         <Form form={form} layout='vertical' onFinish={onFinish} autoComplete='off' className='form-setting m-auto'>
           <Form.Item className='setting-avatar' label='Avatar' name='avatar'>
-            {/* <img src={avatarUrl} alt='Avatar' style={{ width: '100px' }} /> */}
             <Upload beforeUpload={() => false} onChange={handleChange} multiple={false} fileList={fileList}>
               <Button icon={<UploadOutlined style={{ color: '#000' }} />}>Select Image</Button>
             </Upload>
@@ -157,7 +161,6 @@ const Settings = () => {
                 rules={[{ required: true, message: 'Please select your language!' }]}
               >
                 <Select placeholder='Select a language'>
-                  <Option value='en'>Vietnamese</Option>
                   <Option value='en'>English</Option>
                   <Option value='es'>Spanish</Option>
                   <Option value='pt'>Portuguese</Option>
