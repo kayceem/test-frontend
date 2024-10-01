@@ -176,7 +176,7 @@ const RouterHooks = () => {
           element: <InvoicePage />
         }
       ],
-      errorElement: <ErrorPage page='/author' />
+      errorElement: <ErrorPage page='/' />
     },
     {
       path: '/author',

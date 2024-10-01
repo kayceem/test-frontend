@@ -66,6 +66,7 @@ const authSlice = createSlice({
       state.token = null;
       state.userId = '';
       localStorage.removeItem('token');
+      localStorage.removeItem('cart');
     },
     setAdminUnauthenticated(state) {
       state.isAdminAuth = false;
