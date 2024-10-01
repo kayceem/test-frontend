@@ -226,7 +226,6 @@ const SideBar = () => {
   const isEditSettings = helper.checkPermission(Settings?.Edit?.code);
   const isViewDetailSettings = helper.checkPermission(Settings?.Detail?.code);
   const isDeleteSettings = helper.checkPermission(Settings?.Delete?.code);
-
   const items: MenuItem[] = [
     getItem('Welcome', 'welcome', <DotChartOutlined />),
     (adminRole === UserRole.AUTHOR && getItem('Report Overview', 'author-report', <PieChartOutlined />)) as MenuItem,
@@ -268,7 +267,7 @@ const SideBar = () => {
         getItem('Subscribe', 'subscribe')
       ])) as MenuItem,
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings' ) ]),
-    // getItem('My account', 'account', <UserAddOutlined />),
+    getItem('My account', 'account', <UserAddOutlined />),
     // getItem('Need Help ?', 'help', <FileOutlined />)
   ];
 

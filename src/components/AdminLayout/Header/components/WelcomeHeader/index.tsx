@@ -19,17 +19,9 @@ const WelcomeHeader = () => {
   const { data, isFetching } = useGetUserQuery(adminId, {
     skip: !adminId
   });
-
-  let avatarThumnailUrl = '';
   
-  if (data?.user.avatar) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    if ((data?.user.avatar as string ).startsWith('http')) {
-      avatarThumnailUrl = data?.user.avatar as string;
-    } else {
-      avatarThumnailUrl = `${BACKEND_URL}/${data?.user.avatar as string}`;
-    }
-  }
+    const avatarThumnailUrl = data?.user.avatar as string || "";
 
   const adminLogoutHandler = () => {
     // Logout at db
@@ -83,14 +75,6 @@ const WelcomeHeader = () => {
         <h3 className='admin-header__page-title'>Welcome</h3>
       </Space>
       <Space className='admin-header__notify'>
-        <Button className='btn-wrap'>
-          <BellOutlined />
-          <span>What's new</span>
-        </Button>
-        <Button className='btn-wrap'>
-          <QuestionOutlined />
-          <span>Help</span>
-        </Button>
         <Dropdown menu={{ items: adminInfoItems }} placement='bottom' arrow>
           <Avatar style={{ backgroundColor: '#87d068', cursor: 'pointer' }} src={avatarThumnailUrl} />
         </Dropdown>

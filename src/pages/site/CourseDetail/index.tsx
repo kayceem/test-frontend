@@ -237,7 +237,7 @@ const CourseDetail = () => {
           avatar: (userData?.user.avatar as string) || ''
         },
         transaction: {
-          method: 'VNPAY'
+          method: 'KHALTI'
         },
         totalPrice: 0,
         vatFee: 0,

@@ -23,7 +23,7 @@ interface ITransaction {
   status?: string;
   paidAt?: string;
   isPaid?: boolean;
-  method: string; // STRIPE, PAYPAL, VNPAY, MOMO
+  method: string;
 }
 
 export interface IOrderItem {

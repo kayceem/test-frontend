@@ -358,7 +358,7 @@ const UsersProgress = () => {
         </div>
 
         {/* Showing results of table */}
-        <div className='users-progress__filter-result'>Showing 1 to 2 users out of 2</div>
+        {/* <div className='users-progress__filter-result'>Showing 1 to 2 users out of 2</div> */}
 
         <div className='users-progress__table'>
           {isFetching && <Skeleton />}

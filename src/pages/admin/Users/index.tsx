@@ -19,14 +19,14 @@ const Users = () => {
   const currentAdminRole = useSelector((state: RootState) => state.auth.adminRole) as UserRole;
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const [courses, setCourses] = useState<ICourse[]>([]);
-  const { data: dataList, isFetching: isFetchingCourse } = useGetCoursesQuery({ _q: '' });
+  // const [courses, setCourse  s] = useState<ICourse[]>([]);
+  // const { data: dataList, isFetching: isFetchingCourse } = useGetCoursesQuery({ _q: '' });
 
-  useEffect(() => {
-    if (dataList) {
-      setCourses(dataList.courses);
-    }
-  }, [dataList]);
+  // useEffect(() => {
+  //   if (dataList) {
+  //     setCourses(dataList.courses);
+  //   }
+  // }, [dataList]);
 
   const [searchValue, setSearchValue] = useState('');
   const [searchCourse, setSearchCourse] = useState('');
@@ -38,9 +38,9 @@ const Users = () => {
     setSearchValue(value);
   };
 
-  const onSearchCourseHandler = (value: string) => {
-    setSearchCourse(value);
-  };
+  // const onSearchCourseHandler = (value: string) => {
+  //   setSearchCourse(value);
+  // };
 
   const createUserHandler = () => {
     setOpen(true);

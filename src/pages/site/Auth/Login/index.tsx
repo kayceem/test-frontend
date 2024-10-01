@@ -97,7 +97,7 @@ const Login: React.FC<LoginProps> = (props) => {
   return (
     <Fragment>
       <div className='auth__title'>
-        <h2 className='auth__title-heading'>Login or sign up to start learning</h2>
+        <h2 className='auth__title-heading'>Login to start learning</h2>
       </div>
       <div className='auth__socials'>
         <Space>

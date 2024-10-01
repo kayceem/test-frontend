@@ -72,7 +72,7 @@ const CourseList = (props: CourseListProps) => {
         avatar: userData?.user.avatar || ''
       },
       transaction: {
-        method: 'VNPAY'
+        method: 'KHALTI'
       },
       totalPrice: 0,
       vatFee: 0,

@@ -60,7 +60,7 @@ const Signup: React.FC<SignupProps> = (props) => {
   return (
     <Fragment>
       <div className='auth__title'>
-        <h2 className='auth__title-heading'>Signup or sign up to start learning</h2>
+        <h2 className='auth__title-heading'>Signup to start learning</h2>
       </div>
       <div className='auth__socials'>
         <Space>

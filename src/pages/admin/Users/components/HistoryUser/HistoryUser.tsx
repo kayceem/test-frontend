@@ -38,7 +38,7 @@ const ViewHistoryUser: React.FC<ViewHistoryUserProps> = ({ userId, onClose, isOp
   };
 
   return (
-    <Modal title='Category Blog History' visible={isOpen} onCancel={onClose} footer={null} width='80%' centered>
+    <Modal title='User Logs' open={isOpen} onCancel={onClose} footer={null} width='80%' centered>
       <Table
         dataSource={categoryHistories?.results}
         columns={columns}
