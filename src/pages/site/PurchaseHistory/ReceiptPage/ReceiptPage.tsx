@@ -53,14 +53,14 @@ const ReceiptPage: React.FC = () => {
       title: 'Price',
       dataIndex: 'finalPrice',
       key: 'finalPrice',
-      render: (text: number) => `$${text.toLocaleString()}`,
+      render: (text: number) => `Rs. ${text.toLocaleString()}`,
       responsive: ['sm']
     },
     {
       title: 'Amount',
       dataIndex: 'finalPrice',
       key: 'amount',
-      render: (text: number) => `$${text.toLocaleString()}`,
+      render: (text: number) => `Rs. ${text.toLocaleString()}`,
       responsive: ['lg']
     }
   ];
@@ -75,8 +75,8 @@ const ReceiptPage: React.FC = () => {
 
   const footerTable = () => (
     <div className='receipt-page__table__footer'>
-      <p>Tax*: ${orderDetails.order.vatFee}</p>
-      <p>Total Paid: ${orderDetails.order.totalPrice}</p>
+      <p>Tax*: Rs. {orderDetails.order.vatFee}</p>
+      <p>Total Paid: Rs. {orderDetails.order.totalPrice}</p>
     </div>
   );
 
@@ -93,12 +93,12 @@ const ReceiptPage: React.FC = () => {
         </Button>
         <h2 className='receipt-page__title'>Receipt</h2>
         <div className='receipt-page__date-title'>Receipt - {formatDate(orderDetails.order.createdAt || '')}</div>
-        <p className='receipt-page__company-name'>E-Leaning, Inc.</p>
+        <p className='receipt-page__company-name'>Horizon School</p>
         <div className='receipt-page__info'>
           <div className='receipt-page__company'>
-            <p className='receipt-page__company-address'>600 Harrison Street, 3rd Floor</p>
-            <p className='receipt-page__company-city'>San Francisco, CA 94107, US</p>
-            <p className='receipt-page__company-city'>elearning.com</p>
+            <p className='receipt-page__company-address'>Top of the World</p>
+            <p className='receipt-page__company-city'>Milky way</p>
+            <p className='receipt-page__company-country'>COSMOS</p>
           </div>
           <div className='receipt-page__order'>
             <p className='receipt-page__date'>
@@ -120,10 +120,7 @@ const ReceiptPage: React.FC = () => {
           footer={footerTable}
         />
         <div className='receipt-page__tax-note'>
-          <p className='receipt-page__tax-note-item'>
-            *For any users charged VAT, the Tax amount is calculated on the Subtotal, not the Total Amount.
-          </p>
-          <p className='receipt-page__tax-note-item'>
+            <p className='receipt-page__tax-note-item'>
             If you have any questions about this receipt please contact our support team.
           </p>
         </div>
