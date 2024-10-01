@@ -4,7 +4,6 @@ import './assets/sass/_base.scss';
 import './assets/sass/reset.css';
 import './assets/sass/tailwind.css';
 import './assets/sass/App.css';
-import InstructorsRevenues from './components/AdminLayout/Header/components/InstructorsRevenues';
 import RootAdminLayout from './components/AdminLayout/RootLayout';
 import RootLayout from './components/layout/RootLayout';
 import ErrorPage from './pages/Error/404Error';
@@ -337,10 +336,6 @@ const RouterHooks = () => {
             {
               path: 'courses-revenues',
               element: <CoursesRevenues />
-            },
-            {
-              path: 'instructors-revenues',
-              element: <InstructorsRevenues />
             },
             {
               path: 'certifications',

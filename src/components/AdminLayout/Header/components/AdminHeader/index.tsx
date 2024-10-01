@@ -53,7 +53,7 @@ const AdminCommonHeader = (props: {title: string}) => {
     {
       key: '1',
       label: (
-        <a target='_blank' rel='noopener noreferrer' href='/'>
+        <a target='_blank' rel='noopener noreferrer' href='/author/welcome'>
           {data?.user.name || 'Admin author Name'}
         </a>
       )

@@ -52,7 +52,7 @@ const WelcomeHeader = () => {
     {
       key: '1',
       label: (
-        <a target='_blank' rel='noopener noreferrer'>
+        <a target='_blank' rel='noopener noreferrer' href='/author/welcome'>
           {data?.user.name || 'Admin author Name'}
         </a>
       )
