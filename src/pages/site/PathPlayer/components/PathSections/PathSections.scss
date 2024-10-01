@@ -5,11 +5,11 @@
     .section__title {
         color: $brand-primary-color;
         font-weight: 600;
-        height:  5.2rem; /* Chiều cao để hiển thị dòng text */
+        height:  5.2rem; 
         overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;  /* Số dòng hiển thị lên */
+        -webkit-line-clamp: 2;  
     }
 
     &__wrap {

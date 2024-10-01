@@ -97,12 +97,12 @@ const DiscussCourse = () => {
         <div className='blog-categories__filter'>
           <Space className='sub-header__wrap'>
             <Search
-              placeholder='Search discuss'
+              placeholder='Search questions'
               onSearch={onSearchHandler}
               style={{ width: 200 }}
               className='search-wrap'
             />
-            {/* Thêm Select để lọc theo trạng thái */}
+            
             <Select defaultValue='all' style={{ width: 120 }} onChange={filterStatusHandler}>
               <Option value='all'>All</Option>
               <Option value='active'>Active</Option>

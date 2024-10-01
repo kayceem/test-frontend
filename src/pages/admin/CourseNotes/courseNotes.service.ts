@@ -4,7 +4,6 @@ import { INote } from '../../../types/note.type';
 import { IParams } from '../../../types/params.type';
 import { ILesson } from '../../../types/lesson.type';
 import { ICourse } from '../../../types/course.type';
-// Sử dụng các type được định nghĩa trong file gốc
 
 interface GetNotesResponse {
   notes: INote[];
@@ -30,7 +29,7 @@ export const courseNoteApi = createApi({
   reducerPath: 'courseNoteApi',
   tagTypes: ['Note', 'Lesson', 'Course'],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BACKEND_URL}/admin`, // Sử dụng baseUrl đã được định nghĩa
+    baseUrl: `${BACKEND_URL}/admin`,
     prepareHeaders(headers) {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {

@@ -25,10 +25,10 @@
 
             .header__categories-item {
                 margin: 0.3rem 0 0.2rem 0;
-                padding: 1rem 1rem; 
-                background-color: #e0e0e0; 
-                color: #333;
-                border-radius: 1.5rem; 
+                padding: 1rem 2.2rem; 
+                background-color: $brand-primary-color; 
+                color: white;
+                border-radius: 2rem; 
                 font-size: 1.4rem;
                 flex-shrink: 0;
               }

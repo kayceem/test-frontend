@@ -1,8 +1,11 @@
-import React from 'react';
-import { Drawer, Form, Button, Input, Select, message } from 'antd';
+import React, { useState } from 'react';
+import { Drawer, Form, Button, Input, Select, message,Upload } from 'antd';
 import { useAddCourseMutation } from '../../course.service';
 import { useGetAllCategoriesQuery, useGetCategoriesQuery } from '../../../Categories/category.service';
 import { ICourse } from '../../../../../types/course.type';
+import { UploadChangeParam, UploadProps } from 'antd/lib/upload/interface';
+import { UploadOutlined } from '@ant-design/icons';
+import { UPLOAD_URL } from '../../../../../constant/constant';
 
 const { Option } = Select;
 
@@ -14,6 +17,13 @@ interface CreateCourseDrawerProps {
 const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose }) => {
   const [form] = Form.useForm();
   const [postCourse] = useAddCourseMutation();
+  const [fileList, setFileList] = useState<any[]>([]);
+  const [videoFileList, setVideoFileList] = useState<any[]>([]);
+  const [imagePath, setImagePath] = useState<string>("")
+  const [formData, setFormData] = useState<ICourse>();
+  const [uploadedVideoPath, setUploadedVideoPath] = useState('');
+  const [accessType, setAccessType] = useState<string | undefined>(undefined);
+
 
   const { data: categoriesData, isLoading: isCategoriesLoading } = useGetCategoriesQuery();
 
@@ -28,6 +38,53 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
       .catch(() => {
         void message.error('Failed to create course');
       });
+  };
+  const handleAccessChange = (value: string) => {
+    setAccessType(value);
+    if (value === 'FREE') {
+      form.setFieldsValue({ price: 0, finalPrice: 0 });
+    }
+  };
+  const uploadImageProps: UploadProps = {
+    name: 'imageFile',
+    action: `${UPLOAD_URL}/uploads/image`,
+    fileList: fileList,
+    maxCount: 1,
+    onChange(info) {
+      setFileList(info.fileList);
+      if (info.file.status === 'done') {
+        void message.success(`${info.file.name} file uploaded successfully`);
+
+        const response = info.file.response as { imagePath: string };
+        if (response && response.imagePath) {
+          const imagePath = response.imagePath
+          setImagePath(imagePath);
+          form.setFieldsValue({ thumbnail: imagePath });
+        }
+      } else if (info.file.status === 'error') {
+        void message.error(`${info.file.name} file upload failed.`);
+      }
+    }
+  }
+  const uploadVideoProps: UploadProps = {
+    name: 'videoFile',
+    action: `${UPLOAD_URL}/uploads/video`,
+    fileList: videoFileList,
+    maxCount: 1,
+    onChange(info) {
+      setVideoFileList(info.fileList);
+      if (info.file.status === 'done') {
+        void message.success(`${info.file.name} file uploaded successfully`);
+        
+        const response = info.file.response as { videoPath: string };
+        if (response && response.videoPath) {
+          setUploadedVideoPath(response.videoPath);
+          form.setFieldsValue({ coursePreview: uploadedVideoPath });
+        }
+      } else if (info.file.status === 'error') {
+        void message.error(`${info.file.name} file upload failed.`);
+      }
+    }
   };
 
   return (
@@ -87,14 +144,28 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
           label='Thumbnail'
           rules={[{ required: true, message: 'Please enter the thumbnail URL!' }]}
         >
-          <Input placeholder='Enter thumbnail URL' />
+        <Upload {...uploadImageProps} >
+              <Button icon={<UploadOutlined style={{ color: '#000' }} />}>Select Image</Button>
+        </Upload>
         </Form.Item>
         <Form.Item
           name='coursePreview'
           label='Course Preview'
           rules={[{ required: true, message: 'Please enter the course preview URL!' }]}
         >
-          <Input placeholder='Enter course preview URL' />
+          <Upload {...uploadVideoProps}>
+                  <Button icon={<UploadOutlined style={{ color: 'black' }} />}>Click to Upload</Button>
+          </Upload>
+        </Form.Item>
+        <Form.Item name='access' label='Access' rules={[{ required: true, message: 'Please select the access type!' }]}>
+          <Select placeholder='Select access type' onChange={handleAccessChange}>
+            <Option value='PAID'>PAID</Option>
+            <Option value='DRAFT'>DRAFT</Option>
+            <Option value='COMMING_SOON'>COMMING SOON</Option>
+            <Option value='ENROLLMENT_CLOSED'>ENROLLMENT CLOSED</Option>
+            <Option value='FREE'>FREE</Option>
+            <Option value='PRIVATE'>PRIVATE</Option>
+          </Select>
         </Form.Item>
         <Form.Item
           name='price'
@@ -111,7 +182,7 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
             }
           ]}
         >
-          <Input type='number' placeholder='Enter price' />
+          <Input type='number' placeholder='Enter price' disabled={accessType === 'FREE'} />
         </Form.Item>
         <Form.Item
           name='finalPrice'
@@ -128,7 +199,7 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
             }
           ]}
         >
-          <Input type='number' placeholder='Enter final price' />
+          <Input type='number' placeholder='Enter final price' disabled={accessType === 'FREE'}/>
         </Form.Item>
         <Form.Item
           name='subTitle'
@@ -144,41 +215,14 @@ const CreateCourseDrawer: React.FC<CreateCourseDrawerProps> = ({ isOpen, onClose
         >
           <Input placeholder='Enter course slug' />
         </Form.Item>
-        <Form.Item name='access' label='Access' rules={[{ required: true, message: 'Please select the access type!' }]}>
-          <Select placeholder='Select access type'>
-            <Option value='PAID'>PAID</Option>
-            <Option value='DRAFT'>DRAFT</Option>
-            <Option value='COMMING_SOON'>COMMING SOON</Option>
-            <Option value='ENROLLMENT_CLOSED'>ENROLLMENT CLOSED</Option>
-            <Option value='FREE'>FREE</Option>
-            <Option value='PRIVATE'>PRIVATE</Option>
-          </Select>
-        </Form.Item>
+        
         <Form.Item name='level' label='Level' rules={[{ required: true, message: 'Please select the level!' }]}>
           <Select placeholder='Select level'>
             <Option value='ALL'>ALL</Option>
             <Option value='BEGINNER'>BEGINNER</Option>
             <Option value='INTERMEDIATE'>INTERMEDIATE</Option>
             <Option value='ADVANCED'>ADVANCED</Option>
-            {/* <Option value='EXPERT'>EXPERT</Option> */}
           </Select>
-        </Form.Item>
-        <Form.Item
-          name='views'
-          label='Views'
-          rules={[
-            { required: true, message: 'Please enter the number of views!' },
-            {
-              validator: (_, value) => {
-                if (value < 0) {
-                  return Promise.reject('Views cannot be negative');
-                }
-                return Promise.resolve();
-              }
-            }
-          ]}
-        >
-          <Input type='number' placeholder='Enter number of views' />
         </Form.Item>
         <Form.List name='willLearns'>
           {(fields, { add, remove }) => (

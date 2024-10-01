@@ -43,7 +43,7 @@ const CourseReviewModal: React.FC<CourseReviewModalProps> = ({ courseId, courseI
                 <Image src={courseInfo.thumbnail} alt={courseInfo.name} />
             )}
             {courseInfo?.finalPrice && (
-                <span>${courseInfo.finalPrice.toFixed(2)}</span>
+                <span>Rs. {courseInfo.finalPrice.toFixed(2)}</span>
             )}
 
             <Form form={form} layout="vertical" onFinish={onFormFinish}>

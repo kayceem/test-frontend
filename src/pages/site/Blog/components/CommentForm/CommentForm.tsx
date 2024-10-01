@@ -31,7 +31,7 @@ const CommentForm: React.FC<CommentListProps> = ({ blogId, comments }) => {
   const handleContentChange = (content: string) => {
     setComment(content);
     if (!content.trim()) {
-      setError('Vui lòng nhập nội dung bình luận.');
+      setError('Please enter the comment content.');
     } else {
       setError('');
     }
@@ -40,7 +40,7 @@ const CommentForm: React.FC<CommentListProps> = ({ blogId, comments }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!htmlToText(comment).trim()) {
-      setError('Vui lòng nhập nội dung bình luận.');
+      setError('Please enter the comment.');
       return;
     }
     setError('');
@@ -48,14 +48,14 @@ const CommentForm: React.FC<CommentListProps> = ({ blogId, comments }) => {
       await addComment({ blogId, content: htmlToText(comment), userId });
       setComment('');
       notification.success({
-        message: 'Thành công',
-        description: 'Bình luận đã được thêm thành công.',
+        message: 'Success',
+        description: 'Comments have been added.',
         duration: 3
       });
     } catch (error) {
       notification.error({
-        message: 'Thất bại',
-        description: 'Đã xảy ra lỗi khi thêm bình luận.',
+        message: 'Failure',
+        description: 'Error occurs when adding comments.',
         duration: 3
       });
     }
@@ -63,7 +63,6 @@ const CommentForm: React.FC<CommentListProps> = ({ blogId, comments }) => {
 
   return (
     <form className='comment-form' onSubmit={handleSubmit}>
-      {/* <div className='comment-title text-3xl mb-6 ml-14'>{commentLength} bình luận</div> */}
       <div className='div flex mb-20'>
         <ReactQuill
           className='comment-input'
@@ -79,10 +78,10 @@ const CommentForm: React.FC<CommentListProps> = ({ blogId, comments }) => {
       )}
       <div className='div flex justify-end'>
         <Button className='comment-btn mr-8' type='primary' htmlType='submit' disabled={isLoading}>
-          Bình luận
+          Comment
         </Button>
         <Button className='comment-btn' type='default' onClick={() => setComment('')} disabled={isLoading}>
-          Hủy
+          Cancel
         </Button>
       </div>
     </form>

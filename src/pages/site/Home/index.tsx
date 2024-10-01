@@ -301,15 +301,15 @@ const HomePage = () => {
                   <div className='statistics__item-img'>
                     <UserOutlined className='statistics__item-icon' />
                   </div>
-                  <h3 className='statistics__item-number'>19,200</h3>
+                  <h3 className='statistics__item-number'>100,000</h3>
                   <p className='statistics__item-content'>STUDENTS</p>
                 </Col>
                 <Col className='statistics__item'>
                   <div className='statistics__item-img'>
                     <FlagOutlined className='statistics__item-icon' />
                   </div>
-                  <h3 className='statistics__item-number'>92.000</h3>
-                  <p className='statistics__item-content'>LEARNING STEPS DONE</p>
+                  <h3 className='statistics__item-number'>50,000+</h3>
+                  <p className='statistics__item-content'>Hours Content</p>
                 </Col>
                 <Col className='statistics__item'>
                   <div className='statistics__item-img'>
@@ -367,7 +367,6 @@ const HomePage = () => {
         </div>
       )}
 
-      {/* Popular Course Enrolled */}
 
       {!isAuth && (
         <div className='our-courses'>

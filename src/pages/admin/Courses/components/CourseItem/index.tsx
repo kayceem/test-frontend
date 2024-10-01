@@ -55,12 +55,7 @@ const CourseItem = (props: CourseItemProps) => {
       });
   };
 
-  let thumbnailUrl = '';
-  if (thumbnail.startsWith('http')) {
-    thumbnailUrl = thumbnail;
-  } else {
-    thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
-  }
+  let thumbnailUrl = thumbnail;
 
   return (
     <Col className='course-content__item' md={props.md}>

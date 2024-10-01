@@ -230,12 +230,6 @@ const Courses = () => {
 
         let thumbnailUrl = thumbnail;
 
-        if (thumbnail.startsWith('http')) {
-          thumbnailUrl = thumbnail;
-        } else {
-          thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
-        }
-
         const courseTemplateItem: DataCourseType = {
           key: `${_id}`,
           name: (
@@ -244,7 +238,7 @@ const Courses = () => {
               <span className='table__col-name-text'>{name}</span>
             </div>
           ),
-          author: userId.name,
+          author: userId?.name,
           categories: categoryId?.name,
           access: Access.FREE,
           finalPrice: finalPrice,
@@ -299,12 +293,7 @@ const Courses = () => {
           isDeleted
         } = courseItem;
 
-        let thumbnailUrl = '';
-        if (thumbnail.startsWith('http')) {
-          thumbnailUrl = thumbnail;
-        } else {
-          thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
-        }
+        let thumbnailUrl =thumbnail;
 
         const courseTemplateItem: DataCourseType = {
           key: `${_id}`,

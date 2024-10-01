@@ -5,6 +5,7 @@ import { Table, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import './InvoicePage.scss';
+import { LOGO_URL } from '../../../../constant/constant';
 
 interface DataType {
   key?: React.Key;
@@ -53,14 +54,14 @@ const InvoicePage: React.FC = () => {
       title: 'Unit Price',
       dataIndex: 'finalPrice',
       key: 'finalPrice',
-      render: (text: number) => `$${text.toLocaleString()}`,
+      render: (text: number) => `Rs. ${text.toLocaleString()}`,
       responsive: ['sm']
     },
     {
       title: 'Total Amount',
       dataIndex: 'finalPrice',
       key: 'amount',
-      render: (text: number) => `$${(text * 1).toLocaleString()}`,
+      render: (text: number) => `Rs. ${(text * 1).toLocaleString()}`,
       responsive: ['lg']
     }
   ];
@@ -75,8 +76,8 @@ const InvoicePage: React.FC = () => {
 
   const footerTable = () => (
     <div className='invoice-page__table-footer'>
-      <p>VAT: ${orderDetails.order.vatFee}</p>
-      <p>Total Due: ${orderDetails.order.totalPrice}</p>
+      <p>VAT: Rs. {orderDetails.order.vatFee}</p>
+      <p>Total Due: Rs. {orderDetails.order.totalPrice}</p>
     </div>
   );
 
@@ -93,7 +94,7 @@ const InvoicePage: React.FC = () => {
         </Button>
         <div className='invoice-page__header'>
           <div className='invoice-page__logo'>
-            <img src='https://i.imgur.com/NZj5m3U.png' alt='E-Leaning' className='invoice-page__logo-img' />
+            <img src={LOGO_URL} alt='E-Leaning' className='invoice-page__logo-img' />
           </div>
           <div className='invoice-page__info'>
             <h2 className='invoice-page__title'>Invoice</h2>
@@ -107,7 +108,7 @@ const InvoicePage: React.FC = () => {
             </p>
             <br />
             <p>
-              <strong>Place:</strong> 600 Harrison St, San Francisco, CA
+              <strong>Place:</strong> Top of the World
             </p>
           </div>
         </div>
@@ -116,11 +117,11 @@ const InvoicePage: React.FC = () => {
           <div className='invoice-page__provided'>
             <div className='invoice-page__provided-by'>
               <h3 className='invoice-page__provided-title'>Provided by:</h3>
-              <p>E-Leaning</p>
-              <p>600 Harrison St</p>
-              <p>San Francisco, CA 94107</p>
-              <p>US</p>
-              <p>VAT #: 686868686868</p>
+              <p>Horizon School</p>
+              <p>Top of the World</p>
+              <p>Milky way</p>
+              <p>COSMOS</p>
+              <p>VAT #: 2348    </p>
             </div>
             <div className='invoice-page__provided-to'>
               <h3 className='invoice-page__provided-title'>Provided to:</h3>

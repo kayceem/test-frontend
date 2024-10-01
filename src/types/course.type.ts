@@ -28,13 +28,14 @@ export interface ICourse extends IBase {
   isBought?: boolean;
   level: CourseLevel;
   thumbnail: string;
+  coursePreview: string;
   courseSlug: string;
   avgRatings?: number;
   numberUsersOfCourse?: number;
   categoryId: {
     _id: string;
     name: string;
-  }; // id of Lập trình/Khoa học máy tính
+  };
   userId?: {
     _id: string;
     name: string;
@@ -54,4 +55,3 @@ export interface ICourse extends IBase {
   updatedAt?: string;
 }
 
-// When is use is enrolled ? (bought the course, click enroll if course is free)

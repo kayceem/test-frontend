@@ -15,7 +15,7 @@ const CommentWithReplies: React.FC<CommentListProps> = ({ replies, blogId }) => 
         <Card key={reply?._id} style={{ marginBottom: 16 }}>
           <Card.Meta
             avatar={reply?.userId ? <Avatar src={reply?.userId?.avatar} /> : <Avatar icon={<UserOutlined />} />}
-            title={reply?.userId ? reply?.userId?.name : 'Người dùng ẩn danh'}
+            title={reply?.userId ? reply?.userId?.name : 'Anonymous user'}
             description={reply?.content}
           />
         </Card>

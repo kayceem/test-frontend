@@ -27,7 +27,7 @@ const Permission: React.FC = () => {
   } = useGetPermissionsQuery(permissionQuery, {
     skip: !selectUser || !isSearch
   });
-  // Phân quyền view chỉ cho nhân viên!
+  // view only for employees!
   const { data: usersSelectRes } = useGetUsersSelectQuery({role: 'Employee'});
   const [updatePermission, updatePermissionResult] = useUpdatePermissionMutation();
   const listPermission = permissionResponse?.listPermission;

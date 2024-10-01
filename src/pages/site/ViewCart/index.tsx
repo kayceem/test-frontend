@@ -172,7 +172,7 @@ const ViewCart = () => {
                   </div>
                   <Divider />
                   <div className='view-cart__summary-promo'>
-                    <span className='view-cart__summary-promo-title'>Promo code</span>
+                    {/* <span className='view-cart__summary-promo-title'>Promo code</span> */}
                     {courseIds.length > 0 && (
                       <div className='view-cart__coupons-list' style={{ marginTop: '10px' }}>
                         {couponsData?.coupons?.map((coupon) => (
@@ -202,14 +202,14 @@ const ViewCart = () => {
                         ))}
                       </div>
                     )}
-                    <div className='view-cart__summary-promo-input-group'>
+                    {/* <div className='view-cart__summary-promo-input-group'>
                       <Space.Compact style={{ width: '100%' }}>
                         <Input defaultValue='Enter Coupon' value={selectedCoupon ?? ''} />
-                        {/* <ButtonCmp className='btn btn-sm'>Apply</ButtonCmp> */}
+                        <ButtonCmp className='btn btn-sm'>Apply</ButtonCmp>
                       </Space.Compact>
-                    </div>
+                    </div> */}
                   </div>
-                  <Divider />
+                  {/* <Divider /> */}
                 </div>
               </Col>
             </Row>

@@ -845,7 +845,6 @@ export const clientApi = createApi({
       }),
       invalidatesTags: (result, error, likeData) => [{ type: 'BlogComment', id: likeData.commentId }]
     }),
-    // Thêm phản hồi cho một bình luận
     addReplyToComment: build.mutation<
       AddBlogCommentResponse,
       { parentCommentId: string; content: string; userId: string; blogId: string }

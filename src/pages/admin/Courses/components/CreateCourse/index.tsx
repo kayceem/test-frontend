@@ -18,6 +18,7 @@ const initStateCourse: ICourse = {
   access: AccessStatus.FREE,
   level: CourseLevel.BEGINNER,
   thumbnail: '',
+  coursePreview: '',
   courseSlug: '',
   categoryId: {
     _id: '',

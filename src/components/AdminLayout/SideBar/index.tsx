@@ -28,6 +28,7 @@ import { RootState } from '../../../store/store';
 import { UserRole } from '../../../types/user.type';
 import './SideBar.scss';
 import { Helper } from '../../../utils/helper';
+import { log } from 'console';
 
 const { Sider } = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -233,7 +234,7 @@ const SideBar = () => {
     (isViewCourseModule && getItem('Courses', 'courses', <DesktopOutlined />, [
       (isViewCategory && getItem('Course Categories', 'categories')),
       (isViewCourse && getItem('Course Manager', 'courses')),
-      (isViewCourseDiscuss && getItem('Course Discuss', 'discuss')),
+      (isViewCourseDiscuss && getItem('Course Discussions', 'discuss')),
       (isViewCourseNote && getItem('Course Notes', 'courses-notes'))
     ])) as MenuItem,
     (isViewOrderModule && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) &&
@@ -255,20 +256,18 @@ const SideBar = () => {
         (isViewCourseInsight && getItem('Course Insights', 'reports/course-insights')),
         (isViewReviewCenter && getItem('Review center', 'reports/reviews-center'))
       ])) as MenuItem,
-    (isViewMarketingModule && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) && getItem('Marketing', 'marketing', <TagsOutlined />, [
-      // (isViewCoupon && getItem('Coupon Types', 'marketing/coupon-types')),
-      // getItem('Bundles', 'marketing/bundles'),
-      // getItem('Subscriptions', 'marketing/subscriptions'),
-      (isViewCoupon && getItem('Coupons', 'marketing/coupons'))
-    ])) as MenuItem,
+    // (isViewMarketingModule && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) && getItem('Marketing', 'marketing', <TagsOutlined />, [
+    //   // (isViewCoupon && getItem('Coupon Types', 'marketing/coupon-types')),
+    //   // getItem('Bundles', 'marketing/bundles'),
+    //   // getItem('Subscriptions', 'marketing/subscriptions'),
+    //   (isViewCoupon && getItem('Coupons', 'marketing/coupons'))
+    // ])) as MenuItem,
     (isViewFeedback && (adminRole === UserRole.ADMIN || adminRole === UserRole.EMPLOYEE) &&
       getItem('Feedbacks', 'feedbacks', <IdcardOutlined />, [
         (isViewFeedback && getItem('Feedbacks', 'feedbacks/list')),
-        getItem('Subscribe', 'subscribe')
+        // getItem('Subscribe', 'subscribe')
       ])) as MenuItem,
     getItem('Setting', 'setting', <SettingOutlined />, [getItem('Settings', 'settings' ) ]),
-    getItem('My account', 'account', <UserAddOutlined />),
-    // getItem('Need Help ?', 'help', <FileOutlined />)
   ];
 
   return (

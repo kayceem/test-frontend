@@ -52,7 +52,7 @@ const CoursesTable: React.FC = () => {
         setExpandedOrder(orderId === expandedOrder ? null : orderId);
     };
 
-    const renderCourseNames = (items: IOrderHistoryItem[], orderId: string) => {
+    const   renderCourseNames = (items: IOrderHistoryItem[], orderId: string) => {
         const courseNames = items.map(item => item.name);
         const numOfCourses = courseNames.length;
 
@@ -107,7 +107,7 @@ const CoursesTable: React.FC = () => {
             title: 'Total Price',
             dataIndex: 'totalPrice',
             key: 'totalPrice',
-            render: (text: number) => `$${text}`
+            render: (text: number) => `Rs.${text}`
         },
         {
             title: 'Payment Type',

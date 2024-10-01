@@ -28,13 +28,7 @@ const CartItem = (props: CartItemProps) => {
     level
   } = courseItem;
 
-  let thumbnailUrl = '';
-
-  if (thumbnail.startsWith('https')) {
-    thumbnailUrl = thumbnail;
-  } else {
-    thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
-  }
+  let thumbnailUrl = thumbnail;
 
   return (
     <Fragment>

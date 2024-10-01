@@ -52,14 +52,12 @@ class ObjectTreeHelper {
           nodeData['code'] = (node.origin as any).code
           const listNodeLevel1 = node.children
           isAnyChildChecked = listNodeLevel1?.some((child) => child.isChecked)
-          // Trong trường hợp node Level 1 không có check.
 
 
           if (!isAnyChildChecked) {
             for (const nodeLevel1Item of listNodeLevel1 ?? []) {
               const listNodeLevel2 = nodeLevel1Item.children
     
-              // Kiểm tra checked trong node Level 2
               isAnyChildChecked = listNodeLevel2?.some((child) => child.isChecked)
               if (isAnyChildChecked) {
                 break

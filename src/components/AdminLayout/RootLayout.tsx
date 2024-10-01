@@ -22,13 +22,9 @@ const RootAdminLayout: React.FC = () => {
           <Content style={{ margin: '0 16px' }}>
             <Outlet />
           </Content>
-          {/* Admin Footer here */}
-          <Footer style={{ textAlign: 'center' }}>Horizon School</Footer>
         </Layout>
       </Layout>
-      {/* Drawer here let change later */}
       <AdminDrawer />
-      <CreateCourse />
     </Fragment>
   );
 };

@@ -42,16 +42,12 @@ const ViewDetailUser: React.FC<ViewDetailUserProps> = ({ userId, onClose, isOpen
             <p className='text-2xl'>{user?.user.role}</p>
           </div>
           <div className='flex justify-between mb-6'>
-            <p className='text-2xl'>Facebook</p>
-            <p className='text-2xl'>{user?.user?.facebook ? user.user.facebook : 'No Facebook'}</p>
-          </div>
-          <div className='flex justify-between mb-6'>
             <p className='text-2xl'>Phone</p>
             <p className='text-2xl'>{user?.user?.phone ? user.user.phone : 'No Phone'}</p>
           </div>
           <div className='flex justify-between mb-6'>
-            <p className='text-2xl'>Active</p>
-            <p className='text-2xl'>{user?.user?.isDeleted ? 'Active' : 'Un Active'}</p>{' '}
+            <p className='text-2xl'>Deleted</p>
+            <p className='text-2xl'>{user?.user?.isDeleted ? 'Yes' : 'No'}</p>{' '}
           </div>
           <div className='flex justify-between mb-6'>
             <p className='text-2xl'>Create At</p>

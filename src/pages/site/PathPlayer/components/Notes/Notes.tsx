@@ -76,7 +76,7 @@ const Notes = (props: Props) => {
         setNotes([]);
       }
     }
-  }, [filter, allNotesData, lessonNotesData]); // Đảm bảo đúng dependencies được theo dõi
+  }, [filter, allNotesData, lessonNotesData]); 
 
   const startEditing = (note: INote) => {
     setEditingNoteId(note._id);
@@ -145,12 +145,12 @@ const Notes = (props: Props) => {
                         <Input
                           value={newContent}
                           onChange={(e) => setNewContent(e.target.value)}
-                          onPressEnter={() => saveNote(editingNoteId, newContent)} // Thêm xử lý này
+                          onPressEnter={() => saveNote(editingNoteId, newContent)}
                           suffix={
                             <SaveOutlined
                               onClick={() => saveNote(note._id, newContent)}
                               className='text-2xl font-semibold'
-                              style={{ color: 'rgba(22, 109, 231, 0.45)' }} // Điều chỉnh màu sắc nếu cần
+                              style={{ color: 'rgba(22, 109, 231, 0.45)' }} 
                             />
                           }
                         />

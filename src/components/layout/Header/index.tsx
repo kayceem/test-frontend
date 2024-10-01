@@ -19,6 +19,7 @@ import ChangePassword from '../../../pages/site/Auth/ChangePassword';
 import React, { useRef } from 'react';
 const { Search } = Input;
 import './Header.scss';
+import { LOGO_URL } from '../../../constant/constant';
 
 const Header = () => {
   // State here
@@ -221,13 +222,13 @@ const Header = () => {
         <div className='header__wrapper '>
           {/* <MenuOutlined onClick={showMobileMenuHandler} className='header__menu-mobile font-bold lg:hidden' /> */}
           <Link to='/' className='header__logo'>
-            <img src='https://i.imgur.com/NZj5m3U.png' alt='' className='header__logo-img' />
+            <img src={LOGO_URL} alt='' className='header__logo-img' />
           </Link>
 
           <div className='header__nav'>
             <ul id='menu' className='header__nav-list' ref={menuRef as unknown as RefObject<HTMLUListElement>}>
               <Link to='/' className='header__logo header__logo-mobile'>
-                <img src='https://i.imgur.com/NZj5m3U.png' alt='' className='header__logo-img' />
+                <img src={LOGO_URL} alt='' className='header__logo-img' />
               </Link>
               {isAuth && (
                 <li className='header__nav-item'>
@@ -264,7 +265,7 @@ const Header = () => {
             <div className='header__search'>
                 <Search
                   style={{ width: '30rem' }}
-                  placeholder='Search to find your suitable courses'
+                  placeholder='Search courses'
                   onSearch={onSearch}
                   enterButton
                 />

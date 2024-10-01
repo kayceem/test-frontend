@@ -30,20 +30,20 @@ const PlayerScreen = () => {
   const playerEl = useRef<ReactPlayer>(null);
 
   const showDrawer = () => {
-    setIsPlaying(false); // Dừng video khi mở drawer
+    setIsPlaying(false);
     setDrawerVisible(true);
   };
 
   const onClose = () => {
     setDrawerVisible(false);
-    setIsPlaying(true); // Tiếp tục phát video khi đóng drawer
+    setIsPlaying(true);
   };
 
   const handleSubmitNote = async () => {
     if (!noteContent.trim()) {
       notification.error({
-        message: 'Lỗi',
-        description: 'Nội dung ghi chú không được để trống'
+        message: 'Error',
+        description: 'Notes cannot be empty'
       });
       return;
     }
@@ -55,18 +55,18 @@ const PlayerScreen = () => {
         lessonId: currLessonId,
         content: noteContent,
         courseId: courseId as string,
-        videoMinute: Math.floor(currentTimeInSeconds) // Lưu thời gian hiện tại của video dưới dạng số giây
+        videoMinute: Math.floor(currentTimeInSeconds) 
       }).unwrap();
       notification.success({
-        message: 'Thành công',
-        description: 'Ghi chú đã được lưu thành công'
+        message: 'Success',
+        description: 'Note has been added'
       });
       setNoteContent('');
-      onClose(); // Đóng drawer sau khi lưu thành công
+      onClose();
     } catch (error) {
       notification.error({
-        message: 'Đã xảy ra lỗi',
-        description: 'Không thể lưu ghi chú'
+        message: 'Error',
+        description: 'Can\'t save notes'
       });
     }
   };
@@ -78,15 +78,12 @@ const PlayerScreen = () => {
     }
   }, [percentHavePlayed]);
 
-  // Tính toán và cập nhật tiến trình đã xem của video
   const onProgress = () => {
     if (!apiCalled && playerEl.current) {
       const percent = playerEl.current.getCurrentTime() / playerEl.current.getDuration();
       dispatch(setPercentHavePlayed(percent));
 
       if (percent >= 0.95 && !apiCalled) {
-        // Nếu đã xem hơn 95% video
-        // Cập nhật trạng thái hoàn thành bài học trong Redux và cơ sở dữ liệu
         dispatch(updateLessonDoneAtBrowser(currLessonId));
         updateLessonDone({
           userId: currUserId,
@@ -94,13 +91,13 @@ const PlayerScreen = () => {
         })
           .then(() => {
             notification.success({
-              message: 'Hoàn thành video',
-              description: 'Bạn đã xem xong video này'
+              message: 'Video Completed',
+              description: 'You have finished watching this video'
             });
-            setApiCalled(true); // Đánh dấu đã gọi API cập nhật
+            setApiCalled(true);
           })
           .catch((error) => {
-            console.error('Lỗi cập nhật tiến trình bài học', error);
+            console.error('Error while updating the lesson progress', error);
           });
       }
     }
@@ -128,7 +125,7 @@ const PlayerScreen = () => {
           className='ml-4 mt-4 mb-4 flex items-center bg-red-500 text-white px-6 py-4 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-700 focus:ring-opacity-50'
           onClick={showDrawer}
         >
-          <span>Thêm ghi chú tại {formattedTime}</span>
+          <span>Add notes at: {formattedTime}</span>
         </button>
       </div>
       <AddNoteDrawer

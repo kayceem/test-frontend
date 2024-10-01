@@ -137,7 +137,6 @@ const CourseDetail = () => {
 
       await increaseCourseView(courseId);
     } catch (error) {
-      // Xử lý lỗi nếu có
       console.error('Error increasing course view:', error);
     }
   };
@@ -194,12 +193,7 @@ const CourseDetail = () => {
     views
   } = courseDetail;
 
-  let thumbnailUrl = '';
-  if (thumbnail.startsWith('https')) {
-    thumbnailUrl = thumbnail;
-  } else {
-    thumbnailUrl = `${BACKEND_URL}/${thumbnail}`;
-  }
+  let thumbnailUrl = thumbnail;
 
   const { data: sectionData } = useGetSectionsByCourseIdQuery(courseId || '');
 

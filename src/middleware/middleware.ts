@@ -20,25 +20,25 @@ export function isPayloadErrorMessage(payload: unknown): payload is PayloadType 
 
 export const rtkQueryErrorLogger: Middleware = (api: MiddlewareAPI) => (next) => (action: AnyAction) => {
   /**
-   * `isRejectedWithValue` là một function giúp chúng ta kiểm tra những action có rejectedWithValue = true từ createAsyncThunk
-   * RTK Query sử dụng `createAsyncThunk` bên trong nên chúng ta có thể dùng `isRejectedWithValue` để kiểm tra lỗi 🎉
+  * `` ISREJECTEDWITHVALUE` is a function that helps us to check the Action with RejectedwithValue = True from CreateAsyncthunk
+  * RTK Query uses `createAsynchunk` inside so we can use` `isrejaintwithvalue` to check the error 
    */
 
-  // Option: Trong thực tế không bắt buộc đến mức này!
+ // option: in reality is not required to this point!
   if (isRejected(action)) {
     if (action.error.name === 'CustomError') {
-      // Những lỗi liên quan đến quá trình thực thi
+      // errors related to the implementation process
       // toast.warn(action.error.message);
     }
   }
 
   if (isRejectedWithValue(action)) {
-    // Mỗi khi thực hiện query hoặc mutation mà bị lỗi thì nó sẽ chạy vào đây
-    // Những lỗi từ server thì action nó mới có rejectedWithValue = true
-    // Còn những action liên quan đến việc caching mà bị rejected thì rejectedWithValue = false, nên đừng lo lắng, nó không lọt vào đây được
+    // Whenever doing query or mutation, it will run here
+    // errors from the server, then Action it has rejectedwithvalue = true
+    // There are actors related to caching that is rejected, then rejectedwithvalue = false, so don't worry, it can't come here
     if (isPayloadErrorMessage(action.payload)) {
-      // Lỗi reject từ server chỉ có message thôi!
-      // toast.warn(action.payload.data.error);
+      // Error Reject from the server only has a message!
+      //ToastWarn(actionPayloadDataError);
     }
   }
 

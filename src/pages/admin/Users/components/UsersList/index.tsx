@@ -170,7 +170,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
             {(user.courses || []).map((course) => (
               <Avatar key={course?._id} src={course?.thumbnail} />
             ))}
-            <Tooltip title='Ant User' placement='top'>
+            <Tooltip title={user.name} placement='top'>
               {(user.courses || []).map((course) => (
                 <Avatar key={course?._id} src={course?.thumbnail} />
               ))}

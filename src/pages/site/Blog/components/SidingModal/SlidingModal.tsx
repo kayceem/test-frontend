@@ -27,7 +27,7 @@ const SlidingModal: React.FC<SlidingModalProps> = ({ blogId }) => {
   }, [data]);
 
   return (
-    <div title={commentsData.length > 0 ? 'Bình luận' : 'Chưa có bình luận'}>
+    <div title={commentsData.length > 0 ? 'Comments': 'No comments'}>
       <div className='comment-input-form' style={{ marginBottom: 16 }}>
         <div className='text-3xl mb-8'>{length} comments</div>
         {isAuth ? (

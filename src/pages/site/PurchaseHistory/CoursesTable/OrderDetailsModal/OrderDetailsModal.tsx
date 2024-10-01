@@ -126,7 +126,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderId, isOpen, 
           </div>
           <div className={styles.orderDetails__item}>
             <strong>Total Price:</strong>
-            <span>${order.totalPrice}</span>
+            <span>Rs. {order.totalPrice}</span>
           </div>
           <div className={styles.orderDetails__item}>
             <strong>Transaction Method:</strong>
@@ -134,7 +134,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({ orderId, isOpen, 
           </div>
           <div className={styles.orderDetails__item}>
             <strong>VAT Fee:</strong>
-            <span>${order.vatFee.toFixed(2)}</span>
+            <span>Rs. {order.vatFee.toFixed(2)}</span>
           </div>
           <div className={styles.orderDetails__item}>
             <strong>Customer Phone:</strong>

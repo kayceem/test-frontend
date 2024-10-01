@@ -9,7 +9,9 @@ import {
   StockOutlined,
   UserOutlined,
   UsergroupAddOutlined,
-  WechatOutlined
+  WechatOutlined,
+  MoneyCollectFilled,
+  MoneyCollectTwoTone
 } from '@ant-design/icons';
 import { Button, Col, Row, Select, Statistic } from 'antd';
 import React from 'react';
@@ -201,7 +203,7 @@ const Dashboard: React.FC = () => {
       <div className='dashboard__latest'>
         <Row gutter={10}>
           {/* User */}
-          <Col md={6}>
+          <Col md={12}>
             <div className='dashboard__latest-users dashboard__latest-item'>
               <div className='latest-users'>
                 <div className='latest-users__header dashboard__latest-item-header'>
@@ -234,7 +236,7 @@ const Dashboard: React.FC = () => {
             </div>
           </Col>
           {/* Posts */}
-          <Col md={6}>
+          <Col md={12}>
             <div className='dashboard__latest-orders dashboard__latest-item'>
               <div className='latest-orders'>
                 <div className='latest-orders__header dashboard__latest-item-header'>
@@ -266,7 +268,7 @@ const Dashboard: React.FC = () => {
           </Col>
 
           {/* Events Log */}
-          <Col md={6}>
+          {/* <Col md={6}>
             <div className='dashboard__latest-blogs dashboard__latest-item'>
               <div className='latest-blogs'>
                 <div className='latest-blogs__header dashboard__latest-item-header'>
@@ -323,9 +325,9 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             </div>
-          </Col>
+          </Col> */}
           {/* Latest posts */}
-          <Col md={6}>
+          {/* <Col md={6}>
             <div className='dashboard__latest-coupons dashboard__latest-item'>
               <div className='latest-coupons'>
                 <div className='latest-coupons__header dashboard__latest-item-header'>
@@ -370,7 +372,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             </div>
-          </Col>
+          </Col> */}
         </Row>
       </div>
     </div>

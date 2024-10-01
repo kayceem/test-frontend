@@ -84,7 +84,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
   const handleEdit = async () => {
     if (!editContent.trim()) {
       setIsEditValid(false);
-      notification.error({ message: 'Nội dung không được để trống.' });
+      notification.error({ message: 'Content cannot be left empty' });
       return;
     }
 
@@ -100,32 +100,32 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
         );
         setLocalComments(updatedComments);
 
-        notification.success({ message: 'Bình luận đã được cập nhật thành công.' });
+        notification.success({ message: 'Comments have been updated.' });
         handleCancelEdit();
       } catch (error) {
-        notification.error({ message: 'Lỗi khi cập nhật bình luận.' });
+        notification.error({ message: 'Error when updating comments.' });
       }
     }
   };
 
   const handleDelete = (commentId: string) => {
     Modal.confirm({
-      title: 'Bạn có chắc chắn muốn xóa bình luận này?',
-      content: 'Hành động này không thể được hoàn tác.',
-      okText: 'Xóa',
+      title: 'Are you sure you want to delete this comment? ',
+      content: 'This action cannot be done. ',
+      okText: 'Delete',
       okType: 'danger',
-      cancelText: 'Hủy',
+      cancelText: 'Cancel',
       onOk: async () => {
         try {
           await deleteBlogComment({ commentId }).unwrap();
           const updatedComments = localComments.filter((comment) => comment._id !== commentId);
           setLocalComments(updatedComments);
-          notification.success({ message: 'Bình luận đã được xóa thành công.' });
+          notification.success({ message: 'Comments have been deleted.' });
           if (onCommentDelete) {
             onCommentDelete();
           }
         } catch (error) {
-          notification.error({ message: 'Lỗi khi xóa bình luận.' });
+          notification.error({ message: 'Error when deleting comments.' });
         }
       }
     });
@@ -218,7 +218,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
                 </div>
               </Button>
               <Button type='link' className='mr-4' onClick={() => handleReplyClick(comment._id)}>
-                Trả lời
+                Reply
               </Button>
               {userId === comment.userId._id && (
                 <Dropdown
@@ -227,10 +227,10 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
                     <Menu>
                       .
                       <Menu.Item key='edit' onClick={() => showEditModal(comment)}>
-                        Sửa bình luận
+                        Edit comment
                       </Menu.Item>
                       <Menu.Item key='delete' onClick={() => handleDelete(comment._id)}>
-                        Xóa bình luận
+                        Delete comment
                       </Menu.Item>
                     </Menu>
                   }
@@ -267,7 +267,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
 
             {/* Render Comments */}
             <Button onClick={() => toggleReplies(comment._id)} type='link'>
-              {visibleReplies[comment._id] ? 'Ẩn câu trả lời ' : `Xem ${comment.replies?.length || 0} câu trả lời`}
+              {visibleReplies[comment._id] ? 'Hide ' : `View ${comment.replies?.length || 0} Reply`}
               {/* {visibleReplies[comment._id] ? <UpOutlined /> : <DownOutlined />} */}
             </Button>
             {visibleReplies[comment._id] && (
@@ -283,12 +283,12 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
       ))}
 
       <Modal
-        title='Sửa Bình Luận'
+        title='Edit comment'
         open={isEditing}
         onOk={handleEdit}
         onCancel={handleCancelEdit}
-        okText='Lưu'
-        cancelText='Hủy bỏ'
+        okText='Save'
+        cancelText='Cancel'
         confirmLoading={isUpdating}
       >
         <Input.TextArea
@@ -297,7 +297,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments, blogId, onCommentDe
           onChange={(e) => setEditContent(e.target.value)}
           disabled={isUpdating}
         />
-        {!isEditValid && <div style={{ color: 'red', marginTop: '10px' }}>Nội dung không được để trống.</div>}
+        {!isEditValid && <div style={{ color: 'red', marginTop: '10px' }}>Content cannot be left empty.</div>}
       </Modal>
     </div>
   );

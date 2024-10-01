@@ -70,7 +70,7 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  // Thêm api middleware để enable các tính năng như caching, invalidation, polling của rtk-query
+  // Add API Middleware to enable features such as Caching, Invalidation, Polling of RTK-Qu
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       courseApi.middleware,
@@ -96,7 +96,7 @@ export const store = configureStore({
     )
 });
 
-// Optional, nhưng bắt buộc nếu dùng tính năng refetchOnFocus/refetchOnReconnect
+// Optional, but required to use Refetchonfocus/Refetchonrecondect
 setupListeners(store.dispatch);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

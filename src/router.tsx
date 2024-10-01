@@ -68,6 +68,7 @@ import Discuss from './pages/admin/Discuss/Discuss';
 import ChangePassword from './pages/admin/ChangePassword';
 import ChangePasswordUser from './pages/site/ChangePassword';
 import SubscribeEmail from './pages/admin/SubscribeEmail/index'
+import CreateCourse from './pages/admin/Courses/components/CreateCourse';
 
 const RouterHooks = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);

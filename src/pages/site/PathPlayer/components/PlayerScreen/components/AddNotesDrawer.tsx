@@ -28,7 +28,7 @@ const AddNoteDrawer: React.FC<AddNoteDrawerProps> = ({
 
   const validateNoteContent = () => {
     if (!noteContent.trim()) {
-      setError('Nội dung ghi chú không được để trống');
+      setError('Notes are not allowed to empty');
       return false;
     }
     setError('');
@@ -41,32 +41,32 @@ const AddNoteDrawer: React.FC<AddNoteDrawerProps> = ({
       try {
         await onSubmitNote();
         notification.success({
-          message: 'Thành công',
-          description: 'Ghi chú đã được lưu thành công'
+          message: 'Success',
+          description: 'Note has been added'
         });
-        onClose(); // Đóng drawer sau khi lưu thành công
+        onClose(); 
       } catch (error) {
         notification.error({
-          message: 'Đã xảy ra lỗi',
-          description: 'Lưu trữ ghi chú thất bại'
+          message: 'Error',
+          description: 'Error while saving notes'
         });
       }
     }
   };
   return (
-    <Drawer title='Thêm ghi chú' placement='right' closable={true} onClose={onClose} visible={visible}>
+    <Drawer title='Add notes' placement='right' closable={true} onClose={onClose} visible={visible}>
       <p className='mb-6 text-2xl'>
-        Thêm ghi chú tại: <span className='bg-red-600 p-2 text-white rounded-xl'>{formattedTime}</span>
+        Add notes at: <span className='bg-red-600 p-2 text-white rounded-xl'>{formattedTime}</span>
       </p>
       <Input.TextArea
         rows={4}
         value={noteContent}
         onChange={(e) => setNoteContent(e.target.value)}
-        placeholder='Nội dung ghi chú...'
+        placeholder='Note content...'
       />
       {error && <p className='text-red-500'>{error}</p>}
       <Button type='primary' onClick={handleSaveNote} disabled={isLoading} style={{ marginTop: 16 }}>
-        {isLoading ? 'Đang lưu...' : 'Lưu ghi chú'}
+        {isLoading ? 'In progress...' : 'Save notes'}
       </Button>
     </Drawer>
   );

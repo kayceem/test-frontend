@@ -60,9 +60,6 @@ const SettingContent = (cateId: string) => {
   };
 
   return (
-    // More action here!
-    // Xoá mềm (cập nhật trạng thái)
-    // Xem chi tiết (popup)
     <div>
       <p>Content</p>
       <div>

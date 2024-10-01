@@ -51,11 +51,9 @@ export const transformDate = (apiDate: Date | string) => {
 };
 
 export function formatTimeRounded(seconds: number): string {
-  // Làm tròn số giây trước khi chia để đảm bảo phút và giây được tính toán chính xác
   const roundedSeconds = Math.round(seconds);
   const minutes = Math.floor(roundedSeconds / 60);
   const remainingSeconds = roundedSeconds % 60;
-  // Sử dụng padStart để đảm bảo cả phút và giây đều có ít nhất 2 chữ số
   const paddedMinutes = minutes.toString().padStart(2, '0');
   const paddedSeconds = remainingSeconds.toString().padStart(2, '0');
   return `${paddedMinutes}:${paddedSeconds}`;

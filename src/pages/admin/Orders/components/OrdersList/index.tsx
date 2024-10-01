@@ -138,7 +138,7 @@ const OrdersList: React.FC<OrdersListProps> = (props) => {
             <div className='txt-desc'>sandbox_64bccb1fc177e</div>
           </>
         ),
-        amount: <div className='txt-desc'>{`$${totalPrice}`}</div>,
+        amount: <div className='txt-desc'>{`Rs. ${totalPrice}`}</div>,
         payment: <div className='txt-desc'>{transaction?.method}</div>
       };
 
