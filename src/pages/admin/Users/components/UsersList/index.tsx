@@ -206,7 +206,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
             {currentUserRole !== UserRole.AUTHOR &&
               (user.isDeleted ? (
                 <Popconfirm
-                  title='Are you sure you want to deactivate user?'
+                  title='Are you sure you want to activate user?'
                   placement='topRight'
                   onConfirm={() => updateActiveStatusUserHandler(user._id)}
                   okText='Yes'
@@ -216,7 +216,7 @@ const UsersList: React.FC<UserListProps> = (props) => {
                 </Popconfirm>
               ) : (
                 <Popconfirm
-                  title='Are you sure you want to deactivate this blog category?'
+                  title='Are you sure you want to deactivate user?'
                   placement='topRight'
                   onConfirm={() => updateActiveStatusUserHandler(user._id)}
                   okText='Yes'
