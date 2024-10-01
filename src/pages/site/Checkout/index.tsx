@@ -11,7 +11,7 @@ import {
   useCreateOrderMutation,
   useGetRetrieveCartQuery,
   useGetUserQuery,
-  useCreateVnpayUrlMutation,
+  useCreateKhaltiUrlMutation,
   useGetTotalPriceQuery
 } from '../client.service';
 import { clearCart } from '../client.slice';
@@ -23,7 +23,7 @@ const Checkout = () => {
   const [createOrder] = useCreateOrderMutation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('Khalti');
   const [expandedPanel, setExpandedPanel] = useState(['1']);
-  const [createVnpayUrl] = useCreateVnpayUrlMutation();
+  const [createKhalti] = useCreateKhaltiUrlMutation();
 
   const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => [
     {
@@ -123,7 +123,7 @@ const Checkout = () => {
       .then((result) => {
         if (result.order._id) {
           if (selectedPaymentMethod === 'Khalti') {
-            createVnpayUrl({
+            createKhalti({
               orderId: result.order._id,
               amount: totalPrice
             })

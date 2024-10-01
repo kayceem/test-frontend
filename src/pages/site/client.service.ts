@@ -212,7 +212,7 @@ export interface CreateSubscribeResponse {
   message: string;
   subscribe: ISubscribe;
 }
-export interface CreateVnpayUrlResponse {
+export interface CreateKhaltiResponse {
   redirectUrl: string;
 }
 
@@ -750,11 +750,11 @@ export const clientApi = createApi({
         { type: 'Orders', id: orderId }
       ]
     }),
-    createVnpayUrl: build.mutation<CreateVnpayUrlResponse, { orderId: string; amount: number; bankCode?: string }>({
-      query: ({ orderId, amount, bankCode }) => ({
-        url: `payments/vnpay/create_vnpayment_url`,
+    createKhaltiUrl: build.mutation<CreateKhaltiResponse, { orderId: string; amount: number; bankCode?: string }>({
+      query: ({ orderId, amount }) => ({
+        url: `payments/khalti`,
         method: 'POST',
-        body: { orderId, amount, bankCode }
+        body: { orderId, amount }
       })
     }),
     createSubscribe: build.mutation<CreateSubscribeResponse, { email: string }>({
@@ -1105,7 +1105,7 @@ export const {
   useGetBlogByIdQuery,
   useGetRelatedCoursesQuery,
   useCreateReviewMutation,
-  useCreateVnpayUrlMutation,
+  useCreateKhaltiUrlMutation,
   useGetSuggestedCoursesQuery,
   useCreateWishlistMutation,
   useDeleteWishlistMutation,
