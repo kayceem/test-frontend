@@ -1,31 +1,9 @@
 import { Layout, theme } from 'antd';
 import { useLocation } from 'react-router-dom';
 import './Header.scss';
-import CancelledSales from './components/CancelledSales';
-import CategoriesHeader from './components/Categories';
-import Certifications from './components/Certifications';
-import CourseInsights from './components/CourseInsights';
-import CoursesHeader from './components/CoursesHeader';
 import DashboardHeader from './components/DashboardHeader';
-import InstructorsRevenues from './components/InstructorsRevenues';
-import OrdersHeader from './components/Orders';
-import ReviewsCenter from './components/ReviewsCenter';
-import UsersHeader from './components/UsersHeader';
-import UsersProgressHeader from './components/UsersProgress';
-import BlogHeader from './components/BlogHeader';
-
-import BlogCategoryHeader from './components/BlogCategory';
-import FeedbacksHeader from './components/Feedbacks/Feedbacks';
-import ReviewsHeader from './components/Reviews/Reviews';
-import TransactionsHeader from './components/Transactions/Transactions';
-import CoursesNotes from './components/CourseNotes';
 import WelcomeHeader from './components/WelcomeHeader';
-import BlogCommentsHeader from './components/BlogCommentsHeader';
-import DiscussHeader from './components/DiscussHeader';
-import UsersPermissionHeader from './components/UsersPermission';
-import SettingHeader from './components/SettingHeader';
 import AdminCommonHeader from './components/AdminHeader';
-import SubscribeHeader from './components/SubscribeHeader';
 
 const { Header } = Layout;
 const AdminHeader = () => {
