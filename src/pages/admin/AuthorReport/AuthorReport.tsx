@@ -121,7 +121,7 @@ const AuthorReport = () => {
       render: (createdAt: string) => moment(createdAt).format('YYYY-MM-DD HH:mm:ss')
     },
     {
-      title: 'Total Earning ($)',
+      title: 'Total Earning (RS)',
       dataIndex: 'totalEarnings',
       key: 'totalEarnings',
       ellipsis: true

@@ -4,11 +4,9 @@ import { IBase } from './base.type';
 export enum UserRole {
   ADMIN = 'Admin',
   STUDENT = 'Student',
-  TEACHER = 'Teacher',
   EMPLOYEE = 'Employee',
   USER = 'User',
-  AUTHOR = 'Author',
-  OTHER = 'Other'
+  AUTHOR = 'Author'
 }
 
 export interface IUser extends IBase {

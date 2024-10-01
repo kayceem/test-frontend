@@ -1,3 +1,3 @@
 
 
-export const UPLOAD_URL = `https://e-learning-api.trannhatsang.com`
+export const UPLOAD_URL = `http://localhost:9000`

@@ -39,7 +39,7 @@ const StartLearning = () => {
                 <div className='start-learning__header-welcome'>
                   <div className='start-learning__header-welcome-icon'>
                     <img
-                      src='https://lwfiles.mycourse.app/648eaf1c0c0c35ee7db7e0a2-public/avatars/648eaf1c0c0c35ee7db7e0a3.jpg?version=2023-07-16%2010%3A02%3A03'
+                      src={data?.user.avatar}
                       alt=''
                       className='start-learning__header-welcome-img'
                     />

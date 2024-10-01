@@ -8,7 +8,7 @@ import { useAddUserMutation, useGetUserQuery, useUpdateUserMutation } from '../.
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload/interface';
-import { BACKEND_URL } from '../../../../../constant/backend-domain';
+import { USER_STATUS } from '../../../../../constant/enumData';
 import { UPLOAD_URL } from '../../../../../constant/constant';
 
 const { Option } = Select;
@@ -51,7 +51,7 @@ const AddUser: React.FC<AddUserProps> = (props) => {
       role: formData.role,
       password: formData.password,
       avatar: uploadedImagePath,
-      status: 'ACTIVE',
+      status: USER_STATUS.ACTIVE,
       username: formData.username
     };
 
