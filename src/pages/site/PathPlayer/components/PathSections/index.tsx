@@ -34,26 +34,26 @@ const PathSections = (props: Props) => {
     return sectionTemplateItem;
   });
 
-  const finalSectionItem = {
-    key: 'final',
-    label: (
-      <div className='section__title'>
-        <h3>Certification</h3>
-      </div>
-    ),
-    children:
-      certificatePath && currentProgress === 1 ? (
-        <Link target='_blank' to={`${BACKEND_URL}/certificates/${certificatePath}`}>
-          Got the certification here!!!
-        </Link>
-      ) : (
-        <div>Complete the videos first to get the certificate</div>
-      )
-  };
+  // const finalSectionItem = {
+  //   key: 'final',
+  //   label: (
+  //     <div className='section__title'>
+  //       <h3>Certification</h3>
+  //     </div>
+  //   ),
+  //   children:
+  //     certificatePath && currentProgress === 1 ? (
+  //       <Link target='_blank' to={`${BACKEND_URL}/certificates/${certificatePath}`}>
+  //         Got the certification here!!!
+  //       </Link>
+  //     ) : (
+  //       <div>Complete the videos first to get the certificate</div>
+  //     )
+  // };
 
-  if (sectionItems) {
-    sectionItems.push(finalSectionItem);
-  }
+  // if (sectionItems) {
+  //   sectionItems.push(finalSectionItem);
+  // }
 
   return (
     <div className={props.className + ' path-sections'}>
