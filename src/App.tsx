@@ -17,7 +17,7 @@ import {
 } from './pages/auth.slice';
 
 import RouterHooks from './router';
-import { BACKEND_URL } from './constant/backend-domain';
+import { BACKEND_URL } from './constant/frontend-domain';
 
 function App() {
   if (!localStorage.getItem('cart')) {

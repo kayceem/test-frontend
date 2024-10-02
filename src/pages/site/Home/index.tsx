@@ -227,10 +227,9 @@ const HomePage = () => {
           <div className='container'>
             <div className='banner__wrapper-left'>
               <div className='banner__cta-section'>
-                <h1 className='banner__title'>Learn and become better at your job</h1>
+                <h1 className='banner__title'>Learn every day and excel in your career  </h1>
                 <p className='banner__content'>
-                  Participate in a fully professional, social, engaging and interactive online school. Get the learning
-                  experience you deserve.
+                Unlock your potential with engaging, practical knowledge that keeps you moving forward.
                 </p>
                 <div className='banner__cta--btns'>
                   <Space>
@@ -265,8 +264,7 @@ const HomePage = () => {
                   </div>
                   <h3 className='our-benefits__item-title'>Practical approach</h3>
                   <p className='our-benefits__item-content'>
-                    Our training is designed to provide the skills in a practical approach. Our students' success is our
-                    best asset in showing the quality of our training.
+                  Our courses are built to equip you with hands-on skills that you can apply immediately. The success of our students is the strongest testament to the quality of our programs.
                   </p>
                 </div>
                 <div className='our-benefits__item'>
@@ -275,8 +273,7 @@ const HomePage = () => {
                   </div>
                   <h3 className='our-benefits__item-title'>Globally oriented</h3>
                   <p className='our-benefits__item-content'>
-                    Strategies shared and knowledge earned allows our students to immediately set up their business and
-                    start offering their services around the globe.
+                  The strategies and insights you gain will enable you to launch your business and provide services on a global scale right away.
                   </p>
                 </div>
                 <div className='our-benefits__item'>
@@ -285,8 +282,7 @@ const HomePage = () => {
                   </div>
                   <h3 className='our-benefits__item-title'>For your career</h3>
                   <p className='our-benefits__item-content'>
-                    Whether you want to boost your career within the company you are working or grow at your own
-                    business by applying the latest strategies in digital marketing, this is the way.
+                  Whether you're looking to advance in your current role or expand your own business, our cutting-edge digital marketing strategies will help you achieve your career goals.
                   </p>
                 </div>
               </div>

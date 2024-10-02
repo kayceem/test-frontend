@@ -122,10 +122,11 @@ const Checkout = () => {
       .unwrap()
       .then((result) => {
         if (result.order._id) {
-          if (selectedPaymentMethod === 'Khalti') {
+          if (selectedPaymentMethod !== 'Khalti') {
             createKhalti({
               orderId: result.order._id,
               amount: totalPrice
+              // formData:result.fromData
             })
               .unwrap()
               .then((paymentResponse) => {
